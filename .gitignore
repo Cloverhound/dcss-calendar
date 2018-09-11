@@ -5,4 +5,5 @@ appconfig.js
 .DS_Store
 defaultConfiguration.ts
 package-lock.json
+.vscode
 
