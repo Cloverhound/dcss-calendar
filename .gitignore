@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+appconfig.js
+.DS_Store
+defaultConfiguration.ts
+package-lock.json
+
