@@ -1,23 +1,31 @@
 {
-  "name": "dcss-calendar",
+  "name": "react-ts-webpack",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "start": "npm run build && node server.js"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react": "^16.4.14",
-    "@types/react-dom": "^16.0.7",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0"
+    "express": "^4.16.3",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "typescript": "^3.0.3"
   },
   "devDependencies": {
-    "awesome-typescript-loader": "^5.2.1",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
+    "html-webpack-plugin": "^3.2.0",
     "source-map-loader": "^0.2.4",
-    "typescript": "^3.0.3",
-    "webpack-cli": "^3.1.0"
+    "ts-loader": "^5.1.1",
+    "webpack": "^4.19.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.3.0",
+    "webpack-hot-middleware": "^2.24.0"
   }
 }
