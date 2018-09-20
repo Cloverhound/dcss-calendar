@@ -7,7 +7,3 @@ declare let module: any
 
 ReactDOM.render(<Provider store={store}><Hello compiler="Typescript" framework="React..." bundler="Webpack"/></Provider>, 
 document.getElementById('root'));
-
-// if (module.hot) {
-//     module.hot.accept();
-// }

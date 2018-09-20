@@ -8,6 +8,6 @@ interface IProps {
 
 export class Hello extends React.Component<IProps, {}> {
     render() {
-        return <h1>Harry Otter</h1>
+        return <h1>Harry Otter Potter</h1>
     }
 }

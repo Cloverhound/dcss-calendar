@@ -2,8 +2,7 @@ const path = require('path'),
       webpack = require('webpack'),
       HtmlWebpackPlugin = require('html-webpack-plugin');
       CleanWebpackPlugin = require('clean-webpack-plugin');
-
-
+      
 module.exports = {
   entry: {
     app: ['./src/app/App.tsx'],
@@ -13,11 +12,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].bundle.js',
   },
-  // devServer: {
-  //   contentBase: path.join(__dirname, 'dist'),
-  //   compress: true,
-  //   port: 9000
-  // },
   watch: true,
   devtool: 'source-map',
   resolve: {
