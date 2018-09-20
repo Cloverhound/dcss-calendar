@@ -1,0 +1,15 @@
+{
+  "db": {
+    "host": "${DB_HOST}",
+    "port": 1433,
+    "url": "",
+    "database": "dcss-calendar",
+    "password": "${DB_PASS}",
+    "name": "db",
+    "user": "${DB_USER}",
+    "connector": "mssql",
+    "options": {
+      "encrypt": true
+    }
+  }
+}
