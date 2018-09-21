@@ -2,7 +2,8 @@ const path = require('path'),
       webpack = require('webpack'),
       HtmlWebpackPlugin = require('html-webpack-plugin');
       CleanWebpackPlugin = require('clean-webpack-plugin');
-      
+      webpackDashboard = require('webpack-dashboard/plugin');
+
 module.exports = {
   entry: {
     app: ['./src/app/App.tsx'],
@@ -16,6 +17,9 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+  },
+  devServer: {
+    hot: true
   },
   module: {
     rules: [{
@@ -34,5 +38,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'app', 'index.html'),
     }),
+    new webpackDashboard(),
   ],
 };
