@@ -1,0 +1,27 @@
+{
+  "name": "Queue",
+  "plural": "Queues",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "force_open": {
+      "type": "boolean",
+      "default": false
+    },
+    "force_closed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
