@@ -11,17 +11,76 @@
       "type": "string",
       "required": true
     },
-    "force_open": {
-      "type": "boolean",
-      "default": false
+    "sun_start": {
+      "type": "date",
+      "required": true
     },
-    "force_closed": {
-      "type": "boolean",
-      "default": false
+    "sun_end": {
+      "type": "date",
+      "required": true
+    },
+    "mon_start": {
+      "type": "date",
+      "required": true
+    },
+    "mon_end": {
+      "type": "date",
+      "required": true
+    },
+    "tues_start": {
+      "type": "date",
+      "required": true
+    },
+    "tues_end": {
+      "type": "date",
+      "required": true
+    },
+    "weds_start": {
+      "type": "date",
+      "required": true
+    },
+    "weds_end": {
+      "type": "date",
+      "required": true
+    },
+    "thurs_start": {
+      "type": "date",
+      "required": true
+    },
+    "thurs_end": {
+      "type": "date",
+      "required": true
+    },
+    "fri_start": {
+      "type": "date",
+      "required": true
+    },
+    "fri_end": {
+      "type": "date",
+      "required": true
+    },
+    "sat_start": {
+      "type": "date",
+      "required": true
+    },
+    "sat_end": {
+      "type": "date",
+      "required": true
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "queues": {
+      "type": "hasMany",
+      "model": "Queue",
+      "foreignKey": ""
+    },
+    "holidays": {
+      "type": "hasMany",
+      "model": "Holiday",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
