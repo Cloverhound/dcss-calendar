@@ -35,7 +35,15 @@
     "dataSource": "db",
     "public": false
   },
+  "Queue": {
+    "dataSource": "db",
+    "public": true
+  },
   "Schedule": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Holiday": {
     "dataSource": "db",
     "public": true
   }
