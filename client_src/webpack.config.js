@@ -6,7 +6,7 @@ const path = require('path'),
 
 module.exports = {
   entry: {
-    app: ['./src/app/App.tsx'],
+    app: ['./src/app/index.tsx'],
     vendor: ['react', 'react-dom'],
   },
   output: {
