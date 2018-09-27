@@ -5,5 +5,5 @@ import { Provider } from "react-redux";
 import store from "./store";
 declare let module: any
 
-ReactDOM.render(<Provider store={store}><App compiler="Typescript" framework="React..." bundler="Webpack"/></Provider>, 
+ReactDOM.render(<Provider store={store}><App /></Provider>, 
 document.getElementById('root'));

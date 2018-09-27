@@ -1,15 +1,20 @@
 import * as React from 'react';
+import ButtonAppBar from '../ButtonAppBar/ButtonAppBar'
+import PermanentDrawer from '../PermanentDrawer/PermanentDrawer'
+// interface IProps {
+//   compiler: string,
+//   framework: string,
+//   bundler: string
+// }
 
-interface IProps {
-  compiler: string,
-  framework: string,
-  bundler: string
-}
-
-export class Home extends React.Component<IProps, {}> {
+class Home extends React.Component {
   render() {
     return (
-      <div>HOME</div>
+      <div>
+        HOME
+      </div>
     )
   }
 }
+
+export default Home;
