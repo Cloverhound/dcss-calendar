@@ -11,15 +11,20 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-// import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import createStyles from '@material-ui/core/styles/createStyles';
+
+import { connect } from 'react-redux';
+import { sendRouteComponent } from '../../actions/index'
+
+import Queues from '../Queues/Queues';
+
 import {
   BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom';
 
-const drawerWidth : number = 240;
+const drawerWidth: number = 240;
 
 const styles = (theme) => createStyles({
   root: {
@@ -64,82 +69,87 @@ interface IState {
 interface PermanentDrawerProps {
   children: any,
   theme: any,
+  sendComponent: any
 }
 
-class PermanentDrawer extends React.Component<WithStyles<typeof styles> & PermanentDrawerProps,  IState> {
-    state: IState = {
-      mobileOpen: false,
-    };
+class PermanentDrawer extends React.Component<WithStyles<typeof styles> & PermanentDrawerProps, IState> {
+  state: IState = {
+    mobileOpen: false,
+  };
 
-    handleDrawerToggle = () => {
-      this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-    };
-  
-    render() {
-      const { classes, theme } = this.props;
-  
-      const drawer = (
-        <div>
-          <div className={classes.toolbar} />
-          <Divider />
-          <List>TACOS</List>
-          <Divider />
-          <List>BURRITOS</List>
-        </div>
-      );
-  
-      return (
-        <div className={classes.root}>
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerToggle}
-                className={classes.navIconHide}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="title" color="inherit" noWrap>
-                Responsive drawer
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
+  render() {
+    const { classes, theme } = this.props;
+    const drawer = (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List><button onClick={() => this.props.sendComponent(Queues)}>TACOS</button></List>
+        <Divider />
+        <List></List>
+      </div>
+    );
+
+    return (
+      <div className={classes.root}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerToggle}
+              className={classes.navIconHide}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="title" color="inherit" noWrap>
+              Responsive drawer
               </Typography>
-            </Toolbar>
-          </AppBar>
-          <Hidden mdUp>
-            <Drawer
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden smDown implementation="css">
-            <Drawer
-              variant="permanent"
-              open
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
-          </main>
-        </div>
-      );
-    }
+          </Toolbar>
+        </AppBar>
+        <Hidden mdUp>
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={this.state.mobileOpen}
+            onClose={this.handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            variant="permanent"
+            open
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+          {this.props.children}
+        </main>
+      </div>
+    );
   }
+}
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  sendComponent: (component) => dispatch(sendRouteComponent(component))
+})
 
-export default withStyles(styles, { withTheme: true })(PermanentDrawer);
+export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PermanentDrawer));
+

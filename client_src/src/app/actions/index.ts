@@ -1,4 +1,3 @@
-    // src/js/actions/index.js
-    import { ADD_ARTICLE } from "../constants/action-types";
-    
-    export const addArticle = article => ({ type: ADD_ARTICLE, payload: article });
+export const incrementCounter = num => ({ type: "INCREMENT_COUNTER", payload: num });
+
+export const sendRouteComponent = component => ({ type: "CHANGE_ROUTE_COMPONENT", payload: component });
