@@ -5,8 +5,6 @@ import {
   Link
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-// import Home from './Home/Home';
 import PermanentDrawer from './PermanentDrawer/PermanentDrawer'
 
 interface IProps {
@@ -15,7 +13,6 @@ interface IProps {
 class App extends React.Component<IProps>{
   
   render() {
-    console.log(this.props);
     return (
         <div>
           <PermanentDrawer>

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +15,9 @@ import { connect } from 'react-redux';
 import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
+import Schedules from '../Schedules/Schedules';
+import Holidays from '../Holidays/Holidays';
+import Prompts from '../Prompts/Prompts';
 
 import {
   BrowserRouter as Router,
@@ -87,7 +88,10 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
       <div>
         <div className={classes.toolbar} />
         <Divider />
-        <List><button onClick={() => this.props.sendComponent(Queues)}>TACOS</button></List>
+        <List><button onClick={() => this.props.sendComponent(Queues)}>Queues</button></List>
+        <List><button onClick={() => this.props.sendComponent(Schedules)}>Schedules</button></List>
+        <List><button onClick={() => this.props.sendComponent(Holidays)}>Holidays</button></List>
+        <List><button onClick={() => this.props.sendComponent(Prompts)}>Prompts</button></List>
         <Divider />
         <List></List>
       </div>
@@ -139,7 +143,6 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
           {this.props.children}
         </main>
       </div>
