@@ -5,8 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import EditIcon from '@material-ui/icons/Edit';
+import AddCircle from '@material-ui/icons/AddCircle';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 
@@ -52,27 +52,27 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
       >
         <div className={classes.title}>
           {numSelected > 0 ? (
-            <Typography color="inherit" variant="subheading">
+          <Typography color="inherit" variant="subheading">
               {numSelected} selected
           </Typography>
           ) : (
-              <Typography variant="title" id="tableTitle">
-                Nutrition
+          <Typography variant="title" id="tableTitle">
+            Queues
           </Typography>
             )}
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
           {numSelected > 0 ? (
-            <Tooltip title="Delete">
-              <IconButton aria-label="Delete">
-                <DeleteIcon />
+            <Tooltip title="Edit">
+              <IconButton aria-label="Edit">
+                <EditIcon />
               </IconButton>
             </Tooltip>
           ) : (
-              <Tooltip title="Filter list">
-                <IconButton aria-label="Filter list">
-                  <FilterListIcon />
+              <Tooltip title="Add Queue">
+                <IconButton aria-label="Add Queue">
+                  <AddCircle />
                 </IconButton>
               </Tooltip>
             )}

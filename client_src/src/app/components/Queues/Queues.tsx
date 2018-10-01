@@ -21,9 +21,10 @@ import classNames from 'classnames';
 import EnhancedTableToolbar from '../Table/EnhancedTableToolbar/EnhancedTableToolBar'
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
+
+function createData(status, queueName, scheduleName, holidayName, promptStatus) {
   counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
+  return { id: counter, status, queueName, scheduleName, holidayName, promptStatus };
 }
 
 function desc(a, b, orderBy) {
@@ -51,11 +52,11 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
+  { id: 'queueName', numeric: false, disablePadding: false, label: 'Queue Name' },
+  { id: 'scheduleName', numeric: false, disablePadding: false, label: 'Schedule Name' },
+  { id: 'holidayName', numeric: false, disablePadding: false, label: 'Holiday Name' },
+  { id: 'promptStatus', numeric: false, disablePadding: false, label: 'Prompt Status' },
 ];
 
 
@@ -84,13 +85,6 @@ class EnhancedTableHead extends React.Component<IPropsTableHead, IStateTableHead
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
           {rows.map(row => {
             return (
               <TableCell
@@ -121,86 +115,13 @@ class EnhancedTableHead extends React.Component<IPropsTableHead, IStateTableHead
   }
 }
 
-
-// const toolbarStyles = theme => createStyles({
-//   root: {
-//     paddingRight: theme.spacing.unit,
-//   },
-//   highlight:
-//     theme.palette.type === 'light'
-//       ? {
-//           color: theme.palette.secondary.main,
-//           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-//         }
-//       : {
-//           color: theme.palette.text.primary,
-//           backgroundColor: theme.palette.secondary.dark,
-//         },
-//   spacer: {
-//     flex: '1 1 100%',
-//   },
-//   actions: {
-//     color: theme.palette.text.secondary,
-//   },
-//   title: {
-//     flex: '0 0 auto',
-//   },
-// });
-
-// interface IPropsTableToolbar {
-//   numSelected: any,
-// }
-
-// let EnhancedTableToolbar: React.SFC<WithStyles<typeof toolbarStyles> &IPropsTableToolbar> =(props) => {
-//   const { numSelected, classes } = props;
-
-//   return (
-//     <Toolbar
-//       className={classNames(classes.root, {
-//         [classes.highlight]: numSelected > 0,
-//       })}
-//     >
-//       <div className={classes.title}>
-//         {numSelected > 0 ? (
-//           <Typography color="inherit" variant="subheading">
-//             {numSelected} selected
-//           </Typography>
-//         ) : (
-//           <Typography variant="title" id="tableTitle">
-//             Nutrition
-//           </Typography>
-//         )}
-//       </div>
-//       <div className={classes.spacer} />
-//       <div className={classes.actions}>
-//         {numSelected > 0 ? (
-//           <Tooltip title="Delete">
-//             <IconButton aria-label="Delete">
-//               <DeleteIcon />
-//             </IconButton>
-//           </Tooltip>
-//         ) : (
-//           <Tooltip title="Filter list">
-//             <IconButton aria-label="Filter list">
-//               <FilterListIcon />
-//             </IconButton>
-//           </Tooltip>
-//         )}
-//       </div>
-//     </Toolbar>
-//   );
-// };
-
-
-// EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
-
 const styles = theme => createStyles({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
   },
   table: {
-    minWidth: 1020,
+    // minWidth: 1020,
   },
   tableWrapper: {
     overflowX: 'auto',
@@ -225,22 +146,16 @@ interface IPropsTable {
 class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
   state = {
     order: 'asc',
-    orderBy: 'calories',
+    orderBy: 'queueName',
     selected: [],
     data: [
-      createData('Cupcake', 305, 3.7, 67, 4.3),
-      createData('Donut', 452, 25.0, 51, 4.9),
-      createData('Eclair', 262, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-      createData('Gingerbread', 356, 16.0, 49, 3.9),
-      createData('Honeycomb', 408, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-      createData('Jelly Bean', 375, 0.0, 94, 0.0),
-      createData('KitKat', 518, 26.0, 65, 7.0),
-      createData('Lollipop', 392, 0.2, 98, 0.0),
-      createData('Marshmallow', 318, 0, 81, 2.0),
-      createData('Nougat', 360, 19.0, 9, 37.0),
-      createData('Oreo', 437, 18.0, 63, 4.0),
+      createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
+      createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
+      createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
+      createData('Closing', 'Brooklyn', "Regular Hours", "Regular", "OFF"),
+      createData('Closed', 'Brooklyn', "Regular Hours", "Regular", "OFF"),
+      createData('Closing', 'Brooklyn', "Regular Hours", "Regular", "ON"),
+      createData('Closed', 'Brooklyn', "Regular Hours", "Regular", "ON"),
     ],
     page: 0,
     rowsPerPage: 5,
@@ -266,7 +181,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   handleClick = (event, id) => {
-    // const { selected } = this.state;
     const selected: any[] = this.state.selected
     const selectedIndex = selected.indexOf(id);
     let newSelected: any[] = [];
@@ -305,7 +219,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-    return (
+    return (  
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
@@ -323,6 +237,21 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
+                  let statusStyle = "";
+                  switch (n.status) {
+                    case "Open":
+                    statusStyle = "#01d901"
+                      break;
+                    case "Closed":
+                    statusStyle = "#d90101"
+                    break;
+                    case "Closing":
+                    statusStyle = "#FDDD08"
+                      break;
+                    default:
+                    statusStyle = "#d90101"
+                      break;
+                  }
                   return (
                     <TableRow
                       hover
@@ -333,16 +262,17 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
+                      <TableCell component="th" scope="row" padding="default">
+                      <div style={{display: "flex", alignItems: "center"}}>
+                        <div style={{width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle}}></div>
+                        <div style={{paddingLeft: "5px"}}>{n.status}</div>
+                      </div>
+                        
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.name}
-                      </TableCell>
-                      <TableCell numeric>{n.calories}</TableCell>
-                      <TableCell numeric>{n.fat}</TableCell>
-                      <TableCell numeric>{n.carbs}</TableCell>
-                      <TableCell numeric>{n.protein}</TableCell>
+                      <TableCell>{n.queueName}</TableCell>
+                      <TableCell>{n.scheduleName}</TableCell>
+                      <TableCell>{n.holidayName}</TableCell>
+                      <TableCell>{n.promptStatus}</TableCell>
                     </TableRow>
                   );
                 })}
