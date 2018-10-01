@@ -5,6 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import PermanentDrawer from './PermanentDrawer/PermanentDrawer'
 
 interface IProps {
@@ -15,6 +16,7 @@ class App extends React.Component<IProps>{
   render() {
     return (
         <div>
+          <CssBaseline />
           <PermanentDrawer>
             <Router>
               <this.props.routeComponent/>
