@@ -61,6 +61,7 @@ const styles = (theme) => createStyles({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+    width: '100%'
   }
 });
 
@@ -111,8 +112,8 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Responsive drawer
-              </Typography>
+              DCSS Calendar
+            </Typography>
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
