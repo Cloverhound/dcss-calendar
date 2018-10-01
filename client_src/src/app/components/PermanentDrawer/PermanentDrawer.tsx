@@ -30,12 +30,12 @@ const drawerWidth: number = 240;
 const styles = (theme) => createStyles({
   root: {
     flexGrow: 1,
-    height: 440,
+    height: '100vh',
+    width: '100%',
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
-    width: '100%',
   },
   appBar: {
     position: 'absolute',
@@ -55,6 +55,7 @@ const styles = (theme) => createStyles({
     [theme.breakpoints.up('md')]: {
       position: 'relative',
     },
+    height: '100vh'
   },
   content: {
     flexGrow: 1,
