@@ -18,6 +18,7 @@ import Queues from '../Queues/Queues';
 import Schedules from '../Schedules/Schedules';
 import Holidays from '../Holidays/Holidays';
 import Prompts from '../Prompts/Prompts';
+import AddQueue from '../AddQueue/AddQueue';
 
 import {
   BrowserRouter as Router,
@@ -90,7 +91,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
       <div>
         <div className={classes.toolbar} />
         <Divider />
-        <List><button onClick={() => this.props.sendComponent(Queues)}>Queues</button></List>
+        <List><button onClick={() => this.props.sendComponent(AddQueue)}>AddQueue</button></List>
         <List><button onClick={() => this.props.sendComponent(Schedules)}>Schedules</button></List>
         <List><button onClick={() => this.props.sendComponent(Holidays)}>Holidays</button></List>
         <List><button onClick={() => this.props.sendComponent(Prompts)}>Prompts</button></List>

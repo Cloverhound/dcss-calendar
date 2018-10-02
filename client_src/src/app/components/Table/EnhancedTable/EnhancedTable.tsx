@@ -104,24 +104,21 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   handleClick = (event, id) => {
-    const selected: any[] = this.state.selected
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: any[] = [];
+    // const selected: any[] = this.state.selected
+    // const selectedIndex = selected.indexOf(id);
+    // let newSelected: any[] = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+    // console.log("selected", selected);
+    // console.log("selected Index", selectedIndex);
+    
+    
+    // if(newSelected.length === 0) {
+    //   newSelected.push(selected)
+    // } else {
+    //   newSelected = []
+    // }
 
-    this.setState({ selected: newSelected });
+    // this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
@@ -178,7 +175,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -196,6 +192,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       <TableCell>{n.scheduleName}</TableCell>
                       <TableCell>{n.holidayName}</TableCell>
                       <TableCell>{n.promptStatus}</TableCell>
+                      <TableCell><button>EDIT</button></TableCell>
                     </TableRow>
                   );
                 })}

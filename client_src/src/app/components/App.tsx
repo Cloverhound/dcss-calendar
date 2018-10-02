@@ -12,16 +12,16 @@ interface IProps {
   routeComponent: any
 }
 class App extends React.Component<IProps>{
-  
+
   render() {
     return (
-        <div>
-          <CssBaseline />
-          <PermanentDrawer>
-            <Router>
-              <this.props.routeComponent/>
-            </Router>
-          </PermanentDrawer>
+      <div>
+        <CssBaseline />
+        <PermanentDrawer>
+          <Router>
+            <this.props.routeComponent />
+          </Router>
+        </PermanentDrawer>
       </div>
     )
   }
