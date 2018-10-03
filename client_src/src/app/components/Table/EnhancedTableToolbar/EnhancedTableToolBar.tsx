@@ -10,6 +10,12 @@ import AddCircle from '@material-ui/icons/AddCircle';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
+
 
 const toolbarStyles = theme => createStyles({
   root: {
@@ -70,11 +76,13 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
               </IconButton>
             </Tooltip>
           ) : (
+            <Link to="/AddQueue">
               <Tooltip title="Add Queue">
                 <IconButton aria-label="Add Queue">
                   <AddCircle />
                 </IconButton>
               </Tooltip>
+            </Link>
             )}
         </div>
       </Toolbar>

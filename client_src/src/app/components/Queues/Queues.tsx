@@ -5,7 +5,7 @@ interface AppProps {
   selected?: any
 }
 
-class Queue extends React.Component<AppProps> {
+class Queues extends React.Component<AppProps> {
   render() {
     return (
       <div>
@@ -15,4 +15,4 @@ class Queue extends React.Component<AppProps> {
   }
 }
 
-export default Queue
+export default Queues

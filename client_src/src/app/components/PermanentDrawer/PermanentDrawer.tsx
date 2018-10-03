@@ -90,65 +90,71 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
     const drawer = (
       <div>
         <div className={classes.toolbar} />
-        <Divider />
-        <List><button onClick={() => this.props.sendComponent(AddQueue)}>AddQueue</button></List>
-        <List><button onClick={() => this.props.sendComponent(Schedules)}>Schedules</button></List>
-        <List><button onClick={() => this.props.sendComponent(Holidays)}>Holidays</button></List>
-        <List><button onClick={() => this.props.sendComponent(Prompts)}>Prompts</button></List>
-        <Divider />
+          <Divider />
+            <List><Link to="/">Queues</Link></List>
+            <List><Link to="/Schedules">Schedules</Link></List>
+            <List><Link to="/Holidays">Holidays</Link></List>
+            <List><Link to="/Schedules">Schedules</Link></List>
+          <Divider />
         <List></List>
       </div>
     );
 
     return (
-      <div className={classes.root}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerToggle}
-              className={classes.navIconHide}
+      <Router>
+        <div className={classes.root}>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerToggle}
+                className={classes.navIconHide}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="title" color="inherit" noWrap>
+                DCSS Calendar
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Hidden mdUp>
+            <Drawer
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={this.state.mobileOpen}
+              onClose={this.handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              DCSS Calendar
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Hidden mdUp>
-          <Drawer
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={this.state.mobileOpen}
-            onClose={this.handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            variant="permanent"
-            open
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          {this.props.children}
-        </main>
-      </div>
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden smDown implementation="css">
+            <Drawer
+              variant="permanent"
+              open
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <Route exact path="/" component={Queues} />
+            <Route exact path="/Schedules" component={Schedules} />
+            <Route exact path="/Holidays" component={Holidays} />
+            <Route exact path="/Prompts" component={Prompts} />
+            <Route exact path="/AddQueue" component={AddQueue} />
+          </main>
+        </div>
+      </Router>
     );
   }
 }
