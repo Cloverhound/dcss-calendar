@@ -27,8 +27,7 @@ import {
 const styles = theme => createStyles({
   root: {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
     // border: '1px solid black',
@@ -134,45 +133,49 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
     })
 
     return (
-      <Paper className={classes.root}>
-        <FormGroup row
-          className={classes.formGroup}>
-          {day}
-          <div className={classes.addButton}>
-            <Tooltip title="Add Queue">
-              <IconButton aria-label="Add Queue">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+      <div className={classes.root}>
+        <Paper >
+          <FormGroup row
+            className={classes.formGroup}>
+            {day}
+
+          </FormGroup>
+          <div className={classes.timeContainer}>
+            <TextField
+              id="time"
+              label="Open"
+              type="time"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              name="openTime"
+              value={this.state.openTime}
+              onChange={this.handleChange}
+            />
+            <TextField
+              id="time"
+              label="Closed"
+              type="time"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              name="closedTime"
+              value={this.state.closedTime}
+              onChange={this.handleChange}
+            />
           </div>
-        </FormGroup>
-        <div className={classes.timeContainer}>
-          <TextField
-            id="time"
-            label="Open"
-            type="time"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            name="openTime"
-            value={this.state.openTime}
-            onChange={this.handleChange}
-          />
-          <TextField
-            id="time"
-            label="Closed"
-            type="time"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            name="closedTime"
-            value={this.state.closedTime}
-            onChange={this.handleChange}
-          />
+
+        </Paper>
+        <div className={classes.addButton}>
+          <Tooltip title="Delete">
+            <IconButton aria-label="Delete Schedule">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </div>
-      </Paper>
+      </div>
     )
   }
 }
