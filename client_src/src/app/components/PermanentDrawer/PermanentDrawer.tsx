@@ -148,7 +148,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
           </Hidden>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Route exact path="/" component={Schedules} />
+            <Route exact path="/" component={Holidays} />
             <Route exact path="/Schedules" component={Schedules} />
             <Route exact path="/Holidays" component={Holidays} />
             <Route exact path="/Prompts" component={Prompts} />

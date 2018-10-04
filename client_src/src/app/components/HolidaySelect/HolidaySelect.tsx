@@ -27,10 +27,9 @@ import {
 const styles = theme => createStyles({
   root: {
     display: 'flex',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
-    // border: '1px solid black',
     borderRadius: '5px',
   },
   arrowContainer: {
@@ -48,7 +47,6 @@ const styles = theme => createStyles({
     },
   },
   paper: {
-    width: '500px',
   },
   form: {
     display: 'flex',
@@ -61,7 +59,6 @@ const styles = theme => createStyles({
     manWidth: 150,
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
   },
   button: {
     marginTop: '30px',
@@ -78,12 +75,13 @@ const styles = theme => createStyles({
   },
   addButton: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   formGroup: {
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: '24px',
+    alignItems: 'flex-end',
+    margin: theme.spacing.unit,
   },
   timeContainer: {
     display: 'flex',
@@ -94,16 +92,8 @@ const styles = theme => createStyles({
 
 class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
   state = {
-    days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    checkedMon: false,
-    checkedTues: false,
-    checkedWeds: false,
-    checkedThurs: false,
-    checkedFri: false,
-    checkedSat: false,
-    checkedSun: false,
-    openTime: "07:00",
-    closedTime: "19:00"
+    holidayOrRange: "holiday",
+    prefillHolidays: ''
   };
 
   handleChange = event => {
@@ -116,60 +106,78 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
 
   render() {
     const { classes } = this.props;
-    const { days } = this.state;
+    const { holidayOrRange } = this.state;
+    let dropType;
 
-    let day = days.map(el => {
-      let stateName = `checked${el}`
-      return <FormControlLabel
-        control={
-          <Checkbox
-            checked={this.state[stateName]}
-            onChange={this.handleCheckChange(`checked${el}`)}
-            value={`checked${el}`}
+    if (holidayOrRange === "holiday") {
+      dropType = <FormControl className={classes.formControl}>
+        <Select
+          value={this.state.prefillHolidays}
+          onChange={this.handleChange}
+          name="prefillHolidays"
+          displayEmpty
+          className={classes.selectEmpty}
+        >
+          <MenuItem value={"christmas"}>Christmas</MenuItem>
+          <MenuItem value={"festivus"}>Festivus</MenuItem>
+          <MenuItem value={"halloween"}>Halloween</MenuItem>
+          <MenuItem value={"Presidents Day"}>Presidents Day</MenuItem>
+        </Select>
+        {/* <FormHelperText>Schedule Name</FormHelperText> */}
+      </FormControl>
+    } else if (holidayOrRange === "range") {
+      dropType = <div>
+        <FormControl className={classes.formControl}>
+          <TextField
+            id="date"
+            label="Start"
+            type="date"
+            defaultValue="2018-01-01"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
-        }
-        label={el}
-      />
-    })
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <TextField
+            id="date"
+            label="End"
+            type="date"
+            defaultValue="2018-01-01"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </FormControl>
+      </div>
+    }
 
     return (
       <div className={classes.root}>
-        <Paper >
+        <Paper className={classes.paper}>
           <FormGroup row
             className={classes.formGroup}>
-            {day}
+            <FormControl className={classes.formControl}>
+              <Select
+                value={this.state.holidayOrRange}
+                onChange={this.handleChange}
+                name="holidayOrRange"
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value={"holiday"}>Holiday</MenuItem>
+                <MenuItem value={"range"}>Range</MenuItem>
+              </Select>
+              {/* <FormHelperText>Schedule Name</FormHelperText> */}
+            </FormControl>
+            {dropType}
 
           </FormGroup>
-          <div className={classes.timeContainer}>
-            <TextField
-              id="time"
-              label="Open"
-              type="time"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              name="openTime"
-              value={this.state.openTime}
-              onChange={this.handleChange}
-            />
-            <TextField
-              id="time"
-              label="Closed"
-              type="time"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              name="closedTime"
-              value={this.state.closedTime}
-              onChange={this.handleChange}
-            />
-          </div>
-
         </Paper>
         <div className={classes.addButton}>
-          <Tooltip title="Delete">
+          <Tooltip title="Delete Schedule">
             <IconButton aria-label="Delete Schedule">
               <DeleteIcon />
             </IconButton>

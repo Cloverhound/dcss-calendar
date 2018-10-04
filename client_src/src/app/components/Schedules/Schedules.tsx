@@ -29,6 +29,12 @@ const styles = theme => createStyles({
     justifyContent: 'center',
     // marginTop: '65px',
   },
+  inputContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
+  },
   title: {
     margin: theme.spacing.unit,
   },
@@ -62,6 +68,10 @@ const styles = theme => createStyles({
     margin: theme.spacing.unit,
     minWidth: 120,
     maxWidth: 200,
+  },
+  selectContainer: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
@@ -126,38 +136,42 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Schedule</Typography>
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.scheduleName}
-                onChange={this.handleChange}
-                name="scheduleName"
-                displayEmpty
-                className={classes.selectEmpty}
-              >
-                <MenuItem value="" disabled>
-                  New Schedule
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-              {/* <FormHelperText>Schedule Name</FormHelperText> */}
-            </FormControl>
+            <div className={classes.inputContainer}>
+              <FormControl className={classes.formControl}>
+                <Select
+                  value={this.state.scheduleName}
+                  onChange={this.handleChange}
+                  name="scheduleName"
+                  displayEmpty
+                  className={classes.selectEmpty}
+                >
+                  <MenuItem value="" disabled>
+                    New Schedule
+                  </MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+                {/* <FormHelperText>Schedule Name</FormHelperText> */}
+              </FormControl>
 
-            <FormControl className={classes.formControl}>
-              <Input
-                value={this.state.newScheduleName}
-                onChange={this.handleChange}
-                name="newScheduleName"
-                placeholder="Schedule Name"
-                autoFocus={true}
-              />
-            </FormControl>
+              <FormControl className={classes.formControl}>
+                <Input
+                  value={this.state.newScheduleName}
+                  onChange={this.handleChange}
+                  name="newScheduleName"
+                  placeholder="Schedule Name"
+                  autoFocus={true}
+                />
+              </FormControl>
+            </div>
 
-            <WeeklySelect />
-            <WeeklySelect />
-            <WeeklySelect />
-            <WeeklySelect />
+            <div className={classes.selectContainer}>
+              <WeeklySelect />
+              <WeeklySelect />
+              <WeeklySelect />
+              <WeeklySelect />
+            </div>
 
             <div className={classes.addIconContainer}>
               <Button variant="fab" color="secondary" aria-label="Add" className={classes.button}>
