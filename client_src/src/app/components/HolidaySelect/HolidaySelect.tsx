@@ -30,7 +30,6 @@ const styles = theme => createStyles({
     justifyContent: 'space-between',
     marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
-    // border: '1px solid black',
     borderRadius: '5px',
   },
   arrowContainer: {
@@ -48,7 +47,6 @@ const styles = theme => createStyles({
     },
   },
   paper: {
-    width: '500px',
   },
   form: {
     display: 'flex',
@@ -61,7 +59,6 @@ const styles = theme => createStyles({
     manWidth: 150,
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
   },
   button: {
     marginTop: '30px',
@@ -83,7 +80,8 @@ const styles = theme => createStyles({
   formGroup: {
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: '24px',
+    alignItems: 'flex-end',
+    margin: theme.spacing.unit,
   },
   timeContainer: {
     display: 'flex',
@@ -158,7 +156,7 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
 
     return (
       <div className={classes.root}>
-        <Paper >
+        <Paper className={classes.paper}>
           <FormGroup row
             className={classes.formGroup}>
             <FormControl className={classes.formControl}>
