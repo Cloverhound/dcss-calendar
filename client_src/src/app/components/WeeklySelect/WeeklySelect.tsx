@@ -11,11 +11,12 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-
-import WeeklySelect from '../WeeklySelect/WeeklySelect';
 
 import {
   BrowserRouter as Router,
@@ -26,11 +27,12 @@ import {
 const styles = theme => createStyles({
   root: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    // marginTop: '65px',
-  },
-  title: {
+    marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
+    // border: '1px solid black',
+    borderRadius: '5px',
   },
   arrowContainer: {
     display: 'flex',
@@ -47,44 +49,52 @@ const styles = theme => createStyles({
     },
   },
   paper: {
-    display: 'flex',
-    justifyContent: 'center',
-    width: '100%',
+    width: '500px',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
     padding: '25px',
-    maxWidth: '850px',
   },
   formControl: {
-    marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
     minWidth: 120,
-    maxWidth: 200,
+    manWidth: 150,
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
   button: {
+    marginTop: '30px',
     margin: theme.spacing.unit,
   },
-  addIconContainer: {
+  container: {
     display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '10px',
+    flexWrap: 'wrap',
   },
-  submitCancelContainer: {
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  addButton: {
     display: 'flex',
     justifyContent: 'flex-end',
-    marginTop: '50px',
+  },
+  formGroup: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginLeft: '24px',
+  },
+  timeContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: "0 0 25px 0"
   }
 });
 
-class Schedules extends React.Component<WithStyles<typeof styles>> {
+class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
   state = {
-    newScheduleName: '',
-    scheduleName: '',
     days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
     checkedMon: false,
     checkedTues: false,
@@ -93,6 +103,8 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
     checkedFri: false,
     checkedSat: false,
     checkedSun: false,
+    openTime: "07:00",
+    closedTime: "19:00"
   };
 
   handleChange = event => {
@@ -122,61 +134,47 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
     })
 
     return (
-      <div className={classes.root}>
-        <div className={classes.paper}>
-          <form className={classes.form}>
-            <Typography className={classes.title} variant="title">Schedule</Typography>
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.scheduleName}
-                onChange={this.handleChange}
-                name="scheduleName"
-                displayEmpty
-                className={classes.selectEmpty}
-              >
-                <MenuItem value="" disabled>
-                  New Schedule
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-              {/* <FormHelperText>Schedule Name</FormHelperText> */}
-            </FormControl>
-
-            <FormControl className={classes.formControl}>
-              <Input
-                value={this.state.newScheduleName}
-                onChange={this.handleChange}
-                name="newScheduleName"
-                placeholder="Schedule Name"
-                autoFocus={true}
-              />
-            </FormControl>
-
-            <WeeklySelect />
-            <WeeklySelect />
-            <WeeklySelect />
-            <WeeklySelect />
-
-            <div className={classes.addIconContainer}>
-              <Button variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                <AddIcon />
-              </Button>
-            </div>
-            <div className={classes.submitCancelContainer}>
-              <Button variant="contained" color="primary" className={classes.button}>
-                Submit
-              </Button>
-              <Button variant="outlined" color="primary" className={classes.button}>
-                Cancel
-              </Button>
-            </div>
-          </form>
+      <Paper className={classes.root}>
+        <FormGroup row
+          className={classes.formGroup}>
+          {day}
+          <div className={classes.addButton}>
+            <Tooltip title="Add Queue">
+              <IconButton aria-label="Add Queue">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </FormGroup>
+        <div className={classes.timeContainer}>
+          <TextField
+            id="time"
+            label="Open"
+            type="time"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            name="openTime"
+            value={this.state.openTime}
+            onChange={this.handleChange}
+          />
+          <TextField
+            id="time"
+            label="Closed"
+            type="time"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            name="closedTime"
+            value={this.state.closedTime}
+            onChange={this.handleChange}
+          />
         </div>
-      </div>
+      </Paper>
     )
   }
 }
 
-export default withStyles(styles)(Schedules);
+export default withStyles(styles)(WeeklySelect);
