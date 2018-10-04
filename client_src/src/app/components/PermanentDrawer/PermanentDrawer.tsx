@@ -10,6 +10,8 @@ import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import createStyles from '@material-ui/core/styles/createStyles';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import { connect } from 'react-redux';
 import { sendRouteComponent } from '../../actions/index'
@@ -23,7 +25,7 @@ import AddQueue from '../AddQueue/AddQueue';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  NavLink
 } from 'react-router-dom';
 
 const drawerWidth: number = 240;
@@ -64,11 +66,15 @@ const styles = (theme) => createStyles({
     padding: theme.spacing.unit * 3,
     width: '100%',
     overflowY: 'auto'
-  }
+  },
+  navLink: {
+    textDecoration: 'none',
+  },
 });
 
 interface IState {
   mobileOpen: any,
+  selectedIndex: number
 }
 
 interface IProps {
@@ -80,10 +86,15 @@ interface IProps {
 class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps, IState> {
   state: IState = {
     mobileOpen: false,
+    selectedIndex: 0,
   };
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
+  handleListItemClick = (event, index) => {
+    this.setState({ selectedIndex: index });
   };
 
   render() {
@@ -91,12 +102,40 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
     const drawer = (
       <div>
         <div className={classes.toolbar} />
-          <Divider />
-            <List><Link to="/">Queues</Link></List>
-            <List><Link to="/Schedules">Schedules</Link></List>
-            <List><Link to="/Holidays">Holidays</Link></List>
-            <List><Link to="/Prompts">Prompts</Link></List>
-          <Divider />
+        <Divider />
+        <NavLink className={classes.navLink} to="/">
+          <ListItem
+            button
+            selected={this.state.selectedIndex === 0}
+            onClick={event => this.handleListItemClick(event, 0)}>
+            <ListItemText primary="Queues" />
+          </ListItem>
+        </NavLink>
+        <NavLink className={classes.navLink} to="/Schedules">
+          <ListItem
+            button
+            selected={this.state.selectedIndex === 1}
+            onClick={event => this.handleListItemClick(event, 1)}>
+            <ListItemText primary="Schedules" />
+          </ListItem>
+        </NavLink>
+        <NavLink className={classes.navLink} to="/Holidays">
+          <ListItem
+            button
+            selected={this.state.selectedIndex === 2}
+            onClick={event => this.handleListItemClick(event, 2)}>
+            <ListItemText primary="Holidays" />
+          </ListItem>
+        </NavLink>
+        <NavLink className={classes.navLink} to="/Prompts">
+          <ListItem
+            button
+            selected={this.state.selectedIndex === 3}
+            onClick={event => this.handleListItemClick(event, 3)}>
+            <ListItemText primary="Prompts" />
+          </ListItem>
+        </NavLink>
+        <Divider />
         <List></List>
       </div>
     );
