@@ -62,7 +62,8 @@ const styles = (theme) => createStyles({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
-    width: '100%'
+    width: '100%',
+    overflowY: 'auto'
   }
 });
 
@@ -70,13 +71,13 @@ interface IState {
   mobileOpen: any,
 }
 
-interface PermanentDrawerProps {
+interface IProps {
   children: any,
   theme: any,
   sendComponent: any
 }
 
-class PermanentDrawer extends React.Component<WithStyles<typeof styles> & PermanentDrawerProps, IState> {
+class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps, IState> {
   state: IState = {
     mobileOpen: false,
   };
@@ -94,7 +95,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
             <List><Link to="/">Queues</Link></List>
             <List><Link to="/Schedules">Schedules</Link></List>
             <List><Link to="/Holidays">Holidays</Link></List>
-            <List><Link to="/Schedules">Schedules</Link></List>
+            <List><Link to="/Prompts">Prompts</Link></List>
           <Divider />
         <List></List>
       </div>
@@ -147,7 +148,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & Perman
           </Hidden>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Route exact path="/" component={Queues} />
+            <Route exact path="/" component={Schedules} />
             <Route exact path="/Schedules" component={Schedules} />
             <Route exact path="/Holidays" component={Holidays} />
             <Route exact path="/Prompts" component={Prompts} />

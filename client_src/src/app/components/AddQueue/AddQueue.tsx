@@ -4,12 +4,17 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
+
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
 const styles = theme => createStyles({
   root: {
@@ -69,7 +74,9 @@ class AddQueue extends React.Component<WithStyles<typeof styles>> {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <div className={classes.arrowContainer}>
+          <Link to="/">
             <ArrowBack className={classes.arrow}/>
+          </Link>
           </div>
           <form className={classes.form}> 
             <FormControl>
