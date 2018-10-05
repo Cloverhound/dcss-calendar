@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
+import { connect } from 'react-redux';
+
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import {
@@ -91,7 +93,11 @@ const styles = theme => createStyles({
   }
 });
 
-class Schedules extends React.Component<WithStyles<typeof styles>> {
+interface IProps {
+  scheduleSelect: any,
+}
+
+class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     newScheduleName: '',
     scheduleName: '',
@@ -114,22 +120,12 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
   };
 
   render() {
-    const { classes } = this.props;
-    const { days } = this.state;
+    const { classes, scheduleSelect } = this.props;
 
-    let day = days.map(el => {
-      let stateName = `checked${el}`
-      return <FormControlLabel
-        control={
-          <Checkbox
-            checked={this.state[stateName]}
-            onChange={this.handleCheckChange(`checked${el}`)}
-            value={`checked${el}`}
-          />
-        }
-        label={el}
-      />
-    })
+    let selectRow = scheduleSelect.selectRow.map((el, i) => {
+      return <ScheduleSelect id={i}/>
+    }) 
+
 
     return (
       <div className={classes.root}>
@@ -167,10 +163,9 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
             </div>
 
             <div className={classes.selectContainer}>
-              <ScheduleSelect />
-              <ScheduleSelect />
-              <ScheduleSelect />
-              <ScheduleSelect />
+              {selectRow}
+              {/* <ScheduleSelect /> */}
+              {/* <ScheduleSelect /> */}
             </div>
 
             <div className={classes.addIconContainer}>
@@ -193,4 +188,11 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
   }
 }
 
-export default withStyles(styles)(Schedules);
+const mapStateToProps = state => {
+  return {
+    scheduleSelect: state.scheduleSelect
+  }
+}
+
+
+export default connect(mapStateToProps, null)(withStyles(styles)(Schedules));

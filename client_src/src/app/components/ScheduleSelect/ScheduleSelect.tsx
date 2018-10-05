@@ -97,55 +97,51 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleSelect: any,
+  updateChecked: any,
+  id: any
 }
 
 class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
-  state = {
-    // days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    // checkedMon: false,
-    // checkedTues: false,
-    // checkedWeds: false,
-    // checkedThurs: false,
-    // checkedFri: false,
-    // checkedSat: false,
-    // checkedSun: false,
-    // openTime: "07:00",
-    // closedTime: "19:00"
-  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleCheckChange = name => event => {
-    // this.setState({ [name]: event.target.checked });
+  handleCheckChange = (id, day) => event => {
+    const { updateChecked } = this.props
+    updateChecked({ id, day, event: event.target.checked })
   };
 
   render() {
-    const { classes, scheduleSelect } = this.props;
-    let day = scheduleSelect.days.map(el => {
-      let stateName = `checked${el}`
+    const { classes, scheduleSelect, id } = this.props;
+    let row = scheduleSelect.selectRow.filter(obj => {
+      return obj.id == id
+    })
+
+    let week = row[0].week
+
+    let keys = Object.keys(week)
+    let checkBox = keys.map(day => {
       return <FormControlLabel
         control={
           <Checkbox
-            checked={this.state[stateName]}
-            onChange={this.handleCheckChange(`checked${el}`)}
-            value={`checked${el}`}
-            disabled={false}
+            checked={week[day].checked}
+            onChange={this.handleCheckChange(id, day)}
+            value={week[day]}
+            disabled={week[day].disabled}
           />
         }
-        label={el}
+        label={day[0].toUpperCase() + day.slice(1)}
       />
     })
-
     return (
       <div className={classes.root}>
         <Paper >
           <FormGroup row
             className={classes.formGroup}>
-            {day}
+            {checkBox}
           </FormGroup>
-          {/* <div className={classes.timeContainer}>
+          <div className={classes.timeContainer}>
             <TextField
               id="time"
               label="Open"
@@ -155,7 +151,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="openTime"
-              value={this.state.openTime}
+              value={scheduleSelect.initialOpen}
               onChange={this.handleChange}
             />
             <TextField
@@ -167,10 +163,10 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="closedTime"
-              value={this.state.closedTime}
+              value={scheduleSelect.initialClosed}
               onChange={this.handleChange}
             />
-          </div> */}
+          </div>
 
         </Paper>
         <div className={classes.addButton}>
@@ -192,8 +188,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  updateChecked: (day) => dispatch(updateChecked(day))
+  updateChecked: (obj) => dispatch(updateChecked(obj))
 })
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(ScheduleSelect));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ScheduleSelect));

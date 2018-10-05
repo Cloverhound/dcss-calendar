@@ -2,4 +2,4 @@ export const incrementCounter = num => ({ type: "INCREMENT_COUNTER", payload: nu
 
 export const sendRouteComponent = component => ({ type: "CHANGE_ROUTE_COMPONENT", payload: component });
 
-export const updateChecked = object => ({type: "UPDATE_CHECKED", payload: object });
+export const updateChecked = obj => ({type: "UPDATE_CHECKED", payload: obj });
