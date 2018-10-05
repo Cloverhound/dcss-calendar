@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
-import WeeklySelect from '../WeeklySelect/WeeklySelect';
+import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import {
   BrowserRouter as Router,
@@ -148,9 +148,9 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
                   <MenuItem value="" disabled>
                     New Schedule
                   </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
+                  {/* <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
                 {/* <FormHelperText>Schedule Name</FormHelperText> */}
               </FormControl>
@@ -167,10 +167,10 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
             </div>
 
             <div className={classes.selectContainer}>
-              <WeeklySelect />
-              <WeeklySelect />
-              <WeeklySelect />
-              <WeeklySelect />
+              <ScheduleSelect />
+              <ScheduleSelect />
+              <ScheduleSelect />
+              <ScheduleSelect />
             </div>
 
             <div className={classes.addIconContainer}>

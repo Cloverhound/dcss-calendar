@@ -18,6 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
+import { connect } from 'react-redux';
+import { updateChecked } from '../../actions/index';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -92,18 +95,22 @@ const styles = theme => createStyles({
   }
 });
 
-class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
+interface IProps {
+  scheduleSelect: any,
+}
+
+class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
-    days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    checkedMon: false,
-    checkedTues: false,
-    checkedWeds: false,
-    checkedThurs: false,
-    checkedFri: false,
-    checkedSat: false,
-    checkedSun: false,
-    openTime: "07:00",
-    closedTime: "19:00"
+    // days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
+    // checkedMon: false,
+    // checkedTues: false,
+    // checkedWeds: false,
+    // checkedThurs: false,
+    // checkedFri: false,
+    // checkedSat: false,
+    // checkedSun: false,
+    // openTime: "07:00",
+    // closedTime: "19:00"
   };
 
   handleChange = event => {
@@ -111,14 +118,12 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
   };
 
   handleCheckChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    // this.setState({ [name]: event.target.checked });
   };
 
   render() {
-    const { classes } = this.props;
-    const { days } = this.state;
-
-    let day = days.map(el => {
+    const { classes, scheduleSelect } = this.props;
+    let day = scheduleSelect.days.map(el => {
       let stateName = `checked${el}`
       return <FormControlLabel
         control={
@@ -126,6 +131,7 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
             checked={this.state[stateName]}
             onChange={this.handleCheckChange(`checked${el}`)}
             value={`checked${el}`}
+            disabled={false}
           />
         }
         label={el}
@@ -138,9 +144,8 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
           <FormGroup row
             className={classes.formGroup}>
             {day}
-
           </FormGroup>
-          <div className={classes.timeContainer}>
+          {/* <div className={classes.timeContainer}>
             <TextField
               id="time"
               label="Open"
@@ -165,7 +170,7 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
               value={this.state.closedTime}
               onChange={this.handleChange}
             />
-          </div>
+          </div> */}
 
         </Paper>
         <div className={classes.addButton}>
@@ -180,4 +185,15 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
   }
 }
 
-export default withStyles(styles)(WeeklySelect);
+const mapStateToProps = state => {
+  return {
+    scheduleSelect: state.scheduleSelect
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  updateChecked: (day) => dispatch(updateChecked(day))
+})
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(ScheduleSelect));
