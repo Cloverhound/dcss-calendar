@@ -68,6 +68,39 @@ let initialState = {
         },
       }
     },
+    {
+      "id": 2,
+      "week": {
+        "mon": {
+          "checked": false,
+          "disabled": false
+        },
+        "tues": {
+          "checked": false,
+          "disabled": false
+        },
+        "weds": {
+          "checked": false,
+          "disabled": false
+        },
+        "thurs": {
+          "checked": false,
+          "disabled": false
+        },
+        "fri": {
+          "checked": false,
+          "disabled": false
+        },
+        "sat": {
+          "checked": false,
+          "disabled": false
+        },
+        "sun": {
+          "checked": false,
+          "disabled": false
+        },
+      }
+    },
   ],
   schedule: {
     "name": "",
@@ -91,21 +124,32 @@ let initialState = {
 const scheduleSelect = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
-      const {id, day, event} = action.payload
       let select = state.selectRow.filter(obj => {
-        return obj.id === id
+        return obj.id === action.payload.id
       })
-      select[0].week[day].checked = event
-      console.log(action.payload, select[0].week[day])
+
+      select[0].week[action.payload.day].checked = action.payload.event
+
       return { ...state }
+
     case 'UPDATE_DISABLED':
-      // const {id, day, event} = action.payload
-      // let select = state.selectRow.filter(obj => {
-      //   return obj.id === id
-      // })
-      // select[0].week[day].checked = event
-      // console.log(action.payload, select[0].week[day])
+      let weeks = state.selectRow.filter(obj => {
+        return obj.id != action.payload.id
+      })
+      weeks.forEach(obj => {
+        obj.week[action.payload.day].disabled = action.payload.event
+      })
+      console.log(action.payload, weeks)
       return { ...state }
+
+    case 'DELETE_ROW':
+      let rows = state.selectRow.filter(obj => {
+        return obj.id != action.payload.id
+      })
+      state.selectRow = [...rows]
+      let newState = {...state}
+      return { ...newState }
+
     default:
       return state
   }

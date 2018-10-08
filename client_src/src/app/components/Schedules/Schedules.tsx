@@ -112,18 +112,19 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    // this.setState({ [event.target.name]: event.target.value });
   };
 
   handleCheckChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    // this.setState({ [name]: event.target.checked });
   };
 
   render() {
     const { classes, scheduleSelect } = this.props;
 
     let selectRow = scheduleSelect.selectRow.map((el, i) => {
-      return <ScheduleSelect id={i}/>
+      
+      return <ScheduleSelect id={el.id}/>
     }) 
 
 
@@ -164,8 +165,6 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
             <div className={classes.selectContainer}>
               {selectRow}
-              {/* <ScheduleSelect /> */}
-              {/* <ScheduleSelect /> */}
             </div>
 
             <div className={classes.addIconContainer}>
