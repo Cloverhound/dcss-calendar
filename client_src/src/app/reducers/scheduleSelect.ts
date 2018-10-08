@@ -158,18 +158,27 @@ const scheduleSelect = (state = initialState, action) => {
       return { ...state }
 
     case 'DELETE_ROW':
-      let selectedRow = state.selectRow.filter(obj => {
-        return obj.id === action.payload.id
-      })
-
-      let unselectedRows = state.selectRow.filter(obj => {
-        return obj.id != action.payload.id
-      })
-
-      let updated = updateCheckedState(selectedRow, unselectedRows)
-
-      state.selectRow = updated
+      if(state.selectRow.length != 1) {
+        let selectedRow = state.selectRow.filter(obj => {
+          return obj.id === action.payload.id
+        })
+  
+        let unselectedRows = state.selectRow.filter(obj => {
+          return obj.id != action.payload.id
+        })
+  
+        let updated = updateCheckedState(selectedRow, unselectedRows)
+  
+        state.selectRow = updated
+        return { ...state }
+      }
       return { ...state }
+
+    case 'ADD_SCHEDULE_SELECT':
+
+      // let index = state.selectRow.length
+      // state.selectRow.push(state.selectRow)
+    return {...state}
 
     default:
       return state

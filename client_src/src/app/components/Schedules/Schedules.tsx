@@ -16,6 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
+import { addScheduleSelect } from '../../actions/index'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
@@ -119,6 +120,10 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
     // this.setState({ [name]: event.target.checked });
   };
 
+  addScheduleSelect = () => {
+
+  }
+
   render() {
     const { classes, scheduleSelect } = this.props;
 
@@ -168,7 +173,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
             </div>
 
             <div className={classes.addIconContainer}>
-              <Button variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+              <Button onClick={this.addScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
             </div>
@@ -192,6 +197,10 @@ const mapStateToProps = state => {
     scheduleSelect: state.scheduleSelect
   }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  addScheduleSelect: () => (dispatch(addScheduleSelect))
+})
 
 
 export default connect(mapStateToProps, null)(withStyles(styles)(Schedules));

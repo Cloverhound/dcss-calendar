@@ -7,3 +7,5 @@ export const updateChecked = obj => ({ type: "UPDATE_CHECKED", payload: obj });
 export const updateDisabled = obj => ({ type: "UPDATE_DISABLED", payload: obj });
 
 export const deleteRow = obj => ({ type: "DELETE_ROW", payload: obj });
+
+export const addScheduleSelect = () => ({ type: "ADD_SCHEDULE_SELECT" })
