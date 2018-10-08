@@ -121,6 +121,21 @@ let initialState = {
   }
 }
 
+const updateCheckedState = (selectedArray, unselectedArray) => {
+  let selectedKeys = Object.keys(selectedArray[0].week);
+
+  selectedKeys.forEach(day => {
+    if (selectedArray[0].week[day].checked === true) {
+      unselectedArray.forEach(row => {
+        if (row.week[day]) {
+          row.week[day].disabled = false
+        }
+      })
+    }
+  })
+  return unselectedArray
+}
+
 const scheduleSelect = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
@@ -139,16 +154,22 @@ const scheduleSelect = (state = initialState, action) => {
       weeks.forEach(obj => {
         obj.week[action.payload.day].disabled = action.payload.event
       })
-      console.log(action.payload, weeks)
+
       return { ...state }
 
     case 'DELETE_ROW':
-      let rows = state.selectRow.filter(obj => {
+      let selectedRow = state.selectRow.filter(obj => {
+        return obj.id === action.payload.id
+      })
+
+      let unselectedRows = state.selectRow.filter(obj => {
         return obj.id != action.payload.id
       })
-      state.selectRow = [...rows]
-      let newState = {...state}
-      return { ...newState }
+
+      let updated = updateCheckedState(selectedRow, unselectedRows)
+
+      state.selectRow = updated
+      return { ...state }
 
     default:
       return state
