@@ -1,6 +1,39 @@
 let initialState = {
   initialOpen: "07:00",
   initialClosed: "19:00",
+  initialRow: {
+    "id": 0,
+    "week": {
+      "mon": {
+        "checked": false,
+        "disabled": false
+      },
+      "tues": {
+        "checked": false,
+        "disabled": false
+      },
+      "weds": {
+        "checked": false,
+        "disabled": false
+      },
+      "thurs": {
+        "checked": false,
+        "disabled": false
+      },
+      "fri": {
+        "checked": false,
+        "disabled": false
+      },
+      "sat": {
+        "checked": false,
+        "disabled": false
+      },
+      "sun": {
+        "checked": false,
+        "disabled": false
+      },
+    }
+  },
   selectRow: [
     {
       "id": 0,
@@ -34,73 +67,7 @@ let initialState = {
           "disabled": false
         },
       }
-    },
-    {
-      "id": 1,
-      "week": {
-        "mon": {
-          "checked": false,
-          "disabled": false
-        },
-        "tues": {
-          "checked": false,
-          "disabled": false
-        },
-        "weds": {
-          "checked": false,
-          "disabled": false
-        },
-        "thurs": {
-          "checked": false,
-          "disabled": false
-        },
-        "fri": {
-          "checked": false,
-          "disabled": false
-        },
-        "sat": {
-          "checked": false,
-          "disabled": false
-        },
-        "sun": {
-          "checked": false,
-          "disabled": false
-        },
-      }
-    },
-    {
-      "id": 2,
-      "week": {
-        "mon": {
-          "checked": false,
-          "disabled": false
-        },
-        "tues": {
-          "checked": false,
-          "disabled": false
-        },
-        "weds": {
-          "checked": false,
-          "disabled": false
-        },
-        "thurs": {
-          "checked": false,
-          "disabled": false
-        },
-        "fri": {
-          "checked": false,
-          "disabled": false
-        },
-        "sat": {
-          "checked": false,
-          "disabled": false
-        },
-        "sun": {
-          "checked": false,
-          "disabled": false
-        },
-      }
-    },
+    }
   ],
   schedule: {
     "name": "",
@@ -136,49 +103,80 @@ const updateCheckedState = (selectedArray, unselectedArray) => {
   return unselectedArray
 }
 
+const updateDisabled = () => {
+  
+}
+
 const scheduleSelect = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
-      let select = state.selectRow.filter(obj => {
-        return obj.id === action.payload.id
+
+      let updateChecked = state.selectRow.map((item, index) => {
+        if (item.id === action.payload.id) {
+          return {
+            ...item,
+            week: {
+              ...item.week,
+              [action.payload.day]: {
+                ...item.week[action.payload.day],
+                checked: action.payload.event
+              }
+            }
+          }
+        }
+        return item
       })
 
-      select[0].week[action.payload.day].checked = action.payload.event
-
-      return { ...state }
+      return{...state, selectRow: updateChecked}
 
     case 'UPDATE_DISABLED':
-      let weeks = state.selectRow.filter(obj => {
-        return obj.id != action.payload.id
-      })
-      weeks.forEach(obj => {
-        obj.week[action.payload.day].disabled = action.payload.event
-      })
 
-      return { ...state }
+    let updateDisabled = state.selectRow.map((item, index) => {
+      if (item.id != action.payload.id) {
+        return {
+          ...item,
+          week: {
+            ...item.week,
+            [action.payload.day]: {
+              ...item.week[action.payload.day],
+              checked: action.payload.event
+            }
+          }
+        }
+      }
+      return item
+    })
+
+    return{...state, selectRow: updateDisabled}
 
     case 'DELETE_ROW':
-      if(state.selectRow.length != 1) {
-        let selectedRow = state.selectRow.filter(obj => {
-          return obj.id === action.payload.id
-        })
-  
-        let unselectedRows = state.selectRow.filter(obj => {
-          return obj.id != action.payload.id
-        })
-  
-        let updated = updateCheckedState(selectedRow, unselectedRows)
-  
-        state.selectRow = updated
-        return { ...state }
-      }
+      // if (state.selectRow.length != 1) {
+      //   let selectedRow = state.selectRow.filter(obj => {
+      //     return obj.id === action.payload.id
+      //   })
+
+      //   let unselectedRows = state.selectRow.filter(obj => {
+      //     return obj.id != action.payload.id
+      //   })
+
+      //   let updated = updateCheckedState(selectedRow, unselectedRows)
+
+      //   state.selectRow = updated
+      //   return { ...state }
+      // }
       return { ...state }
 
     case 'ADD_SCHEDULE_SELECT':
+      let id = state.selectRow.length - 1
+      id++
 
-      // let index = state.selectRow.length
-      // state.selectRow.push(state.selectRow)
-    return {...state}
+      let newInitialRow = { ...state.initialRow };
+      let newSelectedRow = state.selectRow.slice()
+      let updateID = { ...newInitialRow, id }
+
+      newSelectedRow.push(updateID)
+
+      return { ...state, selectRow: [...newSelectedRow] }
 
     default:
       return state

@@ -112,7 +112,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
   handleCheckChange = (id, day) => event => {
     const { updateChecked, updateDisabled } = this.props
     updateChecked({ id, day, event: event.target.checked });
-    updateDisabled({ id, day, event: event.target.checked });
+    // updateDisabled({ id, day, event: event.target.checked });
   };
 
   handleDelete = (event) => {
@@ -123,7 +123,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, scheduleSelect, id } = this.props;
-
+    // console.log("render",scheduleSelect)
     let row = scheduleSelect.selectRow.filter(obj => {
       return obj.id == id
     })

@@ -96,6 +96,7 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleSelect: any,
+  addScheduleSelect: any
 }
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -120,8 +121,11 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
     // this.setState({ [name]: event.target.checked });
   };
 
-  addScheduleSelect = () => {
-
+  handleAddScheduleSelect = () => {
+    console.log("HANDLE");
+    
+    const {addScheduleSelect} = this.props 
+    addScheduleSelect()
   }
 
   render() {
@@ -173,7 +177,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
             </div>
 
             <div className={classes.addIconContainer}>
-              <Button onClick={this.addScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+              <Button onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
             </div>
@@ -199,8 +203,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  addScheduleSelect: () => (dispatch(addScheduleSelect))
+  addScheduleSelect: () => (dispatch(addScheduleSelect()))
 })
 
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Schedules));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Schedules));
