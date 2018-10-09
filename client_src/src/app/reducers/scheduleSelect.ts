@@ -103,7 +103,7 @@ const updateCheckedState = (selectedArray, unselectedArray) => {
   return unselectedArray
 }
 
-const updateDisabled = (item, day, event) => {
+const updateDisabledOnClick = (item, day, event) => {
   return {
     ...item,
     week: {
@@ -114,6 +114,23 @@ const updateDisabled = (item, day, event) => {
       }
     }
   }
+}
+
+const findCheckedDays = state => {
+  let id = state.selectRow.length
+  let initialRow = {...state.initialRow, id}
+
+  state.selectRow.forEach(row =>{
+    let keys = Object.keys(row.week);
+
+    keys.forEach(day => {
+      if(row.week[day].checked === true) {
+        initialRow.week[day].disabled = true
+      }
+    })
+  })
+
+  return initialRow
 }
 
 const scheduleSelect = (state = initialState, action) => {
@@ -133,41 +150,34 @@ const scheduleSelect = (state = initialState, action) => {
             }
           }
         } else {
-          return updateDisabled(item, action.payload.day, action.payload.event)
+          return updateDisabledOnClick(item, action.payload.day, action.payload.event)
         }
       })
 
       return { ...state, selectRow: newSelectArray }
 
     case 'DELETE_ROW':
-      // if (state.selectRow.length != 1) {
-      //   let selectedRow = state.selectRow.filter(obj => {
-      //     return obj.id === action.payload.id
-      //   })
+      if (state.selectRow.length != 1) {
+        let selectedRow = state.selectRow.filter(obj => {
+          return obj.id === action.payload.id
+        })
 
-      //   let unselectedRows = state.selectRow.filter(obj => {
-      //     return obj.id != action.payload.id
-      //   })
+        let unselectedRows = state.selectRow.filter(obj => {
+          return obj.id != action.payload.id
+        })
 
-      //   let updated = updateCheckedState(selectedRow, unselectedRows)
+        let updated = updateCheckedState(selectedRow, unselectedRows)
 
-      //   state.selectRow = updated
-      //   return { ...state }
-      // }
+        state.selectRow = updated
+        return { ...state }
+      }
       return { ...state }
 
     case 'ADD_SCHEDULE_SELECT':
-      let id = state.selectRow.length - 1
-      id++
-
-      let newInitialRow = { ...state.initialRow };
-      let newSelectedRow = state.selectRow.slice()
-      let updateID = { ...newInitialRow, id }
-
-      newSelectedRow.push(updateID)
-
-      return { ...state, selectRow: [...newSelectedRow] }
-
+      let newWeek = findCheckedDays(state)
+      let newObj = {...newWeek}
+      return {...state, selectRow: [...state.selectRow, newObj]}
+      
     default:
       return state
   }
