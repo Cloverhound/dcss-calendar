@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { updateChecked, updateDisabled, deleteRow } from '../../actions/index';
+import { updateChecked, deleteRow } from '../../actions/index';
 
 import {
   BrowserRouter as Router,
@@ -99,7 +99,6 @@ interface IProps {
   scheduleSelect: any,
   updateChecked: any,
   id: any,
-  updateDisabled: any,
   deleteRow: any
 }
 
@@ -110,9 +109,8 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
   };
 
   handleCheckChange = (id, day) => event => {
-    const { updateChecked, updateDisabled } = this.props
+    const { updateChecked } = this.props
     updateChecked({ id, day, event: event.target.checked });
-    // updateDisabled({ id, day, event: event.target.checked });
   };
 
   handleDelete = (event) => {
@@ -200,7 +198,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   updateChecked: (obj) => dispatch(updateChecked(obj)),
-  updateDisabled: (obj) => dispatch(updateDisabled(obj)),
   deleteRow: (obj) => dispatch(deleteRow(obj)),
 })
 

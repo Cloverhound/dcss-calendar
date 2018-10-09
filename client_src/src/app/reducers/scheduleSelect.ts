@@ -103,15 +103,24 @@ const updateCheckedState = (selectedArray, unselectedArray) => {
   return unselectedArray
 }
 
-const updateDisabled = () => {
-  
+const updateDisabled = (item, day, event) => {
+  return {
+    ...item,
+    week: {
+      ...item.week,
+      [day]: {
+        ...item.week[day],
+        disabled: event
+      }
+    }
+  }
 }
 
 const scheduleSelect = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
 
-      let updateChecked = state.selectRow.map((item, index) => {
+      let newSelectArray = state.selectRow.map((item, index) => {
         if (item.id === action.payload.id) {
           return {
             ...item,
@@ -123,31 +132,12 @@ const scheduleSelect = (state = initialState, action) => {
               }
             }
           }
+        } else {
+          return updateDisabled(item, action.payload.day, action.payload.event)
         }
-        return item
       })
 
-      return{...state, selectRow: updateChecked}
-
-    case 'UPDATE_DISABLED':
-
-    let updateDisabled = state.selectRow.map((item, index) => {
-      if (item.id != action.payload.id) {
-        return {
-          ...item,
-          week: {
-            ...item.week,
-            [action.payload.day]: {
-              ...item.week[action.payload.day],
-              checked: action.payload.event
-            }
-          }
-        }
-      }
-      return item
-    })
-
-    return{...state, selectRow: updateDisabled}
+      return { ...state, selectRow: newSelectArray }
 
     case 'DELETE_ROW':
       // if (state.selectRow.length != 1) {
