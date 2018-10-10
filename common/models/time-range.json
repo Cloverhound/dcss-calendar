@@ -11,39 +11,39 @@
       "type": "string",
       "required": true
     },
-    "monday": {
+    "mon": {
       "type": "boolean",
       "required": true
     },
-    "tuesday": {
+    "tues": {
       "type": "boolean",
       "required": true
     },
-    "wednesday": {
+    "weds": {
       "type": "boolean",
       "required": true
     },
-    "thursday": {
+    "thurs": {
       "type": "boolean",
       "required": true
     },
-    "friday": {
+    "fri": {
       "type": "boolean",
       "required": true
     },
-    "saturday": {
+    "sat": {
       "type": "boolean",
       "required": true
     },
-    "sunday": {
+    "sun": {
       "type": "boolean",
       "required": true
     },
-    "start": {
+    "open": {
       "type": "string",
       "required": true
     },
-    "end": {
+    "closed": {
       "type": "string",
       "required": true
     }
