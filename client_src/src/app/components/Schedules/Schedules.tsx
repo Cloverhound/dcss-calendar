@@ -15,7 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
-import WeeklySelect from '../WeeklySelect/WeeklySelect';
+import { connect } from 'react-redux';
+import { addScheduleSelect } from '../../actions/index'
+
+import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import {
   BrowserRouter as Router,
@@ -91,7 +94,12 @@ const styles = theme => createStyles({
   }
 });
 
-class Schedules extends React.Component<WithStyles<typeof styles>> {
+interface IProps {
+  scheduleSelect: any,
+  addScheduleSelect: any
+}
+
+class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     newScheduleName: '',
     scheduleName: '',
@@ -106,30 +114,26 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
   };
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    // this.setState({ [event.target.name]: event.target.value });
   };
 
   handleCheckChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    // this.setState({ [name]: event.target.checked });
   };
 
-  render() {
-    const { classes } = this.props;
-    const { days } = this.state;
+  handleAddScheduleSelect = () => {
+    
+    const {addScheduleSelect} = this.props 
+    addScheduleSelect()
+  }
 
-    let day = days.map(el => {
-      let stateName = `checked${el}`
-      return <FormControlLabel
-        control={
-          <Checkbox
-            checked={this.state[stateName]}
-            onChange={this.handleCheckChange(`checked${el}`)}
-            value={`checked${el}`}
-          />
-        }
-        label={el}
-      />
-    })
+  render() {
+    const { classes, scheduleSelect } = this.props;
+
+    let timeRangesComponent = scheduleSelect.timeRanges.map((el, i) => {
+      
+      return <ScheduleSelect row={el}/>
+    }) 
 
     return (
       <div className={classes.root}>
@@ -148,9 +152,9 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
                   <MenuItem value="" disabled>
                     New Schedule
                   </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
+                  {/* <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
                 {/* <FormHelperText>Schedule Name</FormHelperText> */}
               </FormControl>
@@ -167,14 +171,11 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
             </div>
 
             <div className={classes.selectContainer}>
-              <WeeklySelect />
-              <WeeklySelect />
-              <WeeklySelect />
-              <WeeklySelect />
+              {timeRangesComponent}
             </div>
 
             <div className={classes.addIconContainer}>
-              <Button variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+              <Button onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
             </div>
@@ -193,4 +194,15 @@ class Schedules extends React.Component<WithStyles<typeof styles>> {
   }
 }
 
-export default withStyles(styles)(Schedules);
+const mapStateToProps = state => {
+  return {
+    scheduleSelect: state.scheduleSelect
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  addScheduleSelect: () => (dispatch(addScheduleSelect()))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Schedules));

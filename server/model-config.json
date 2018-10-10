@@ -39,7 +39,7 @@
     "dataSource": "db",
     "public": true
   },
-  "Schedule": {
+  "TimeRange": {
     "dataSource": "db",
     "public": true
   },

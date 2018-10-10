@@ -18,6 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
+import { connect } from 'react-redux';
+import { updateChecked, deleteRow } from '../../actions/index';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -92,53 +95,56 @@ const styles = theme => createStyles({
   }
 });
 
-class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
-  state = {
-    days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    checkedMon: false,
-    checkedTues: false,
-    checkedWeds: false,
-    checkedThurs: false,
-    checkedFri: false,
-    checkedSat: false,
-    checkedSun: false,
-    openTime: "07:00",
-    closedTime: "19:00"
-  };
+interface IProps {
+  scheduleSelect: any,
+  updateChecked: any,
+  row: any,
+  index: any,
+  deleteRow: any
+}
+
+class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    // this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleCheckChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+  handleCheckChange = (row, day) => event => {
+    const { updateChecked } = this.props
+    updateChecked({ row, day, event: event.target.checked });
   };
+
+  handleDelete = (event) => {
+    const { deleteRow, row } = this.props;
+    event.preventDefault()
+    deleteRow({ row })
+  }
 
   render() {
-    const { classes } = this.props;
-    const { days } = this.state;
+    const { classes, scheduleSelect, row } = this.props;
 
-    let day = days.map(el => {
-      let stateName = `checked${el}`
+    let week = row.week
+    let keys = Object.keys(week)
+
+    let checkBox = keys.map(day => {
       return <FormControlLabel
         control={
           <Checkbox
-            checked={this.state[stateName]}
-            onChange={this.handleCheckChange(`checked${el}`)}
-            value={`checked${el}`}
+            checked={week[day].checked}
+            onChange={this.handleCheckChange(row, day)}
+            value={week[day]}
+            disabled={week[day].disabled}
           />
         }
-        label={el}
+        label={day[0].toUpperCase() + day.slice(1)}
       />
     })
-
     return (
       <div className={classes.root}>
         <Paper >
           <FormGroup row
             className={classes.formGroup}>
-            {day}
-
+            {checkBox}
           </FormGroup>
           <div className={classes.timeContainer}>
             <TextField
@@ -150,7 +156,7 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
                 shrink: true,
               }}
               name="openTime"
-              value={this.state.openTime}
+              value={scheduleSelect.initialOpen}
               onChange={this.handleChange}
             />
             <TextField
@@ -162,15 +168,16 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
                 shrink: true,
               }}
               name="closedTime"
-              value={this.state.closedTime}
+              value={scheduleSelect.initialClosed}
               onChange={this.handleChange}
             />
           </div>
 
         </Paper>
+        {/* <button onClick={this.handleDelete}>DELETE</button> */}
         <div className={classes.addButton}>
           <Tooltip title="Delete">
-            <IconButton aria-label="Delete Schedule">
+            <IconButton onClick={this.handleDelete} aria-label="Delete Schedule">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -180,4 +187,16 @@ class WeeklySelect extends React.Component<WithStyles<typeof styles>> {
   }
 }
 
-export default withStyles(styles)(WeeklySelect);
+const mapStateToProps = state => {
+  return {
+    scheduleSelect: state.scheduleSelect
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  updateChecked: (obj) => dispatch(updateChecked(obj)),
+  deleteRow: (obj) => dispatch(deleteRow(obj)),
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ScheduleSelect));
