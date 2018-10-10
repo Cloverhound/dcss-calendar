@@ -3,6 +3,8 @@ let initialState = {
   initialClosed: "19:00",
   initialRow: {
     "id": 0,
+    "from": "",
+    "to": "",
     "week": {
       "mon": {
         "checked": false,
@@ -34,9 +36,11 @@ let initialState = {
       },
     }
   },
-  selectRow: [
+  timeRanges: [
     {
       "id": 0,
+      "from": "",
+      "to": "",
       "week": {
         "mon": {
           "checked": false,
@@ -116,15 +120,22 @@ const updateDisabledOnClick = (item, day, event) => {
   }
 }
 
-const findCheckedDays = state => {
-  let id = state.selectRow.length
-  let initialRow = {...state.initialRow, id}
+const updateIDs = (timeRanges) => {
+  return timeRanges.map((timeRange, i) => {
+    timeRange.id = i
+    return timeRange
+  })
+}
 
-  state.selectRow.forEach(row =>{
+const findCheckedDays = state => {
+  let id = state.timeRanges.length
+  let initialRow = { ...state.initialRow, id }
+
+  state.timeRanges.forEach(row => {
     let keys = Object.keys(row.week);
 
     keys.forEach(day => {
-      if(row.week[day].checked === true) {
+      if (row.week[day].checked === true) {
         initialRow.week[day].disabled = true
       }
     })
@@ -137,8 +148,8 @@ const scheduleSelect = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
 
-      let newSelectArray = state.selectRow.map((item, index) => {
-        if (item.id === action.payload.id) {
+      let newSelectArray = state.timeRanges.map((item, index) => {
+        if (item.id === action.payload.row.id) {
           return {
             ...item,
             week: {
@@ -154,30 +165,29 @@ const scheduleSelect = (state = initialState, action) => {
         }
       })
 
-      return { ...state, selectRow: newSelectArray }
+      return { ...state, timeRanges: newSelectArray }
 
     case 'DELETE_ROW':
-      if (state.selectRow.length != 1) {
-        let selectedRow = state.selectRow.filter(obj => {
-          return obj.id === action.payload.id
-        })
-
-        let unselectedRows = state.selectRow.filter(obj => {
-          return obj.id != action.payload.id
-        })
-
-        let updated = updateCheckedState(selectedRow, unselectedRows)
-
-        state.selectRow = updated
+      if (state.timeRanges.length === 1) {
         return { ...state }
       }
-      return { ...state }
+      let newTimeRanges = [...state.timeRanges]
+      let selectedArray = state.timeRanges.filter(el => {
+        return el.id === action.payload.row.id
+      })
+
+      newTimeRanges.splice(action.payload.row.id, 1);
+      newTimeRanges = updateIDs(newTimeRanges)
+
+      let newTimeRangesCheckedState = updateCheckedState(selectedArray, newTimeRanges)
+
+      return { ...state, timeRanges: newTimeRangesCheckedState }
 
     case 'ADD_SCHEDULE_SELECT':
       let newWeek = findCheckedDays(state)
-      let newObj = {...newWeek}
-      return {...state, selectRow: [...state.selectRow, newObj]}
-      
+      let newObj = { ...newWeek }
+      return { ...state, timeRanges: [...state.timeRanges, newObj] }
+
     default:
       return state
   }

@@ -98,7 +98,8 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleSelect: any,
   updateChecked: any,
-  id: any,
+  row: any,
+  index: any,
   deleteRow: any
 }
 
@@ -108,25 +109,21 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
     // this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleCheckChange = (id, day) => event => {
+  handleCheckChange = (row, day) => event => {
     const { updateChecked } = this.props
-    updateChecked({ id, day, event: event.target.checked });
+    updateChecked({ row, day, event: event.target.checked });
   };
 
   handleDelete = (event) => {
-    const { deleteRow } = this.props;
+    const { deleteRow, row } = this.props;
     event.preventDefault()
-    deleteRow({ id: this.props.id })
+    deleteRow({ row })
   }
 
   render() {
-    const { classes, scheduleSelect, id } = this.props;
-    // console.log("render",scheduleSelect)
-    let row = scheduleSelect.selectRow.filter(obj => {
-      return obj.id == id
-    })
+    const { classes, scheduleSelect, row } = this.props;
 
-    let week = row[0].week
+    let week = row.week
     let keys = Object.keys(week)
 
     let checkBox = keys.map(day => {
@@ -134,7 +131,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
         control={
           <Checkbox
             checked={week[day].checked}
-            onChange={this.handleCheckChange(id, day)}
+            onChange={this.handleCheckChange(row, day)}
             value={week[day]}
             disabled={week[day].disabled}
           />

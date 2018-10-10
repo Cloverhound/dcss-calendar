@@ -122,7 +122,6 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   handleAddScheduleSelect = () => {
-    console.log("HANDLE");
     
     const {addScheduleSelect} = this.props 
     addScheduleSelect()
@@ -131,11 +130,10 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   render() {
     const { classes, scheduleSelect } = this.props;
 
-    let selectRow = scheduleSelect.selectRow.map((el, i) => {
+    let timeRangesComponent = scheduleSelect.timeRanges.map((el, i) => {
       
-      return <ScheduleSelect id={el.id}/>
+      return <ScheduleSelect row={el}/>
     }) 
-
 
     return (
       <div className={classes.root}>
@@ -173,7 +171,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
             </div>
 
             <div className={classes.selectContainer}>
-              {selectRow}
+              {timeRangesComponent}
             </div>
 
             <div className={classes.addIconContainer}>
