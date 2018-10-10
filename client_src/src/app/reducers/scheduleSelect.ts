@@ -1,6 +1,7 @@
 let initialState = {
   initialOpen: "07:00",
   initialClosed: "19:00",
+  name: "",
   initialRow: {
     "id": 0,
     "from": "",
@@ -73,23 +74,6 @@ let initialState = {
       }
     }
   ],
-  schedule: {
-    "name": "",
-    "sun_start": "",
-    "sun_end": "",
-    "mon_start": "",
-    "mon_end": "",
-    "tues_start": "",
-    "tues_end": "",
-    "weds_start": "",
-    "weds_end": "",
-    "thurs_start": "",
-    "thurs_end": "",
-    "fri_start": "",
-    "fri_end": "",
-    "sat_start": "",
-    "sat_end": "",
-  }
 }
 
 const updateCheckedState = (selectedArray, unselectedArray) => {
