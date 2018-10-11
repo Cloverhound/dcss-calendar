@@ -18,6 +18,9 @@
     "force_closed": {
       "type": "boolean",
       "default": false
+    },
+    "timeRangeId": {
+      "type": "number"
     }
   },
   "validations": [],

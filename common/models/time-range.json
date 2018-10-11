@@ -59,12 +59,12 @@
     "queues": {
       "type": "hasMany",
       "model": "Queue",
-      "foreignKey": ""
+      "foreignKey": "timeRangeId"
     },
     "holidays": {
       "type": "hasMany",
       "model": "Holiday",
-      "foreignKey": ""
+      "foreignKey": "timeRangeId"
     }
   },
   "acls": [],
