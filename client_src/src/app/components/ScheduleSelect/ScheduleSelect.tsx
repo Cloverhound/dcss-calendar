@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { updateChecked, deleteRow } from '../../actions/index';
+import { updateChecked, deleteRow, updateOpenClosedTime } from '../../actions/index';
 
 import {
   BrowserRouter as Router,
@@ -100,7 +100,8 @@ interface IProps {
   updateChecked: any,
   row: any,
   index: any,
-  deleteRow: any
+  deleteRow: any,
+  updateOpenClosedTime: any
 }
 
 class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -108,6 +109,11 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
   handleChange = event => {
     // this.setState({ [event.target.name]: event.target.value });
   };
+
+  handleOpenClosedTime = (event) => {
+    const { updateOpenClosedTime, row } = this.props
+    updateOpenClosedTime({row, name: event.target.name, value: event.target.value })
+  }
 
   handleCheckChange = (row, day) => event => {
     const { updateChecked } = this.props
@@ -122,7 +128,6 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, scheduleSelect, row } = this.props;
-
     let week = row.week
     let keys = Object.keys(week)
 
@@ -155,9 +160,9 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
               InputLabelProps={{
                 shrink: true,
               }}
-              name="openTime"
-              value={scheduleSelect.initialOpen}
-              onChange={this.handleChange}
+              name="open"
+              // value={row.open}
+              onChange={this.handleOpenClosedTime}
             />
             <TextField
               id="time"
@@ -167,14 +172,13 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
               InputLabelProps={{
                 shrink: true,
               }}
-              name="closedTime"
-              value={scheduleSelect.initialClosed}
-              onChange={this.handleChange}
+              name="closed"
+              // value={row.closed}
+              onChange={this.handleOpenClosedTime}
             />
           </div>
 
         </Paper>
-        {/* <button onClick={this.handleDelete}>DELETE</button> */}
         <div className={classes.addButton}>
           <Tooltip title="Delete">
             <IconButton onClick={this.handleDelete} aria-label="Delete Schedule">
@@ -196,6 +200,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   updateChecked: (obj) => dispatch(updateChecked(obj)),
   deleteRow: (obj) => dispatch(deleteRow(obj)),
+  updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
 })
 
 

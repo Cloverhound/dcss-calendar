@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect } from '../../actions/index'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField } from '../../actions/index'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
@@ -96,45 +96,35 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleSelect: any,
-  addScheduleSelect: any
+  addScheduleSelect: any,
+  requestScheduleSubmit: any,
+  updateNameField: any
 }
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
-  state = {
-    newScheduleName: '',
-    scheduleName: '',
-    days: ['Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    checkedMon: false,
-    checkedTues: false,
-    checkedWeds: false,
-    checkedThurs: false,
-    checkedFri: false,
-    checkedSat: false,
-    checkedSun: false,
-  };
 
-  handleChange = event => {
-    // this.setState({ [event.target.name]: event.target.value });
-  };
-
-  handleCheckChange = name => event => {
-    // this.setState({ [name]: event.target.checked });
+  handleNameInput = event => {
+    const { updateNameField } = this.props;
+    updateNameField({ name: event.target.value })
   };
 
   handleAddScheduleSelect = () => {
-    
-    const {addScheduleSelect} = this.props 
+    const { addScheduleSelect } = this.props
     addScheduleSelect()
+  }
+
+  handleFormSubmit = () => {
+    const { requestScheduleSubmit, scheduleSelect } = this.props;
+    requestScheduleSubmit(scheduleSelect)
   }
 
   render() {
     const { classes, scheduleSelect } = this.props;
 
     let timeRangesComponent = scheduleSelect.timeRanges.map((el, i) => {
-      
-      return <ScheduleSelect row={el}/>
-    }) 
 
+      return <ScheduleSelect row={el} />
+    })
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -143,8 +133,8 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.inputContainer}>
               <FormControl className={classes.formControl}>
                 <Select
-                  value={this.state.scheduleName}
-                  onChange={this.handleChange}
+                  // value={this.state.name}
+                  // onChange={this.handleChange}
                   name="scheduleName"
                   displayEmpty
                   className={classes.selectEmpty}
@@ -161,10 +151,10 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
               <FormControl className={classes.formControl}>
                 <Input
-                  value={this.state.newScheduleName}
-                  onChange={this.handleChange}
+                  value={this.props.scheduleSelect.name}
+                  onChange={this.handleNameInput}
                   name="newScheduleName"
-                  placeholder="Schedule Name"
+                  placeholder="Name"
                   autoFocus={true}
                 />
               </FormControl>
@@ -180,7 +170,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
               </Button>
             </div>
             <div className={classes.submitCancelContainer}>
-              <Button variant="contained" color="primary" className={classes.button}>
+              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
                 Submit
               </Button>
               <Button variant="outlined" color="primary" className={classes.button}>
@@ -201,7 +191,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  addScheduleSelect: () => (dispatch(addScheduleSelect()))
+  addScheduleSelect: () => (dispatch(addScheduleSelect())),
+  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
+  updateNameField: (obj) => (dispatch(updateNameField(obj)))
 })
 
 

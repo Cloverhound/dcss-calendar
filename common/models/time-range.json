@@ -11,41 +11,47 @@
       "type": "string",
       "required": true
     },
-    "monday": {
-      "type": "boolean",
-      "required": true
+    "sun_open": {
+      "type": "string"
     },
-    "tuesday": {
-      "type": "boolean",
-      "required": true
+    "sun_closed": {
+      "type": "string"
     },
-    "wednesday": {
-      "type": "boolean",
-      "required": true
+    "mon_open": {
+      "type": "string"
     },
-    "thursday": {
-      "type": "boolean",
-      "required": true
+    "mon_closed": {
+      "type": "string"
     },
-    "friday": {
-      "type": "boolean",
-      "required": true
+    "tues_open": {
+      "type": "string"
     },
-    "saturday": {
-      "type": "boolean",
-      "required": true
+    "tues_closed": {
+      "type": "string"
     },
-    "sunday": {
-      "type": "boolean",
-      "required": true
+    "weds_open": {
+      "type": "string"
     },
-    "start": {
-      "type": "string",
-      "required": true
+    "weds_closed": {
+      "type": "string"
     },
-    "end": {
-      "type": "string",
-      "required": true
+    "thurs_open": {
+      "type": "string"
+    },
+    "thurs_closed": {
+      "type": "string"
+    },
+    "fri_open": {
+      "type": "string"
+    },
+    "fri_closed": {
+      "type": "string"
+    },
+    "sat_open": {
+      "type": "string"
+    },
+    "sat_closed": {
+      "type": "string"
     }
   },
   "validations": [],
