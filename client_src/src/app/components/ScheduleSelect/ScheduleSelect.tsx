@@ -112,6 +112,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
 
   handleOpenClosedTime = (event) => {
     const { updateOpenClosedTime, row } = this.props
+    console.log("TIME", event.target.value)
     updateOpenClosedTime({row, name: event.target.name, value: event.target.value })
   }
 
