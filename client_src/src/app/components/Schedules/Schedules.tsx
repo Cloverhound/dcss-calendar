@@ -125,7 +125,6 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
       return <ScheduleSelect row={el} />
     })
-    console.log(scheduleSelect)
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -155,7 +154,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
                   value={this.props.scheduleSelect.name}
                   onChange={this.handleNameInput}
                   name="newScheduleName"
-                  placeholder="Schedule Name"
+                  placeholder="Name"
                   autoFocus={true}
                 />
               </FormControl>

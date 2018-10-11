@@ -1,5 +1,4 @@
 export async function submitScheduleToServer(payload) {
-  console.log(payload)
   try {
     let response = await fetch('/api/TimeRanges', {
       method: 'POST',

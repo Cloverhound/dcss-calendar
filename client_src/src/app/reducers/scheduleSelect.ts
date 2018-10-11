@@ -76,19 +76,17 @@ let initialState = {
   ],
 }
 
-const updateCheckedState = (selectedArray, unselectedArray) => {
-  let selectedKeys = Object.keys(selectedArray[0].week);
+const updateCheckedStateOnDelete = (deletedTimeRange, newTimeRanges) => {
+  let days = Object.keys(deletedTimeRange.week);
 
-  selectedKeys.forEach(day => {
-    if (selectedArray[0].week[day].checked === true) {
-      unselectedArray.forEach(row => {
-        if (row.week[day]) {
-          row.week[day].disabled = false
-        }
+  days.forEach(day => {
+    if (deletedTimeRange.week[day].checked) {
+      newTimeRanges.forEach(row => {
+        row.week[day].disabled = false
       })
     }
   })
-  return unselectedArray
+  return newTimeRanges
 }
 
 const updateDisabledOnClick = (item, day, event) => {
@@ -119,7 +117,7 @@ const findCheckedDays = state => {
     let keys = Object.keys(row.week);
 
     keys.forEach(day => {
-      if (row.week[day].checked === true) {
+      if (row.week[day].checked) {
         initialRow.week[day].disabled = true
       }
     })
@@ -158,12 +156,12 @@ const scheduleSelect = (state = initialState, action) => {
       let newTimeRanges = [...state.timeRanges]
       let selectedArray = state.timeRanges.filter(el => {
         return el.id === action.payload.row.id
-      })
+      })[0]
 
       newTimeRanges.splice(action.payload.row.id, 1);
       newTimeRanges = updateIDs(newTimeRanges)
 
-      let newTimeRangesCheckedState = updateCheckedState(selectedArray, newTimeRanges)
+      let newTimeRangesCheckedState = updateCheckedStateOnDelete(selectedArray, newTimeRanges)
 
       return { ...state, timeRanges: newTimeRangesCheckedState }
 
@@ -173,8 +171,17 @@ const scheduleSelect = (state = initialState, action) => {
       return { ...state, timeRanges: [...state.timeRanges, newObj] }
 
     case 'UPDATE_NAME_FIELD':
-      // console.log({ ...state, name: action.payload.name })
       return { ...state, name: action.payload.name }
+
+    case 'UPDATE_OPEN_CLOSED_TIME':
+      let newOpenClosed = state.timeRanges.map(timeRange => {
+        if (timeRange.id === action.payload.row.id) {
+          timeRange[action.payload.name] = action.payload.value
+        }
+        return timeRange
+      })
+
+      return { ...state, timeRanges: newOpenClosed }
 
     default:
       return state
