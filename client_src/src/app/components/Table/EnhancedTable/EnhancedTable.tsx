@@ -11,11 +11,14 @@ import Paper from '@material-ui/core/Paper';
 import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
+import { connect } from 'react-redux'
+import {requestGetAll} from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom';
+
 
 let counter = 0;
 
@@ -79,16 +82,18 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     selected: [],
     data: [
       createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
-      createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
-      createData('Open', 'Brooklyn', "Regular Hours", "Regular", "ON"),
-      createData('Closing', 'Brooklyn', "Regular Hours", "Regular", "OFF"),
-      createData('Closed', 'Brooklyn', "Regular Hours", "Regular", "OFF"),
-      createData('Closing', 'Brooklyn', "Regular Hours", "Regular", "ON"),
-      createData('Closed', 'Brooklyn', "Regular Hours", "Regular", "ON"),
+      createData('Closing', 'Manhattan', "Regular Hours", "Regular", "ON"),
+      createData('Closed', 'Queens', "Regular Hours", "Regular", "OFF"),
+      createData('Holiday', 'Staten Island', "Regular Hours", "Regular", "OFF"),
+      createData('Closing', 'Bronx', "Regular Hours", "Regular", "ON"),
     ],
     page: 0,
     rowsPerPage: 5,
   };
+
+  componentWillMount() {
+    
+  }
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -171,6 +176,9 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     case "Closed":
                     statusStyle = "#d90101"
                     break;
+                    case "Holiday":
+                    statusStyle = "#d90101"
+                    break;
                     case "Closing":
                     statusStyle = "#FDDD08"
                       break;
@@ -229,4 +237,17 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 }
 
-export default withStyles(styles)(EnhancedTable);
+const mapStateToProps = state => {
+  return {
+    // scheduleSelect: state.scheduleSelect
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  // updateChecked: (obj) => dispatch(updateChecked(obj)),
+  // deleteRow: (obj) => dispatch(deleteRow(obj)),
+  // updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
+})
+
+
+export default connect(null,null)(withStyles(styles)(EnhancedTable));
