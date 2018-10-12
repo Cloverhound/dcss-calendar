@@ -40,8 +40,8 @@ let initialState = {
   timeRanges: [
     {
       "id": 0,
-      "open": "07:00",
-      "closed": "19:00",
+      "open": "",
+      "closed": "",
       "week": {
         "mon": {
           "checked": false,
@@ -169,6 +169,9 @@ const scheduleSelect = (state = initialState, action) => {
       let newWeek = findCheckedDays(state)
       let newObj = { ...newWeek }
       return { ...state, timeRanges: [...state.timeRanges, newObj] }
+
+    case 'REQUEST_GET_SCHEDULES_DONE':
+      return { ...state, schedules: action.payload }
 
     case 'UPDATE_NAME_FIELD':
       return { ...state, name: action.payload.name }

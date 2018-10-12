@@ -46,7 +46,7 @@
     }
   },
   "final": {
-    "loopback#urlNotFound": {}
+    "./middleware/custom404.js": {}
   },
   "final:after": {
     "strong-error-handler": {}

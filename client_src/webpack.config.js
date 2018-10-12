@@ -19,6 +19,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
   },
   devServer: {
+    historyApiFallback: true,
     hot: true
   },
   module: {

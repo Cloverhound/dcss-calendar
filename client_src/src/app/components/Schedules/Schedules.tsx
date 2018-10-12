@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField } from '../../actions/index'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules } from '../../actions/index'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
@@ -98,10 +98,16 @@ interface IProps {
   scheduleSelect: any,
   addScheduleSelect: any,
   requestScheduleSubmit: any,
-  updateNameField: any
+  updateNameField: any,
+  requestGetSchedules: any
 }
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
+
+  componentWillMount() {
+    const { requestGetSchedules } = this.props
+    requestGetSchedules()
+  }
 
   handleNameInput = event => {
     const { updateNameField } = this.props;
@@ -120,10 +126,15 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, scheduleSelect } = this.props;
-
+    console.log('scheduleSelect',scheduleSelect);
+    
     let timeRangesComponent = scheduleSelect.timeRanges.map((el, i) => {
 
       return <ScheduleSelect row={el} />
+
+    let schedules = scheduleSelect.schedules.map(schedule => {
+
+    })
     })
     return (
       <div className={classes.root}>
@@ -186,14 +197,15 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    scheduleSelect: state.scheduleSelect
+    scheduleSelect: state.scheduleSelect,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
   requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
-  updateNameField: (obj) => (dispatch(updateNameField(obj)))
+  updateNameField: (obj) => (dispatch(updateNameField(obj))),
+  requestGetSchedules: () => (dispatch(requestGetSchedules()))
 })
 
 

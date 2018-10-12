@@ -28,3 +28,18 @@ export async function getAll() {
     console.log(error)
   }
 }
+
+export async function getAllSchedules() {
+  try {
+    let response = await fetch('/api/Schedules', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
