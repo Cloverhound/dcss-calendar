@@ -17,7 +17,6 @@
 coverage
 node_modules
 npm-debug.log
-dist
 appconfig.js
 defaultConfiguration.ts
 package-lock.json
