@@ -1,6 +1,6 @@
 export async function submitScheduleToServer(payload) {
   try {
-    let response = await fetch('/api/TimeRanges', {
+    let response = await fetch('/api/Schedules', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

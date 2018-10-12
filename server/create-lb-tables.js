@@ -1,6 +1,6 @@
 var server = require('./server');
 var ds = server.dataSources.db;
-var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'TimeRange', 'Holiday'];
+var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday'];
 // var lbTables = ['Schedule', 'Holiday'];
 ds.automigrate(lbTables, function(er) {
   if (er) throw er;
