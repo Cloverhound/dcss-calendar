@@ -12,7 +12,7 @@ import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
-import {requestGetAll} from '../../../actions/index'
+import { requestGetAll } from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
@@ -73,6 +73,8 @@ interface IStateTable {
 }
 
 interface IPropsTable {
+  requestGetAll: any,
+  queues: any
 }
 
 class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -92,7 +94,11 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   componentWillMount() {
-    
+    const { requestGetAll } = this.props
+    requestGetAll()
+  }
+
+  componentDidMount() {
   }
 
   handleRequestSort = (event, property) => {
@@ -121,8 +127,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
     // console.log("selected", selected);
     // console.log("selected Index", selectedIndex);
-    
-    
+
+
     // if(newSelected.length === 0) {
     //   newSelected.push(selected)
     // } else {
@@ -146,11 +152,14 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, queues } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
-    return (  
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, queues.array.length - page * rowsPerPage);
+    // console.log("queues.length", queues.length);
+    
+    // console.log(queues);
+    
+    return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
@@ -161,31 +170,31 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={queues.length}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
+              {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
-                  let statusStyle = "";
-                  switch (n.status) {
-                    case "Open":
-                    statusStyle = "#01d901"
-                      break;
-                    case "Closed":
-                    statusStyle = "#d90101"
-                    break;
-                    case "Holiday":
-                    statusStyle = "#d90101"
-                    break;
-                    case "Closing":
-                    statusStyle = "#FDDD08"
-                      break;
-                    default:
-                    statusStyle = "#d90101"
-                      break;
-                  }
+                  // let statusStyle = "";
+                  // switch (n.status) {
+                  //   case "Open":
+                  //     statusStyle = "#01d901"
+                  //     break;
+                  //   case "Closed":
+                  //     statusStyle = "#d90101"
+                  //     break;
+                  //   case "Holiday":
+                  //     statusStyle = "#d90101"
+                  //     break;
+                  //   case "Closing":
+                  //     statusStyle = "#FDDD08"
+                  //     break;
+                  //   default:
+                  //     statusStyle = "#d90101"
+                  //     break;
+                  // }
                   return (
                     <TableRow
                       hover
@@ -196,16 +205,17 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       selected={isSelected}
                     >
                       <TableCell component="th" scope="row" padding="default">
-                      <div style={{display: "flex", alignItems: "center"}}>
-                        <div style={{width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle}}></div>
-                        <div style={{paddingLeft: "5px"}}>{n.status}</div>
-                      </div>
-                        
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div> */}
+                          <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div>
+                          {/* <div style={{ paddingLeft: "5px" }}>{n.status}</div> */}
+                        </div>
+
                       </TableCell>
-                      <TableCell>{n.queueName}</TableCell>
-                      <TableCell>{n.scheduleName}</TableCell>
-                      <TableCell>{n.holidayName}</TableCell>
-                      <TableCell>{n.promptStatus}</TableCell>
+                      <TableCell>{n.queue.name}</TableCell>
+                      <TableCell>{n.schedule.name}</TableCell>
+                      <TableCell>Regular</TableCell>
+                      <TableCell>ON</TableCell>
                       <TableCell><button>EDIT</button></TableCell>
                     </TableRow>
                   );
@@ -239,15 +249,13 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
 const mapStateToProps = state => {
   return {
-    // scheduleSelect: state.scheduleSelect
+    queues: state.QueuesReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // updateChecked: (obj) => dispatch(updateChecked(obj)),
-  // deleteRow: (obj) => dispatch(deleteRow(obj)),
-  // updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
+  requestGetAll: () => dispatch(requestGetAll())
 })
 
 
-export default connect(null,null)(withStyles(styles)(EnhancedTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EnhancedTable));

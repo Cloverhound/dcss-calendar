@@ -13,3 +13,18 @@ export async function submitScheduleToServer(payload) {
     console.log(error)
   }
 }
+
+export async function getAll() {
+  try {
+    let response = await fetch('/api/Queues/getAll', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
