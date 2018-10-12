@@ -1,17 +1,18 @@
 'use strict';
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 module.exports = function(Schedule) {
   Schedule.status = function(rangeId, cb) {
     Schedule.findById(rangeId, function(err, instance) {
       var response = instance;
       var days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat'];
-      var currentTime = moment();
-      var currentDay = days[moment().format('d')];
-
-      var OPEN_HOUR = moment(response[currentDay + '_open'], 'HH:mm');
-      var CLOSE_HOUR = moment(response[currentDay + '_closed'], 'HH:mm');
-
+      var currentTime = moment().tz(process.env.TIME_ZONE);
+      
+      var currentDay = days[moment().tz(process.env.TIME_ZONE).format('d')];
+      
+      var OPEN_HOUR = moment.tz(response[currentDay + '_open'], 'HH:mm', process.env.TIME_ZONE);
+      var CLOSE_HOUR = moment.tz(response[currentDay + '_closed'], 'HH:mm', process.env.TIME_ZONE);
+      
       if (currentTime.isBetween(OPEN_HOUR, CLOSE_HOUR)) {
         if (CLOSE_HOUR.diff(currentTime, 'hours') <= 1) {
           response = 'closing';
