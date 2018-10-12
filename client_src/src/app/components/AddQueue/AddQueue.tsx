@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
 
+import { connect } from 'react-redux';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -132,4 +134,16 @@ class AddQueue extends React.Component<WithStyles<typeof styles>> {
   }
 }
 
-export default withStyles(styles)(AddQueue);
+const mapStateToProps = state => {
+  return {
+    // scheduleSelect: state.scheduleSelect
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  // updateChecked: (obj) => dispatch(updateChecked(obj)),
+  // deleteRow: (obj) => dispatch(deleteRow(obj)),
+  // updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
+})
+
+export default connect(null, null)(withStyles(styles)(AddQueue));

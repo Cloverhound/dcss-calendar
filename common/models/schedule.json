@@ -4,68 +4,54 @@
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
-    "validateUpsert": true
+    "valistringUpsert": true
   },
   "properties": {
     "name": {
       "type": "string",
       "required": true
     },
-    "sun_start": {
-      "type": "date",
-      "required": true
+    "sun_open": {
+      "type": "string"
     },
-    "sun_end": {
-      "type": "date",
-      "required": true
+    "sun_closed": {
+      "type": "string"
     },
-    "mon_start": {
-      "type": "date",
-      "required": true
+    "mon_open": {
+      "type": "string"
     },
-    "mon_end": {
-      "type": "date",
-      "required": true
+    "mon_closed": {
+      "type": "string"
     },
-    "tues_start": {
-      "type": "date",
-      "required": true
+    "tues_open": {
+      "type": "string"
     },
-    "tues_end": {
-      "type": "date",
-      "required": true
+    "tues_closed": {
+      "type": "string"
     },
-    "weds_start": {
-      "type": "date",
-      "required": true
+    "weds_open": {
+      "type": "string"
     },
-    "weds_end": {
-      "type": "date",
-      "required": true
+    "weds_closed": {
+      "type": "string"
     },
-    "thurs_start": {
-      "type": "date",
-      "required": true
+    "thurs_open": {
+      "type": "string"
     },
-    "thurs_end": {
-      "type": "date",
-      "required": true
+    "thurs_closed": {
+      "type": "string"
     },
-    "fri_start": {
-      "type": "date",
-      "required": true
+    "fri_open": {
+      "type": "string"
     },
-    "fri_end": {
-      "type": "date",
-      "required": true
+    "fri_closed": {
+      "type": "string"
     },
-    "sat_start": {
-      "type": "date",
-      "required": true
+    "sat_open": {
+      "type": "string"
     },
-    "sat_end": {
-      "type": "date",
-      "required": true
+    "sat_closed": {
+      "type": "string"
     }
   },
   "validations": [],
@@ -73,12 +59,7 @@
     "queues": {
       "type": "hasMany",
       "model": "Queue",
-      "foreignKey": ""
-    },
-    "holidays": {
-      "type": "hasMany",
-      "model": "Holiday",
-      "foreignKey": ""
+      "foreignKey": "scheduleId"
     }
   },
   "acls": [],
