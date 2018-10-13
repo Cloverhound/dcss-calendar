@@ -10,6 +10,7 @@
     "start": "node ./server/server.js",
     "nodemon": "nodemon ./server/server.js",
     "posttest": "npm run lint",
+    "heroku-prebuild": "cd client_src && npm yarn",
     "heroku-postbuild": "cd client_src && npm run build"
   },
   "dependencies": {

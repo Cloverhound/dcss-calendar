@@ -20,7 +20,6 @@ npm-debug.log
 appconfig.js
 defaultConfiguration.ts
 package-lock.json
-yarn.lock
 .vscode
 .env
 client_src/dist/js/*
