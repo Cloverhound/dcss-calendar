@@ -10,7 +10,7 @@
     "start": "node ./server/server.js",
     "nodemon": "nodemon ./server/server.js",
     "posttest": "npm run lint",
-    "heroku-postbuild": "cd client_src && yarn && npm run build"
+    "heroku-postbuild": "cd client_src && npm install && npm run build"
   },
   "dependencies": {
     "compression": "^1.0.3",
