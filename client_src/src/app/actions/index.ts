@@ -14,4 +14,6 @@ export const updateNameField = obj => ({ type: "UPDATE_NAME_FIELD", payload: obj
 
 export const updateOpenClosedTime = obj => ({ type: "UPDATE_OPEN_CLOSED_TIME", payload: obj })
 
-export const requestGetAll = () => ({ type: "REQUEST_GET_ALL" });
+export const requestGetQueues = () => ({ type: "REQUEST_GET_QUEUES" });
+
+export const requestGetSchedules = () => ({ type: "REQUEST_GET_SCHEDULES" });

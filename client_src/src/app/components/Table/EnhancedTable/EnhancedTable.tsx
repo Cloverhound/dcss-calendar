@@ -12,7 +12,7 @@ import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
-import { requestGetAll } from '../../../actions/index'
+import { requestGetQueues } from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
@@ -73,7 +73,7 @@ interface IStateTable {
 }
 
 interface IPropsTable {
-  requestGetAll: any,
+  requestGetQueues: any,
   queues: any
 }
 
@@ -94,8 +94,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   componentWillMount() {
-    const { requestGetAll } = this.props
-    requestGetAll()
+    const { requestGetQueues } = this.props
+    requestGetQueues()
   }
 
   componentDidMount() {
@@ -155,9 +155,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     const { classes, queues } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, queues.array.length - page * rowsPerPage);
-    // console.log("queues.length", queues.length);
-    
-    // console.log(queues);
     
     return (
       <Paper className={classes.root}>
@@ -249,12 +246,12 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
 const mapStateToProps = state => {
   return {
-    queues: state.QueuesReducer
+    queues: state.queuesReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  requestGetAll: () => dispatch(requestGetAll())
+  requestGetQueues: () => dispatch(requestGetQueues())
 })
 
 

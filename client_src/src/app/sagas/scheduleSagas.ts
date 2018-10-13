@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
-import { submitScheduleToServer, getAll } from './api'
+import { submitScheduleToServer, getSchedules } from './api'
 
 export function* callScheduleSubmit(action) {
   const { timeRanges, name } = action.payload
@@ -26,15 +26,15 @@ export function* callScheduleSubmit(action) {
   }
 }
 
-export function* callGetAll() {
-  const result = yield call(getAll);
-  yield put({type: "REQUEST_GET_ALL_DONE", payload: result})
-
+export function* callGetSchedules(action) {
+  const result = yield call(getSchedules)
+  console.log("result", result)
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
     // yield put({ type: "REQUEST_FAILED", result: result.errors })
   } else {
     console.log("REQUEST_SUCCESSFUL")
+    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
     // yield put({ type: "REQUEST_SUCCESSFUL"})
   }
 }
