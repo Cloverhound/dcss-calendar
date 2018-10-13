@@ -8,7 +8,7 @@
     "build": "./node_modules/.bin/webpack",
     "start": "webpack-dashboard -- webpack",
     "webpack": "webpack",
-    "postinstall": "cd dist && mkdir js && npm run build"
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
   "author": "",
