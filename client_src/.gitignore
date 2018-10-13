@@ -5,4 +5,4 @@ appconfig.js
 defaultConfiguration.ts
 package-lock.json
 .vscode
-
+dist/js/*
