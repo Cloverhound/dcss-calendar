@@ -23,4 +23,4 @@ package-lock.json
 yarn.lock
 .vscode
 .env
-dist/js/*
+client_src/dist/js/*
