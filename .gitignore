@@ -22,4 +22,3 @@ defaultConfiguration.ts
 package-lock.json
 .vscode
 .env
-# client_src/dist/js/*
