@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "start": "node ./server/server.js",
     "nodemon": "nodemon ./server/server.js",
-    "posttest": "npm run lint",
-    "heroku-prebuild": "cd client_src && yarn",
-    "heroku-postbuild": "cd client_src && npm run build"
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "compression": "^1.0.3",
