@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import { requestAddQueueSubmit, requestGetSchedules } from '../../actions/index'
+import { requestAddQueueSubmit, requestGetSchedules, handleAddQueueChange } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -64,7 +64,9 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   requestAddQueueSubmit: any,
-  requestGetSchedules: any
+  requestGetSchedules: any,
+  handleAddQueueChange: any,
+  addQueueReducer: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -80,17 +82,17 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestAddQueueSubmit, scheduleReducer } = this.props;
-    const { scheduleId, queueName } = this.state
-    requestAddQueueSubmit({ scheduleId, queueName })
+    const { requestAddQueueSubmit, addQueueReducer } = this.props;
+    requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const { handleAddQueueChange } = this.props;
+    handleAddQueueChange({ name: event.target.name, value: event.target.value })
   };
 
   render() {
-    const { classes, scheduleReducer } = this.props;
+    const { classes, scheduleReducer, addQueueReducer } = this.props;
 
     let menuItem = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
@@ -106,7 +108,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
           <form className={classes.form}>
             <FormControl>
               <Input
-                value={this.state.queueName}
+                value={addQueueReducer.queueName}
                 onChange={this.handleChange}
                 name="queueName"
                 placeholder="Queue Name"
@@ -115,7 +117,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.scheduleId}
+                value={addQueueReducer.scheduleId}
                 onChange={this.handleChange}
                 name="scheduleId"
                 displayEmpty
@@ -154,13 +156,15 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    scheduleReducer: state.scheduleReducer
+    scheduleReducer: state.scheduleReducer,
+    addQueueReducer: state.addQueueReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   requestGetSchedules: () => (dispatch(requestGetSchedules())),
-  requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj)))
+  requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj))),
+  handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));
