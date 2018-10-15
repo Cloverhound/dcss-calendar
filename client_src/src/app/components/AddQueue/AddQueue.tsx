@@ -12,6 +12,8 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions/index'
+
 import {
   BrowserRouter as Router,
   Route,
@@ -59,19 +61,34 @@ const styles = theme => createStyles({
   },
 });
 
-class AddQueue extends React.Component<WithStyles<typeof styles>> {
+interface IProps {
+  scheduleReducer: any,
+  requestGetSchedules: any,
+}
+
+class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     queueName: '',
     scheduleName: '',
     holidayName: '',
   };
 
+  componentWillMount = () => {
+    const { requestGetSchedules } = this.props;
+    requestGetSchedules()
+  }
+  
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, scheduleReducer } = this.props;
+
+    let menuItem = scheduleReducer.schedules.map(schedule => {
+      return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
+    })
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -98,12 +115,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles>> {
                 displayEmpty
                 className={classes.selectEmpty}
               >
-                <MenuItem value="" disabled>
-                  Placeholder
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {menuItem}
               </Select>
               <FormHelperText>Schedule Name</FormHelperText>
             </FormControl>
@@ -136,14 +148,12 @@ class AddQueue extends React.Component<WithStyles<typeof styles>> {
 
 const mapStateToProps = state => {
   return {
-    // scheduleSelect: state.scheduleSelect
+    scheduleReducer: state.scheduleReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // updateChecked: (obj) => dispatch(updateChecked(obj)),
-  // deleteRow: (obj) => dispatch(deleteRow(obj)),
-  // updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
+  requestGetSchedules: () => (dispatch(requestGetSchedules())),
 })
 
-export default connect(null, null)(withStyles(styles)(AddQueue));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));

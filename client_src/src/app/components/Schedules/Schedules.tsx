@@ -105,7 +105,7 @@ interface IProps {
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const { requestGetSchedules } = this.props;
     requestGetSchedules()
   }
