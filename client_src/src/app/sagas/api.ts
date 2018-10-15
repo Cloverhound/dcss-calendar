@@ -1,3 +1,19 @@
+export async function submitQueueToServer(payload) {
+  try {
+    let response = await fetch('/api/Queues', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function submitScheduleToServer(payload) {
   try {
     let response = await fetch('/api/Schedules', {
