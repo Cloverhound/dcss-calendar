@@ -18,6 +18,8 @@ export const requestGetQueues = () => ({ type: "REQUEST_GET_QUEUES" });
 
 export const requestGetSchedules = () => ({ type: "REQUEST_GET_SCHEDULES" });
 
-export const updateTimeRanges = (obj) => ({type: "UPDATE_TIME_RANGES", payload: obj })
+export const updateTimeRanges = (obj) => ({ type: "UPDATE_TIME_RANGES", payload: obj })
 
 export const requestAddQueueSubmit = obj => ({ type: "REQUEST_ADD_QUEUE_SUBMIT", payload: obj });
+
+export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj })

@@ -28,7 +28,6 @@ export function* callScheduleSubmit(action) {
 
 export function* callGetSchedules(action) {
   const result = yield call(getSchedules)
-  console.log("result", result)
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
     // yield put({ type: "REQUEST_FAILED", result: result.errors })
