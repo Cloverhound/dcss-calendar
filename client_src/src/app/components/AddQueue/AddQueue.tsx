@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions/index'
+import { requestAddQueueSubmit, requestGetSchedules } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -37,7 +37,7 @@ const styles = theme => createStyles({
     margin: '10px',
     fill: 'white',
     "&:hover": {
-      cursor:'pointer'
+      cursor: 'pointer'
     },
   },
   paper: {
@@ -63,21 +63,27 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleReducer: any,
-  requestGetSchedules: any,
+  requestAddQueueSubmit: any,
+  requestGetSchedules: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     queueName: '',
-    scheduleName: '',
-    holidayName: '',
+    scheduleId: 0,
+    holidayID: 0,
   };
 
   componentWillMount = () => {
     const { requestGetSchedules } = this.props;
     requestGetSchedules()
   }
-  
+
+  handleFormSubmit = () => {
+    const { requestAddQueueSubmit, scheduleReducer } = this.props;
+    const { scheduleId, queueName } = this.state
+    requestAddQueueSubmit({ scheduleId, queueName })
+  }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -93,25 +99,25 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <div className={classes.arrowContainer}>
-          <Link to="/">
-            <ArrowBack className={classes.arrow}/>
-          </Link>
+            <Link to="/">
+              <ArrowBack className={classes.arrow} />
+            </Link>
           </div>
-          <form className={classes.form}> 
+          <form className={classes.form}>
             <FormControl>
               <Input
-              value={this.state.queueName}
-              onChange={this.handleChange}
-              name="queueName"
-              placeholder="Queue Name"
-              autoFocus={true}
+                value={this.state.queueName}
+                onChange={this.handleChange}
+                name="queueName"
+                placeholder="Queue Name"
+                autoFocus={true}
               />
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.scheduleName}
+                value={this.state.scheduleId}
                 onChange={this.handleChange}
-                name="scheduleName"
+                name="scheduleId"
                 displayEmpty
                 className={classes.selectEmpty}
               >
@@ -119,11 +125,11 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               </Select>
               <FormHelperText>Schedule Name</FormHelperText>
             </FormControl>
-            <FormControl className={classes.formControl}>
+            {/* <FormControl className={classes.formControl}>
               <Select
-                value={this.state.holidayName}
+                value={this.state.holidayID}
                 onChange={this.handleChange}
-                name="holidayName"
+                name="holidayID"
                 displayEmpty
                 className={classes.selectEmpty}
               >
@@ -135,8 +141,8 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
                 <MenuItem value={30}>Thirty</MenuItem>
               </Select>
               <FormHelperText>Holiday Name</FormHelperText>
-            </FormControl>
-            <Button variant="contained" color="primary" className={classes.button}>
+            </FormControl> */}
+            <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
               Save
             </Button>
           </form>
@@ -154,6 +160,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));

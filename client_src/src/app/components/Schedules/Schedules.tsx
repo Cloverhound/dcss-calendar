@@ -133,7 +133,6 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, scheduleReducer } = this.props;
-    console.log("scheduleReducer", scheduleReducer)
     let timeRangesComponent = scheduleReducer.timeRanges.map((el, i) => {
       return <ScheduleSelect row={el} />
     })
