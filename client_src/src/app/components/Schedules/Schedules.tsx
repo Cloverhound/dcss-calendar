@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules } from '../../actions/index'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions/index'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
@@ -99,7 +99,8 @@ interface IProps {
   addScheduleSelect: any,
   requestScheduleSubmit: any,
   updateNameField: any,
-  requestGetSchedules: any
+  requestGetSchedules: any,
+  updateTimeRanges: any
 }
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -109,6 +110,11 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
     requestGetSchedules()
   }
 
+  handleScheduleSelect = event => {
+    const {updateTimeRanges} = this.props
+    console.log(event.target.value);
+    updateTimeRanges({id: event.target.value})
+  };
 
   handleNameInput = event => {
     const { updateNameField } = this.props;
@@ -144,7 +150,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormControl className={classes.formControl}>
                 <Select
                   // value={this.state.name}
-                  // onChange={this.handleChange}
+                  onChange={this.handleScheduleSelect}
                   name="scheduleName"
                   displayEmpty
                   className={classes.selectEmpty}
@@ -202,7 +208,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
   requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  requestGetSchedules: () => (dispatch(requestGetSchedules()))
+  requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
 })
 
 

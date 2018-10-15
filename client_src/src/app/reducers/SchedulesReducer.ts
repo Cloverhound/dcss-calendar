@@ -127,7 +127,7 @@ const findCheckedDays = state => {
   return initialRow
 }
 
-const scheduleReducer = (state = initialState, action) => {
+const scheduleReducer = (state: any = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
       let newSelectArray = state.timeRanges.map((item, index) => {
@@ -182,8 +182,32 @@ const scheduleReducer = (state = initialState, action) => {
 
       return { ...state, timeRanges: newOpenClosed }
 
-      case 'REQUEST_GET_SCHEDULES_DONE':
-      return {...state, schedules: action.payload}
+    case 'REQUEST_GET_SCHEDULES_DONE':
+      let newSchedule = action.payload.map(schedule => {
+        let keys = Object.keys(schedule)
+        let newWeek = keys.reduce((acc, key) => {
+          if (key === "id") {
+            acc[key] = schedule.id
+          } else if(key === "name") {
+            acc[key] = schedule.name
+          } else {
+            acc.hours = { ...acc.hours, [key]: schedule[key] }
+          }
+          return acc
+        }, { hours: {} })
+        return newWeek
+      })
+
+      return { ...state, schedules: newSchedule }
+
+    case 'UPDATE_TIME_RANGES':
+
+      let found = state.schedules.find(schedule => {
+        return schedule.id === action.payload.id
+      })
+
+      console.log(found)
+      return { ...state }
 
     default:
       return state
