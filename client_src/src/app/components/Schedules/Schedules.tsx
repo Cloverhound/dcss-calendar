@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField } from '../../actions/index'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions/index'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
@@ -95,13 +95,26 @@ const styles = theme => createStyles({
 });
 
 interface IProps {
-  scheduleSelect: any,
+  scheduleReducer: any,
   addScheduleSelect: any,
   requestScheduleSubmit: any,
-  updateNameField: any
+  updateNameField: any,
+  requestGetSchedules: any,
+  updateTimeRanges: any
 }
 
 class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
+
+  componentWillMount = () => {
+    const { requestGetSchedules } = this.props;
+    requestGetSchedules()
+  }
+
+  handleScheduleSelect = event => {
+    const {updateTimeRanges} = this.props
+    console.log(event.target.value);
+    updateTimeRanges({id: event.target.value})
+  };
 
   handleNameInput = event => {
     const { updateNameField } = this.props;
@@ -114,16 +127,19 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestScheduleSubmit, scheduleSelect } = this.props;
-    requestScheduleSubmit(scheduleSelect)
+    const { requestScheduleSubmit, scheduleReducer } = this.props;
+    requestScheduleSubmit(scheduleReducer)
   }
 
   render() {
-    const { classes, scheduleSelect } = this.props;
-
-    let timeRangesComponent = scheduleSelect.timeRanges.map((el, i) => {
-
+    const { classes, scheduleReducer } = this.props;
+    console.log("scheduleReducer", scheduleReducer)
+    let timeRangesComponent = scheduleReducer.timeRanges.map((el, i) => {
       return <ScheduleSelect row={el} />
+    })
+
+    let menuItem = scheduleReducer.schedules.map(schedule => {
+      return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
     return (
       <div className={classes.root}>
@@ -134,24 +150,22 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormControl className={classes.formControl}>
                 <Select
                   // value={this.state.name}
-                  // onChange={this.handleChange}
+                  onChange={this.handleScheduleSelect}
                   name="scheduleName"
                   displayEmpty
                   className={classes.selectEmpty}
                 >
-                  <MenuItem value="" disabled>
+                  <MenuItem value="new" disabled>
                     New Schedule
                   </MenuItem>
-                  {/* <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem> */}
+                  {menuItem}
                 </Select>
-                {/* <FormHelperText>Schedule Name</FormHelperText> */}
+                <FormHelperText>Select A Schedule</FormHelperText>
               </FormControl>
 
               <FormControl className={classes.formControl}>
                 <Input
-                  value={this.props.scheduleSelect.name}
+                  value={this.props.scheduleReducer.name}
                   onChange={this.handleNameInput}
                   name="newScheduleName"
                   placeholder="Name"
@@ -186,14 +200,16 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    scheduleSelect: state.scheduleSelect
+    scheduleReducer: state.scheduleReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
   requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
-  updateNameField: (obj) => (dispatch(updateNameField(obj)))
+  updateNameField: (obj) => (dispatch(updateNameField(obj))),
+  requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
 })
 
 

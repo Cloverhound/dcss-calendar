@@ -2,13 +2,13 @@ let initialState = {
   array: []
 }
 
-const QueuesReducer = (state = initialState, action) => {
+const queuesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'REQUEST_GET_ALL_DONE':
+    case 'REQUEST_GET_QUEUES_DONE':
       return {...state, array: action.payload.getAll}
     default:
       return state
   }
 }
 
-export default QueuesReducer
+export default queuesReducer

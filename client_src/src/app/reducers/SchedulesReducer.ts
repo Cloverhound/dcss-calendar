@@ -1,11 +1,11 @@
 let initialState = {
-  initialOpen: "07:00",
-  initialClosed: "19:00",
+  initialOpen: "",
+  initialClosed: "",
   name: "",
   initialRow: {
     "id": 0,
-    "open": "07:00",
-    "closed": "19:00",
+    "open": "",
+    "closed": "",
     "week": {
       "mon": {
         "checked": false,
@@ -37,11 +37,12 @@ let initialState = {
       },
     }
   },
+  schedules: [],
   timeRanges: [
     {
       "id": 0,
-      "open": "07:00",
-      "closed": "19:00",
+      "open": "",
+      "closed": "",
       "week": {
         "mon": {
           "checked": false,
@@ -126,10 +127,9 @@ const findCheckedDays = state => {
   return initialRow
 }
 
-const scheduleSelect = (state = initialState, action) => {
+const scheduleReducer = (state: any = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
-
       let newSelectArray = state.timeRanges.map((item, index) => {
         if (item.id === action.payload.row.id) {
           return {
@@ -146,7 +146,6 @@ const scheduleSelect = (state = initialState, action) => {
           return updateDisabledOnClick(item, action.payload.day, action.payload.event)
         }
       })
-
       return { ...state, timeRanges: newSelectArray }
 
     case 'DELETE_ROW':
@@ -183,9 +182,36 @@ const scheduleSelect = (state = initialState, action) => {
 
       return { ...state, timeRanges: newOpenClosed }
 
+    case 'REQUEST_GET_SCHEDULES_DONE':
+      let newSchedule = action.payload.map(schedule => {
+        let keys = Object.keys(schedule)
+        let newWeek = keys.reduce((acc, key) => {
+          if (key === "id") {
+            acc[key] = schedule.id
+          } else if(key === "name") {
+            acc[key] = schedule.name
+          } else {
+            acc.hours = { ...acc.hours, [key]: schedule[key] }
+          }
+          return acc
+        }, { hours: {} })
+        return newWeek
+      })
+
+      return { ...state, schedules: newSchedule }
+
+    case 'UPDATE_TIME_RANGES':
+
+      let found = state.schedules.find(schedule => {
+        return schedule.id === action.payload.id
+      })
+
+      console.log(found)
+      return { ...state }
+
     default:
       return state
   }
 }
 
-export default scheduleSelect
+export default scheduleReducer
