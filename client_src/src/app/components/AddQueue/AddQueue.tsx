@@ -101,7 +101,6 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleChange = event => {
     const { handleAddQueueChange } = this.props;
-
     handleAddQueueChange({ name: event.target.name, value: event.target.value })
   };
 
