@@ -161,25 +161,26 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
+                  console.log(n)
                   const isSelected = this.isSelected(n.queue.id);
-                  // let statusStyle = "";
-                  // switch (n.status) {
-                  //   case "Open":
-                  //     statusStyle = "#01d901"
-                  //     break;
-                  //   case "Closed":
-                  //     statusStyle = "#d90101"
-                  //     break;
-                  //   case "Holiday":
-                  //     statusStyle = "#d90101"
-                  //     break;
-                  //   case "Closing":
-                  //     statusStyle = "#FDDD08"
-                  //     break;
-                  //   default:
-                  //     statusStyle = "#d90101"
-                  //     break;
-                  // }
+                  let statusStyle = "";
+                  switch (n.queue.status) {
+                    case "Open":
+                      statusStyle = "#01d901"
+                      break;
+                    case "Closed":
+                      statusStyle = "#d90101"
+                      break;
+                    case "Holiday":
+                      statusStyle = "#d90101"
+                      break;
+                    case "Closing":
+                      statusStyle = "#FDDD08"
+                      break;
+                    default:
+                      statusStyle = "#d90101"
+                      break;
+                  }
                   return (
                     <Tooltip
                       title="Select to edit"
@@ -200,9 +201,9 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       </TableCell> */}
                         <TableCell component="th" scope="row" padding="default">
                           <div style={{ display: "flex", alignItems: "center" }}>
-                            {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div> */}
-                            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div>
-                            {/* <div style={{ paddingLeft: "5px" }}>{n.status}</div> */}
+                            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div>
+                            {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div> */}
+                            <div style={{ paddingLeft: "5px" }}>{n.queue.status}</div>
                           </div>
 
                         </TableCell>
