@@ -18,7 +18,7 @@ const rows = [
   { id: 'scheduleName', numeric: false, disablePadding: false, label: 'Schedule Name' },
   { id: 'holidayName', numeric: false, disablePadding: false, label: 'Holiday Name' },
   { id: 'promptStatus', numeric: false, disablePadding: false, label: 'Prompt Status' },
-  { id: 'edit', numeric: false, disablePadding: false, label: '' },
+  // { id: 'edit', numeric: false, disablePadding: false, label: '' },
 ];
 
 
@@ -28,7 +28,6 @@ interface IStateTableHead {
 
 interface IPropsTableHead {
   onRequestSort: any,
-  onSelectAllClick: any,
   order: any,
   orderBy: any,
   numSelected: any,
@@ -42,7 +41,7 @@ class EnhancedTableHead extends React.Component<IPropsTableHead, IStateTableHead
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    const { order, orderBy, numSelected, rowCount } = this.props;
 
     return (
       <TableHead>

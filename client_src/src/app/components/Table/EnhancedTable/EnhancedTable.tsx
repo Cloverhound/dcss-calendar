@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
@@ -93,12 +94,13 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     rowsPerPage: 5,
   };
 
-  componentWillMount() {
+  componentWillMount = () => {
     const { requestGetQueues } = this.props
     requestGetQueues()
   }
 
-  componentDidMount() {
+  handleEdit = () => {
+    console.log("EDIT EDIT")
   }
 
   handleRequestSort = (event, property) => {
@@ -112,30 +114,17 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ order, orderBy });
   };
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
-
   handleClick = (event, id) => {
-    // const selected: any[] = this.state.selected
-    // const selectedIndex = selected.indexOf(id);
-    // let newSelected: any[] = [];
+    const selected: any[] = this.state.selected
+    let newSelected: any[] = [];
+    console.log(id, newSelected)
+    if(id === this.state.selected[0]) {
+      newSelected = [];
+    } else {
+      newSelected.push(id)
+    }
 
-    // console.log("selected", selected);
-    // console.log("selected Index", selectedIndex);
-
-
-    // if(newSelected.length === 0) {
-    //   newSelected.push(selected)
-    // } else {
-    //   newSelected = []
-    // }
-
-    // this.setState({ selected: newSelected });
+    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
@@ -165,7 +154,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={queues.length}
             />
@@ -173,7 +161,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.id);
+                  console.log("n", n)
+                  const isSelected = this.isSelected(n.queue.id);
                   // let statusStyle = "";
                   // switch (n.status) {
                   //   case "Open":
@@ -196,11 +185,15 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     <TableRow
                       hover
                       role="checkbox"
+                      onClick={event => this.handleClick(event, n.queue.id)}
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
                     >
+                    {/* <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
+                      </TableCell> */}
                       <TableCell component="th" scope="row" padding="default">
                         <div style={{ display: "flex", alignItems: "center" }}>
                           {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div> */}
@@ -213,7 +206,11 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       <TableCell>{n.schedule.name}</TableCell>
                       <TableCell>Regular</TableCell>
                       <TableCell>ON</TableCell>
-                      <TableCell><button>EDIT</button></TableCell>
+                      {/* <TableCell>
+                        <Link to="/AddQueue">
+                          <button onClick={this.handleEdit}>EDIT</button>
+                        </Link>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}
