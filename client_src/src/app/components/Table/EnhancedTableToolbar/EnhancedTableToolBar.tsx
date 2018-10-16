@@ -70,11 +70,13 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
         <div className={classes.spacer} />
         <div className={classes.actions}>
           {numSelected > 0 ? (
-            <Tooltip title="Edit">
-              <IconButton aria-label="Edit">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+            <Link to="/AddQueue">
+              <Tooltip title="Edit">
+                <IconButton aria-label="Edit">
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
           ) : (
             <Link to="/AddQueue">
               <Tooltip title="Add Queue">

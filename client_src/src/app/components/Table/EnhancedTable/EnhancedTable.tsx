@@ -13,7 +13,7 @@ import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
-import { requestGetQueues } from '../../../actions/index'
+import { requestGetQueues, addSelectedQueue, clearSelectedQueue } from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
@@ -75,7 +75,9 @@ interface IStateTable {
 
 interface IPropsTable {
   requestGetQueues: any,
-  queues: any
+  queues: any,
+  clearSelectedQueue: any,
+  addSelectedQueue: any
 }
 
 class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -91,7 +93,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
       createData('Closing', 'Bronx', "Regular Hours", "Regular", "ON"),
     ],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: 10,
   };
 
   componentWillMount = () => {
@@ -114,17 +116,15 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ order, orderBy });
   };
 
-  handleClick = (event, id) => {
-    const selected: any[] = this.state.selected
-    let newSelected: any[] = [];
-    console.log(id, newSelected)
-    if(id === this.state.selected[0]) {
-      newSelected = [];
+  handleAddQueueClick = (event, obj) => {
+    const { addSelectedQueue, queues, clearSelectedQueue } = this.props;
+    
+    if(obj.id === queues.selected.id) {
+      clearSelectedQueue()
+      console.log(obj.id,queues.selected.id, obj.id === queues.selected.id);
     } else {
-      newSelected.push(id)
+      addSelectedQueue(obj)
     }
-
-    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
@@ -136,8 +136,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   isSelected = id => {
-    let selected: number[] = this.state.selected
-    return selected.indexOf(id) !== -1;
+    const { queues } = this.props
+    return queues.selected.id === id;
   }
 
   render() {
@@ -161,7 +161,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  console.log("n", n)
                   const isSelected = this.isSelected(n.queue.id);
                   // let statusStyle = "";
                   // switch (n.status) {
@@ -185,7 +184,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     <TableRow
                       hover
                       role="checkbox"
-                      onClick={event => this.handleClick(event, n.queue.id)}
+                      onClick={event => this.handleAddQueueClick(event, n.queue)}
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
@@ -248,7 +247,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  requestGetQueues: () => dispatch(requestGetQueues())
+  requestGetQueues: () => dispatch(requestGetQueues()),
+  addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
+  clearSelectedQueue: () => dispatch(clearSelectedQueue()),
 })
 
 
