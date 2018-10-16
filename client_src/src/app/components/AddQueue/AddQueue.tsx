@@ -66,7 +66,8 @@ interface IProps {
   requestAddQueueSubmit: any,
   requestGetSchedules: any,
   handleAddQueueChange: any,
-  addQueueReducer: any
+  addQueueReducer: any,
+  queuesReducer: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -77,8 +78,13 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   componentWillMount = () => {
-    const { requestGetSchedules } = this.props;
-    requestGetSchedules()
+    const { requestGetSchedules, handleAddQueueChange, queuesReducer } = this.props;
+    requestGetSchedules();
+
+    if(queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
+      handleAddQueueChange({ name: "queueName", value: queuesReducer.selected.name })
+      handleAddQueueChange({ name: "scheduleId", value: queuesReducer.selected.scheduleId })
+    }
   }
 
   handleFormSubmit = () => {
@@ -88,15 +94,18 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleChange = event => {
     const { handleAddQueueChange } = this.props;
+
     handleAddQueueChange({ name: event.target.name, value: event.target.value })
   };
 
   render() {
-    const { classes, scheduleReducer, addQueueReducer } = this.props;
+    const { classes, scheduleReducer, addQueueReducer, queuesReducer, handleAddQueueChange } = this.props;
 
-    let menuItem = scheduleReducer.schedules.map(schedule => {
+    let menuItems = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
+    console.log(addQueueReducer);
+    
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -123,7 +132,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
                 displayEmpty
                 className={classes.selectEmpty}
               >
-                {menuItem}
+                {menuItems}
               </Select>
               <FormHelperText>Schedule Name</FormHelperText>
             </FormControl>
@@ -157,7 +166,8 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 const mapStateToProps = state => {
   return {
     scheduleReducer: state.scheduleReducer,
-    addQueueReducer: state.addQueueReducer
+    addQueueReducer: state.addQueueReducer,
+    queuesReducer: state.queuesReducer
   }
 }
 

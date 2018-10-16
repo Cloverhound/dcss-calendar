@@ -7,6 +7,8 @@ let initialState = {
 const addQueueReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_ADD_QUEUE_STATE':
+    console.log(action.payload);
+    
       return {...state, [action.payload.name]: action.payload.value }
 
     case "REQUEST_ADD_QUEUE_DONE":
