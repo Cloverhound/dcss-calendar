@@ -25,12 +25,12 @@ const toolbarStyles = theme => createStyles({
     paddingRight: theme.spacing.unit,
   },
   highlight:
-    theme.palette.type === 'light'
-      ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-      }
-      : {
+    // theme.palette.type === 'light'
+    //   ? {
+    //     color: theme.palette.secondary.main,
+    //     backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+    //   }
+      {
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.secondary.dark,
       },
@@ -55,24 +55,24 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
     const { numSelected, classes, queues } = this.props;
     return (
       <Toolbar
-        className={classNames(classes.root, {
-          [classes.highlight]: queues.selected.id,
-        })}
+        // className={classNames(classes.root, {
+        //   [classes.highlight]: queues.selected.id,
+        // })}
       >
         <div className={classes.title}>
-          {queues.selected.name ? (
+          {/* {queues.selected.name ? (
           <Typography color="inherit" variant="subheading">
               {queues.selected.name} selected
           </Typography>
-          ) : (
+          ) : ( */}
           <Typography variant="title" id="tableTitle">
             Queues
           </Typography>
-            )}
+            {/* )} */}
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          {queues.selected.id ? (
+          {/* {queues.selected.id ? (
             <Link to="/AddQueue">
               <Tooltip title="Edit">
                 <IconButton aria-label="Edit">
@@ -80,7 +80,7 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
                 </IconButton>
               </Tooltip>
             </Link>
-          ) : (
+          ) : ( */}
             <Link to="/AddQueue">
               <Tooltip title="Add Queue">
                 <IconButton aria-label="Add Queue">
@@ -88,7 +88,7 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
                 </IconButton>
               </Tooltip>
             </Link>
-            )}
+            {/* )} */}
         </div>
       </Toolbar>
     );

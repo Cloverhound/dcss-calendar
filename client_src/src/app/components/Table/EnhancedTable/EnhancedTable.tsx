@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
 
 import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
@@ -161,7 +163,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  console.log(n)
                   const isSelected = this.isSelected(n.queue.id);
                   let statusStyle = "";
                   switch (n.queue.status) {
@@ -194,7 +195,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         aria-checked={isSelected}
                         tabIndex={-1}
                         key={n.id}
-                        selected={isSelected}
+                        // selected={isSelected}
                       >
                         {/* <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
@@ -211,11 +212,15 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         <TableCell>{n.schedule.name}</TableCell>
                         <TableCell>Regular</TableCell>
                         <TableCell>ON</TableCell>
-                        {/* <TableCell>
-                        <Link to="/AddQueue">
-                          <button onClick={this.handleEdit}>EDIT</button>
-                        </Link>
-                      </TableCell> */}
+                        <TableCell>
+                          <Link to="/AddQueue">
+                            <Tooltip title="Edit">
+                              <IconButton aria-label="Edit">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Link>
+                        </TableCell>
                       </TableRow>
                     </Tooltip>
                   );

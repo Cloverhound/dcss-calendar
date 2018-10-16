@@ -18,7 +18,7 @@ const rows = [
   { id: 'scheduleName', numeric: false, disablePadding: false, label: 'Schedule Name' },
   { id: 'holidayName', numeric: false, disablePadding: false, label: 'Holiday Name' },
   { id: 'promptStatus', numeric: false, disablePadding: false, label: 'Prompt Status' },
-  // { id: 'edit', numeric: false, disablePadding: false, label: '' },
+  { id: 'edit', numeric: false, disablePadding: false, label: '' },
 ];
 
 
