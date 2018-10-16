@@ -7,8 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircle from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
+
+import { connect } from 'react-redux'
 
 import {
   BrowserRouter as Router,
@@ -44,22 +47,22 @@ const toolbarStyles = theme => createStyles({
 
 interface IPropsTableToolbar {
   numSelected: any,
+  queues: any
 }
 
 class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyles> & IPropsTableToolbar> {
   render() {
-    const { numSelected, classes } = this.props;
-
+    const { numSelected, classes, queues } = this.props;
     return (
       <Toolbar
         className={classNames(classes.root, {
-          [classes.highlight]: numSelected > 0,
+          [classes.highlight]: queues.selected.id,
         })}
       >
         <div className={classes.title}>
-          {numSelected > 0 ? (
+          {queues.selected.name ? (
           <Typography color="inherit" variant="subheading">
-              {numSelected} selected
+              {queues.selected.name} selected
           </Typography>
           ) : (
           <Typography variant="title" id="tableTitle">
@@ -69,12 +72,14 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          {numSelected > 0 ? (
-            <Tooltip title="Edit">
-              <IconButton aria-label="Edit">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+          {queues.selected.id ? (
+            <Link to="/AddQueue">
+              <Tooltip title="Edit">
+                <IconButton aria-label="Edit">
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
           ) : (
             <Link to="/AddQueue">
               <Tooltip title="Add Queue">
@@ -90,5 +95,17 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
   }
 };
 
+const mapStateToProps = state => {
+  return {
+    queues: state.queuesReducer
+  }
+}
 
-export default withStyles(toolbarStyles)(EnhancedTableToolbar);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  // requestGetQueues: () => dispatch(requestGetQueues()),
+  // addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
+  // clearSelectedQueue: () => dispatch(clearSelectedQueue()),
+})
+
+
+export default connect(mapStateToProps, null)(withStyles(toolbarStyles)(EnhancedTableToolbar));

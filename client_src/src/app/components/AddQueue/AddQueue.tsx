@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import { requestAddQueueSubmit, requestGetSchedules, handleAddQueueChange } from '../../actions/index'
+import { requestAddQueueSubmit, requestGetSchedules, handleAddQueueChange, requestAddQueueUpdate } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -66,7 +66,9 @@ interface IProps {
   requestAddQueueSubmit: any,
   requestGetSchedules: any,
   handleAddQueueChange: any,
-  addQueueReducer: any
+  addQueueReducer: any,
+  queuesReducer: any,
+  requestAddQueueUpdate: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -77,13 +79,24 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   componentWillMount = () => {
-    const { requestGetSchedules } = this.props;
-    requestGetSchedules()
+    const { requestGetSchedules, handleAddQueueChange, queuesReducer } = this.props;
+    requestGetSchedules();
+
+    if(queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
+      handleAddQueueChange({ name: "queueId", value: queuesReducer.selected.id })
+      handleAddQueueChange({ name: "queueName", value: queuesReducer.selected.name })
+      handleAddQueueChange({ name: "scheduleId", value: queuesReducer.selected.scheduleId })
+    }
   }
 
   handleFormSubmit = () => {
-    const { requestAddQueueSubmit, addQueueReducer } = this.props;
-    requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+    const { requestAddQueueSubmit, requestAddQueueUpdate, addQueueReducer } = this.props;
+    if (addQueueReducer.queueId !== 0) {
+      console.log(addQueueReducer.queueId)
+      requestAddQueueUpdate({queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+    } else {
+      requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+    }
   }
 
   handleChange = event => {
@@ -92,11 +105,12 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   render() {
-    const { classes, scheduleReducer, addQueueReducer } = this.props;
+    const { classes, scheduleReducer, addQueueReducer, queuesReducer, handleAddQueueChange } = this.props;
 
-    let menuItem = scheduleReducer.schedules.map(schedule => {
+    let menuItems = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
+
     return (
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -123,7 +137,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
                 displayEmpty
                 className={classes.selectEmpty}
               >
-                {menuItem}
+                {menuItems}
               </Select>
               <FormHelperText>Schedule Name</FormHelperText>
             </FormControl>
@@ -157,14 +171,16 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 const mapStateToProps = state => {
   return {
     scheduleReducer: state.scheduleReducer,
-    addQueueReducer: state.addQueueReducer
+    addQueueReducer: state.addQueueReducer,
+    queuesReducer: state.queuesReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   requestGetSchedules: () => (dispatch(requestGetSchedules())),
   requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj))),
-  handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj)))
+  handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj))),
+  requestAddQueueUpdate: (obj) => (dispatch(requestAddQueueUpdate(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));

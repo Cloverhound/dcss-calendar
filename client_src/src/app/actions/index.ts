@@ -22,4 +22,11 @@ export const updateTimeRanges = (obj) => ({ type: "UPDATE_TIME_RANGES", payload:
 
 export const requestAddQueueSubmit = obj => ({ type: "REQUEST_ADD_QUEUE_SUBMIT", payload: obj });
 
-export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj })
+export const requestAddQueueUpdate = obj => ({ type: "REQUEST_ADD_QUEUE_UPDATE", payload: obj });
+
+export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
+
+export const addSelectedQueue = (obj) => ({ type: "ADD_SELECTED_QUEUE", payload: obj });
+
+export const clearSelectedQueue = () => ({ type: "CLEAR_SELECTED_QUEUE" });
+

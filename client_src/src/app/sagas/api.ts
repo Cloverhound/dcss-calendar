@@ -14,6 +14,22 @@ export async function submitQueueToServer(payload) {
   }
 }
 
+export async function submitUpdateQueueToServer(payload) {
+  try {
+    let response = await fetch(`/api/Queues/${payload.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload.data)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function submitScheduleToServer(payload) {
   try {
     let response = await fetch('/api/Schedules', {

@@ -188,7 +188,7 @@ const scheduleReducer = (state: any = initialState, action) => {
         let newWeek = keys.reduce((acc, key) => {
           if (key === "id") {
             acc[key] = schedule.id
-          } else if(key === "name") {
+          } else if (key === "name") {
             acc[key] = schedule.name
           } else {
             acc.hours = { ...acc.hours, [key]: schedule[key] }
