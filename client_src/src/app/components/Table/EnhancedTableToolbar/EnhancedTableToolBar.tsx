@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircle from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 
@@ -52,7 +53,6 @@ interface IPropsTableToolbar {
 class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyles> & IPropsTableToolbar> {
   render() {
     const { numSelected, classes, queues } = this.props;
-    // if (queues.selected)
     return (
       <Toolbar
         className={classNames(classes.root, {

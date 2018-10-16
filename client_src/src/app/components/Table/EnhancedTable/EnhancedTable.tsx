@@ -8,6 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
@@ -118,8 +119,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
   handleAddQueueClick = (event, obj) => {
     const { addSelectedQueue, queues, clearSelectedQueue } = this.props;
-    
-    if(obj.id === queues.selected.id) {
+
+    if (obj.id === queues.selected.id) {
       clearSelectedQueue()
     } else {
       addSelectedQueue(obj)
@@ -143,7 +144,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     const { classes, queues } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, queues.array.length - page * rowsPerPage);
-    
+
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -180,36 +181,42 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   //     break;
                   // }
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      onClick={event => this.handleAddQueueClick(event, n.queue)}
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
+                    <Tooltip
+                      title="Select to edit"
+                      placement={'right'}
+                      enterDelay={300}
                     >
-                    {/* <TableCell padding="checkbox">
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        onClick={event => this.handleAddQueueClick(event, n.queue)}
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.id}
+                        selected={isSelected}
+                      >
+                        {/* <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell> */}
-                      <TableCell component="th" scope="row" padding="default">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div> */}
-                          <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div>
-                          {/* <div style={{ paddingLeft: "5px" }}>{n.status}</div> */}
-                        </div>
+                        <TableCell component="th" scope="row" padding="default">
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div> */}
+                            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div>
+                            {/* <div style={{ paddingLeft: "5px" }}>{n.status}</div> */}
+                          </div>
 
-                      </TableCell>
-                      <TableCell>{n.queue.name}</TableCell>
-                      <TableCell>{n.schedule.name}</TableCell>
-                      <TableCell>Regular</TableCell>
-                      <TableCell>ON</TableCell>
-                      {/* <TableCell>
+                        </TableCell>
+                        <TableCell>{n.queue.name}</TableCell>
+                        <TableCell>{n.schedule.name}</TableCell>
+                        <TableCell>Regular</TableCell>
+                        <TableCell>ON</TableCell>
+                        {/* <TableCell>
                         <Link to="/AddQueue">
                           <button onClick={this.handleEdit}>EDIT</button>
                         </Link>
                       </TableCell> */}
-                    </TableRow>
+                      </TableRow>
+                    </Tooltip>
                   );
                 })}
               {emptyRows > 0 && (
