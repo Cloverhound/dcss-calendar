@@ -3,7 +3,7 @@
     "host": "${DB_HOST}",
     "port": 1433,
     "url": "",
-    "database": "dcss-calendar",
+    "database": "${DB}",
     "password": "${DB_PASS}",
     "name": "db",
     "user": "${DB_USER}",
