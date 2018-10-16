@@ -121,7 +121,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     
     if(obj.id === queues.selected.id) {
       clearSelectedQueue()
-      console.log(obj.id,queues.selected.id, obj.id === queues.selected.id);
     } else {
       addSelectedQueue(obj)
     }
