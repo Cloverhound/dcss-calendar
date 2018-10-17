@@ -45,7 +45,7 @@ const styles = (theme) => createStyles({
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
       zIndex: 1300,
-      width '100%',
+      width: '100%',
       //width: `calc(100% - ${drawerWidth}px)`,
     },
   },
