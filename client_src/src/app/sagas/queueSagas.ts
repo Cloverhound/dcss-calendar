@@ -6,10 +6,8 @@ export function* callGetQueues() {
   
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
-    // yield put({ type: "REQUEST_FAILED", result: result.errors })
   } else {
     console.log("REQUEST_SUCCESSFUL")
     yield put({type: "REQUEST_GET_QUEUES_DONE", payload: result})
-    // yield put({ type: "REQUEST_SUCCESSFUL"})
   }
 }
