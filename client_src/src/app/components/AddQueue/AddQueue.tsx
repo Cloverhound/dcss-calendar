@@ -82,7 +82,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
     const { requestGetSchedules, handleAddQueueChange, queuesReducer } = this.props;
     requestGetSchedules();
 
-    if(queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
+    if (queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
       handleAddQueueChange({ name: "queueId", value: queuesReducer.selected.id })
       handleAddQueueChange({ name: "queueName", value: queuesReducer.selected.name })
       handleAddQueueChange({ name: "scheduleId", value: queuesReducer.selected.scheduleId })
@@ -92,8 +92,7 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   handleFormSubmit = () => {
     const { requestAddQueueSubmit, requestAddQueueUpdate, addQueueReducer } = this.props;
     if (addQueueReducer.queueId !== 0) {
-      console.log(addQueueReducer.queueId)
-      requestAddQueueUpdate({queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+      requestAddQueueUpdate({ queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     } else {
       requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     }
@@ -158,9 +157,11 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               </Select>
               <FormHelperText>Holiday Name</FormHelperText>
             </FormControl> */}
-            <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
-              Save
-            </Button>
+            <Link to="/">
+              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
+                Save
+              </Button>
+            </Link>
           </form>
         </Paper>
       </div>

@@ -28,6 +28,7 @@ export function* callUpdateAddQueue(action) {
   } else {
     console.log("REQUEST_SUCCESSFUL")
     yield put({type: "REQUEST_ADD_QUEUE_DONE", payload: result})
+    
     // yield put({ type: "REQUEST_SUCCESSFUL"})
   }
 }
