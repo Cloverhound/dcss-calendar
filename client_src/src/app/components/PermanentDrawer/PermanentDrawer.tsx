@@ -154,7 +154,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
                 <MenuIcon />
               </IconButton>
               <Typography variant="title" color="inherit" noWrap>
-                DCSS Calendar
+                Queue Settings
               </Typography>
             </Toolbar>
           </AppBar>
