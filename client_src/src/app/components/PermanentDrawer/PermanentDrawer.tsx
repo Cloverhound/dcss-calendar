@@ -44,7 +44,9 @@ const styles = (theme) => createStyles({
     position: 'absolute',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      zIndex: 1300,
+      width '100%',
+      //width: `calc(100% - ${drawerWidth}px)`,
     },
   },
   navIconHide: {
