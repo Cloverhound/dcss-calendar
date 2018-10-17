@@ -44,7 +44,9 @@ const styles = (theme) => createStyles({
     position: 'absolute',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      zIndex: 1300,
+      width: '100%',
+      //width: `calc(100% - ${drawerWidth}px)`,
     },
   },
   navIconHide: {
@@ -154,7 +156,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
                 <MenuIcon />
               </IconButton>
               <Typography variant="title" color="inherit" noWrap>
-                DCSS Calendar
+                Queue Settings
               </Typography>
             </Toolbar>
           </AppBar>
