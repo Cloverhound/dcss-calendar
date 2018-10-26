@@ -112,7 +112,6 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
 
   handleOpenClosedTime = (event) => {
     const { updateOpenClosedTime, row } = this.props
-    console.log("TIME", event.target.value)
     updateOpenClosedTime({row, name: event.target.name, value: event.target.value })
   }
 
@@ -129,6 +128,8 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, scheduleSelect, row } = this.props;
+
+
     let week = row.week
     let keys = Object.keys(week)
 
@@ -162,7 +163,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="open"
-              // value={row.open}
+              value={row.open}
               onChange={this.handleOpenClosedTime}
             />
             <TextField
@@ -174,7 +175,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="closed"
-              // value={row.closed}
+              value={row.closed}
               onChange={this.handleOpenClosedTime}
             />
           </div>

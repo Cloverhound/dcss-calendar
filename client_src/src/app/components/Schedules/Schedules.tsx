@@ -111,9 +111,8 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleScheduleSelect = event => {
-    const {updateTimeRanges} = this.props
-    console.log(event.target.value);
-    updateTimeRanges({id: event.target.value})
+    const { updateTimeRanges } = this.props
+    updateTimeRanges({ id: event.target.value })
   };
 
   handleNameInput = event => {
@@ -148,7 +147,7 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.inputContainer}>
               <FormControl className={classes.formControl}>
                 <Select
-                  // value={this.state.name}
+                  value={scheduleReducer.dropDownID}
                   onChange={this.handleScheduleSelect}
                   name="scheduleName"
                   displayEmpty

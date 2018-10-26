@@ -2,6 +2,7 @@ let initialState = {
   initialOpen: "",
   initialClosed: "",
   name: "",
+  dropDownID: 0,
   initialRow: {
     "id": 0,
     "open": "",
@@ -127,6 +128,114 @@ const findCheckedDays = state => {
   return initialRow
 }
 
+const createTimeRangeObj = (scheduleFromServer) => {
+
+  let initialRow = {
+    "id": 0,
+    "open": "",
+    "closed": "",
+    "week": {
+      "mon": {
+        "checked": false,
+        "disabled": true
+      },
+      "tues": {
+        "checked": false,
+        "disabled": true
+      },
+      "weds": {
+        "checked": false,
+        "disabled": true
+      },
+      "thurs": {
+        "checked": false,
+        "disabled": true
+      },
+      "fri": {
+        "checked": false,
+        "disabled": true
+      },
+      "sat": {
+        "checked": false,
+        "disabled": true
+      },
+      "sun": {
+        "checked": false,
+        "disabled": true
+      },
+    }
+  }
+
+
+  // let timeRange = []
+
+  let newHoursObj = Object.keys(scheduleFromServer.hours).reduce((acc, hour) => {
+    let day = hour.substring(0, hour.indexOf("_"))
+    let openClosed = hour.substring(hour.indexOf("_") + 1, hour.length)
+    if (!acc[day]) {
+      acc[day] = { [openClosed]: scheduleFromServer.hours[hour] }
+    } else {
+      acc[day] = { ...acc[day], [openClosed]: scheduleFromServer.hours[hour] }
+    }
+    return acc
+  }, {})
+
+  let hoursObj = { id_db: scheduleFromServer.id, name: scheduleFromServer.name, week: newHoursObj };
+
+  let newArray: any = [];
+
+  Object.keys(hoursObj.week).forEach(day => {
+    //push first thing in
+    if (!newArray.length) {
+      newArray.push({
+        ...initialRow,
+        id_db: hoursObj.id_db,
+        name: hoursObj.name,
+        open: hoursObj.week[day].open,
+        closed: hoursObj.week[day].closed,
+        week: {
+          ...initialRow.week,
+          [day]: {
+            checked: true,
+            disabled: false
+          }
+        }
+      })
+    }
+    //loop over the new schedules
+    for (let i = 0; i < newArray.length; i++) {
+      let newObj = newArray[i];
+      if (newObj.open === hoursObj.week[day].open &&
+        newObj.closed === hoursObj.week[day].closed) {
+        newObj.week = {
+          ...newObj.week,
+          [day]: {
+            checked: true,
+            disabled: false
+          }
+        }
+        break
+      } else if (i === newArray.length - 1) {
+        newArray.push({
+          ...initialRow,
+          id_db: hoursObj.id_db,
+          name: hoursObj.name,
+          open: hoursObj.week[day].open,
+          closed: hoursObj.week[day].closed,
+          week: {
+            ...initialRow.week,
+            [day]: {
+              checked: true,
+              disabled: false
+            }
+          }
+        })
+      }
+    }
+  })
+  return newArray
+}
+
 const scheduleReducer = (state: any = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKED':
@@ -202,12 +311,13 @@ const scheduleReducer = (state: any = initialState, action) => {
 
     case 'UPDATE_TIME_RANGES':
 
-      let found = state.schedules.find(schedule => {
+      let scheduleFromServer = state.schedules.find(schedule => {
         return schedule.id === action.payload.id
       })
 
-      console.log(found)
-      return { ...state }
+      let newTimeRange = createTimeRangeObj(scheduleFromServer)
+      // console.log(found)
+      return { ...state, timeRanges: newTimeRange, dropDownID: action.payload.id }
 
     default:
       return state
