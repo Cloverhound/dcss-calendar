@@ -18,7 +18,8 @@ import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
 import Schedules from '../Schedules/Schedules';
-import Holidays from '../Holidays/Holidays';
+import HolidayLists from '../Holidays/HolidayLists';
+import NewHolidayList from '../Holidays/NewHolidayList';
 import Prompts from '../Prompts/Prompts';
 import AddQueue from '../AddQueue/AddQueue';
 
@@ -121,7 +122,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Schedules" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Holidays">
+        <NavLink className={classes.navLink} to="/Holiday_Lists">
           <ListItem
             button
             selected={this.state.selectedIndex === 2}
@@ -191,9 +192,10 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <div className={classes.toolbar} />
             <Route exact path="/" component={Queues} />
             <Route exact path="/Schedules" component={Schedules} />
-            <Route exact path="/Holidays" component={Holidays} />
+            <Route exact path="/holiday_lists" component={HolidayLists} />
             <Route exact path="/Prompts" component={Prompts} />
             <Route exact path="/AddQueue" component={AddQueue} />
+            <Route exact path="/holiday_lists/new" component={NewHolidayList} />
           </main>
         </div>
       </Router>

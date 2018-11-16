@@ -7,24 +7,14 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import Paper from '@material-ui/core/Paper';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions/index'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
 
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 
 const styles = theme => createStyles({
   root: {

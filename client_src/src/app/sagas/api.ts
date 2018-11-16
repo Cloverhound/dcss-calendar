@@ -46,6 +46,23 @@ export async function submitScheduleToServer(payload) {
   }
 }
 
+export async function submitNewHolidayListToServer(payload) {
+  console.log('Submitting New Holiday List to Server', payload)
+  try {
+    let response = await fetch('/api/holiday_lists', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log('Failed to submit holidays to server', error)
+  }
+}
+
 export async function getAllQueues() {
   try {
     let response = await fetch('/api/Queues/getAll', {
@@ -73,5 +90,30 @@ export async function getSchedules() {
     return responseJson
   } catch (error) {
     console.log(error)
+  }
+
+}
+
+export async function getAllHolidayLists() {
+  console.log('Getting all holiday lists')
+  // try {
+  //   let response = await fetch('/api/HolidayGroups/getAll', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //     },
+  //   });
+  //   let responseJson = await response.json()
+  //   return responseJson
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  return {
+    holidayLists: [
+      {
+        name: "standard",
+        holidays: [{type: "HOLIDAY", name: "halloween"}]
+      }
+    ]
   }
 }
