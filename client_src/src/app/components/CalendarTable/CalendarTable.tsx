@@ -62,6 +62,7 @@ interface IPropsTable {
   data: any,
   columnNames: any,
   populateTable: any,
+  handleEdit: any,
   addRowLink: string,
   orderBy: string,
   title: string,
@@ -82,8 +83,9 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     populateTable()
   }
 
-  handleEdit = () => {
-    console.log("EDIT EDIT")
+  handleEdit = (id) => {
+    const { handleEdit } = this.props
+    handleEdit(id)
   }
 
   handleRequestSort = (event, property) => {
@@ -137,8 +139,14 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   return (
                     <Tooltip title="Select to edit" placement={'right'} enterDelay={300}>
                       
-                      <TableRow hover tabIndex={-1} key={index}>
+                      <TableRow 
+                          hover 
+                          tabIndex={-1} 
+                          key={index}
+                          onClick={event => this.handleEdit(row.id)}>
+
                         {tableCells}
+
                       </TableRow>
 
                     </Tooltip>

@@ -1,12 +1,15 @@
 let initialState = {
   name: "",
-  holidays: [{name: "", date: "", index: 0}] 
+  holidays: [{name: "", date: "", index: 0}],
+  active: "true" 
 }   
 
-const newHolidayListReducer = (state = initialState, action) => {
+const holidayListReducer = (state = initialState, action) => {
   
   switch (action.type) {
 
+    case 'GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL':
+      return handleGetHolidayListRequestSuccessful(state, action.payload)
     case 'CHANGE_HOLIDAY_LIST_NAME':
       return changeHolidayListName(state, action.payload)
     case 'ADD_HOLIDAY':
@@ -20,6 +23,12 @@ const newHolidayListReducer = (state = initialState, action) => {
     default:
       return state
   }
+}
+
+const handleGetHolidayListRequestSuccessful = (state, payload) => {
+  console.log('Handling getHolidayListRequestSuccessful', payload)
+  
+  return payload
 }
 
 const changeHolidayListName = (state, payload) => {
@@ -61,9 +70,9 @@ const changeHolidayDate = (state, payload) => {
 }
 
 const deleteHoliday = (state, payload) => {
-  console.log('Deleting Holiday', state, payload)
+  console.log('Deleting Holiday', JSON.stringify(state), JSON.stringify(payload))
   let holidays = [...state.holidays]
-  holidays.splice(payload.index, 1);
+  holidays.splice(payload, 1);
   holidays = updateIndexes(holidays)
 
   if(holidays.length == 0) {
@@ -75,11 +84,11 @@ const deleteHoliday = (state, payload) => {
 }
 
 const updateIndexes = (holidays) => {
-  console.log('Updating indexes', holidays)
+  console.log('Updating indexes', JSON.stringify(holidays))
   return holidays.map((holiday, i) => {
     holiday.index = i
     return holiday
   })
 }
 
-export default newHolidayListReducer
+export default holidayListReducer

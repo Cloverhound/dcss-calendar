@@ -20,6 +20,7 @@ import Queues from '../Queues/Queues';
 import Schedules from '../Schedules/Schedules';
 import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
+import EditHolidayList from '../Holidays/EditHolidayList'
 import Prompts from '../Prompts/Prompts';
 import AddQueue from '../AddQueue/AddQueue';
 
@@ -196,6 +197,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/Prompts" component={Prompts} />
             <Route exact path="/AddQueue" component={AddQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
+            <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
           </main>
         </div>
       </Router>

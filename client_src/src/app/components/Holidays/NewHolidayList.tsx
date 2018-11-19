@@ -87,7 +87,7 @@ const styles = theme => createStyles({
 interface IProps {
   changeHolidayListName: any,
   addHoliday: any,
-  newHolidayListReducer: any,
+  holidayListReducer: any,
   requestNewHolidayListSubmit: any
 }
 
@@ -103,13 +103,13 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
 
   handleFormSubmit = () => {
     console.log('handling form submit')
-    const { requestNewHolidayListSubmit, newHolidayListReducer } = this.props;
-    requestNewHolidayListSubmit(newHolidayListReducer)
+    const { requestNewHolidayListSubmit, holidayListReducer } = this.props;
+    requestNewHolidayListSubmit(holidayListReducer)
   }
 
   render() {
-    const { classes, newHolidayListReducer } = this.props;
-    const { holidays, name } = newHolidayListReducer;
+    const { classes, holidayListReducer } = this.props;
+    const { holidays, name } = holidayListReducer;
 
     console.log('rendering new holiday list', holidays, name)
     let holidayComponents = holidays.map((holiday) => {
@@ -159,7 +159,7 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
 
 const mapStateToProps = state => {
   return {
-    newHolidayListReducer: state.newHolidayListReducer
+    holidayListReducer: state.holidayListReducer
   }
 }
 

@@ -12,15 +12,11 @@ interface IProps {
 
 class HolidayLists extends React.Component<IProps> {
 
-  addHolidayList = () => {
-    console.log('Adding holiday list')
-  }
-
   createTableData = () => {
     console.log('Creating table data', this.props)
     const {holidayLists} = this.props;
     return holidayLists.map((holidayList, index) => {
-      return {id: index, name: holidayList.name}
+      return {id: holidayList.id, name: holidayList.name}
     })
   }
 
@@ -28,6 +24,11 @@ class HolidayLists extends React.Component<IProps> {
     console.log('Getting holiday lists')
     const { getHolidayLists } = this.props;
     getHolidayLists()
+  }
+
+  handleEditHolidayList = (holidayListId) => {
+    console.log('Handling Edit Holiday List', holidayListId)
+    window.location.href = '/holiday_lists/' + holidayListId + '/edit'
   }
 
   render() {
@@ -42,6 +43,7 @@ class HolidayLists extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Holiday Lists"}
           addTitle={"Add Holiday List"}
+          handleEdit={this.handleEditHolidayList}
       />
     )
   }

@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { getAllHolidayLists, submitHolidayListToServer } from './api'
+import { getAllHolidayLists, submitNewHolidayListToServer, getHolidayList, submitUpdateHolidayListToServer } from './api'
 
 export function* callNewHolidayListSubmit(action) {
   console.log('Calling Holidays Submit', action)
@@ -7,11 +7,11 @@ export function* callNewHolidayListSubmit(action) {
   const result = yield call(submitNewHolidayListToServer, action.payload)
 
   if (result.error) {
-    console.log("HOLIDAYS_SUBMIT_REQUEST_FAILED", result.error)
-    // yield put({ type: "REQUEST_FAILED", result: result.errors })
+    console.log("NEW_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+    // yield put({ type: "NEW_HOLIDAY_LIST_REQUEST_FAILED", result: result.errors })
   } else {
-    console.log("HOLIDAYS_SUBMIT_REQUEST_SUCCESSFUL")
-    // yield put({ type: "REQUEST_SUCCESSFUL"})
+    console.log("NEW_HOLIDAY_LIST_REQUEST_SUCCESSFUL")
+    // yield put({ type: "NEW_HOLIDAY_LIST_REQUEST_SUCCESSFUL"})
   }
 }
 
@@ -25,5 +25,28 @@ export function* callGetHolidayLists() {
     yield put({ type: "GET_HOLIDAY_LISTS_REQUEST_SUCCESSFUL", payload: result})
   }
 
+}
+
+export function* callGetHolidayList(action) {
+  const result = yield call(getHolidayList, action.payload)
+
+  if (result.error) {
+    console.log("GET_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+  } else {
+    console.log("GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
+    yield put({ type: "GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+  }
+
+}
+
+export function* callUpdateHolidayListSubmit(action) {
+  const result = yield call(submitUpdateHolidayListToServer, action.payload)
+
+  if (result.error) {
+    console.log("SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+  } else {
+    console.log("SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
+    yield put({ type: "SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+  } 
 }
 

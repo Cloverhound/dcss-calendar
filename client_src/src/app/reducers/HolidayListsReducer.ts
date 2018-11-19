@@ -7,7 +7,7 @@ const holidayListsReducer = (state=initialState, action) => {
     case 'GET_HOLIDAY_LISTS_REQUEST_SUCCESSFUL':
       console.log('Handling action: GET_HOLIDAYS_LISTS_REQUEST_SUCCESSFUL', action.payload)
       let holidayLists = []
-      let loadedHolidayLists = action.payload.holidayLists
+      let loadedHolidayLists = action.payload
       if(loadedHolidayLists && loadedHolidayLists.length > 0 ) {
           holidayLists = loadedHolidayLists
       }
