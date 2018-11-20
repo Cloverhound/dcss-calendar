@@ -65,7 +65,7 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
     let holidayDate = <TextField
       id="holiday-date"
       type="date"
-      value={date}
+      value={date.split('T')[0]}
       onChange={this.handleChangeHolidayDate}
       className={classes.holidayDate}
       InputLabelProps={{

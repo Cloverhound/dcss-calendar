@@ -40,4 +40,5 @@ export const changeHolidayDate              = obj => ({type: "CHANGE_HOLIDAY_DAT
 export const deleteHoliday                  = obj => ({type: "DELETE_HOLIDAY", payload: obj});
 export const requestNewHolidayListSubmit    = obj => ({type: "REQUEST_NEW_HOLIDAY_LIST_SUBMIT", payload: obj });
 export const requestUpdateHolidayListSubmit = obj => ({type: "REQUEST_UPDATE_HOLIDAY_LIST_SUBMIT", payload: obj });
+export const requestDeleteHolidayList       = obj => ({type: "REQUEST_DELETE_HOLIDAY_LIST", payload: obj });
 

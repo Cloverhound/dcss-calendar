@@ -8,8 +8,7 @@ import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 
 import HolidayRow from './HolidayRow';
-import { addHoliday, changeHolidayListName, requestUpdateHolidayListSubmit } from '../../actions';
-import { getHolidayList } from '../../sagas/api';
+import { addHoliday, changeHolidayListName, requestUpdateHolidayListSubmit, requestGetHolidayList } from '../../actions';
 
 
 const styles = theme => createStyles({
@@ -91,7 +90,7 @@ interface IProps {
   holidayListReducer: any,
   requestUpdateHolidayListSubmit: any,
   match: any,
-  getHolidayList: any
+  requestGetHolidayList: any
 }
 
 class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -112,8 +111,8 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
 
   componentWillMount () {
     const { id } = this.props.match.params
-    const { getHolidayList } = this.props;
-    getHolidayList({id})
+    const { requestGetHolidayList } = this.props;
+    requestGetHolidayList({id})
   }
 
   render() {
@@ -165,7 +164,7 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
   }
 }
 
-
+ 
 const mapStateToProps = state => {
   return {
     holidayListReducer: state.holidayListReducer
@@ -177,7 +176,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
   requestUpdateHolidayListSubmit: (obj) => (dispatch(requestUpdateHolidayListSubmit(obj))),
-  getHolidayList: (obj) => (dispatch(getHolidayList(obj)))
+  requestGetHolidayList: (obj) => (dispatch(requestGetHolidayList(obj)))
 })
 
 

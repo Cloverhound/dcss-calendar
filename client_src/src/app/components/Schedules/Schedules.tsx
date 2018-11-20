@@ -32,12 +32,11 @@ class Schedules extends React.Component<IProps> {
     getSchedules()
   }
 
-  // handleEditHolidayList = (id) => {
-  //   const { history } = this.props
-  //   console.log('Handling Edit', this.props)
-  //   history.push(`/schedule/${id}/edit`) 
-  //   // window.location.href = '/holiday_lists/' + holidayListId + '/edit'
-  // }
+  handleDeleteHolidayList = (holidayListId) => {
+    console.log('Handling Delete Holiday List', holidayListId)
+    // const { deleteHolidayList } = this.props
+    // deleteHolidayList(holidayListId)
+  }
 
   render() {
     let data = this.createTableData()
@@ -52,6 +51,8 @@ class Schedules extends React.Component<IProps> {
           title={"Schedules"}
           addTitle={"Add Schedule"}
           routeName={"schedules"}
+          handleDelete={this.handleDeleteHolidayList}
+          deleteButtonText={"Delete Schedule"}
       />
     )
   }
