@@ -96,7 +96,7 @@ interface IProps {
   updateTimeRanges: any
 }
 
-class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
+class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
     const { requestGetSchedules } = this.props;
@@ -208,4 +208,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewSchedule));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditSchedule));

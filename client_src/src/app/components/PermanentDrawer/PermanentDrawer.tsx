@@ -18,12 +18,13 @@ import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
 import Schedules from '../Schedules/Schedules';
+import NewSchedule from '../Schedules/NewSchedule';
+import EditSchedule from '../Schedules/EditSchedule';
 import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
 import EditHolidayList from '../Holidays/EditHolidayList'
 import Prompts from '../Prompts/Prompts';
 import AddQueue from '../AddQueue/AddQueue';
-import NewSchedule from '../Schedules/NewSchedule'
 
 import {
   BrowserRouter as Router,
