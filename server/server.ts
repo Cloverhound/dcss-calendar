@@ -5,6 +5,23 @@ var boot = require('loopback-boot');
 var app = module.exports = loopback();
 require('dotenv').config();
 
+
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+var logger = function(req, res, next) {
+  let body = JSON.stringify(req.body, null, 2)
+  if(Object.keys(body).length > 0 ) {
+    console.log('http body', body);
+  }
+  
+  next(); // Passing the request to the next handler in the stack.
+}
+app.use(logger);
+
+
+
 app.start = function() {
   // start the web server
   return app.listen(function() {

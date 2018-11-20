@@ -18,9 +18,12 @@ import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
 import Schedules from '../Schedules/Schedules';
-import Holidays from '../Holidays/Holidays';
+import HolidayLists from '../Holidays/HolidayLists';
+import NewHolidayList from '../Holidays/NewHolidayList';
+import EditHolidayList from '../Holidays/EditHolidayList'
 import Prompts from '../Prompts/Prompts';
 import AddQueue from '../AddQueue/AddQueue';
+import NewSchedule from '../Schedules/NewSchedule'
 
 import {
   BrowserRouter as Router,
@@ -113,7 +116,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Queues" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Schedules">
+        <NavLink className={classes.navLink} to="/schedules">
           <ListItem
             button
             selected={this.state.selectedIndex === 1}
@@ -121,7 +124,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Schedules" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Holidays">
+        <NavLink className={classes.navLink} to="/Holiday_Lists">
           <ListItem
             button
             selected={this.state.selectedIndex === 2}
@@ -190,10 +193,13 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <Route exact path="/" component={Queues} />
-            <Route exact path="/Schedules" component={Schedules} />
-            <Route exact path="/Holidays" component={Holidays} />
+            <Route exact path="/schedules" component={Schedules} />
+            <Route exact path="/schedule/new" component={NewSchedule} />
+            <Route exact path="/holiday_lists" component={HolidayLists} />
             <Route exact path="/Prompts" component={Prompts} />
             <Route exact path="/AddQueue" component={AddQueue} />
+            <Route exact path="/holiday_lists/new" component={NewHolidayList} />
+            <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
           </main>
         </div>
       </Router>

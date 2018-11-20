@@ -1,7 +1,8 @@
-var server = require('./server');
+var server = require('./server.ts');
 var ds = server.dataSources.db;
-var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday'];
-// var lbTables = ['Schedule', 'Holiday'];
+var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday', 'HolidayList'];
+
+
 ds.automigrate(lbTables, function(er) {
   if (er) throw er;
   console.log('Loopback tables [' + lbTables + '] created in ', ds.adapter.name);

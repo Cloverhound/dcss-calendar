@@ -120,13 +120,13 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
           </div>
           <form className={classes.form}>
             <FormControl>
-              <Input
+              {/* <Input
                 value={addQueueReducer.queueName}
                 onChange={this.handleChange}
                 name="queueName"
                 placeholder="Queue Name"
                 autoFocus={true}
-              />
+              /> */}
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select

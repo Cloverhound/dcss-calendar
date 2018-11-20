@@ -1,0 +1,26 @@
+{
+    "name": "HolidayList",
+    "plural": "HolidayLists",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+      "name": {
+        "type": "string",
+        "required": true
+      }
+    },
+    "validations": [],
+    "relations": {
+        "holidays": {
+            "type": "hasMany",
+            "model": "Holiday",
+            "foreignKey": "holidayListId" 
+        }
+    },
+    "acls": [],
+    "methods": {}
+  }
+  

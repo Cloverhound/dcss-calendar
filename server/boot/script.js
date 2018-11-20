@@ -3,4 +3,6 @@
 module.exports = function(app) {
   var Schedule = app.models.Schedule;
   var Queue = app.models.Queue;
+  var Holiday = app.models.Holiday;
+  var HolidayList = app.models.HolidayList;
 };

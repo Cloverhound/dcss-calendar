@@ -14,13 +14,16 @@
     "date": {
       "type": "date",
       "required": true
-    },
-    "timeRangeId": {
-      "type": "number"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "holidayList": {
+      "type": "belongsTo",
+      "model": "HolidayList",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
