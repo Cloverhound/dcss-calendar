@@ -124,8 +124,6 @@ class Schedules extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    console.log("this.props", this.props);
-    
     const { classes, scheduleReducer } = this.props;
     let timeRangesComponent = scheduleReducer.timeRanges.map((el, i) => {
       return <ScheduleSelect row={el} open={el.open} closed={el.closed}/>

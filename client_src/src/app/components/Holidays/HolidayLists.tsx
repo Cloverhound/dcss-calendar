@@ -13,7 +13,7 @@ interface IProps {
 class HolidayLists extends React.Component<IProps> {
 
   createTableData = () => {
-    console.log('Creating table data', this.props)
+    console.log('Creating table data')
     const {holidayLists} = this.props;
     return holidayLists.map((holidayList, index) => {
       return {id: holidayList.id, name: holidayList.name}

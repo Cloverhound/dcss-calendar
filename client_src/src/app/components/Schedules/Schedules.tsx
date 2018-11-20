@@ -12,8 +12,13 @@ interface IProps {
 
 class Schedules extends React.Component<IProps> {
 
+  // Note: Can remove after React router is moved to Redux/ redux-saga
+  componentDidMount = () => {
+    this.getSchedules()
+  }
+
   createTableData = () => {
-    console.log('Creating table data', this.props)
+    console.log('Creating table data')
     const {schedules} = this.props;
     return schedules.map((schedule, index) => {
       return {id: schedule.id, name: schedule.name}
