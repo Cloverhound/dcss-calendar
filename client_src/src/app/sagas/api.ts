@@ -149,7 +149,7 @@ export async function deleteHolidayList(payload) {
   console.log('Deleting holiday list -- ', payload)
   try {
     let response = await fetch('/api/HolidayLists/' + payload + '/deleteWithHolidays', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
       },

@@ -41,7 +41,7 @@ const addHoliday = (state) => {
   console.log('Adding holiday', state)
   let holidays = [...state.holidays]
   let addIndex = holidays.length
-  holidays.push({name: "", date: "", index: addIndex})
+  holidays.push({name: "", date: "", index: addIndex, active: true})
   return {...state, holidays}
 }
 
