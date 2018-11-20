@@ -115,14 +115,19 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
     return (
       <Paper className={classes.root}>
-        <CalendarTableToolbar numSelected={selected.length} addRowLink={addRowLink} title={title} addTitle={addTitle}/>
+        <CalendarTableToolbar 
+          numSelected={selected.length} 
+          addRowLink={addRowLink} 
+          title={title} 
+          addTitle={addTitle}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <CalendarTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={this.handleRequestSort}
-              columnNames = {columnNames}
+              columnNames={columnNames}
             />
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
@@ -138,17 +143,13 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   
                   return (
                     <Tooltip title="Select to edit" placement={'right'} enterDelay={300}>
-                      
                       <TableRow 
                           hover 
                           tabIndex={-1} 
                           key={index}
                           onClick={event => this.handleEdit(row.id)}>
-
                         {tableCells}
-
                       </TableRow>
-
                     </Tooltip>
                   );
                 })}

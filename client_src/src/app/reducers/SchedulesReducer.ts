@@ -288,26 +288,27 @@ const scheduleReducer = (state: any = initialState, action) => {
         }
         return timeRange
       })
-
+      
       return { ...state, timeRanges: newOpenClosed }
 
     case 'REQUEST_GET_SCHEDULES_DONE':
-      let newSchedule = action.payload.map(schedule => {
-        let keys = Object.keys(schedule)
-        let newWeek = keys.reduce((acc, key) => {
-          if (key === "id") {
-            acc[key] = schedule.id
-          } else if (key === "name") {
-            acc[key] = schedule.name
-          } else {
-            acc.hours = { ...acc.hours, [key]: schedule[key] }
-          }
-          return acc
-        }, { hours: {} })
-        return newWeek
-      })
+    
+      // let newSchedule = action.payload.map(schedule => {
+      //   let keys = Object.keys(schedule)
+      //   let newWeek = keys.reduce((acc, key) => {
+      //     if (key === "id") {
+      //       acc[key] = schedule.id
+      //     } else if (key === "name") {
+      //       acc[key] = schedule.name
+      //     } else {
+      //       acc.hours = { ...acc.hours, [key]: schedule[key] }
+      //     }
+      //     return acc
+      //   }, { hours: {} })
+      //   return newWeek
+      // })
 
-      return { ...state, schedules: newSchedule }
+      return { ...state, schedules: action.payload }
 
     case 'UPDATE_TIME_RANGES':
 

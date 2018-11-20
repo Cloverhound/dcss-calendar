@@ -101,7 +101,9 @@ interface IProps {
   row: any,
   index: any,
   deleteRow: any,
-  updateOpenClosedTime: any
+  updateOpenClosedTime: any,
+  open: any,
+  closed: any
 }
 
 class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -127,9 +129,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
   }
 
   render() {
-    const { classes, scheduleSelect, row } = this.props;
-
-
+    const { classes, scheduleSelect, row, open, closed } = this.props;
     let week = row.week
     let keys = Object.keys(week)
 
@@ -163,7 +163,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="open"
-              value={row.open}
+              value={open}
               onChange={this.handleOpenClosedTime}
             />
             <TextField
@@ -175,7 +175,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
                 shrink: true,
               }}
               name="closed"
-              value={row.closed}
+              value={closed}
               onChange={this.handleOpenClosedTime}
             />
           </div>

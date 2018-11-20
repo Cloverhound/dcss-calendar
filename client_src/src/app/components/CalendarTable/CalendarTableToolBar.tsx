@@ -50,7 +50,6 @@ class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          
           <Link to={addRowLink}>
             <Tooltip title={addTitle}>
               <IconButton aria-label={addTitle}>
@@ -58,7 +57,6 @@ class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
               </IconButton>
             </Tooltip>
           </Link>
-           
         </div>
       </Toolbar>
     );
