@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import CalendarTable from '../CalendarTable/CalendarTable'
 import { requestGetHolidayLists, requestDeleteHolidayList } from '../../actions'
 
-
 interface IProps {
   holidayLists: any,
   getHolidayLists: any,
@@ -14,7 +13,7 @@ interface IProps {
 class HolidayLists extends React.Component<IProps> {
 
   createTableData = () => {
-    console.log('Creating table data', this.props)
+    console.log('Creating table data')
     const {holidayLists} = this.props;
     return holidayLists.map((holidayList, index) => {
       return {id: holidayList.id, name: holidayList.name}
@@ -25,11 +24,6 @@ class HolidayLists extends React.Component<IProps> {
     console.log('Getting holiday lists')
     const { getHolidayLists } = this.props
     getHolidayLists()
-  }
-
-  handleEditHolidayList = (holidayListId) => {
-    console.log('Handling Edit Holiday List', holidayListId)
-    window.location.href = '/holiday_lists/' + holidayListId + '/edit'
   }
 
   handleDeleteHolidayList = (holidayListId) => {
@@ -50,7 +44,7 @@ class HolidayLists extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Holiday Lists"}
           addTitle={"Add Holiday List"}
-          handleEdit={this.handleEditHolidayList}
+          routeName={"holiday_lists"}
           handleDelete={this.handleDeleteHolidayList}
           deleteButtonText={"Delete Holiday List"}
       />
