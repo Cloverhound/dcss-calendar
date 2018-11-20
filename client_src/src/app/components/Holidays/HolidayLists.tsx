@@ -9,7 +9,7 @@ interface IProps {
   holidayLists: any,
   getHolidayLists: any
 }
-
+ 
 class HolidayLists extends React.Component<IProps> {
 
   createTableData = () => {

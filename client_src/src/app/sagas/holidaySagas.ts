@@ -28,7 +28,9 @@ export function* callGetHolidayLists() {
 }
 
 export function* callGetHolidayList(action) {
+  console.log('Calling get holiday list method', action)
   const result = yield call(getHolidayList, action.payload)
+  console.log('result', result)
 
   if (result.error) {
     console.log("GET_HOLIDAY_LIST_REQUEST_FAILED", result.error)

@@ -46,23 +46,6 @@ export async function submitScheduleToServer(payload) {
   }
 }
 
-export async function submitNewHolidayListToServer(payload) {
-  console.log('Submitting New Holiday List to Server', JSON.stringify(payload))
-  try {
-    let response = await fetch('/api/holidayLists/createWithHolidays', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    });
-    let responseJson = await response.json()
-    return responseJson
-  } catch (error) {
-    console.log('Failed to submit holidays to server', error)
-  }
-}
-
 export async function getAllQueues() {
   try {
     let response = await fetch('/api/Queues/getAll', {
@@ -96,7 +79,6 @@ export async function getSchedules() {
 
 export async function getAllHolidayLists() {
   console.log('Getting all holiday lists')
-  let filter = JSON.stringify({include:' holidays'})
   try {
     let response = await fetch('/api/HolidayLists', {
       method: 'GET',
@@ -111,8 +93,25 @@ export async function getAllHolidayLists() {
   }
 }
 
+export async function submitNewHolidayListToServer(payload) {
+  console.log('Submitting New Holiday List to Server', JSON.stringify(payload))
+  try {
+    let response = await fetch('/api/holidayLists/createWithHolidays', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log('Failed to submit holidays to server', error)
+  }
+}
+
 export async function getHolidayList(payload) {
-  console.log('Getting holiday list', payload.id)
+  console.log('Getting holiday list -- ', payload.id)
   try {
     let response = await fetch('/api/HolidayLists/' + payload.id + '?filter=%7B%22include%22%3A%22holidays%22%7D', {
       method: 'GET',
@@ -121,11 +120,10 @@ export async function getHolidayList(payload) {
       },
     });
     let responseJson = await response.json()
+    console.log('Response json', responseJson)
     return responseJson
   } catch (error) {
-    console.log('Failed to get holidayList', payload.id)
-    console.log(error)
-    return {error: "error"}
+    console.log('Failed to get holidayList', payload.id, error)
   }
 }
 
