@@ -22,8 +22,4 @@ defaultConfiguration.ts
 package-lock.json
 .vscode
 .env
-client_src/dist/js/vendor.bundle.js
-client_src/dist/js/vendor.bundle.js.map
-client_src/dist/js/app.bundle.js
-client_src/dist/js/app.bundle.js.map
-client_src/dist/index.html
+client_src/dist
