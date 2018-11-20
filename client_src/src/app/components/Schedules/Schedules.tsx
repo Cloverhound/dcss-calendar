@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { connect } from 'react-redux'
-
 import CalendarTable from '../CalendarTable/CalendarTable'
+
+import { connect } from 'react-redux'
 import { requestGetSchedules } from '../../actions'
 
 
 interface IProps {
   schedules: any,
-  getSchedules: any
+  getSchedules: any,
+  history: any
 }
 
 class Schedules extends React.Component<IProps> {
@@ -31,10 +32,12 @@ class Schedules extends React.Component<IProps> {
     getSchedules()
   }
 
-  handleEditHolidayList = (holidayListId) => {
-    console.log('Handling Edit Holiday List', holidayListId)
-    // window.location.href = '/holiday_lists/' + holidayListId + '/edit'
-  }
+  // handleEditHolidayList = (id) => {
+  //   const { history } = this.props
+  //   console.log('Handling Edit', this.props)
+  //   history.push(`/schedule/${id}/edit`) 
+  //   // window.location.href = '/holiday_lists/' + holidayListId + '/edit'
+  // }
 
   render() {
     let data = this.createTableData()
@@ -48,7 +51,7 @@ class Schedules extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Schedules"}
           addTitle={"Add Schedule"}
-          handleEdit={this.handleEditHolidayList}
+          routeName={"schedules"}
       />
     )
   }

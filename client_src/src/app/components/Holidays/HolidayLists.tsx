@@ -26,10 +26,10 @@ class HolidayLists extends React.Component<IProps> {
     getHolidayLists()
   }
 
-  handleEditHolidayList = (holidayListId) => {
-    console.log('Handling Edit Holiday List', holidayListId)
-    window.location.href = '/holiday_lists/' + holidayListId + '/edit'
-  }
+  // handleEditHolidayList = (holidayListId) => {
+  //   console.log('Handling Edit Holiday List', holidayListId)
+  //   window.location.href = '/holiday_lists/' + holidayListId + '/edit'
+  // }
 
   render() {
     let data = this.createTableData()
@@ -43,7 +43,8 @@ class HolidayLists extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Holiday Lists"}
           addTitle={"Add Holiday List"}
-          handleEdit={this.handleEditHolidayList}
+          routeName={"holiday_lists"}
+          // handleEdit={this.handleEditHolidayList}
       />
     )
   }
