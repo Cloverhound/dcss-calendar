@@ -16,8 +16,7 @@ module.exports = function(HolidayList) {
           {arg: 'holidayList', type: 'any', http: {source: 'body'}}
         ],
         returns: {arg: 'status', type: 'string'},
-      }
-    )
+      })
     HolidayList.remoteMethod(
       'deleteWithHolidays', {
         http: {path: '/:id/deleteWithHolidays', verb: 'delete'},
@@ -25,8 +24,7 @@ module.exports = function(HolidayList) {
           {arg: 'id', type: 'number', required: true}
         ],
         returns: {arg: 'status', type: 'string'},
-      }
-    )
+      })
 
 
     HolidayList.createWithHolidays = function(holidayListParameter, cb) {
@@ -97,40 +95,40 @@ module.exports = function(HolidayList) {
           cb(null, createHolidaysResult)
         })
       })
+    }
 
 
       
-      HolidayList.deleteWithHolidays = function(id, cb) {
-        console.log('Deleting Holiday List With Holidays', id)
-          
-        HolidayList.findById(id, function(findErr, holidayList) {
-          if(findErr) {
-            console.log('Failed to find holiday list to delete', findErr)
-            cb(null, findErr)
+    HolidayList.deleteWithHolidays = function(id, cb) {
+      console.log('Deleting Holiday List With Holidays', id)
+        
+      HolidayList.findById(id, function(findErr, holidayList) {
+        if(findErr) {
+          console.log('Failed to find holiday list to delete', findErr)
+          cb(null, findErr)
+          return
+        }
+
+        console.log('Deleting holidays of holiday list', holidayList)
+        holidayList.holidays.destroyAll(function(destroyHolsErr) {
+          if(destroyHolsErr) {
+            console.log('Failed to destroy holidays of holiday list', destroyHolsErr)
+            cb(null, destroyHolsErr)
             return
           }
-  
-          console.log('Deleting holidays of holiday list', holidayList)
-          holidayList.holidays.destroyAll(function(destroyHolsErr) {
-            if(destroyHolsErr) {
-              console.log('Failed to destroy holidays of holiday list', destroyHolsErr)
-              cb(null, destroyHolsErr)
+
+          holidayList.destroy(function(destroyHolListErr) {
+            if(destroyHolListErr) {
+              console.log('Failed to destroy holiday list', destroyHolListErr)
+              cb(null, destroyHolListErr)
               return
             }
-  
-            holidayList.destroy(function(destroyHolListErr) {
-              if(destroyHolListErr) {
-                console.log('Failed to destroy holiday list', destroyHolListErr)
-                cb(null, destroyHolListErr)
-                return
-              }
-              cb(null, "SUCCESS")
-            })
+            cb(null, "SUCCESS")
           })
         })
-      }
-
+      })
     }
+
 }
 
 function createHolidays(holidayListDb, holidays) {
@@ -154,7 +152,6 @@ function createHoliday(createdHolidayList, holidayParameter) {
         console.log('Successfully created holiday', createdHoliday)
         resolve(createdHoliday)
       }
-
     })
   })
 }
