@@ -2,12 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
-import { requestGetHolidayLists } from '../../actions'
+import { requestGetHolidayLists, requestDeleteHolidayList } from '../../actions'
 
 
 interface IProps {
   holidayLists: any,
-  getHolidayLists: any
+  getHolidayLists: any,
+  deleteHolidayList: any
 }
  
 class HolidayLists extends React.Component<IProps> {
@@ -20,15 +21,21 @@ class HolidayLists extends React.Component<IProps> {
     })
   }
 
-  getHolidayLists = () => {
+  handleGetHolidayLists = () => {
     console.log('Getting holiday lists')
-    const { getHolidayLists } = this.props;
+    const { getHolidayLists } = this.props
     getHolidayLists()
   }
 
   handleEditHolidayList = (holidayListId) => {
     console.log('Handling Edit Holiday List', holidayListId)
     window.location.href = '/holiday_lists/' + holidayListId + '/edit'
+  }
+
+  handleDeleteHolidayList = (holidayListId) => {
+    console.log('Handling Delete Holiday List', holidayListId)
+    const { deleteHolidayList } = this.props
+    deleteHolidayList(holidayListId)
   }
 
   render() {
@@ -38,12 +45,14 @@ class HolidayLists extends React.Component<IProps> {
       <CalendarTable 
           data={data} 
           addRowLink={"/holiday_lists/new"} 
-          populateTable={this.getHolidayLists} 
+          populateTable={this.handleGetHolidayLists} 
           orderBy={"name"} 
           columnNames={columnNames}
           title={"Holiday Lists"}
           addTitle={"Add Holiday List"}
           handleEdit={this.handleEditHolidayList}
+          handleDelete={this.handleDeleteHolidayList}
+          deleteButtonText={"Delete Holiday List"}
       />
     )
   }
@@ -57,8 +66,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // addHolidayList: () => dispatch(addHolidayList()),
-  getHolidayLists: () => dispatch(requestGetHolidayLists())
+  getHolidayLists: () => dispatch(requestGetHolidayLists()),
+  deleteHolidayList: (obj) => dispatch(requestDeleteHolidayList(obj))
 })
 
 

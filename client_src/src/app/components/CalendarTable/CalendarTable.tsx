@@ -9,6 +9,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import CalendarTableHead from './CalendarTableHead';
 import CalendarTableToolbar from './CalendarTableToolbar';
@@ -48,6 +50,10 @@ const styles = theme => createStyles({
   tableWrapper: {
     overflowX: 'auto',
   },
+  addButton: {
+    display: 'flex',
+    alignItems: 'center',
+  },
 });
 
 interface IStateTable {
@@ -63,7 +69,9 @@ interface IPropsTable {
   columnNames: any,
   populateTable: any,
   handleEdit: any,
+  handleDelete: any,
   addRowLink: string,
+  deleteButtonText: string,
   orderBy: string,
   title: string,
   addTitle: string
@@ -109,7 +117,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
 
   render() {
-    const { classes, data, columnNames, addRowLink, title, addTitle } = this.props;
+    const { classes, data, columnNames, addRowLink, title, addTitle, handleDelete, deleteButtonText } = this.props;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -135,7 +143,20 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     let tableCell = <TableCell>{row[columnName]}</TableCell>
                     tableCells.push(tableCell)
                   }
-                  
+
+                  let deleteTableCell = (
+                      <TableCell>
+                          <div className={classes.addButton}>
+                            <Tooltip title="Delete">
+                              <IconButton onClick={event => handleDelete(row.id)} aria-label={deleteButtonText}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                      </TableCell>
+                  )
+                  tableCells.push(deleteTableCell)
+
                   return (
                     <Tooltip title="Select to edit" placement={'right'} enterDelay={300}>
                       

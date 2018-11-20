@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { getAllHolidayLists, submitNewHolidayListToServer, getHolidayList, submitUpdateHolidayListToServer } from './api'
+import { getAllHolidayLists, submitNewHolidayListToServer, getHolidayList, submitUpdateHolidayListToServer, deleteHolidayList } from './api'
 
 export function* callNewHolidayListSubmit(action) {
   console.log('Calling Holidays Submit', action)
@@ -49,6 +49,18 @@ export function* callUpdateHolidayListSubmit(action) {
   } else {
     console.log("SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
     yield put({ type: "SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+  } 
+}
+
+
+export function* callDeleteHolidayList(action) {
+  const result = yield call(deleteHolidayList, action.payload)
+
+  if (result.error) {
+    console.log("DELETE_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+  } else {
+    console.log("DELETE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
+    yield put({ type: "DELETE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
   } 
 }
 

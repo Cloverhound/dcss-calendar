@@ -1,8 +1,8 @@
-import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
+import { takeLatest, all } from 'redux-saga/effects'
 import { callScheduleSubmit, callGetSchedules } from './scheduleSagas'
 import { callGetQueues } from './queueSagas'
 import { callAddQueueSubmit, callUpdateAddQueue } from './addQueueSagas'
-import { callNewHolidayListSubmit, callGetHolidayLists, callGetHolidayList, callUpdateHolidayListSubmit } from './holidaySagas'
+import { callNewHolidayListSubmit, callGetHolidayLists, callGetHolidayList, callUpdateHolidayListSubmit, callDeleteHolidayList } from './holidaySagas'
 
 export default function* root() {
   yield all([
@@ -15,5 +15,6 @@ export default function* root() {
     yield takeLatest('REQUEST_GET_HOLIDAY_LISTS', callGetHolidayLists),
     yield takeLatest('REQUEST_GET_HOLIDAY_LIST', callGetHolidayList),
     yield takeLatest('REQUEST_UPDATE_HOLIDAY_LIST_SUBMIT', callUpdateHolidayListSubmit),
+    yield takeLatest('REQUEST_DELETE_HOLIDAY_LIST', callDeleteHolidayList),
   ])
 }

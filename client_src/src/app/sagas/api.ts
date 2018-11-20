@@ -143,3 +143,21 @@ export async function submitUpdateHolidayListToServer(payload) {
     console.log(error)
   }
 }
+
+
+export async function deleteHolidayList(payload) {
+  console.log('Deleting holiday list -- ', payload)
+  try {
+    let response = await fetch('/api/HolidayLists/' + payload + '/deleteWithHolidays', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    console.log('Failed to get holidayList', payload.id, error)
+  }
+}
