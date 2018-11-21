@@ -1,6 +1,16 @@
 import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
 import { postSchedules, getSchedules, putSchedules, deleteSchedules } from './api'
 
+export function* callGetSchedules() {
+  const result = yield call(getSchedules)
+  if (result.error) {
+    console.log("REQUEST_FAILED", result.error)
+  } else {
+    console.log("REQUEST_SUCCESSFUL")
+    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
+  }
+}
+
 export function* callPostSchedule(action) {
   const { timeRanges, name } = action.payload
   let newTimeRange = {};
@@ -21,17 +31,8 @@ export function* callPostSchedule(action) {
     console.log("REQUEST_FAILED", result.error)
   } else {
     console.log("REQUEST_SUCCESSFUL")
+    yield call(callGetSchedules)
     yield put({ type: "RESET_TIME_RANGES" })
-  }
-}
-
-export function* callGetSchedules() {
-  const result = yield call(getSchedules)
-  if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
-  } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
   }
 }
 
@@ -55,7 +56,8 @@ export function* callPutSchedule(action) {
     console.log("REQUEST_FAILED", result.error)
   } else {
     console.log("REQUEST_SUCCESSFUL")
-    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
+    yield call(callGetSchedules)
+    // yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
   }
 }
 
