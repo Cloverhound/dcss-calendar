@@ -93,19 +93,19 @@ interface IProps {
   requestScheduleSubmit: any,
   updateNameField: any,
   requestGetSchedules: any,
-  updateTimeRanges: any
+  updateTimeRanges: any,
+  match: any
 }
 
 class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { requestGetSchedules } = this.props;
-    requestGetSchedules()
+    this.handleGetSchedule(this.props.match.params.id)
   }
 
-  handleScheduleSelect = event => {
+  handleGetSchedule = (id) => {
     const { updateTimeRanges } = this.props
-    updateTimeRanges({ id: event.target.value })
+    updateTimeRanges({ id })
   };
 
   handleNameInput = event => {
@@ -132,6 +132,9 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
     let menuItem = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
+
+    console.log("this.props.scheduleReducer", this.props.scheduleReducer);
+    
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -159,7 +162,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
                   value={this.props.scheduleReducer.name}
                   onChange={this.handleNameInput}
                   name="newScheduleName"
-                  placeholder="Add Name"
+                  placeholder="Edit Name"
                   autoFocus={true}
                 />
               </FormControl>

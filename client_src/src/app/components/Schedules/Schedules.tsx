@@ -44,7 +44,7 @@ class Schedules extends React.Component<IProps> {
     return (
       <CalendarTable 
           data={data} 
-          basePath={"schedule"} 
+          basePath={"schedules"} 
           populateTable={this.getSchedules} 
           orderBy={"name"} 
           columnNames={columnNames}

@@ -166,9 +166,6 @@ const createTimeRangeObj = (scheduleFromServer) => {
     }
   }
 
-
-  // let timeRange = []
-
   let newHoursObj = Object.keys(scheduleFromServer.hours).reduce((acc, hour) => {
     let day = hour.substring(0, hour.indexOf("_"))
     let openClosed = hour.substring(hour.indexOf("_") + 1, hour.length)
@@ -292,33 +289,31 @@ const scheduleReducer = (state: any = initialState, action) => {
       return { ...state, timeRanges: newOpenClosed }
 
     case 'REQUEST_GET_SCHEDULES_DONE':
-    
-      // let newSchedule = action.payload.map(schedule => {
-      //   let keys = Object.keys(schedule)
-      //   let newWeek = keys.reduce((acc, key) => {
-      //     if (key === "id") {
-      //       acc[key] = schedule.id
-      //     } else if (key === "name") {
-      //       acc[key] = schedule.name
-      //     } else {
-      //       acc.hours = { ...acc.hours, [key]: schedule[key] }
-      //     }
-      //     return acc
-      //   }, { hours: {} })
-      //   return newWeek
-      // })
-
-      return { ...state, schedules: action.payload }
-
-    case 'UPDATE_TIME_RANGES':
-
-      let scheduleFromServer = state.schedules.find(schedule => {
-        return schedule.id === action.payload.id
+      let newSchedule = action.payload.map(schedule => {
+        let keys = Object.keys(schedule)
+        let newWeek = keys.reduce((acc, key) => {
+          if (key === "id") {
+            acc[key] = schedule.id
+          } else if (key === "name") {
+            acc[key] = schedule.name
+          } else {
+            acc.hours = { ...acc.hours, [key]: schedule[key] }
+          }
+          return acc
+        }, { hours: {} })
+        return newWeek
       })
 
+      return { ...state, schedules: newSchedule }
+
+    case 'UPDATE_TIME_RANGES':
+      let scheduleFromServer = state.schedules.find(schedule => {
+        return schedule.id === JSON.parse(action.payload.id)
+      })
       let newTimeRange = createTimeRangeObj(scheduleFromServer)
-      // console.log(found)
-      return { ...state, timeRanges: newTimeRange, dropDownID: action.payload.id }
+      console.log("newTimeRange", newTimeRange);
+      
+      return { ...state, timeRanges: newTimeRange, name: newTimeRange[0].name }
 
     default:
       return state
