@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import { requestAddQueueSubmit, requestGetSchedules, handleAddQueueChange, requestAddQueueUpdate } from '../../actions/index'
+import { requestAddQueueSubmit, requestSchedulesGet, handleAddQueueChange, requestAddQueueUpdate } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -64,7 +64,7 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   requestAddQueueSubmit: any,
-  requestGetSchedules: any,
+  requestSchedulesGet: any,
   handleAddQueueChange: any,
   addQueueReducer: any,
   queuesReducer: any,
@@ -79,8 +79,8 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   componentWillMount = () => {
-    const { requestGetSchedules, handleAddQueueChange, queuesReducer } = this.props;
-    requestGetSchedules();
+    const { requestSchedulesGet, handleAddQueueChange, queuesReducer } = this.props;
+    requestSchedulesGet();
 
     if (queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
       handleAddQueueChange({ name: "queueId", value: queuesReducer.selected.id })
@@ -178,7 +178,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
   requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj))),
   handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj))),
   requestAddQueueUpdate: (obj) => (dispatch(requestAddQueueUpdate(obj)))

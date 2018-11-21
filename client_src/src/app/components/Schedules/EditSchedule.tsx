@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleEdit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleEdit, updateNameField, requestSchedulesGet, updateTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -92,7 +92,7 @@ interface IProps {
   addScheduleSelect: any,
   requestScheduleEdit: any,
   updateNameField: any,
-  requestGetSchedules: any,
+  requestSchedulesGet: any,
   updateTimeRanges: any,
   match: any
 }
@@ -204,7 +204,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
   requestScheduleEdit: (obj) => (dispatch(requestScheduleEdit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
   updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
 })
 

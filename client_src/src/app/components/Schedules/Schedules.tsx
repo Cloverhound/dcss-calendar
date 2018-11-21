@@ -2,13 +2,14 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
 
 import { connect } from 'react-redux'
-import { requestGetSchedules } from '../../actions'
+import { requestSchedulesGet, requestScheduleDelete } from '../../actions'
 
 
 interface IProps {
   schedules: any,
   getSchedules: any,
-  history: any
+  history: any,
+  requestScheduleDelete: any
 }
 
 class Schedules extends React.Component<IProps> {
@@ -33,9 +34,8 @@ class Schedules extends React.Component<IProps> {
   }
 
   handleDeleteSchedule = (id) => {
-    console.log('Handling Delete Schedule', id)
-    // const { deleteHolidayList } = this.props
-    // deleteHolidayList(holidayListId)
+    const { requestScheduleDelete } = this.props;
+    requestScheduleDelete(id)
   }
 
   render() {
@@ -63,7 +63,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  getSchedules: () => dispatch(requestGetSchedules())
+  getSchedules: () => dispatch(requestSchedulesGet()),
+  requestScheduleDelete: (obj) => dispatch(requestScheduleDelete(obj))
 })
 
 

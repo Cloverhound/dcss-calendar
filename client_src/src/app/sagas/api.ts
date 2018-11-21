@@ -78,8 +78,6 @@ export async function getSchedules() {
 }
 
 export async function putSchedules(payload) {
-  console.log("schedule payload", payload);
-  
   try {
     let response = await fetch(`/api/Schedules/${payload.id}`, {
       method: 'PUT',
@@ -95,4 +93,18 @@ export async function putSchedules(payload) {
   }
 }
 
+export async function deleteSchedules(payload) {
+  try {
+    let response = await fetch(`/api/Schedules/${payload}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      }
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
 
