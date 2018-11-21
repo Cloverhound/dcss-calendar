@@ -4,7 +4,6 @@ import CalendarTable from '../CalendarTable/CalendarTable'
 import { connect } from 'react-redux'
 import { requestSchedulesGet, requestScheduleDelete } from '../../actions'
 
-
 interface IProps {
   schedules: any,
   getSchedules: any,
@@ -15,7 +14,7 @@ interface IProps {
 class Schedules extends React.Component<IProps> {
 
   // Note: Can remove after React router is moved to Redux/ redux-saga
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.getSchedules()
   }
 

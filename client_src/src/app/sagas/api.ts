@@ -39,6 +39,8 @@ export async function getQueues() {
       },
     });
     let responseJson = await response.json()
+    console.log("get all res", responseJson);
+    
     return responseJson
   } catch (error) {
     console.log(error)

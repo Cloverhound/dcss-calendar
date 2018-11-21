@@ -14,11 +14,16 @@
     },
     "validations": [],
     "relations": {
-        "holidays": {
-            "type": "hasMany",
-            "model": "Holiday",
-            "foreignKey": "holidayListId" 
-        }
+      "holidays": {
+          "type": "hasMany",
+          "model": "Holiday",
+          "foreignKey": "holidayListId" 
+      },
+      "queues": {
+        "type": "hasMany",
+        "model": "Queue",
+        "foreignKey": "holidayListId"
+      }
     },
     "acls": [],
     "methods": {}
