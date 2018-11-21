@@ -20,7 +20,7 @@ const styles = theme => createStyles({
 class CalendarSnackbar extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
-    const { classes } = this.props;
+    const { classes, variant, handleClose, content } = this.props;
     return (
       <Snackbar
             anchorOrigin={{
@@ -32,9 +32,9 @@ class CalendarSnackbar extends React.Component<WithStyles<typeof styles> & IProp
             open = {true}
           >
             <CalendarSnackbarContent
-              onClose={this.props.handleClose}
-              variant="success"
-              message={this.props.content}
+              onClose={handleClose}
+              variant={variant}
+              message={content}
               className={classes.margin}
             />
 

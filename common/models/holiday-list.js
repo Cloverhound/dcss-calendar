@@ -44,7 +44,7 @@ module.exports = function(HolidayList) {
           if(holListErr) {
             console.log('Failed to create holiday list', holListErr)
             // rollback(tx)
-            cb(null, 'FAILED')
+            cb(holListErr)
             return          
           }
 
@@ -57,7 +57,7 @@ module.exports = function(HolidayList) {
           let result = await Promise.all(createHolidayPromises)
           if(result !== 'FAILED') {
             // commit(tx)
-            cb(null, 'SUCCESS')
+            cb(null, createdHolidayList)
           }
         })
       // })
@@ -70,7 +70,7 @@ module.exports = function(HolidayList) {
       HolidayList.findById(id, function(findErr, holidayList) {
         if(findErr) {
           console.log('Failed to find holiday list to update', findErr)
-          cb(null, findErr)
+          cb(findErr)
           return
         }
 
@@ -78,7 +78,7 @@ module.exports = function(HolidayList) {
         holidayList.updateAttributes(holidayListParameter, async function(updateErr, updatedHolidayList) {
           if(updateErr) {
             console.log('Failed to update holiday list', holidayList, updateErr)
-            cb(null, updateErr)
+            cb(updateErr)
             return          
           } else {
             console.log('Successfuly updated attributes of holidaylist', updatedHolidayList)
@@ -89,6 +89,7 @@ module.exports = function(HolidayList) {
         holidayList.holidays.destroyAll(function(destroyErr) {
           if(destroyErr) {
             console.log('Failed to destroy holidays of holiday list', holidayList)
+            cb(destroyErr)
           }
 
           let createHolidaysResult = createHolidays(holidayList, holidayListParameter.holidays)
@@ -105,7 +106,7 @@ module.exports = function(HolidayList) {
       HolidayList.findById(id, function(findErr, holidayList) {
         if(findErr) {
           console.log('Failed to find holiday list to delete', findErr)
-          cb(null, findErr)
+          cb(findErr)
           return
         }
 
@@ -113,17 +114,17 @@ module.exports = function(HolidayList) {
         holidayList.holidays.destroyAll(function(destroyHolsErr) {
           if(destroyHolsErr) {
             console.log('Failed to destroy holidays of holiday list', destroyHolsErr)
-            cb(null, destroyHolsErr)
+            cb(destroyHolsErr)
             return
           }
 
           holidayList.destroy(function(destroyHolListErr) {
             if(destroyHolListErr) {
               console.log('Failed to destroy holiday list', destroyHolListErr)
-              cb(null, destroyHolListErr)
+              cb(destroyHolListErr)
               return
             }
-            cb(null, "SUCCESS")
+            cb(null, id)
           })
         })
       })

@@ -4,11 +4,12 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
+import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import { connect } from 'react-redux';
 
 import HolidayRow from './HolidayRow';
-import { addHoliday, changeHolidayListName, submitNewHolidayListToServer } from '../../actions';
+import { addHoliday, changeHolidayListName, submitNewHolidayListToServer, handleCloseMessage } from '../../actions';
 
 
 const styles = theme => createStyles({
@@ -88,7 +89,8 @@ interface IProps {
   changeHolidayListName: any,
   addHoliday: any,
   holidayListReducer: any,
-  requestNewHolidayListSubmit: any
+  requestNewHolidayListSubmit: any,
+  handleCloseMessage: any
 }
 
 class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -107,11 +109,33 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
     requestNewHolidayListSubmit(holidayListReducer)
   }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name } = holidayListReducer;
+    const { holidays, name, message } = holidayListReducer;
 
-    console.log('rendering new holiday list', holidays, name)
+    let snackbar 
+    if(message && message.type == 'error') {
+      snackbar = <CalendarSnackbar
+                      handleClose = {this.handleCloseMessage}
+                      hideDuration = {6000}
+                      content = {message.content}
+                      variant = {'error'} />
+    }
+    if(message && message.type == 'success') {
+      snackbar = <CalendarSnackbar
+                      handleClose = {this.handleCloseMessage}
+                      hideDuration = {6000}
+                      content = {message.content}
+                      variant = {'success'} />
+    }
+
+
+  
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
@@ -121,6 +145,8 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">New Holiday List</Typography>
+
+            {snackbar}
 
             <TextField
               id="new-holiday-list-name"
@@ -168,6 +194,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
   requestNewHolidayListSubmit: (obj) => (dispatch(submitNewHolidayListToServer(obj))),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 

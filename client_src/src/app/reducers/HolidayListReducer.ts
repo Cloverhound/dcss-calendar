@@ -11,12 +11,18 @@ const holidayListReducer = (state = initialState, action) => {
 
     case 'GET_HOLIDAY_LIST_FROM_SERVER_SUCCEEDED':
       return handleGetHolidayListSucceeded(state, action.payload)
-    case 'HANDLE_CLOSE_MESSAGE':
-      return handleCloseMessage(state)
+    case 'GET_HOLIDAY_LIST_FROM_SERVER_FAILED':
+      return handleGetHolidayListFailed(state, action.payload)
     case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
       return handleUpdateHolidayListSucceeded(state, action.payload)
-    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_FAILED':
       return handleUpdateHolidayListFailed(state, action.payload)
+    case 'SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+      return handleNewHolidayListSucceeded(state, action.payload)
+    case 'SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER_FAILED':
+      return handleNewHolidayListFailed(state, action.payload)
+    case 'HANDLE_CLOSE_MESSAGE':
+      return handleCloseMessage(state)
     case 'CHANGE_HOLIDAY_LIST_NAME':
       return changeHolidayListName(state, action.payload)
     case 'ADD_HOLIDAY':
@@ -38,26 +44,42 @@ const handleCloseMessage = (state) => {
 }
 
 const handleGetHolidayListSucceeded = (state, payload) => {
-  console.log('Handling get holiday list succeeded', payload)
-  
+  console.log('Handling get holiday list succeeded', payload) 
   return payload
+}
+
+const handleGetHolidayListFailed = (state, payload) => {
+  console.log('Handling get holiday list failed', payload)
+  let message = {type: "error", content: "Failed to get holiday list: " + payload.message}
+  return {...state, message}
 }
 
 const handleUpdateHolidayListSucceeded = (state, payload) => {
   console.log('Handling update holiday list succeeded', payload)
-
   let message = {type: "success", content: "Successfully updated."}
-
   return {...state, message}
 }
 
 const handleUpdateHolidayListFailed = (state, payload) => {
   console.log('Handling update holiday list failed', payload)
-
-  let message = {type: "error", content: "Failed to update."}
-
+  let message = {type: "error", content: "Failed to update: " + payload.message}
   return {...state, message}
 }
+
+
+const handleNewHolidayListSucceeded = (state, payload) => {
+  console.log('Handling new holiday list succeeded', payload)
+  let message = {type: "success", content: "Successfully created."}
+  return {...state, message}
+}
+
+const handleNewHolidayListFailed = (state, payload) => {
+  console.log('Handling new holiday list failed', payload)
+  let message = {type: "error", content: "Failed to create: " + payload.message}
+  return {...state, message}
+}
+
+
 
 const changeHolidayListName = (state, payload) => {
   console.log('Changing holiday list name', state, payload)

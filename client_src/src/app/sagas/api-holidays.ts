@@ -1,5 +1,5 @@
 export async function getHolidayLists() {
-    console.log('Getting all holiday lists')
+    console.log('Getting holiday lists')
     try {
       let response = await fetch('/api/HolidayLists', {
         method: 'GET',
@@ -10,7 +10,7 @@ export async function getHolidayLists() {
       let responseJson = await response.json()
       return responseJson
     } catch (error) {
-      console.log(error)
+      return {error}
     }
   }
   
@@ -27,7 +27,7 @@ export async function getHolidayLists() {
       let responseJson = await response.json()
       return responseJson
     } catch (error) {
-      console.log('Failed to submit holidays to server', error)
+      return {error}
     }
   }
   
@@ -44,7 +44,7 @@ export async function getHolidayLists() {
       console.log('Response json', responseJson)
       return responseJson
     } catch (error) {
-      console.log('Failed to get holidayList', payload.id, error)
+      return {error}
     }
   }
   
@@ -61,7 +61,7 @@ export async function getHolidayLists() {
       let responseJson = await response.json()
       return responseJson
     } catch (error) {
-      console.log(error)
+      return {error}
     }
   }
   
@@ -79,6 +79,6 @@ export async function getHolidayLists() {
       console.log('Response json', responseJson)
       return responseJson
     } catch (error) {
-      console.log('Failed to get holidayList', payload.id, error)
+      return {error}
     }
   }

@@ -164,7 +164,7 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
                       handleClose = {this.handleCloseMessage}
                       hideDuration = {6000}
                       content = {message.content}
-                      variant = {'error'} />
+                      variant = {'success'} />
     }
 
     return (
