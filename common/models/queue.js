@@ -49,7 +49,7 @@ function allQueues(cb) {
     let res = [];
     for (let i = 0; i < response.length; i++) {
       let queue = response[i];
-      let val = await new Promise(function (resolve, reject) {
+      let scheduleQueueObj = await new Promise(function (resolve, reject) {
         queue.schedule(function (err, tr) {
           queue.status = getStatus(tr)
           resolve({
@@ -58,8 +58,16 @@ function allQueues(cb) {
           })
         })
       })
-      res.push(val)
+      let holidayList = await new Promise(function (resolve, reject) {
+        queue.holidayList(function (err, tr) {
+          resolve({
+            holidayList: tr
+          })
+        })
+      })
+      res.push({...scheduleQueueObj, ...holidayList})
     }
+    console.log(res)
     cb(null, res);
   });
 }

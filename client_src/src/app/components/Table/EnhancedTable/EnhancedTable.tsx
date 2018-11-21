@@ -211,8 +211,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         </TableCell>
                         <TableCell>{n.queue.name}</TableCell>
                         <TableCell>{n.schedule.name}</TableCell>
-                        <TableCell>Regular</TableCell>
-                        <TableCell>ON</TableCell>
+                        <TableCell>{n.holidayList.name}</TableCell>
+                        <TableCell>Default</TableCell>
                         <TableCell>
                           <Link to="/AddQueue">
                             <Tooltip title="Edit">
