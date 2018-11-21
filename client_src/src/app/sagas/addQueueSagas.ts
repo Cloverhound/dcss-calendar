@@ -1,10 +1,10 @@
 import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
-import { submitQueueToServer, submitUpdateQueueToServer } from './api'
+import { postQueues, patchQueues } from './api'
 
 export function* callAddQueueSubmit(action) {
   const { scheduleId, queueName } = action.payload
 
-  const result = yield call(submitQueueToServer, { name: queueName, scheduleId })
+  const result = yield call(postQueues, { name: queueName, scheduleId })
 
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
@@ -18,7 +18,7 @@ export function* callAddQueueSubmit(action) {
 
 export function* callUpdateAddQueue(action) {
   const { queueId, scheduleId, queueName } = action.payload
-  const result = yield call(submitUpdateQueueToServer, { id: queueId, data: { name: queueName, scheduleId } })
+  const result = yield call(patchQueues, { id: queueId, data: { name: queueName, scheduleId } })
 
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)

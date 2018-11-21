@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleEdit, updateNameField, requestSchedulesGet, updateTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -90,22 +90,22 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   addScheduleSelect: any,
-  requestScheduleSubmit: any,
+  requestScheduleEdit: any,
   updateNameField: any,
-  requestGetSchedules: any,
-  updateTimeRanges: any
+  requestSchedulesGet: any,
+  updateTimeRanges: any,
+  match: any
 }
 
 class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { requestGetSchedules } = this.props;
-    requestGetSchedules()
+    this.handleGetSchedule(this.props.match.params.id)
   }
 
-  handleScheduleSelect = event => {
+  handleGetSchedule = (id) => {
     const { updateTimeRanges } = this.props
-    updateTimeRanges({ id: event.target.value })
+    updateTimeRanges({ id })
   };
 
   handleNameInput = event => {
@@ -119,8 +119,8 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestScheduleSubmit, scheduleReducer } = this.props;
-    requestScheduleSubmit(scheduleReducer)
+    const { requestScheduleEdit, scheduleReducer } = this.props;
+    requestScheduleEdit(scheduleReducer)
   }
 
   render() {
@@ -132,6 +132,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
     let menuItem = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
+
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -159,7 +160,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
                   value={this.props.scheduleReducer.name}
                   onChange={this.handleNameInput}
                   name="newScheduleName"
-                  placeholder="Add Name"
+                  placeholder="Edit Name"
                   autoFocus={true}
                 />
               </FormControl>
@@ -201,9 +202,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
+  requestScheduleEdit: (obj) => (dispatch(requestScheduleEdit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  requestGetSchedules: () => (dispatch(requestGetSchedules())),
+  requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
   updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
 })
 

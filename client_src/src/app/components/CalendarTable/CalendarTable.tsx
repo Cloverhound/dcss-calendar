@@ -55,6 +55,7 @@ const styles = theme => createStyles({
   addButton: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-end'
   },
 });
 
@@ -173,14 +174,12 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   tableCells.push(deleteTableCell)
 
                   return (
-                      <Tooltip title="Select to edit" placement={'right'} enterDelay={300}>
                         <TableRow 
                           hover 
                           tabIndex={-1} 
                           key={index}>
                           {tableCells}
                         </TableRow>
-                      </Tooltip>
                   );
                 })}
               {emptyRows > 0 && (

@@ -195,13 +195,13 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <div className={classes.toolbar} />
             <Route exact path="/" component={Queues} />
             <Route exact path="/schedules" component={Schedules} />
-            <Route exact path="/schedule/new" component={NewSchedule} />
+            <Route exact path="/schedules/new" component={NewSchedule} />
+            <Route exact path="/schedules/:id/edit" component={EditSchedule} />
             <Route exact path="/holiday_lists" component={HolidayLists} />
             <Route exact path="/Prompts" component={Prompts} />
             <Route exact path="/AddQueue" component={AddQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
-            <Route exact path="/schedules/:id/edit" component={NewSchedule} />
           </main>
         </div>
       </Router>

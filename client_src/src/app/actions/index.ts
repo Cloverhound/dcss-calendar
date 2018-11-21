@@ -8,7 +8,12 @@ export const deleteRow = obj => ({ type: "DELETE_ROW", payload: obj });
 
 export const addScheduleSelect = () => ({ type: "ADD_SCHEDULE_SELECT" });
 
-export const requestScheduleSubmit = obj => ({ type: "REQUEST_SCHEDULE_SUBMIT", payload: obj });
+export const requestSchedulesGet = ()  => ({ type: "REQUEST_SCHEDULES_GET" });
+export const requestScheduleSubmit = obj => ({ type: "REQUEST_SCHEDULE_POST", payload: obj });
+export const requestScheduleEdit = obj => ({ type: "REQUEST_SCHEDULE_EDIT", payload: obj })
+export const requestScheduleDelete = obj => ({ type: "REQUEST_SCHEDULE_DELETE", payload: obj })
+
+
 
 export const updateNameField = obj => ({ type: "UPDATE_NAME_FIELD", payload: obj });
 
@@ -27,8 +32,7 @@ export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", 
 export const addSelectedQueue = (obj) => ({ type: "ADD_SELECTED_QUEUE", payload: obj });
 
 export const clearSelectedQueue = () => ({ type: "CLEAR_SELECTED_QUEUE" });
-
-export const requestGetSchedules            = ()  => ({ type: "REQUEST_GET_SCHEDULES" });
+export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 
 
 

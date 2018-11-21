@@ -2,13 +2,14 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
 
 import { connect } from 'react-redux'
-import { requestGetSchedules } from '../../actions'
+import { requestSchedulesGet, requestScheduleDelete } from '../../actions'
 
 
 interface IProps {
   schedules: any,
   getSchedules: any,
-  history: any
+  history: any,
+  requestScheduleDelete: any
 }
 
 class Schedules extends React.Component<IProps> {
@@ -32,10 +33,9 @@ class Schedules extends React.Component<IProps> {
     getSchedules()
   }
 
-  handleDeleteHolidayList = (holidayListId) => {
-    console.log('Handling Delete Holiday List', holidayListId)
-    // const { deleteHolidayList } = this.props
-    // deleteHolidayList(holidayListId)
+  handleDeleteSchedule = (id) => {
+    const { requestScheduleDelete } = this.props;
+    requestScheduleDelete(id)
   }
 
   render() {
@@ -44,13 +44,13 @@ class Schedules extends React.Component<IProps> {
     return (
       <CalendarTable 
           data={data} 
-          basePath={"schedule"} 
+          basePath={"schedules"} 
           populateTable={this.getSchedules} 
           orderBy={"name"} 
           columnNames={columnNames}
           title={"Schedules"}
           addButtonText={"Add Schedule"}
-          handleDelete={this.handleDeleteHolidayList}
+          handleDelete={this.handleDeleteSchedule}
       />
     )
   }
@@ -63,7 +63,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  getSchedules: () => dispatch(requestGetSchedules())
+  getSchedules: () => dispatch(requestSchedulesGet()),
+  requestScheduleDelete: (obj) => dispatch(requestScheduleDelete(obj))
 })
 
 
