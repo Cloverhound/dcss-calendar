@@ -10,6 +10,8 @@ export const addScheduleSelect = () => ({ type: "ADD_SCHEDULE_SELECT" });
 
 export const requestScheduleSubmit = obj => ({ type: "REQUEST_SCHEDULE_SUBMIT", payload: obj });
 
+export const requestScheduleEdit = obj => ({ type: "REQUEST_SCHEDULE_EDIT", payload: obj })
+
 export const updateNameField = obj => ({ type: "UPDATE_NAME_FIELD", payload: obj });
 
 export const updateOpenClosedTime = obj => ({ type: "UPDATE_OPEN_CLOSED_TIME", payload: obj })
@@ -27,9 +29,9 @@ export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", 
 export const addSelectedQueue = (obj) => ({ type: "ADD_SELECTED_QUEUE", payload: obj });
 
 export const clearSelectedQueue = () => ({ type: "CLEAR_SELECTED_QUEUE" });
+export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 
 export const requestGetSchedules            = ()  => ({ type: "REQUEST_GET_SCHEDULES" });
-
 
 
 export const getHolidayListsFromServer                  = ()  => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER"});

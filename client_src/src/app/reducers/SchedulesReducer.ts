@@ -311,9 +311,11 @@ const scheduleReducer = (state: any = initialState, action) => {
         return schedule.id === JSON.parse(action.payload.id)
       })
       let newTimeRange = createTimeRangeObj(scheduleFromServer)
-      console.log("newTimeRange", newTimeRange);
-      
+
       return { ...state, timeRanges: newTimeRange, name: newTimeRange[0].name }
+
+      case 'RESET_TIME_RANGES':
+        return {...state, name: "", timeRanges: [state.initialRow]}
 
     default:
       return state

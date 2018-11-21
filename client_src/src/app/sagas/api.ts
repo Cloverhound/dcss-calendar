@@ -1,4 +1,4 @@
-export async function submitQueueToServer(payload) {
+export async function postQueues(payload) {
   try {
     let response = await fetch('/api/Queues', {
       method: 'POST',
@@ -14,7 +14,7 @@ export async function submitQueueToServer(payload) {
   }
 }
 
-export async function submitUpdateQueueToServer(payload) {
+export async function patchQueues(payload) {
   try {
     let response = await fetch(`/api/Queues/${payload.id}`, {
       method: 'PATCH',
@@ -30,14 +30,13 @@ export async function submitUpdateQueueToServer(payload) {
   }
 }
 
-export async function submitScheduleToServer(payload) {
+export async function getQueues() {
   try {
-    let response = await fetch('/api/Schedules', {
-      method: 'POST',
+    let response = await fetch('/api/Queues/getAll', {
+      method: 'GET',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(payload)
     });
     let responseJson = await response.json()
     return responseJson
@@ -46,13 +45,15 @@ export async function submitScheduleToServer(payload) {
   }
 }
 
-export async function getAllQueues() {
+// Schedules
+export async function postSchedules(payload) {
   try {
-    let response = await fetch('/api/Queues/getAll', {
-      method: 'GET',
+    let response = await fetch('/api/Schedules', {
+      method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
+      body: JSON.stringify(payload)
     });
     let responseJson = await response.json()
     return responseJson
@@ -74,5 +75,24 @@ export async function getSchedules() {
   } catch (error) {
     console.log(error)
   }
-
 }
+
+export async function putSchedules(payload) {
+  console.log("schedule payload", payload);
+  
+  try {
+    let response = await fetch(`/api/Schedules/${payload.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+

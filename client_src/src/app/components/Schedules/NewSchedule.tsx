@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges, resetTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -93,20 +93,17 @@ interface IProps {
   requestScheduleSubmit: any,
   updateNameField: any,
   requestGetSchedules: any,
-  updateTimeRanges: any
+  updateTimeRanges: any,
+  resetTimeRanges: any
 }
 
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { requestGetSchedules } = this.props;
+    const { requestGetSchedules, resetTimeRanges } = this.props;
     requestGetSchedules()
+    resetTimeRanges()
   }
-
-  handleScheduleSelect = event => {
-    const { updateTimeRanges } = this.props
-    updateTimeRanges({ id: event.target.value })
-  };
 
   handleNameInput = event => {
     const { updateNameField } = this.props;
@@ -138,21 +135,6 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Schedule</Typography>
             <div className={classes.inputContainer}>
-              {/* <FormControl className={classes.formControl}>
-                <Select
-                  value={scheduleReducer.dropDownID}
-                  onChange={this.handleScheduleSelect}
-                  name="scheduleName"
-                  displayEmpty
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value="new" disabled>
-                    New Schedule
-                  </MenuItem>
-                  {menuItem}
-                </Select>
-                <FormHelperText>Select A Schedule</FormHelperText>
-              </FormControl> */}
 
               <FormControl className={classes.formControl}>
                 <Input
@@ -204,7 +186,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
   requestGetSchedules: () => (dispatch(requestGetSchedules())),
-  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
+  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
+  resetTimeRanges: () => (dispatch(resetTimeRanges()))
 })
 
 

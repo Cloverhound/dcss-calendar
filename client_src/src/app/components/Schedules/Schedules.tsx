@@ -32,8 +32,8 @@ class Schedules extends React.Component<IProps> {
     getSchedules()
   }
 
-  handleDeleteHolidayList = (holidayListId) => {
-    console.log('Handling Delete Holiday List', holidayListId)
+  handleDeleteSchedule = (id) => {
+    console.log('Handling Delete Schedule', id)
     // const { deleteHolidayList } = this.props
     // deleteHolidayList(holidayListId)
   }
@@ -50,7 +50,7 @@ class Schedules extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Schedules"}
           addButtonText={"Add Schedule"}
-          handleDelete={this.handleDeleteHolidayList}
+          handleDelete={this.handleDeleteSchedule}
       />
     )
   }

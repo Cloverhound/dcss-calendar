@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleEdit, updateNameField, requestGetSchedules, updateTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -90,7 +90,7 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   addScheduleSelect: any,
-  requestScheduleSubmit: any,
+  requestScheduleEdit: any,
   updateNameField: any,
   requestGetSchedules: any,
   updateTimeRanges: any,
@@ -119,8 +119,8 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestScheduleSubmit, scheduleReducer } = this.props;
-    requestScheduleSubmit(scheduleReducer)
+    const { requestScheduleEdit, scheduleReducer } = this.props;
+    requestScheduleEdit(scheduleReducer)
   }
 
   render() {
@@ -133,8 +133,6 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
 
-    console.log("this.props.scheduleReducer", this.props.scheduleReducer);
-    
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -204,7 +202,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
+  requestScheduleEdit: (obj) => (dispatch(requestScheduleEdit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
   requestGetSchedules: () => (dispatch(requestGetSchedules())),
   updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))

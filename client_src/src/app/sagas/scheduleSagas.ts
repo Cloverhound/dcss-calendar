@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
-import { submitScheduleToServer, getSchedules } from './api'
+import { postSchedules, getSchedules, putSchedules } from './api'
 
-export function* callScheduleSubmit(action) {
+export function* callPostSchedule(action) {
   const { timeRanges, name } = action.payload
   let newTimeRange = {};
   timeRanges.forEach(timeRange => {
@@ -15,14 +15,13 @@ export function* callScheduleSubmit(action) {
     })
   })
 
-  const result = yield call(submitScheduleToServer, newTimeRange)
+  const result = yield call(postSchedules, newTimeRange)
 
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
-    // yield put({ type: "REQUEST_FAILED", result: result.errors })
   } else {
     console.log("REQUEST_SUCCESSFUL")
-    // yield put({ type: "REQUEST_SUCCESSFUL"})
+    yield put({ type: "RESET_TIME_RANGES" })
   }
 }
 
@@ -30,10 +29,34 @@ export function* callGetSchedules(action) {
   const result = yield call(getSchedules)
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
-    // yield put({ type: "REQUEST_FAILED", result: result.errors })
   } else {
     console.log("REQUEST_SUCCESSFUL")
     yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
-    // yield put({ type: "REQUEST_SUCCESSFUL"})
+  }
+}
+
+export function* callPutSchedule(action) {
+  console.log("put action payload what", action.payload);
+  
+  const { timeRanges, name, id } = action.payload
+  let newTimeRange = {};
+  timeRanges.forEach(timeRange => {
+    let days = Object.keys(timeRange.week);
+    days.forEach(day => {
+      if (timeRange.week[day].checked) {
+        let dayOpen = day + "_open"
+        let dayClosed = day + "_closed"
+        newTimeRange = { ...newTimeRange, name, id: timeRanges[0].id_db, [dayOpen]: timeRange.open, [dayClosed]: timeRange.closed }
+      }
+    })
+  })
+
+  const result = yield call(putSchedules, newTimeRange)
+
+  if (result.error) {
+    console.log("REQUEST_FAILED", result.error)
+  } else {
+    console.log("REQUEST_SUCCESSFUL")
+    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
   }
 }
