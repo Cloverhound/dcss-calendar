@@ -1,66 +1,65 @@
 import { call, put } from 'redux-saga/effects'
-import { getAllHolidayLists, submitNewHolidayListToServer, getHolidayList, submitUpdateHolidayListToServer, deleteHolidayList } from './api'
+import { getHolidayLists, createHolidayList, getHolidayList, updateHolidayList, deleteHolidayList } from './api-holidays'
+import {  submitDeleteHolidayListToServerSucceeded, 
+          submitDeleteHolidayListToServerFailed, 
+          getHolidayListsFromServerSucceeded, 
+          getHolidayListsFromServerFailed, 
+          submitNewHolidayListToServerSucceeded, 
+          submitNewHolidayListToServerFailed,  
+          submitUpdateHolidayListToServerSucceeded, 
+          submitUpdateHolidayListToServerFailed, 
+          getHolidayListFromServerFailed, 
+          getHolidayListFromServerSucceeded 
+        } from '../actions'
 
-export function* callNewHolidayListSubmit(action) {
-  console.log('Calling Holidays Submit', action)
 
-  const result = yield call(submitNewHolidayListToServer, action.payload)
 
+export function* callCreateHolidayList(action) {
+  const result = yield call(createHolidayList, action.payload)
   if (result.error) {
-    console.log("NEW_HOLIDAY_LIST_REQUEST_FAILED", result.error)
-    // yield put({ type: "NEW_HOLIDAY_LIST_REQUEST_FAILED", result: result.errors })
+    yield put(submitNewHolidayListToServerFailed(result.error))
   } else {
-    console.log("NEW_HOLIDAY_LIST_REQUEST_SUCCESSFUL")
-    // yield put({ type: "NEW_HOLIDAY_LIST_REQUEST_SUCCESSFUL"})
+    yield put(submitNewHolidayListToServerSucceeded(result))
   }
 }
+
 
 export function* callGetHolidayLists() {
-  const result = yield call(getAllHolidayLists)
-
+  const result = yield call(getHolidayLists)
   if (result.error) {
-    console.log("GET_HOLIDAY_LISTS_REQUEST_FAILED", result.error)
+    yield put(getHolidayListsFromServerFailed(result.error))
   } else {
-    console.log("GET_HOLIDAY_LISTS_REQUEST_SUCCESSFUL", result)
-    yield put({ type: "GET_HOLIDAY_LISTS_REQUEST_SUCCESSFUL", payload: result})
+    yield put(getHolidayListsFromServerSucceeded(result))
   }
-
 }
+
 
 export function* callGetHolidayList(action) {
-  console.log('Calling get holiday list method', action)
   const result = yield call(getHolidayList, action.payload)
-  console.log('result', result)
-
   if (result.error) {
-    console.log("GET_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+    yield put(getHolidayListFromServerFailed(result.error))
   } else {
-    console.log("GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
-    yield put({ type: "GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+    yield put(getHolidayListFromServerSucceeded(result))
   }
-
 }
 
-export function* callUpdateHolidayListSubmit(action) {
-  const result = yield call(submitUpdateHolidayListToServer, action.payload)
 
+export function* callUpdateHolidayList(action) {
+  const result = yield call(updateHolidayList, action.payload)
   if (result.error) {
-    console.log("SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+    yield put(submitUpdateHolidayListToServerFailed(result.error))
   } else {
-    console.log("SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
-    yield put({ type: "SUBMIT_UPDATE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+    yield put(submitUpdateHolidayListToServerSucceeded(result))
   } 
 }
 
 
 export function* callDeleteHolidayList(action) {
   const result = yield call(deleteHolidayList, action.payload)
-
   if (result.error) {
-    console.log("DELETE_HOLIDAY_LIST_REQUEST_FAILED", result.error)
+    yield put(submitDeleteHolidayListToServerFailed(result.error))
   } else {
-    console.log("DELETE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", result)
-    yield put({ type: "DELETE_HOLIDAY_LIST_REQUEST_SUCCESSFUL", payload: result})
+    yield put(submitDeleteHolidayListToServerSucceeded(result))
   } 
 }
 

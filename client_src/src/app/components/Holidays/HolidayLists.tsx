@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
-import { requestGetHolidayLists, requestDeleteHolidayList } from '../../actions'
+import { getHolidayListsFromServer, submitDeleteHolidayListToServer } from '../../actions'
 
 interface IProps {
   holidayLists: any,
@@ -38,15 +38,13 @@ class HolidayLists extends React.Component<IProps> {
     return (
       <CalendarTable 
           data={data} 
-          addRowLink={"/holiday_lists/new"} 
+          basePath={"holiday_lists"} 
           populateTable={this.handleGetHolidayLists} 
           orderBy={"name"} 
           columnNames={columnNames}
           title={"Holiday Lists"}
-          addTitle={"Add Holiday List"}
-          routeName={"holiday_lists"}
+          addButtonText={"Add Holiday List"}
           handleDelete={this.handleDeleteHolidayList}
-          deleteButtonText={"Delete Holiday List"}
       />
     )
   }
@@ -60,8 +58,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  getHolidayLists: () => dispatch(requestGetHolidayLists()),
-  deleteHolidayList: (obj) => dispatch(requestDeleteHolidayList(obj))
+  getHolidayLists: () => dispatch(getHolidayListsFromServer()),
+  deleteHolidayList: (obj) => dispatch(submitDeleteHolidayListToServer(obj))
 })
 
 

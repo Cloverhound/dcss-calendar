@@ -33,14 +33,14 @@ const toolbarStyles = theme => createStyles({
 
 interface IPropsTableToolbar {
   numSelected: any,
-  addRowLink: string,
+  basePath: string,
   title: string,
-  addTitle: string
+  addButtonText: string
 }
 
 class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyles> & IPropsTableToolbar> {
   render() {
-    const { classes, addRowLink, title, addTitle } = this.props;
+    const { classes, basePath, title, addButtonText } = this.props;
     return (
       <Toolbar>
         <div className={classes.title}>
@@ -50,9 +50,9 @@ class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          <Link to={addRowLink}>
-            <Tooltip title={addTitle}>
-              <IconButton aria-label={addTitle}>
+          <Link to={`/${basePath}/new`}>
+            <Tooltip title={addButtonText}>
+              <IconButton aria-label={addButtonText}>
                 <AddCircle />
               </IconButton>
             </Tooltip>

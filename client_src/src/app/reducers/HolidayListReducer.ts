@@ -1,15 +1,22 @@
 let initialState = {
   name: "",
   holidays: [{name: "", date: "", index: 0}],
-  active: "true" 
+  active: "true",
+  message: {type: "", content: ""} 
 }   
 
 const holidayListReducer = (state = initialState, action) => {
   
   switch (action.type) {
 
-    case 'GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL':
-      return handleGetHolidayListRequestSuccessful(state, action.payload)
+    case 'GET_HOLIDAY_LIST_FROM_SERVER_SUCCEEDED':
+      return handleGetHolidayListSucceeded(state, action.payload)
+    case 'HANDLE_CLOSE_MESSAGE':
+      return handleCloseMessage(state)
+    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+      return handleUpdateHolidayListSucceeded(state, action.payload)
+    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+      return handleUpdateHolidayListFailed(state, action.payload)
     case 'CHANGE_HOLIDAY_LIST_NAME':
       return changeHolidayListName(state, action.payload)
     case 'ADD_HOLIDAY':
@@ -25,10 +32,31 @@ const holidayListReducer = (state = initialState, action) => {
   }
 }
 
-const handleGetHolidayListRequestSuccessful = (state, payload) => {
-  console.log('Handling getHolidayListRequestSuccessful', payload)
+const handleCloseMessage = (state) => {
+  let message = {type: "", content: ""} 
+  return {...state, message}
+}
+
+const handleGetHolidayListSucceeded = (state, payload) => {
+  console.log('Handling get holiday list succeeded', payload)
   
   return payload
+}
+
+const handleUpdateHolidayListSucceeded = (state, payload) => {
+  console.log('Handling update holiday list succeeded', payload)
+
+  let message = {type: "success", content: "Successfully updated."}
+
+  return {...state, message}
+}
+
+const handleUpdateHolidayListFailed = (state, payload) => {
+  console.log('Handling update holiday list failed', payload)
+
+  let message = {type: "error", content: "Failed to update."}
+
+  return {...state, message}
 }
 
 const changeHolidayListName = (state, payload) => {

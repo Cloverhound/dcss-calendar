@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 
 import HolidayRow from './HolidayRow';
-import { addHoliday, changeHolidayListName, requestNewHolidayListSubmit } from '../../actions';
+import { addHoliday, changeHolidayListName, submitNewHolidayListToServer } from '../../actions';
 
 
 const styles = theme => createStyles({
@@ -167,7 +167,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
-  requestNewHolidayListSubmit: (obj) => (dispatch(requestNewHolidayListSubmit(obj))),
+  requestNewHolidayListSubmit: (obj) => (dispatch(submitNewHolidayListToServer(obj))),
 })
 
 

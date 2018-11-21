@@ -44,15 +44,13 @@ class Schedules extends React.Component<IProps> {
     return (
       <CalendarTable 
           data={data} 
-          addRowLink={"/schedule/new"} 
+          basePath={"schedule"} 
           populateTable={this.getSchedules} 
           orderBy={"name"} 
           columnNames={columnNames}
           title={"Schedules"}
-          addTitle={"Add Schedule"}
-          routeName={"schedules"}
+          addButtonText={"Add Schedule"}
           handleDelete={this.handleDeleteHolidayList}
-          deleteButtonText={"Delete Schedule"}
       />
     )
   }
