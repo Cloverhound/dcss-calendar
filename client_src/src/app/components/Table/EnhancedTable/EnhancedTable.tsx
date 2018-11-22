@@ -163,7 +163,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  console.log("n", n)
                   const isSelected = this.isSelected(n.queue.id);
                   let statusStyle = "";
                   switch (n.queue.status) {
@@ -214,7 +213,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         <TableCell>{n.holidayList.name}</TableCell>
                         <TableCell>Default</TableCell>
                         <TableCell>
-                          <Link to="/AddQueue">
+                          <Link to="/queues/edit">
                             <Tooltip title="Edit">
                               <IconButton aria-label="Edit">
                                 <EditIcon />

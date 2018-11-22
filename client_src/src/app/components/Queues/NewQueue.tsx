@@ -104,9 +104,13 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   render() {
-    const { classes, scheduleReducer, addQueueReducer, queuesReducer, handleAddQueueChange } = this.props;
-
-    let menuItems = scheduleReducer.schedules.map(schedule => {
+    const { classes, scheduleReducer, addQueueReducer } = this.props;
+    console.log("scheduleReducer", scheduleReducer);
+    
+    let scheduleMenuItems = scheduleReducer.schedules.map(schedule => {
+      return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
+    })
+    let holidayListMenuItems = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
 
@@ -136,27 +140,22 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
                 displayEmpty
                 className={classes.selectEmpty}
               >
-                {menuItems}
+                {scheduleMenuItems}
               </Select>
               <FormHelperText>Schedule Name</FormHelperText>
             </FormControl>
-            {/* <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl}>
               <Select
-                value={this.state.holidayID}
+                value={addQueueReducer.holidayListId}
                 onChange={this.handleChange}
-                name="holidayID"
+                name="holidayListId"
                 displayEmpty
                 className={classes.selectEmpty}
               >
-                <MenuItem value="" disabled>
-                  Placeholder
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {holidayListMenuItems}
               </Select>
-              <FormHelperText>Holiday Name</FormHelperText>
-            </FormControl> */}
+              <FormHelperText>Holiday List Name</FormHelperText>
+            </FormControl>
             <Link to="/">
               <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
                 Save

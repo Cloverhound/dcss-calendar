@@ -81,7 +81,7 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
               </Tooltip>
             </Link>
           ) : ( */}
-            <Link to="/AddQueue">
+            <Link to="/queues/new">
               <Tooltip title="Add Queue">
                 <IconButton aria-label="Add Queue">
                   <AddCircle />

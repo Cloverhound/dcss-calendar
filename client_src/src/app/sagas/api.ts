@@ -38,8 +38,8 @@ export async function getQueues() {
         'Content-type': 'application/json',
       },
     });
+    
     let responseJson = await response.json()
-    console.log("get all res", responseJson);
     
     return responseJson
   } catch (error) {
