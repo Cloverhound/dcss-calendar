@@ -8,6 +8,7 @@ import green from '@material-ui/core/colors/green';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import HolidayRow from './HolidayRow';
 import { addHoliday, changeHolidayListName, submitUpdateHolidayListToServer, getHolidayListFromServer, handleCloseMessage } from '../../actions';
@@ -50,20 +51,6 @@ const styles = theme => createStyles({
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
   },
-  arrowContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '50px',
-    backgroundColor: '#3f51b5;',
-    borderRadius: "5px 5px 0 0"
-  },
-  arrow: {
-    margin: '10px',
-    fill: 'white',
-    "&:hover": {
-      cursor: 'pointer'
-    },
-  },
   paper: {
     display: 'flex',
     justifyContent: 'center',
@@ -100,6 +87,9 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
@@ -142,11 +132,8 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
 
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name, message } = holidayListReducer;
+    const { holidays, name, message, loading } = holidayListReducer;
 
-    console.log('rendering', message)
-
-    console.log('rendering edit holiday list', holidays, name)
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
@@ -165,6 +152,11 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
                       hideDuration = {6000}
                       content = {message.content}
                       variant = {'success'} />
+    }
+
+    let progressIndicator
+    if(loading) {
+      progressIndicator = <CircularProgress className={classes.progress} />
     }
 
     return (
@@ -188,6 +180,8 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
             <div className={classes.selectContainer}>
               {holidayComponents}
             </div>
+
+            {progressIndicator}
 
             <div className={classes.addIconContainer}>
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>

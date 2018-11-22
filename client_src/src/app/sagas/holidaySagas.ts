@@ -9,12 +9,15 @@ import {  submitDeleteHolidayListToServerSucceeded,
           submitUpdateHolidayListToServerSucceeded, 
           submitUpdateHolidayListToServerFailed, 
           getHolidayListFromServerFailed, 
-          getHolidayListFromServerSucceeded 
+          getHolidayListFromServerSucceeded,
+          loading 
         } from '../actions'
 
 
 
 export function* callCreateHolidayList(action) {
+  yield put(loading())
+
   const result = yield call(createHolidayList, action.payload)
   if (result.error) {
     yield put(submitNewHolidayListToServerFailed(result.error))
@@ -25,6 +28,8 @@ export function* callCreateHolidayList(action) {
 
 
 export function* callGetHolidayLists() {
+  yield put(loading())
+
   const result = yield call(getHolidayLists)
   if (result.error) {
     yield put(getHolidayListsFromServerFailed(result.error))
@@ -35,6 +40,8 @@ export function* callGetHolidayLists() {
 
 
 export function* callGetHolidayList(action) {
+  yield put(loading())
+
   const result = yield call(getHolidayList, action.payload)
   if (result.error) {
     yield put(getHolidayListFromServerFailed(result.error))
@@ -45,6 +52,8 @@ export function* callGetHolidayList(action) {
 
 
 export function* callUpdateHolidayList(action) {
+  yield put(loading())
+
   const result = yield call(updateHolidayList, action.payload)
   console.log('result', result)
   if (result.error) {
@@ -57,6 +66,8 @@ export function* callUpdateHolidayList(action) {
 
 
 export function* callDeleteHolidayList(action) {
+  yield put(loading())
+  
   const result = yield call(deleteHolidayList, action.payload)
   if (result.error) {
     yield put(submitDeleteHolidayListToServerFailed(result.error))
