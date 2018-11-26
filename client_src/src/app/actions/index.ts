@@ -35,6 +35,9 @@ export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 
 
 
+export const loading = () => ({type: "LOADING"})
+
+
 export const getHolidayListsFromServer                  = ()  => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER"});
 export const getHolidayListsFromServerSucceeded         = obj => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER_SUCCEEDED", payload: obj});
 export const getHolidayListsFromServerFailed            = obj => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER_FAILED", payload: obj});

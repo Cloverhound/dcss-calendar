@@ -2,7 +2,8 @@ let initialState = {
   name: "",
   holidays: [{name: "", date: "", index: 0}],
   active: "true",
-  message: {type: "", content: ""} 
+  message: {type: "", content: ""},
+  loading: false 
 }   
 
 const holidayListReducer = (state = initialState, action) => {
@@ -33,9 +34,16 @@ const holidayListReducer = (state = initialState, action) => {
       return changeHolidayDate(state, action.payload)
     case 'DELETE_HOLIDAY':        
       return deleteHoliday(state, action.payload)
+    case 'LOADING':
+      return handleLoading(state)
     default:
       return state
   }
+}
+
+const handleLoading = (state) => {
+  let loading = true
+  return {...state, loading}
 }
 
 const handleCloseMessage = (state) => {
@@ -45,38 +53,44 @@ const handleCloseMessage = (state) => {
 
 const handleGetHolidayListSucceeded = (state, payload) => {
   console.log('Handling get holiday list succeeded', payload) 
+  payload.loading = false
   return payload
 }
 
 const handleGetHolidayListFailed = (state, payload) => {
   console.log('Handling get holiday list failed', payload)
   let message = {type: "error", content: "Failed to get holiday list: " + payload.message}
-  return {...state, message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 const handleUpdateHolidayListSucceeded = (state, payload) => {
   console.log('Handling update holiday list succeeded', payload)
   let message = {type: "success", content: "Successfully updated."}
-  return {...state, message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 const handleUpdateHolidayListFailed = (state, payload) => {
   console.log('Handling update holiday list failed', payload)
   let message = {type: "error", content: "Failed to update: " + payload.message}
-  return {...state, message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 
 const handleNewHolidayListSucceeded = (state, payload) => {
   console.log('Handling new holiday list succeeded', payload)
   let message = {type: "success", content: "Successfully created."}
-  return {...state, message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 const handleNewHolidayListFailed = (state, payload) => {
   console.log('Handling new holiday list failed', payload)
   let message = {type: "error", content: "Failed to create: " + payload.message}
-  return {...state, message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 

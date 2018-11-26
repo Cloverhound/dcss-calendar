@@ -44,7 +44,6 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, name, date} = this.props;
-    console.log('Rendering holiday row', name, date)
     
     let nameDropDown = <FormControl className={classes.formControl}>
       <Select
