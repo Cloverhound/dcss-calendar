@@ -23,10 +23,9 @@ export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 export const getQueuesFromServer = () => ({ type: "GET_QUEUES_FROM_SERVER" });
 export const submitNewQueueToServer = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER", payload: obj });
 export const submitUpdateQueueToServer = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER", payload: obj });
+export const submitDeleteQueueToServer = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload:obj });
 
 export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
-
-
 
 export const loading = () => ({type: "LOADING"})
 
