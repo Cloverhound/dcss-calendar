@@ -6,7 +6,7 @@ export const sendRouteComponent = component => ({ type: "CHANGE_ROUTE_COMPONENT"
 export const updateChecked = obj => ({ type: "UPDATE_CHECKED", payload: obj });
 export const deleteRow = obj => ({ type: "DELETE_ROW", payload: obj });
 export const addScheduleSelect = () => ({ type: "ADD_SCHEDULE_SELECT" });
-export const requestSchedulesGet = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER" });
+export const getSchedulesFromServer = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER" });
 export const requestScheduleSubmit = obj => ({ type: "SUBMIT_NEW_SCHEDULE_TO_SERVER", payload: obj });
 export const requestScheduleEdit = obj => ({ type: "SUBMIT_UPDATE_SCHEDULE_TO_SERVER", payload: obj })
 export const requestScheduleDelete = obj => ({ type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER", payload: obj })

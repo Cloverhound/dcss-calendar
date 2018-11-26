@@ -1,11 +1,10 @@
 let initialState = {
-  queueId: 0,
   queueName: '',
   scheduleId: 0,
   holidayListId: 0,
 }
 
-const addQueueReducer = (state = initialState, action) => {
+const newQueueReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_ADD_QUEUE_STATE':
       return {...state, [action.payload.name]: action.payload.value }
@@ -16,4 +15,4 @@ const addQueueReducer = (state = initialState, action) => {
   }
 }
 
-export default addQueueReducer
+export default newQueueReducer

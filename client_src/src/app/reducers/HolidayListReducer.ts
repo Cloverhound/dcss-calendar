@@ -93,8 +93,6 @@ const handleNewHolidayListFailed = (state, payload) => {
   return {...state, message, loading}
 }
 
-
-
 const changeHolidayListName = (state, payload) => {
   console.log('Changing holiday list name', state, payload)
   let name = payload

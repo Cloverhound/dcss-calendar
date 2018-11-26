@@ -2,9 +2,9 @@ import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
 import { postQueues, patchQueues } from './api'
 
 export function* callCreateQueue(action) {
-  const { scheduleId, queueName } = action.payload
+  const { scheduleId, queueName, holidayListId } = action.payload
 
-  const result = yield call(postQueues, { name: queueName, scheduleId })
+  const result = yield call(postQueues, { name: queueName, scheduleId, holidayListId })
 
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)

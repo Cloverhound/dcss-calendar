@@ -31,6 +31,7 @@ export function* callGetHolidayLists() {
   yield put(loading())
 
   const result = yield call(getHolidayLists)
+
   if (result.error) {
     yield put(getHolidayListsFromServerFailed(result.error))
   } else {
