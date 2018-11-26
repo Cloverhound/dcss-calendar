@@ -4,7 +4,7 @@ let initialState = {
   active: "true",
   message: {type: "", content: ""},
   loading: false 
-}   
+}
 
 const holidayListReducer = (state = initialState, action) => {
   

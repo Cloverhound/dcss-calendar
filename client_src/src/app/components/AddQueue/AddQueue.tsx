@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import { requestAddQueueSubmit, requestSchedulesGet, handleAddQueueChange, requestAddQueueUpdate } from '../../actions/index'
+import { submitNewQueueToServer, requestSchedulesGet, handleAddQueueChange, submitUpdateQueueToServer } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -63,12 +63,12 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleReducer: any,
-  requestAddQueueSubmit: any,
+  submitNewQueueToServer: any,
   requestSchedulesGet: any,
   handleAddQueueChange: any,
   addQueueReducer: any,
   queuesReducer: any,
-  requestAddQueueUpdate: any
+  submitUpdateQueueToServer: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -90,11 +90,11 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestAddQueueSubmit, requestAddQueueUpdate, addQueueReducer } = this.props;
+    const { submitNewQueueToServer, submitUpdateQueueToServerrver, addQueueReducer } = this.props;
     if (addQueueReducer.queueId !== 0) {
-      requestAddQueueUpdate({ queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+      submitUpdateQueueToServerrver({ queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     } else {
-      requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+      submitNewQueueToServerr({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     }
   }
 
@@ -179,9 +179,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
-  requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj))),
+  submitNewQueueToServerrr: (obj) => (dispatch(submitNewQueueToServer(obj))),
   handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj))),
-  requestAddQueueUpdate: (obj) => (dispatch(requestAddQueueUpdate(obj)))
+  submitUpdateQueueToServerrver: (obj) => (dispatch(submitUpdateQueueToServer(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));

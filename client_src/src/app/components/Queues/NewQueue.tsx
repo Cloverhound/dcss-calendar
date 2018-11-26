@@ -9,10 +9,12 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
 
-import { requestAddQueueSubmit, requestSchedulesGet, handleAddQueueChange, requestAddQueueUpdate } from '../../actions/index'
+import { submitNewQueueToServer, requestSchedulesGet, handleAddQueueChange, submitUpdateQueueToServer } from '../../actions/index'
 
 import {
   BrowserRouter as Router,
@@ -26,13 +28,21 @@ const styles = theme => createStyles({
     justifyContent: 'center',
     marginTop: '65px',
   },
-  arrowContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '50px',
-    backgroundColor: '#3f51b5;',
-    borderRadius: "5px 5px 0 0"
+  title: {
+    margin: theme.spacing.unit,
   },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  // arrowContainer: {
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   height: '50px',
+  //   backgroundColor: '#3f51b5;',
+  //   borderRadius: "5px 5px 0 0"
+  // },
   arrow: {
     margin: '10px',
     fill: 'white',
@@ -41,7 +51,9 @@ const styles = theme => createStyles({
     },
   },
   paper: {
-    width: '300px',
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
   },
   form: {
     display: 'flex',
@@ -59,16 +71,21 @@ const styles = theme => createStyles({
     marginTop: '30px',
     margin: theme.spacing.unit,
   },
+  submitCancelContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: '50px',
+  }
 });
 
 interface IProps {
   scheduleReducer: any,
-  requestAddQueueSubmit: any,
+  submitNewQueueToServer: any,
   requestSchedulesGet: any,
   handleAddQueueChange: any,
   addQueueReducer: any,
   queuesReducer: any,
-  requestAddQueueUpdate: any
+  submitUpdateQueueToServer: any
 }
 
 class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -82,19 +99,19 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
     const { requestSchedulesGet, handleAddQueueChange, queuesReducer } = this.props;
     requestSchedulesGet();
 
-    if (queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
-      handleAddQueueChange({ name: "queueId", value: queuesReducer.selected.id })
-      handleAddQueueChange({ name: "queueName", value: queuesReducer.selected.name })
-      handleAddQueueChange({ name: "scheduleId", value: queuesReducer.selected.scheduleId })
-    }
+    // if (queuesReducer.selected.name && queuesReducer.selected.scheduleId) {
+    //   handleAddQueueChange({ name: "queueId", value: queuesReducer.selected.id })
+    //   handleAddQueueChange({ name: "queueName", value: queuesReducer.selected.name })
+    //   handleAddQueueChange({ name: "scheduleId", value: queuesReducer.selected.scheduleId })
+    // }
   }
 
   handleFormSubmit = () => {
-    const { requestAddQueueSubmit, requestAddQueueUpdate, addQueueReducer } = this.props;
+    const { submitNewQueueToServer, submitUpdateQueueToServer, addQueueReducer } = this.props;
     if (addQueueReducer.queueId !== 0) {
-      requestAddQueueUpdate({ queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+      submitUpdateQueueToServer({ queueId: addQueueReducer.queueId, scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     } else {
-      requestAddQueueSubmit({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
+      submitNewQueueToServer({ scheduleId: addQueueReducer.scheduleId, queueName: addQueueReducer.queueName })
     }
   }
 
@@ -111,27 +128,24 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
     let holidayListMenuItems = scheduleReducer.schedules.map(schedule => {
+      console.log("schedule", schedule);
+      
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <div className={classes.arrowContainer}>
-            <Link to="/">
-              <ArrowBack className={classes.arrow} />
-            </Link>
-          </div>
+        <div className={classes.paper}>
           <form className={classes.form}>
-            <FormControl>
-              <Input
-                value={addQueueReducer.queueName}
-                onChange={this.handleChange}
-                name="queueName"
-                placeholder="Queue Name"
-                autoFocus={true}
-              />
-            </FormControl>
+            <Typography className={classes.title} variant="title">New Queue</Typography>
+             <TextField
+              label="Name"
+              name="queueName"
+              className={classes.textField}
+              value={addQueueReducer.queueName}
+              onChange={this.handleChange}
+              margin="normal"
+            />
             <FormControl className={classes.formControl}>
               <Select
                 value={addQueueReducer.scheduleId}
@@ -156,13 +170,20 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               </Select>
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
-            <Link to="/">
-              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
-                Save
-              </Button>
-            </Link>
+            <div className={classes.submitCancelContainer}>
+              <Link to="/">
+                <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
+                  Save
+                </Button>
+              </Link>
+              <Link to="/">
+                <Button variant="outlined" color="primary" className={classes.button}>
+                  Cancel
+                </Button>
+              </Link>
+            </div>
           </form>
-        </Paper>
+        </div>
       </div>
     )
   }
@@ -170,17 +191,18 @@ class AddQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    scheduleReducer: state.scheduleReducer,
     addQueueReducer: state.addQueueReducer,
-    queuesReducer: state.queuesReducer
+    scheduleReducer: state.scheduleReducer,
+    queuesReducer: state.queuesReducer,
+    holidayListReducer: state.holidayListReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
-  requestAddQueueSubmit: (obj) => (dispatch(requestAddQueueSubmit(obj))),
+  submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer(obj))),
   handleAddQueueChange: (obj) => (dispatch(handleAddQueueChange(obj))),
-  requestAddQueueUpdate: (obj) => (dispatch(requestAddQueueUpdate(obj)))
+  submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddQueue));

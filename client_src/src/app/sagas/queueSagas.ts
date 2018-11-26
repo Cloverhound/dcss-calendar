@@ -8,6 +8,6 @@ export function* callGetQueues() {
     console.log("REQUEST_FAILED", result.error)
   } else {
     console.log("REQUEST_SUCCESSFUL")
-    yield put({type: "REQUEST_GET_QUEUES_DONE", payload: result})
+    yield put({type: "GET_QUEUES_FROM_SERVER_DONE", payload: result})
   }
 }

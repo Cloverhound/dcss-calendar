@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
 import { postQueues, patchQueues } from './api'
 
-export function* callAddQueueSubmit(action) {
+export function* callCreateQueue(action) {
   const { scheduleId, queueName } = action.payload
 
   const result = yield call(postQueues, { name: queueName, scheduleId })
@@ -25,6 +25,6 @@ export function* callUpdateAddQueue(action) {
   } else {
     console.log("REQUEST_SUCCESSFUL")
     yield put({type: "REQUEST_ADD_QUEUE_DONE", payload: result})
-    yield put({type: "REQUEST_GET_QUEUES", payload: result})
+    yield put({type: "GET_QUEUES_FROM_SERVER", payload: result})
   }
 }

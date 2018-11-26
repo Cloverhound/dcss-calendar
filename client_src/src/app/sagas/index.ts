@@ -1,18 +1,18 @@
 import { takeLatest, all } from 'redux-saga/effects'
 import { callPostSchedule, callGetSchedules, callPutSchedule, callDeleteSchedule } from './scheduleSagas'
 import { callGetQueues } from './queueSagas'
-import { callAddQueueSubmit, callUpdateAddQueue } from './addQueueSagas'
+import { callCreateQueue, callUpdateAddQueue } from './addQueueSagas'
 import { callCreateHolidayList, callGetHolidayLists, callGetHolidayList, callUpdateHolidayList, callDeleteHolidayList } from './holidaySagas'
 
 export default function* root() {
   yield all([
-    yield takeLatest('REQUEST_SCHEDULES_GET', callGetSchedules),
-    yield takeLatest('REQUEST_SCHEDULE_POST', callPostSchedule),
-    yield takeLatest('REQUEST_SCHEDULE_EDIT', callPutSchedule),
-    yield takeLatest('REQUEST_SCHEDULE_DELETE', callDeleteSchedule),
-    yield takeLatest('REQUEST_ADD_QUEUE_SUBMIT', callAddQueueSubmit),
-    yield takeLatest('REQUEST_ADD_QUEUE_UPDATE', callUpdateAddQueue),
-    yield takeLatest('REQUEST_GET_QUEUES', callGetQueues),
+    yield takeLatest('GET_SCHEDULES_FROM_SERVER', callGetSchedules),
+    yield takeLatest('SUBMIT_NEW_SCHEDULE_TO_SERVER', callPostSchedule),
+    yield takeLatest('SUBMIT_UPDATE_SCHEDULE_TO_SERVER', callPutSchedule),
+    yield takeLatest('SUBMIT_DELETE_SCHEDULE_TO_SERVER', callDeleteSchedule),
+    yield takeLatest('SUBMIT_NEW_QUEUE_TO_SERVER', callCreateQueue),
+    yield takeLatest('SUBMIT_UPDATE_QUEUE_TO_SERVER', callUpdateAddQueue),
+    yield takeLatest('GET_QUEUES_FROM_SERVER', callGetQueues),
     yield takeLatest('SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER', callCreateHolidayList),
     yield takeLatest('GET_HOLIDAY_LISTS_FROM_SERVER', callGetHolidayLists),
     yield takeLatest('GET_HOLIDAY_LIST_FROM_SERVER', callGetHolidayList),

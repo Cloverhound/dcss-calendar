@@ -16,7 +16,7 @@ import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
-import { requestGetQueues, addSelectedQueue, clearSelectedQueue } from '../../../actions/index'
+import { getQueuesFromServer } from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
@@ -77,10 +77,8 @@ interface IStateTable {
 }
 
 interface IPropsTable {
-  requestGetQueues: any,
+  getQueuesFromServer: any,
   queues: any,
-  clearSelectedQueue: any,
-  addSelectedQueue: any
 }
 
 class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -100,8 +98,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   componentWillMount = () => {
-    const { requestGetQueues } = this.props
-    requestGetQueues()
+    const { getQueuesFromServer } = this.props
+    getQueuesFromServer()
   }
 
   handleEdit = () => {
@@ -119,15 +117,15 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ order, orderBy });
   };
 
-  handleAddQueueClick = (event, obj) => {
-    const { addSelectedQueue, queues, clearSelectedQueue } = this.props;
+  // handleAddQueueClick = (event, obj) => {
+  //   const { queues, clearSelectedQueue } = this.props;
 
-    if (obj.id === queues.selected.id) {
-      clearSelectedQueue()
-    } else {
-      addSelectedQueue(obj)
-    }
-  };
+  //   if (obj.id === queues.selected.id) {
+  //     clearSelectedQueue()
+  //   } else {
+  //     addSelectedQueue(obj)
+  //   }
+  // };
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -191,7 +189,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       <TableRow
                         hover
                         role="checkbox"
-                        onClick={event => this.handleAddQueueClick(event, n.queue)}
+                        // onClick={event => this.handleAddQueueClick(event, n.queue)}
                         aria-checked={isSelected}
                         tabIndex={-1}
                         key={n.id}
@@ -259,9 +257,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  requestGetQueues: () => dispatch(requestGetQueues()),
-  addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
-  clearSelectedQueue: () => dispatch(clearSelectedQueue()),
+  getQueuesFromServer: () => dispatch(getQueuesFromServer()),
+  // addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
+  // clearSelectedQueue: () => dispatch(clearSelectedQueue()),
 })
 
 

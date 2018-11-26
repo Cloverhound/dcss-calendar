@@ -102,7 +102,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // requestGetQueues: () => dispatch(requestGetQueues()),
+  // getQueuesFromServer: () => dispatch(getQueuesFromServer()),
   // addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
   // clearSelectedQueue: () => dispatch(clearSelectedQueue()),
 })
