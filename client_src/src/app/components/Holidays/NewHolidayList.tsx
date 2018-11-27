@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import HolidayRow from './HolidayRow';
-import { addHoliday, changeHolidayListName, submitNewHolidayListToServer, handleCloseMessage } from '../../actions';
+import { addHoliday, changeHolidayListName, submitNewHolidayListToServer, handleCloseMessage, resetHolidayListState } from '../../actions';
 
 
 const styles = theme => createStyles({
@@ -95,13 +95,19 @@ interface IProps {
   addHoliday: any,
   holidayListReducer: any,
   requestNewHolidayListSubmit: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  resetHolidayListState: any
 }
 
 class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleAddHoliday = () => {
     this.props.addHoliday()
+  }
+
+  componentWillMount = () => {
+    const { resetHolidayListState } = this.props
+    resetHolidayListState()
   }
 
   handleChangeHolidayListName = event => {
@@ -194,7 +200,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
   requestNewHolidayListSubmit: (obj) => (dispatch(submitNewHolidayListToServer(obj))),
-  handleCloseMessage: () => (dispatch(handleCloseMessage()))
+  handleCloseMessage: () => (dispatch(handleCloseMessage())),
+  resetHolidayListState: () => (dispatch(resetHolidayListState()))
 })
 
 

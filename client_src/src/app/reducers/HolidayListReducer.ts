@@ -39,9 +39,15 @@ const holidayListReducer = (state = initialState, action) => {
       return deleteHoliday(state, action.payload)
     case 'HOLIDAY_LIST_LOADING':
       return handleHolidayListLoading(state)
+    case 'RESET_HOLIDAY_LIST_STATE':
+      return resetHolidayListState()
     default:
       return state
   }
+}
+
+const resetHolidayListState = () => {
+  return {...initialState}
 }
 
 const handleHolidayListLoading = (state) => {

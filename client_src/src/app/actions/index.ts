@@ -27,9 +27,10 @@ export const submitDeleteQueueToServer = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO
 
 export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
 
+export const resetHolidayListState = () => ({type: "RESET_HOLIDAY_LIST_STATE"}) 
+
 export const holidayListsLoading = () => ({type: "HOLIDAY_LISTS_LOADING"})
 export const holidayListLoading  = () => ({type: "HOLIDAY_LIST_LOADING"})
-
 
 export const getHolidayListsFromServer                  = ()  => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER"});
 export const getHolidayListsFromServerSucceeded         = obj => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER_SUCCEEDED", payload: obj});
