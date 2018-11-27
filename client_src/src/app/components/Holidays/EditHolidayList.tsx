@@ -133,31 +133,12 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
   render() {
     const { classes, holidayListReducer } = this.props;
     const { holidays, name, message, loading } = holidayListReducer;
+    
 
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
 
-    let snackbar 
-    if(message && message.type == 'error') {
-      snackbar = <CalendarSnackbar
-                      handleClose = {this.handleCloseMessage}
-                      hideDuration = {6000}
-                      content = {message.content}
-                      variant = {'error'} />
-    }
-    if(message && message.type == 'success') {
-      snackbar = <CalendarSnackbar
-                      handleClose = {this.handleCloseMessage}
-                      hideDuration = {6000}
-                      content = {message.content}
-                      variant = {'success'} />
-    }
-
-    let progressIndicator
-    if(loading) {
-      progressIndicator = <CircularProgress className={classes.progress} />
-    }
 
     return (
       <div className={classes.root}>
@@ -165,7 +146,11 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Holiday List</Typography>
 
-            {snackbar}
+            <CalendarSnackbar
+              handleClose = {this.handleCloseMessage}
+              hideDuration = {6000}
+              message = {message} 
+            />
 
             <TextField
               id="edit-holiday-list-name"
@@ -181,7 +166,7 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
               {holidayComponents}
             </div>
 
-            {progressIndicator}
+            {loading ? <CircularProgress className={classes.progress} /> : null}
 
             <div className={classes.addIconContainer}>
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>

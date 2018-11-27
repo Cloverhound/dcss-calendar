@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import HolidayRow from './HolidayRow';
 import { addHoliday, changeHolidayListName, submitNewHolidayListToServer, handleCloseMessage } from '../../actions';
@@ -82,6 +83,9 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
@@ -116,25 +120,7 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name, message } = holidayListReducer;
-
-    let snackbar 
-    if(message && message.type == 'error') {
-      snackbar = <CalendarSnackbar
-                      handleClose = {this.handleCloseMessage}
-                      hideDuration = {6000}
-                      content = {message.content}
-                      variant = {'error'} />
-    }
-    if(message && message.type == 'success') {
-      snackbar = <CalendarSnackbar
-                      handleClose = {this.handleCloseMessage}
-                      hideDuration = {6000}
-                      content = {message.content}
-                      variant = {'success'} />
-    }
-
-
+    const { holidays, name, message, loading } = holidayListReducer;
   
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
@@ -146,7 +132,12 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">New Holiday List</Typography>
 
-            {snackbar}
+            <CalendarSnackbar
+              handleClose = {this.handleCloseMessage}
+              hideDuration = {6000}
+              message = {message} 
+            />
+
 
             <TextField
               id="new-holiday-list-name"
@@ -161,6 +152,8 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
             <div className={classes.selectContainer}>
               {holidayComponents}
             </div>
+
+            {loading ? <CircularProgress className={classes.progress} /> : null}
 
             <div className={classes.addIconContainer}>
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>

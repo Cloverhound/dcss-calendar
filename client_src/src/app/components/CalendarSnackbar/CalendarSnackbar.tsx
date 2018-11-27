@@ -7,8 +7,7 @@ import CalendarSnackbarContent from './CalendarSnackbarContent'
 interface IProps {
   handleClose: any,
   hideDuration: number,
-  content: string
-  variant: string //possible values: success, error, warning, info
+  message: any //possible message.type values: success, error, warning, info
 }
 
 const styles = theme => createStyles({
@@ -20,7 +19,12 @@ const styles = theme => createStyles({
 class CalendarSnackbar extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
-    const { classes, variant, handleClose, content } = this.props;
+    const { classes, handleClose, message } = this.props;
+
+    if(!message || !message.type) {
+      return null
+    }
+   
     return (
       <Snackbar
             anchorOrigin={{
@@ -33,8 +37,8 @@ class CalendarSnackbar extends React.Component<WithStyles<typeof styles> & IProp
           >
             <CalendarSnackbarContent
               onClose={handleClose}
-              variant={variant}
-              message={content}
+              variant={message.type}
+              message={message.content}
               className={classes.margin}
             />
 
