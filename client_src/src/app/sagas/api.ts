@@ -38,12 +38,29 @@ export async function getQueues() {
         'Content-type': 'application/json',
       },
     });
+    
     let responseJson = await response.json()
-    console.log("get all res", responseJson);
     
     return responseJson
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function deleteQueue(payload) {
+  console.log('Deleting queue -- ', payload)
+  try {
+    let response = await fetch(`/api/Queues/${payload}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
   }
 }
 

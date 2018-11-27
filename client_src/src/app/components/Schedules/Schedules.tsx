@@ -2,7 +2,7 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
 
 import { connect } from 'react-redux'
-import { requestSchedulesGet, requestScheduleDelete } from '../../actions'
+import { getSchedulesFromServer, requestScheduleDelete } from '../../actions'
 
 interface IProps {
   schedules: any,
@@ -62,7 +62,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  getSchedules: () => dispatch(requestSchedulesGet()),
+  getSchedules: () => dispatch(getSchedulesFromServer()),
   requestScheduleDelete: (obj) => dispatch(requestScheduleDelete(obj))
 })
 

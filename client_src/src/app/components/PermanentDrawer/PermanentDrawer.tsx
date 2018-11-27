@@ -24,7 +24,7 @@ import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
 import EditHolidayList from '../Holidays/EditHolidayList'
 import Prompts from '../Prompts/Prompts';
-import AddQueue from '../AddQueue/AddQueue';
+import NewQueue from '../Queues/NewQueue';
 
 import {
   BrowserRouter as Router,
@@ -199,7 +199,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/schedules/:id/edit" component={EditSchedule} />
             <Route exact path="/holiday_lists" component={HolidayLists} />
             <Route exact path="/Prompts" component={Prompts} />
-            <Route exact path="/AddQueue" component={AddQueue} />
+            <Route exact path="/queues/new" component={NewQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
           </main>

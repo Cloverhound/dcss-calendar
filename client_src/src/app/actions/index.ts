@@ -6,34 +6,26 @@ export const sendRouteComponent = component => ({ type: "CHANGE_ROUTE_COMPONENT"
 export const updateChecked = obj => ({ type: "UPDATE_CHECKED", payload: obj });
 export const deleteRow = obj => ({ type: "DELETE_ROW", payload: obj });
 export const addScheduleSelect = () => ({ type: "ADD_SCHEDULE_SELECT" });
-export const requestSchedulesGet = ()  => ({ type: "REQUEST_SCHEDULES_GET" });
-export const requestScheduleSubmit = obj => ({ type: "REQUEST_SCHEDULE_POST", payload: obj });
-export const requestScheduleEdit = obj => ({ type: "REQUEST_SCHEDULE_EDIT", payload: obj })
-export const requestScheduleDelete = obj => ({ type: "REQUEST_SCHEDULE_DELETE", payload: obj })
+export const getSchedulesFromServer = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER" });
+export const requestScheduleSubmit = obj => ({ type: "SUBMIT_NEW_SCHEDULE_TO_SERVER", payload: obj });
+export const requestScheduleEdit = obj => ({ type: "SUBMIT_UPDATE_SCHEDULE_TO_SERVER", payload: obj })
+export const requestScheduleDelete = obj => ({ type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER", payload: obj })
 
 
 
 export const updateNameField = obj => ({ type: "UPDATE_NAME_FIELD", payload: obj });
 
 export const updateOpenClosedTime = obj => ({ type: "UPDATE_OPEN_CLOSED_TIME", payload: obj })
-
-// Queues
-export const requestGetQueues = () => ({ type: "REQUEST_GET_QUEUES" });
-
 export const updateTimeRanges = (obj) => ({ type: "UPDATE_TIME_RANGES", payload: obj });
-
-export const requestAddQueueSubmit = obj => ({ type: "REQUEST_ADD_QUEUE_SUBMIT", payload: obj });
-
-export const requestAddQueueUpdate = obj => ({ type: "REQUEST_ADD_QUEUE_UPDATE", payload: obj });
-
-export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
-
-export const addSelectedQueue = (obj) => ({ type: "ADD_SELECTED_QUEUE", payload: obj });
-
-export const clearSelectedQueue = () => ({ type: "CLEAR_SELECTED_QUEUE" });
 export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 
+// Queues
+export const getQueuesFromServer = () => ({ type: "GET_QUEUES_FROM_SERVER" });
+export const submitNewQueueToServer = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER", payload: obj });
+export const submitUpdateQueueToServer = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER", payload: obj });
+export const submitDeleteQueueToServer = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload:obj });
 
+export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
 
 export const loading = () => ({type: "LOADING"})
 

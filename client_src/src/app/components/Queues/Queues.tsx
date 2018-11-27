@@ -3,11 +3,11 @@ import EnhancedTable from '../Table/EnhancedTable/EnhancedTable';
 import CalendarTable from '../CalendarTable/CalendarTable';
 
 import { connect } from 'react-redux'
-import { requestGetQueues } from '../../actions'
+import { getQueuesFromServer } from '../../actions'
 interface IProps {
   queuesReducer: any,
   selected?: any,
-  requestGetQueues: any,
+  getQueuesFromServer: any,
 }
 
 class Queues extends React.Component<IProps> {
@@ -26,8 +26,8 @@ class Queues extends React.Component<IProps> {
 
   getQueues = () => {
     console.log('Getting Queues');
-    const { requestGetQueues } = this.props;
-    requestGetQueues()
+    const { getQueuesFromServer } = this.props;
+    getQueuesFromServer()
   }
 
   render() {
@@ -59,7 +59,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    requestGetQueues: () => dispatch(requestGetQueues()),
+    getQueuesFromServer: () => dispatch(getQueuesFromServer()),
   }
 }
 

@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,7 +17,7 @@ import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
-import { requestGetQueues, addSelectedQueue, clearSelectedQueue } from '../../../actions/index'
+import { getQueuesFromServer, submitDeleteQueueToServer } from '../../../actions/index'
 import {
   BrowserRouter as Router,
   Route,
@@ -65,6 +66,11 @@ const styles = theme => createStyles({
   tableWrapper: {
     overflowX: 'auto',
   },
+  addButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
 });
 
 interface IStateTable {
@@ -77,10 +83,9 @@ interface IStateTable {
 }
 
 interface IPropsTable {
-  requestGetQueues: any,
+  getQueuesFromServer: any,
   queues: any,
-  clearSelectedQueue: any,
-  addSelectedQueue: any
+  deleteQueue:any
 }
 
 class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -100,12 +105,18 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   componentWillMount = () => {
-    const { requestGetQueues } = this.props
-    requestGetQueues()
+    const { getQueuesFromServer } = this.props
+    getQueuesFromServer()
   }
 
   handleEdit = () => {
-    console.log("EDIT EDIT")
+    console.log("Handling Edit Queue");
+  }
+
+  handleDelete = (queueId) => {
+    console.log("Handling Delete Queue");
+    const { deleteQueue } = this.props;
+    deleteQueue({ id: queueId })
   }
 
   handleRequestSort = (event, property) => {
@@ -117,16 +128,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     }
 
     this.setState({ order, orderBy });
-  };
-
-  handleAddQueueClick = (event, obj) => {
-    const { addSelectedQueue, queues, clearSelectedQueue } = this.props;
-
-    if (obj.id === queues.selected.id) {
-      clearSelectedQueue()
-    } else {
-      addSelectedQueue(obj)
-    }
   };
 
   handleChangePage = (event, page) => {
@@ -163,7 +164,6 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(queues.array, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  console.log("n", n)
                   const isSelected = this.isSelected(n.queue.id);
                   let statusStyle = "";
                   switch (n.queue.status) {
@@ -192,19 +192,13 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       <TableRow
                         hover
                         role="checkbox"
-                        onClick={event => this.handleAddQueueClick(event, n.queue)}
                         aria-checked={isSelected}
                         tabIndex={-1}
                         key={n.id}
-                        // selected={isSelected}
                       >
-                        {/* <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell> */}
                         <TableCell component="th" scope="row" padding="default">
                           <div style={{ display: "flex", alignItems: "center" }}>
                             <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div>
-                            {/* <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "green" }}></div> */}
                             <div style={{ paddingLeft: "5px" }}>{n.queue.status}</div>
                           </div>
 
@@ -213,15 +207,30 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         <TableCell>{n.schedule.name}</TableCell>
                         <TableCell>{n.holidayList.name}</TableCell>
                         <TableCell>Default</TableCell>
-                        <TableCell>
-                          <Link to="/AddQueue">
+                        {/* <TableCell>
+                          <Link to="/queues/edit">
                             <Tooltip title="Edit">
                               <IconButton aria-label="Edit">
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
                           </Link>
-                        </TableCell>
+                        </TableCell> */}
+
+                        <TableCell>
+                          <div className={classes.addButton}>
+                            <Tooltip title="Edit">
+                              <IconButton onClick={() => this.handleEdit()} aria-label="Edit">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                              <IconButton onClick={event => this.handleDelete(n.queue.id)} aria-label={"Delete"}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                      </TableCell>
                       </TableRow>
                     </Tooltip>
                   );
@@ -260,9 +269,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  requestGetQueues: () => dispatch(requestGetQueues()),
-  addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
-  clearSelectedQueue: () => dispatch(clearSelectedQueue()),
+  getQueuesFromServer: () => dispatch(getQueuesFromServer()),
+  deleteQueue: (obj) => dispatch(submitDeleteQueueToServer(obj)),
+  // addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
+  // clearSelectedQueue: () => dispatch(clearSelectedQueue()),
 })
 
 

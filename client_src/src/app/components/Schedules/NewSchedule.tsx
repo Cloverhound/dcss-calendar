@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, requestSchedulesGet, updateTimeRanges, resetTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -92,7 +92,7 @@ interface IProps {
   addScheduleSelect: any,
   requestScheduleSubmit: any,
   updateNameField: any,
-  requestSchedulesGet: any,
+  getSchedulesFromServer: any,
   updateTimeRanges: any,
   resetTimeRanges: any
 }
@@ -100,8 +100,8 @@ interface IProps {
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { requestSchedulesGet, resetTimeRanges } = this.props;
-    requestSchedulesGet()
+    const { getSchedulesFromServer, resetTimeRanges } = this.props;
+    getSchedulesFromServer()
     resetTimeRanges()
   }
 
@@ -185,7 +185,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
   requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  requestSchedulesGet: () => (dispatch(requestSchedulesGet())),
+  getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
   updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
   resetTimeRanges: () => (dispatch(resetTimeRanges()))
 })

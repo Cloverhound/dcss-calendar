@@ -4,7 +4,7 @@ let initialState = {
   active: "true",
   message: {type: "", content: ""},
   loading: false 
-}   
+}
 
 const holidayListReducer = (state = initialState, action) => {
   
@@ -92,8 +92,6 @@ const handleNewHolidayListFailed = (state, payload) => {
   let loading = false
   return {...state, message, loading}
 }
-
-
 
 const changeHolidayListName = (state, payload) => {
   console.log('Changing holiday list name', state, payload)

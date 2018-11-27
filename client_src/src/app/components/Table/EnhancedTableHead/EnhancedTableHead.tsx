@@ -14,7 +14,7 @@ import {
 
 const rows = [
   { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
-  { id: 'queueName', numeric: false, disablePadding: false, label: 'Queue Name' },
+  { id: 'queueName', numeric: false, disablePadding: false, label: 'Name' },
   { id: 'scheduleName', numeric: false, disablePadding: false, label: 'Schedule Name' },
   { id: 'holidayName', numeric: false, disablePadding: false, label: 'Holiday Name' },
   { id: 'promptStatus', numeric: false, disablePadding: false, label: 'Prompt Status' },
