@@ -3,10 +3,13 @@ let initialState = {
   holidays: [{name: "", date: "", index: 0}],
   active: "true",
   message: {type: "", content: ""},
-  loading: false 
+  loading: false,
+  toLists: false 
 }
 
 const holidayListReducer = (state = initialState, action) => {
+
+  console.log('holidaylist reducer', state, action)
   
   switch (action.type) {
 
@@ -34,14 +37,15 @@ const holidayListReducer = (state = initialState, action) => {
       return changeHolidayDate(state, action.payload)
     case 'DELETE_HOLIDAY':        
       return deleteHoliday(state, action.payload)
-    case 'LOADING':
-      return handleLoading(state)
+    case 'HOLIDAY_LIST_LOADING':
+      return handleHolidayListLoading(state)
     default:
       return state
   }
 }
 
-const handleLoading = (state) => {
+const handleHolidayListLoading = (state) => {
+  console.log('Handle holiday list loading')
   let loading = true
   return {...state, loading}
 }
@@ -81,9 +85,9 @@ const handleUpdateHolidayListFailed = (state, payload) => {
 
 const handleNewHolidayListSucceeded = (state, payload) => {
   console.log('Handling new holiday list succeeded', payload)
-  let message = {type: "success", content: "Successfully created."}
   let loading = false
-  return {...state, message, loading}
+  let toLists = true
+  return {...state, loading, toLists}
 }
 
 const handleNewHolidayListFailed = (state, payload) => {

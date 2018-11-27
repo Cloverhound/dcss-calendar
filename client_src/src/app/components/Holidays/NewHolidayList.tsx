@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Redirect } from 'react-router-dom';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
@@ -120,11 +121,17 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name, message, loading } = holidayListReducer;
+    const { holidays, name, message, loading, toLists } = holidayListReducer;
+
+    console.log('rendering', holidayListReducer)
   
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
+
+    if(toLists === true) {
+      return <Redirect to={'/holiday_lists'}/>
+    }
 
     return (
       <div className={classes.root}>

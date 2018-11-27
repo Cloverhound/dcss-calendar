@@ -1,17 +1,28 @@
-import * as React from 'react';
+import * as React from 'react'
 import { connect } from 'react-redux'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
-import { getHolidayListsFromServer, submitDeleteHolidayListToServer } from '../../actions'
+import { getHolidayListsFromServer, submitDeleteHolidayListToServer, handleCloseMessage } from '../../actions'
+
+const styles = theme => createStyles({
+  progress: {
+    margin: theme.spacing.unit * 2,
+  }
+})
 
 interface IProps {
   holidayLists: any,
   getHolidayLists: any,
-  deleteHolidayList: any
+  deleteHolidayList: any,
+  holidayListsReducer: any,
+  handleCloseMessage: any
 }
  
-class HolidayLists extends React.Component<IProps> {
+class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
   createTableData = () => {
     console.log('Creating table data')
@@ -33,20 +44,37 @@ class HolidayLists extends React.Component<IProps> {
     deleteHolidayList(holidayListId)
   }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+
   render() {
+    const { classes, holidayListsReducer } = this.props
+    const { message, loading } = holidayListsReducer
     let data = this.createTableData()
     let columnNames = ['name', 'active']
+    let table = <CalendarTable 
+                    data={data} 
+                    basePath={"holiday_lists"} 
+                    populateTable={this.handleGetHolidayLists} 
+                    orderBy={"name"} 
+                    columnNames={columnNames}
+                    title={"Holiday Lists"}
+                    addButtonText={"Add Holiday List"}
+                    handleDelete={this.handleDeleteHolidayList}
+                />
+
     return (
-      <CalendarTable 
-          data={data} 
-          basePath={"holiday_lists"} 
-          populateTable={this.handleGetHolidayLists} 
-          orderBy={"name"} 
-          columnNames={columnNames}
-          title={"Holiday Lists"}
-          addButtonText={"Add Holiday List"}
-          handleDelete={this.handleDeleteHolidayList}
-      />
+      <div>
+        <CalendarSnackbar
+                handleClose = {this.handleCloseMessage}
+                hideDuration = {6000}
+                message = {message} 
+              />
+        {loading ? <CircularProgress className={classes.progress} /> : table}
+        
+      </div>
     )
   }
 
@@ -54,14 +82,16 @@ class HolidayLists extends React.Component<IProps> {
 
 const mapStateToProps = state => {
   return {
-    holidayLists: state.holidayListsReducer.holidayLists
+    holidayLists: state.holidayListsReducer.holidayLists,
+    holidayListsReducer: state.holidayListsReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getHolidayLists: () => dispatch(getHolidayListsFromServer()),
-  deleteHolidayList: (obj) => dispatch(submitDeleteHolidayListToServer(obj))
+  deleteHolidayList: (obj) => dispatch(submitDeleteHolidayListToServer(obj)),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(HolidayLists);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HolidayLists));
