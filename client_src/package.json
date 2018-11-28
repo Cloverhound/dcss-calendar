@@ -5,9 +5,9 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/webpack",
+    "webpack": "./node_modules/.bin/webpack",
     "start": "webpack-dashboard -- webpack",
-    "webpack": "webpack"
+    "build": "webpack -p"
   },
   "keywords": [],
   "author": "",
