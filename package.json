@@ -9,8 +9,12 @@
     "lint": "eslint .",
     "start": "node ./server/server.ts",
     "nodemon": "nodemon ./server/server.ts",
-    "heroku-postbuild": "cd client_src && yarn install && yarn run build",
+    "heroku-prebuild": "cd client_src && yarn install",
+    "heroku-postbuild": "cd client_src yarn run build",
     "posttest": "npm run lint"
+  },
+  "engines": {
+    "yarn": "1.9.4"
   },
   "dependencies": {
     "compression": "^1.0.3",
