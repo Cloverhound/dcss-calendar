@@ -3,7 +3,7 @@ import counter from './counter';
 import routeComponent from './routeComponent';
 import scheduleReducer from './SchedulesReducer';
 import queuesReducer from './QueuesReducer';
-import addQueueReducer from './AddQueueReducer'
+import queueReducer from './QueueReducer'
 import holidayListsReducer from './HolidayListsReducer'
 import holidayListReducer from './HolidayListReducer'
 ​
@@ -12,7 +12,7 @@ export default combineReducers({
   routeComponent,
   scheduleReducer,
   queuesReducer,
-  addQueueReducer,
+  queueReducer,
   holidayListsReducer,
   holidayListReducer
 })

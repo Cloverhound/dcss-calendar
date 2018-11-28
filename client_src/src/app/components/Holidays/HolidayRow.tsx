@@ -44,7 +44,6 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, name, date} = this.props;
-    console.log('Rendering holiday row', name, date)
     
     let nameDropDown = <FormControl className={classes.formControl}>
       <Select
@@ -65,7 +64,7 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
     let holidayDate = <TextField
       id="holiday-date"
       type="date"
-      value={date}
+      value={date.split('T')[0]}
       onChange={this.handleChangeHolidayDate}
       className={classes.holidayDate}
       InputLabelProps={{

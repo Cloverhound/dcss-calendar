@@ -21,14 +21,22 @@
     },
     "scheduleId": {
       "type": "number"
+    },
+    "holidayListId": {
+      "type": "number"
     }
   },
   "validations": [],
   "relations": {
     "schedule": {
-        "type": "belongsTo",
-        "model": "Schedule",
-        "foreignKey": ""
+      "type": "belongsTo",
+      "model": "Schedule",
+      "foreignKey": ""
+    },
+    "holidayList": {
+      "type": "belongsTo",
+      "model": "HolidayList",
+      "foreignKey": ""
     }
   },
   "acls": [],

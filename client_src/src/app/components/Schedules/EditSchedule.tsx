@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleEdit, updateNameField, getSchedulesFromServer, updateTimeRanges } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -90,20 +90,23 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   addScheduleSelect: any,
-  requestScheduleSubmit: any,
+  requestScheduleEdit: any,
   updateNameField: any,
   getSchedulesFromServer: any,
   updateTimeRanges: any,
-  resetTimeRanges: any
+  match: any
 }
 
-class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
+class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { getSchedulesFromServer, resetTimeRanges } = this.props;
-    getSchedulesFromServer()
-    resetTimeRanges()
+    this.handleGetSchedule(this.props.match.params.id)
   }
+
+  handleGetSchedule = (id) => {
+    const { updateTimeRanges } = this.props
+    updateTimeRanges({ id })
+  };
 
   handleNameInput = event => {
     const { updateNameField } = this.props;
@@ -116,8 +119,8 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleFormSubmit = () => {
-    const { requestScheduleSubmit, scheduleReducer } = this.props;
-    requestScheduleSubmit(scheduleReducer)
+    const { requestScheduleEdit, scheduleReducer } = this.props;
+    requestScheduleEdit(scheduleReducer)
   }
 
   render() {
@@ -129,19 +132,35 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
     let menuItem = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
+
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Schedule</Typography>
             <div className={classes.inputContainer}>
+              {/* <FormControl className={classes.formControl}>
+                <Select
+                  value={scheduleReducer.dropDownID}
+                  onChange={this.handleScheduleSelect}
+                  name="scheduleName"
+                  displayEmpty
+                  className={classes.selectEmpty}
+                >
+                  <MenuItem value="new" disabled>
+                    New Schedule
+                  </MenuItem>
+                  {menuItem}
+                </Select>
+                <FormHelperText>Select A Schedule</FormHelperText>
+              </FormControl> */}
 
               <FormControl className={classes.formControl}>
                 <Input
                   value={this.props.scheduleReducer.name}
                   onChange={this.handleNameInput}
                   name="newScheduleName"
-                  placeholder="Add Name"
+                  placeholder="Edit Name"
                   autoFocus={true}
                 />
               </FormControl>
@@ -183,12 +202,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
+  requestScheduleEdit: (obj) => (dispatch(requestScheduleEdit(obj))),
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
   getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
-  resetTimeRanges: () => (dispatch(resetTimeRanges()))
+  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewSchedule));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditSchedule));

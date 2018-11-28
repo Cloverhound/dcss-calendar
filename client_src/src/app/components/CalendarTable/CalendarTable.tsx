@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Table from '@material-ui/core/Table';
@@ -9,10 +8,15 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 import CalendarTableHead from './CalendarTableHead';
 import CalendarTableToolbar from './CalendarTableToolbar';
 
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -48,6 +52,11 @@ const styles = theme => createStyles({
   tableWrapper: {
     overflowX: 'auto',
   },
+  addButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
 });
 
 interface IStateTable {
@@ -56,17 +65,19 @@ interface IStateTable {
   selected: any,
   page: any,
   rowsPerPage: any,
+  toEdit: boolean,
+  id: any,
 }
 
 interface IPropsTable {
   data: any,
   columnNames: any,
   populateTable: any,
-  handleEdit: any,
-  addRowLink: string,
-  orderBy: string,
+  handleDelete: any,
+  basePath: string,
   title: string,
-  addTitle: string
+  addButtonText: string,
+  orderBy: string
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -76,6 +87,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     selected: [],
     page: 0,
     rowsPerPage: 10,
+    toEdit: false,
+    id: null,
   };
 
   componentWillMount = () => {
@@ -84,8 +97,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 
   handleEdit = (id) => {
-    const { handleEdit } = this.props
-    handleEdit(id)
+    this.setState({ id, toEdit: true})
   }
 
   handleRequestSort = (event, property) => {
@@ -107,19 +119,22 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
-
   render() {
-    const { classes, data, columnNames, addRowLink, title, addTitle } = this.props;
-    const { order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
+    const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+    if(toEdit === true) {
+      return <Redirect to={`/${basePath}/${id}/edit`}/>
+    }
 
     return (
       <Paper className={classes.root}>
         <CalendarTableToolbar 
           numSelected={selected.length} 
-          addRowLink={addRowLink} 
+          basePath={basePath} 
           title={title} 
-          addTitle={addTitle}
+          addButtonText={addButtonText}
         />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -133,24 +148,38 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  
                   let tableCells: JSX.Element[] = []
                   for(var i = 0; i < columnNames.length; i++) {
                     let columnName = columnNames[i]
                     let tableCell = <TableCell>{row[columnName]}</TableCell>
                     tableCells.push(tableCell)
                   }
-                  
+
+                  let deleteTableCell = (
+                      <TableCell>
+                          <div className={classes.addButton}>
+                            <Tooltip title="Edit">
+                              <IconButton onClick={() => this.handleEdit(row.id)} aria-label="Edit">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                              <IconButton onClick={event => handleDelete(row.id)} aria-label={"Delete"}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                      </TableCell>
+                  )
+                  tableCells.push(deleteTableCell)
+
                   return (
-                    <Tooltip title="Select to edit" placement={'right'} enterDelay={300}>
-                      <TableRow 
+                        <TableRow 
                           hover 
                           tabIndex={-1} 
-                          key={index}
-                          onClick={event => this.handleEdit(row.id)}>
-                        {tableCells}
-                      </TableRow>
-                    </Tooltip>
+                          key={index}>
+                          {tableCells}
+                        </TableRow>
                   );
                 })}
               {emptyRows > 0 && (

@@ -81,9 +81,9 @@ class EnhancedTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
               </Tooltip>
             </Link>
           ) : ( */}
-            <Link to="/AddQueue">
-              <Tooltip title="Add Queue">
-                <IconButton aria-label="Add Queue">
+            <Link to="/queues/new">
+              <Tooltip title="New Queue">
+                <IconButton aria-label="New Queue">
                   <AddCircle />
                 </IconButton>
               </Tooltip>
@@ -102,7 +102,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // requestGetQueues: () => dispatch(requestGetQueues()),
+  // getQueuesFromServer: () => dispatch(getQueuesFromServer()),
   // addSelectedQueue: (obj) => dispatch(addSelectedQueue(obj)),
   // clearSelectedQueue: () => dispatch(clearSelectedQueue()),
 })

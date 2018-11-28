@@ -22,6 +22,7 @@ class CalendarTableHead extends React.Component<IPropsTableHead>{
   render() {
     const { order, orderBy, columnNames} = this.props;
 
+    columnNames.push('') // For the delete column
     return (
       <TableHead>
         <TableRow>

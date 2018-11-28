@@ -1,15 +1,30 @@
 let initialState = {
   name: "",
   holidays: [{name: "", date: "", index: 0}],
-  active: "true" 
-}   
+  active: "true",
+  message: {type: "", content: ""},
+  loading: false,
+  toLists: false 
+}
 
 const holidayListReducer = (state = initialState, action) => {
   
   switch (action.type) {
 
-    case 'GET_HOLIDAY_LIST_REQUEST_SUCCESSFUL':
-      return handleGetHolidayListRequestSuccessful(state, action.payload)
+    case 'GET_HOLIDAY_LIST_FROM_SERVER_SUCCEEDED':
+      return handleGetHolidayListSucceeded(state, action.payload)
+    case 'GET_HOLIDAY_LIST_FROM_SERVER_FAILED':
+      return handleGetHolidayListFailed(state, action.payload)
+    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+      return handleUpdateHolidayListSucceeded(state, action.payload)
+    case 'SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER_FAILED':
+      return handleUpdateHolidayListFailed(state, action.payload)
+    case 'SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER_SUCCEEDED':
+      return handleNewHolidayListSucceeded(state, action.payload)
+    case 'SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER_FAILED':
+      return handleNewHolidayListFailed(state, action.payload)
+    case 'HANDLE_CLOSE_MESSAGE':
+      return handleCloseMessage(state)
     case 'CHANGE_HOLIDAY_LIST_NAME':
       return changeHolidayListName(state, action.payload)
     case 'ADD_HOLIDAY':
@@ -20,15 +35,70 @@ const holidayListReducer = (state = initialState, action) => {
       return changeHolidayDate(state, action.payload)
     case 'DELETE_HOLIDAY':        
       return deleteHoliday(state, action.payload)
+    case 'HOLIDAY_LIST_LOADING':
+      return handleHolidayListLoading(state)
+    case 'RESET_HOLIDAY_LIST_STATE':
+      return resetHolidayListState()
     default:
       return state
   }
 }
 
-const handleGetHolidayListRequestSuccessful = (state, payload) => {
-  console.log('Handling getHolidayListRequestSuccessful', payload)
-  
+const resetHolidayListState = () => {
+  return {...initialState}
+}
+
+const handleHolidayListLoading = (state) => {
+  console.log('Handle holiday list loading')
+  let loading = true
+  return {...state, loading}
+}
+
+const handleCloseMessage = (state) => {
+  let message = {type: "", content: ""} 
+  return {...state, message}
+}
+
+const handleGetHolidayListSucceeded = (state, payload) => {
+  console.log('Handling get holiday list succeeded', payload) 
+  payload.loading = false
   return payload
+}
+
+const handleGetHolidayListFailed = (state, payload) => {
+  console.log('Handling get holiday list failed', payload)
+  let message = {type: "error", content: "Failed to get holiday list: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleUpdateHolidayListSucceeded = (state, payload) => {
+  console.log('Handling update holiday list succeeded', payload)
+  let message = {type: "success", content: "Successfully updated."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleUpdateHolidayListFailed = (state, payload) => {
+  console.log('Handling update holiday list failed', payload)
+  let message = {type: "error", content: "Failed to update: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
+}
+
+
+const handleNewHolidayListSucceeded = (state, payload) => {
+  console.log('Handling new holiday list succeeded', payload)
+  let loading = false
+  let toLists = true
+  return {...state, loading, toLists}
+}
+
+const handleNewHolidayListFailed = (state, payload) => {
+  console.log('Handling new holiday list failed', payload)
+  let message = {type: "error", content: "Failed to create: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
 }
 
 const changeHolidayListName = (state, payload) => {
@@ -41,7 +111,7 @@ const addHoliday = (state) => {
   console.log('Adding holiday', state)
   let holidays = [...state.holidays]
   let addIndex = holidays.length
-  holidays.push({name: "", date: "", index: addIndex})
+  holidays.push({name: "", date: "", index: addIndex, active: true})
   return {...state, holidays}
 }
 

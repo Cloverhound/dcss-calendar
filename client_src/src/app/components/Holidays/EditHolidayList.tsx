@@ -4,12 +4,14 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
+import green from '@material-ui/core/colors/green';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
+import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import HolidayRow from './HolidayRow';
-import { addHoliday, changeHolidayListName, requestUpdateHolidayListSubmit } from '../../actions';
-import { getHolidayList } from '../../sagas/api';
+import { addHoliday, changeHolidayListName, submitUpdateHolidayListToServer, getHolidayListFromServer, handleCloseMessage } from '../../actions';
 
 
 const styles = theme => createStyles({
@@ -17,6 +19,23 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'center',
     // marginTop: '65px',
+  },
+  success: {
+    backgroundColor: green[600],
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit,
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -31,20 +50,6 @@ const styles = theme => createStyles({
     flexDirection: 'column',
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
-  },
-  arrowContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '50px',
-    backgroundColor: '#3f51b5;',
-    borderRadius: "5px 5px 0 0"
-  },
-  arrow: {
-    margin: '10px',
-    fill: 'white',
-    "&:hover": {
-      cursor: 'pointer'
-    },
   },
   paper: {
     display: 'flex',
@@ -82,6 +87,9 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
@@ -89,9 +97,10 @@ interface IProps {
   changeHolidayListName: any,
   addHoliday: any,
   holidayListReducer: any,
-  requestUpdateHolidayListSubmit: any,
+  submitUpdateHolidayList: any,
   match: any,
-  getHolidayList: any
+  requestGetHolidayList: any,
+  handleCloseMessage: any
 }
 
 class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -106,30 +115,42 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
 
   handleFormSubmit = () => {
     console.log('handling form submit')
-    const { requestUpdateHolidayListSubmit, holidayListReducer } = this.props;
-    requestUpdateHolidayListSubmit(holidayListReducer)
+    const { submitUpdateHolidayList, holidayListReducer } = this.props;
+    submitUpdateHolidayList(holidayListReducer)
   }
 
   componentWillMount () {
     const { id } = this.props.match.params
-    const { getHolidayList } = this.props;
-    getHolidayList({id})
+    const { requestGetHolidayList } = this.props;
+    requestGetHolidayList({id})
+  }
+
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
   }
 
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name } = holidayListReducer;
+    const { holidays, name, message, loading } = holidayListReducer;
+    
 
-    console.log('rendering edit holiday list', holidays, name)
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
+
 
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Holiday List</Typography>
+
+            <CalendarSnackbar
+              handleClose = {this.handleCloseMessage}
+              hideDuration = {6000}
+              message = {message} 
+            />
 
             <TextField
               id="edit-holiday-list-name"
@@ -144,6 +165,8 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
             <div className={classes.selectContainer}>
               {holidayComponents}
             </div>
+
+            {loading ? <CircularProgress className={classes.progress} /> : null}
 
             <div className={classes.addIconContainer}>
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
@@ -165,6 +188,7 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
   }
 }
 
+ 
 
 const mapStateToProps = state => {
   return {
@@ -176,8 +200,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
-  requestUpdateHolidayListSubmit: (obj) => (dispatch(requestUpdateHolidayListSubmit(obj))),
-  getHolidayList: (obj) => (dispatch(getHolidayList(obj)))
+  submitUpdateHolidayList: (obj) => (dispatch(submitUpdateHolidayListToServer(obj))),
+  requestGetHolidayList: (obj) => (dispatch(getHolidayListFromServer(obj))),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 

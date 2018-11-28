@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddCircle from '@material-ui/icons/AddCircle';
+import { Redirect } from 'react-router-dom';
 
 import {
   Link
@@ -31,16 +32,34 @@ const toolbarStyles = theme => createStyles({
   },
 });
 
-interface IPropsTableToolbar {
-  numSelected: any,
-  addRowLink: string,
-  title: string,
-  addTitle: string
+interface IStateTableToolbar {
+  toNew: boolean
 }
 
-class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyles> & IPropsTableToolbar> {
+interface IPropsTableToolbar {
+  numSelected: any,
+  basePath: string,
+  title: string,
+  addButtonText: string
+}
+
+class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyles> & IPropsTableToolbar, IStateTableToolbar> {
+  state = {
+    toNew: false
+  }
+
+  handleAddClick = () => {
+    this.setState({ toNew: true})
+  }
+   
   render() {
-    const { classes, addRowLink, title, addTitle } = this.props;
+    const { classes, basePath, title, addButtonText } = this.props;
+    const { toNew } = this.state;
+
+    if(toNew === true) {
+      return <Redirect to={`/${basePath}/new`}/>
+    }
+
     return (
       <Toolbar>
         <div className={classes.title}>
@@ -50,13 +69,11 @@ class CalendarTableToolbar extends React.Component<WithStyles<typeof toolbarStyl
         </div>
         <div className={classes.spacer} />
         <div className={classes.actions}>
-          <Link to={addRowLink}>
-            <Tooltip title={addTitle}>
-              <IconButton aria-label={addTitle}>
+            <Tooltip title={addButtonText}>
+              <IconButton onClick={this.handleAddClick} aria-label={addButtonText}>
                 <AddCircle />
               </IconButton>
             </Tooltip>
-          </Link>
         </div>
       </Toolbar>
     );
