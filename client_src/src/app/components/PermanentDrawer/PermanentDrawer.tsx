@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
+import NewQueue from '../Queues/NewQueue';
+import EditQueue from '../Queues/EditQueue';
 import Schedules from '../Schedules/Schedules';
 import NewSchedule from '../Schedules/NewSchedule';
 import EditSchedule from '../Schedules/EditSchedule';
@@ -24,7 +26,6 @@ import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
 import EditHolidayList from '../Holidays/EditHolidayList'
 import Prompts from '../Prompts/Prompts';
-import NewQueue from '../Queues/NewQueue';
 
 import {
   BrowserRouter as Router,
@@ -199,7 +200,9 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/schedules/:id/edit" component={EditSchedule} />
             <Route exact path="/holiday_lists" component={HolidayLists} />
             <Route exact path="/Prompts" component={Prompts} />
+            <Route exact path="/queues" component={Queues} />
             <Route exact path="/queues/new" component={NewQueue} />
+            <Route exact path="/queues/:id/edit" component={EditQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
           </main>

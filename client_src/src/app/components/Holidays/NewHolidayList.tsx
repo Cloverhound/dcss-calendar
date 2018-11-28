@@ -128,8 +128,6 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
   render() {
     const { classes, holidayListReducer } = this.props;
     const { holidays, name, message, loading, toLists } = holidayListReducer;
-
-    console.log('rendering', holidayListReducer)
   
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Redirect } from 'react-router-dom';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,10 +8,12 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { submitNewQueueToServer, getSchedulesFromServer, getHolidayListsFromServer, changeQueue, resetQueueState } from '../../actions/index'
+import { getSchedulesFromServer, getHolidayListsFromServer, submitUpdateQueueToServer, getQueueFromServer, handleCloseMessage, changeQueue } from '../../actions/index'
 
 import {
   Link
@@ -64,47 +65,55 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
 interface IProps {
-  scheduleReducer: any,
-  submitNewQueueToServer: any,
-  getSchedulesFromServer: any,
-  changeQueue: any,
   queueReducer: any,
   queuesReducer: any,
-  getHolidayListsFromServer: any,
+  scheduleReducer: any,
   holidayListsReducer: any,
-  resetQueueState: any
+  getSchedulesFromServer: any,
+  getHolidayListsFromServer: any,
+  getQueueFromServer,
+  submitUpdateQueueToServer: any,
+  changeQueue,
+  match: any,
+  handleCloseMessage: any
 }
 
-class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
+class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { getSchedulesFromServer, getHolidayListsFromServer, resetQueueState } = this.props;
+    const { id } = this.props.match.params
+    const { getSchedulesFromServer, getHolidayListsFromServer, getQueueFromServer } = this.props;
     getSchedulesFromServer();
     getHolidayListsFromServer();
-    resetQueueState()
+    getQueueFromServer(id);
   }
 
-  handleSubmitNewQueue = () => {
-    const { submitNewQueueToServer, queueReducer } = this.props;
-      submitNewQueueToServer(queueReducer)
+  handleSubmitUpdateQueue = () => {
+    const { submitUpdateQueueToServer, queueReducer } = this.props;
+    let id = this.props.match.params
+    submitUpdateQueueToServer(queueReducer)
   }
 
   handleChangeQueue = event => {
     const { changeQueue } = this.props;
     changeQueue({ name: event.target.name, value: event.target.value })
-  };
+  }
+
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
 
   render() {
     const { classes, scheduleReducer, queueReducer, holidayListsReducer } = this.props;
-    const { toQueues } = queueReducer
-
-    if(toQueues === true) {
-      return <Redirect to={'/queues'}/>
-    }
+    const { message, loading } = queueReducer;
 
     let scheduleMenuItems = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
@@ -117,7 +126,14 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}>
-            <Typography className={classes.title} variant="title">New Queue</Typography>
+            <Typography className={classes.title} variant="title">Edit Queue</Typography>
+
+              <CalendarSnackbar
+                handleClose = {this.handleCloseMessage}
+                hideDuration = {6000}
+                message = {message} 
+              />
+
              <TextField
               label="Name"
               name="queueName"
@@ -151,8 +167,9 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
             <div className={classes.submitCancelContainer}>
+                {loading ? <CircularProgress className={classes.progress} /> : null}
               {/* <Link to="/"> */}
-                <Button onClick={this.handleSubmitNewQueue} variant="contained" color="primary" className={classes.button}>
+                <Button onClick={this.handleSubmitUpdateQueue} variant="contained" color="primary" className={classes.button}>
                   Save
                 </Button>
               {/* </Link> */}
@@ -180,10 +197,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  getHolidayListsFromServer: () => (dispatch(getHolidayListsFromServer())),
-  submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer(obj))),
+  getHolidayListsFromServer: () => dispatch(getHolidayListsFromServer()),
   changeQueue: (obj) => (dispatch(changeQueue(obj))),
-  resetQueueState: ()=> (dispatch(resetQueueState()))
+  submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer(obj))),
+  getQueueFromServer: (obj) => (dispatch(getQueueFromServer(obj))),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewQueue));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditQueue));

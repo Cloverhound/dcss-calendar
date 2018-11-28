@@ -8,8 +8,6 @@ let initialState = {
 }
 
 const holidayListReducer = (state = initialState, action) => {
-
-  console.log('holidaylist reducer', state, action)
   
   switch (action.type) {
 

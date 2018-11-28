@@ -8,7 +8,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,11 +17,8 @@ import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
 import { getQueuesFromServer, submitDeleteQueueToServer } from '../../../actions/index'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+
 
 
 let counter = 0;
@@ -80,6 +76,8 @@ interface IStateTable {
   selected: any,
   page: any,
   rowsPerPage: any,
+  toEdit: boolean,
+  id: any
 }
 
 interface IPropsTable {
@@ -102,6 +100,8 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     ],
     page: 0,
     rowsPerPage: 10,
+    toEdit: false,
+    id: null
   };
 
   componentWillMount = () => {
@@ -109,8 +109,9 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     getQueuesFromServer()
   }
 
-  handleEdit = () => {
-    console.log("Handling Edit Queue");
+  handleEdit = (id) => {
+    console.log("Handling Edit Queue", id);
+    this.setState({id, toEdit: true})
   }
 
   handleDelete = (queueId) => {
@@ -145,8 +146,12 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
   render() {
     const { classes, queues } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, queues.array.length - page * rowsPerPage);
+
+    if(toEdit === true) {
+      return <Redirect to={`/queues/${id}/edit`}/>
+    }
 
     return (
       <Paper className={classes.root}>
@@ -220,7 +225,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         <TableCell>
                           <div className={classes.addButton}>
                             <Tooltip title="Edit">
-                              <IconButton onClick={() => this.handleEdit()} aria-label="Edit">
+                              <IconButton onClick={() => this.handleEdit(n.queue.id)} aria-label="Edit">
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>

@@ -1,19 +1,48 @@
-import { call, put, takeEvery, takeLatest, fork, all } from 'redux-saga/effects'
-import { getQueues, postQueues, patchQueues, deleteQueue } from './api'
+import { call, put } from 'redux-saga/effects'
+import { getQueues, getQueue, createQueue, updateQueue, deleteQueue } from './api-queues'
+import { getQueueFromServerSucceeded, 
+         getQueueFromServerFailed, 
+         queueLoading, 
+         submitUpdateQueueToServerSucceeded,
+         submitNewQueueToServerSucceeded, 
+         submitNewQueueToServerFailed,
+         submitUpdateQueueToServerFailed} from '../actions/index'
+
+
+export function* callGetQueue(action) {
+  yield put(queueLoading())
+
+  const result = yield call(getQueue, action.payload)
+  if (result.error) {
+    yield put(getQueueFromServerFailed(result.error))
+  } else {
+    yield put(getQueueFromServerSucceeded(result))
+  }
+
+}
+
+export function* callUpdateQueue(action) {
+  yield put(queueLoading())
+
+  const { id, scheduleId, queueName } = action.payload
+  const result = yield call(updateQueue, { id: id, data: { name: queueName, scheduleId } })
+
+  if (result.error) {
+    yield put(submitUpdateQueueToServerFailed(result.error))
+  } else {
+    yield put(submitUpdateQueueToServerSucceeded(result))
+  }
+}
 
 export function* callCreateQueue(action) {
   const { scheduleId, queueName, holidayListId } = action.payload
 
-  const result = yield call(postQueues, { name: queueName, scheduleId, holidayListId })
+  const result = yield call(createQueue, { name: queueName, scheduleId, holidayListId })
 
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
-    // yield put({ type: "REQUEST_FAILED", result: result.errors })
+    yield put(submitNewQueueToServerFailed(result.error))
   } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield put({ type: "REQUEST_ADD_QUEUE_DONE", payload: result })
-    // yield put({ type: "REQUEST_SUCCESSFUL"})
-  }
+    yield put(submitNewQueueToServerSucceeded(result))}
 }
 
 export function* callGetQueues() {
@@ -22,24 +51,10 @@ export function* callGetQueues() {
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
   } else {
-    console.log("REQUEST_SUCCESSFUL")
     yield put({type: "GET_QUEUES_FROM_SERVER_DONE", payload: result})
   }
 }
 
-
-export function* callUpdateAddQueue(action) {
-  const { queueId, scheduleId, queueName } = action.payload
-  const result = yield call(patchQueues, { id: queueId, data: { name: queueName, scheduleId } })
-
-  if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
-  } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield put({type: "REQUEST_ADD_QUEUE_DONE", payload: result})
-    yield put({type: "GET_QUEUES_FROM_SERVER", payload: result})
-  }
-}
 
 export function* callDeleteQueue(action) {
   console.log(" DELETE queue action.payload", action.payload.id)
@@ -48,8 +63,6 @@ export function* callDeleteQueue(action) {
   if (result.error) {
     console.log("REQUEST_FAILED", result.error)
   } else {
-    console.log("REQUEST_SUCCESSFUL")
     yield call(callGetQueues);
-    // yield put({type: "GET_QUEUES_FROM_SERVER_DONE", payload: result})
   }
 }

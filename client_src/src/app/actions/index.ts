@@ -12,25 +12,51 @@ export const requestScheduleEdit = obj => ({ type: "SUBMIT_UPDATE_SCHEDULE_TO_SE
 export const requestScheduleDelete = obj => ({ type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER", payload: obj })
 
 
-
 export const updateNameField = obj => ({ type: "UPDATE_NAME_FIELD", payload: obj });
 
 export const updateOpenClosedTime = obj => ({ type: "UPDATE_OPEN_CLOSED_TIME", payload: obj })
 export const updateTimeRanges = (obj) => ({ type: "UPDATE_TIME_RANGES", payload: obj });
 export const resetTimeRanges = () => ({ type: "RESET_TIME_RANGES" })
 
-// Queues
-export const getQueuesFromServer = () => ({ type: "GET_QUEUES_FROM_SERVER" });
-export const submitNewQueueToServer = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER", payload: obj });
-export const submitUpdateQueueToServer = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER", payload: obj });
-export const submitDeleteQueueToServer = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload:obj });
 
-export const handleAddQueueChange = (obj) => ({ type: "UPDATE_ADD_QUEUE_STATE", payload: obj });
 
-export const resetHolidayListState = () => ({type: "RESET_HOLIDAY_LIST_STATE"}) 
 
-export const holidayListsLoading = () => ({type: "HOLIDAY_LISTS_LOADING"})
-export const holidayListLoading  = () => ({type: "HOLIDAY_LIST_LOADING"})
+
+export const queueLoading                        = () => ({type: "QUEUE_LOADING"})
+
+export const getQueuesFromServer                 = () => ({ type: "GET_QUEUES_FROM_SERVER" });
+export const getQueuesFromServerSucceeded        = () => ({ type: "GET_QUEUES_FROM_SERVER_SUCCEEDED" });
+export const getQueuesFromServerFailed           = () => ({ type: "GET_QUEUES_FROM_SERVER_FAILED"})
+
+export const getQueueFromServer                  = obj => ({ type: "GET_QUEUE_FROM_SERVER", payload: obj });
+export const getQueueFromServerSucceeded         = obj => ({ type: "GET_QUEUE_FROM_SERVER_SUCCEEDED", payload: obj });
+export const getQueueFromServerFailed            = obj => ({ type: "GET_QUEUE_FROM_SERVER_FAILED", payload: obj });
+
+export const submitUpdateQueueToServer           = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER", payload: obj });
+export const submitUpdateQueueToServerSucceeded  = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER_SUCCEEDED", payload: obj });
+export const submitUpdateQueueToServerFailed     = obj => ({ type: "SUBMIT_UPDATE_QUEUE_TO_SERVER_FAILED", payload: obj });
+
+export const submitNewQueueToServer              = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER", payload: obj });
+export const submitNewQueueToServerSucceeded     = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER_SUCCEEDED", payload: obj });
+export const submitNewQueueToServerFailed        = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER_FAILED", payload: obj });
+
+export const submitDeleteQueueToServer           = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload:obj });
+export const submitDeleteQueueToServerSucceeded  = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER_SUCCEEDED", payload:obj });
+export const submitDeleteQueueToServerFailed     = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER_FAILED", payload:obj });
+
+export const changeQueue                         = obj => ({ type: "CHANGE_QUEUE", payload: obj });
+
+export const resetQueueState                      = () => ({type: "RESET_QUEUE_STATE"}) 
+
+
+
+
+
+
+export const resetHolidayListState                      = () => ({type: "RESET_HOLIDAY_LIST_STATE"}) 
+
+export const holidayListsLoading                        = () => ({type: "HOLIDAY_LISTS_LOADING"})
+export const holidayListLoading                         = () => ({type: "HOLIDAY_LIST_LOADING"})
 
 export const getHolidayListsFromServer                  = ()  => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER"});
 export const getHolidayListsFromServerSucceeded         = obj => ({type: "GET_HOLIDAY_LISTS_FROM_SERVER_SUCCEEDED", payload: obj});
@@ -59,5 +85,7 @@ export const submitDeleteHolidayListToServerSucceeded   = obj => ({type: "SUBMIT
 export const submitDeleteHolidayListToServerFailed      = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER_FAILED", payload: obj });
 
 
-export const handleCloseMessage                         = ()  => ({type: "HANDLE_CLOSE_MESSAGE"})
+
+
+export const handleCloseMessage = ()  => ({type: "HANDLE_CLOSE_MESSAGE"})
 
