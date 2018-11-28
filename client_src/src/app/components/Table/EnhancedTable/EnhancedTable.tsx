@@ -12,6 +12,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
 
 import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
@@ -71,6 +74,9 @@ const styles = theme => createStyles({
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 interface IStateTable {
@@ -80,6 +86,7 @@ interface IStateTable {
   selected: any,
   page: any,
   rowsPerPage: any,
+  checkedB: any,
 }
 
 interface IPropsTable {
@@ -102,6 +109,7 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     ],
     page: 0,
     rowsPerPage: 10,
+    checkedB: false,
   };
 
   componentWillMount = () => {
@@ -132,6 +140,10 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
   handleChangePage = (event, page) => {
     this.setState({ page });
+  };
+
+  handleChangeSwitch = (event) => {
+    this.setState({ checkedB: event.target.checked });
   };
 
   handleChangeRowsPerPage = event => {
@@ -206,17 +218,17 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                         <TableCell>{n.queue.name}</TableCell>
                         <TableCell>{n.schedule.name}</TableCell>
                         <TableCell>{n.holidayList.name}</TableCell>
-                        <TableCell>Default</TableCell>
-                        {/* <TableCell>
-                          <Link to="/queues/edit">
-                            <Tooltip title="Edit">
-                              <IconButton aria-label="Edit">
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Link>
-                        </TableCell> */}
-
+                        <TableCell>
+                          <Switch
+                            // checked={true}
+                            // onChange={this.handleChangeSwitch}
+                            value="checkedB"
+                            color="primary"
+                          />
+                          <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
+                            Edit
+                          </Button>
+                        </TableCell>
                         <TableCell>
                           <div className={classes.addButton}>
                             <Tooltip title="Edit">
