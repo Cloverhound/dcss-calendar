@@ -134,14 +134,6 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Holidays" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Prompts">
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 3}
-            onClick={event => this.handleListItemClick(event, 3)}>
-            <ListItemText primary="Prompts" />
-          </ListItem>
-        </NavLink>
         <Divider />
         <List></List>
       </div>
