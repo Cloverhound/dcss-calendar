@@ -23,7 +23,7 @@ import EditSchedule from '../Schedules/EditSchedule';
 import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
 import EditHolidayList from '../Holidays/EditHolidayList'
-import Prompts from '../Prompts/Prompts';
+import EditPrompts from '../Prompts/EditPrompts';
 import NewQueue from '../Queues/NewQueue';
 
 import {
@@ -133,7 +133,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Holidays" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Prompts">
+        <NavLink className={classes.navLink} to="/Prompts/1/edit">
           <ListItem
             button
             selected={this.state.selectedIndex === 3}
@@ -198,7 +198,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/schedules/new" component={NewSchedule} />
             <Route exact path="/schedules/:id/edit" component={EditSchedule} />
             <Route exact path="/holiday_lists" component={HolidayLists} />
-            <Route exact path="/Prompts" component={Prompts} />
+            <Route exact path="/prompts/:id/edit" component={EditPrompts} />
             <Route exact path="/queues/new" component={NewQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />

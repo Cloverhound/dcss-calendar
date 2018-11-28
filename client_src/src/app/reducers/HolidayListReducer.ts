@@ -9,8 +9,6 @@ let initialState = {
 
 const holidayListReducer = (state = initialState, action) => {
 
-  console.log('holidaylist reducer', state, action)
-  
   switch (action.type) {
 
     case 'GET_HOLIDAY_LIST_FROM_SERVER_SUCCEEDED':
