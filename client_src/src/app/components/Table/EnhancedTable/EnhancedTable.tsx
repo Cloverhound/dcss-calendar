@@ -225,9 +225,11 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                             value="checkedB"
                             color="primary"
                           />
-                          <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
-                            Edit
-                          </Button>
+                          <Link to={`/prompts/${n.queue.id}/edit`}>
+                            <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
+                              Edit
+                            </Button>
+                          </Link>
                         </TableCell>
                         <TableCell>
                           <div className={classes.addButton}>

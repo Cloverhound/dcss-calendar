@@ -7,6 +7,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import AddIcon from '@material-ui/icons/Add';
@@ -37,6 +38,12 @@ const styles = theme => createStyles({
   },
   title: {
     margin: theme.spacing.unit,
+  },
+  subTitle: {
+    margin: theme.spacing.unit,
+  },
+  uploadSection: {
+    margin: '20px 0px',
   },
   arrowContainer: {
     display: 'flex',
@@ -69,10 +76,6 @@ const styles = theme => createStyles({
     minWidth: 120,
     maxWidth: 200,
   },
-  // selectContainer: {
-  //   marginTop: theme.spacing.unit * 2,
-  //   marginBottom: theme.spacing.unit * 2
-  // },
   optionalWrapper: {
     display: 'flex',
     flexDirection: 'column'
@@ -80,12 +83,17 @@ const styles = theme => createStyles({
   optionalContainer: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: '10px 0px'
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
   button: {
+    margin: theme.spacing.unit,
+  },
+  input: {
     margin: theme.spacing.unit,
   },
   addIconContainer: {
@@ -97,6 +105,9 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  tabs: {
+    margin: "0px 0px 15px 0px"
   }
 });
 
@@ -173,7 +184,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Prompts</Typography>
 
-            <div className={classes.inputContainer}>
+            {/* <div className={classes.inputContainer}>
               <FormControl className={classes.formControl}>
                 <Input
                   value={this.props.scheduleReducer.name}
@@ -183,47 +194,48 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                   autoFocus={true}
                 />
               </FormControl>
+            </div> */}
+            <div className={classes.uploadSection}>
+              <Typography className={classes.subTitle} variant="subtitle1">Optional Message</Typography>
+              <Paper className={classes.optionalWrapper}>
+                <div className={classes.optionalContainer}>
+                  <Typography className={classes.title} variant="body1">English</Typography>
+                  <input 
+                    ref={'optional-message-eng'}
+                    type='file'
+                    onChange={(e) => this.handleInputChange(e)}
+                  />
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Upload
+                  </Button>
+                </div>
+                <div className={classes.optionalContainer}>
+                  <Typography className={classes.title} variant="body1">Spanish</Typography>
+                    <input 
+                      ref={'optional-message-span'}
+                      type='file'
+                    />
+                    <Button
+                      className={classes.button}
+                      type='file'
+                      variant='outlined'
+                    >
+                      Upload
+                    </Button>
+                </div>
+              </Paper>
             </div>
 
-            <Typography className={classes.title} variant="subtitle1">Optional Message</Typography>
-            <div className={classes.optionalWrapper}>
-              <div className={classes.optionalContainer}>
-                <Typography className={classes.title} variant="body1">English</Typography>
-                <input 
-                  ref={'optional-message-eng'}
-                  type='file'
-                  onChange={(e) => this.handleInputChange(e)}
-                />
-                <Button
-                  type='file'
-                  variant='outlined'
-                >
-                  Upload
-                </Button>
-              </div>
-              <div className={classes.optionalContainer}>
-                <Typography className={classes.title} variant="body1">Spanish</Typography>
-                <input 
-                  ref={'optional-message-span'}
-                  type='file'
-                />
-                <Button
-                  type='file'
-                  variant='outlined'
-                  // onClick={e => {
-                  //   this.refs['file-upload'].click()
-                  // }}
-                >
-                  Upload
-                </Button>
-              </div>
-            </div>
-
-            <Typography className={classes.title} variant="subtitle1">Office Info Prompts</Typography>
-            <div className={classes.optionalWrapper}>
-              {/* <AppBar position="static"> */}
+            <div className={classes.uploadSection}>
+              <Typography className={classes.subTitle} variant="subtitle1">Office Info Prompts</Typography>
+              <div className={classes.optionalWrapper}>
                 <Tabs 
-                  value={value} 
+                  value={value}
+                  className={classes.tabs}
                   onChange={this.handleTabChange}
                   indicatorColor="primary"
                   textColor="primary"
@@ -232,37 +244,24 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                   <Tab label="Spanish" />
                 </Tabs>
 
-            {/* {value === 0 && <TabContainer>Item One</TabContainer>}
-            {value === 1 && <TabContainer>Item Two</TabContainer>} */}
+              {/* {value === 0 && <TabContainer>Item One</TabContainer>}
+              {value === 1 && <TabContainer>Item Two</TabContainer>} */}
 
-              {/* <div className={classes.optionalContainer}>
-                <input 
-                  ref={'file-upload'}
-                  type='file'
-                />
-                <Button
-                  type='file'
-                  // onClick={e => {
-                  //   this.refs['file-upload'].click()
-                  // }}
-                >
-                  Upload
-                </Button>
+                <Paper className={classes.optionalContainer}>
+                  <input
+                    className={classes.input}
+                    ref={'optional-message-span'}
+                    type='file'
+                  />
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Upload
+                  </Button>
+                </Paper>
               </div>
-              <div className={classes.optionalContainer}>
-                <input 
-                  ref={'file-upload'}
-                  type='file'
-                />
-                <Button
-                  type='file'
-                  // onClick={e => {
-                  //   this.refs['file-upload'].click()
-                  // }}
-                >
-                  Upload
-                </Button>
-              </div> */}
             </div>
             
             {/*
@@ -275,12 +274,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
 
 
             <div className={classes.submitCancelContainer}>
-              {/* <Link to="/schedules">
-                <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
-                  Submit
-                </Button>
-              </Link> */}
-              <Link to="/schedules">
+              <Link to="/">
                 <Button variant="outlined" color="primary" className={classes.button}>
                   Cancel
                 </Button>
