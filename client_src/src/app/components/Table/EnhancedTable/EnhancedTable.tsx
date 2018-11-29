@@ -221,8 +221,9 @@ class EnhancedTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
                         </TableCell>
                         <TableCell>{n.queue.name}</TableCell>
-                        <TableCell>{n.schedule.name}</TableCell>
-                        <TableCell>{n.holidayList.name}</TableCell>
+                        {n.schedule ? <TableCell>{n.schedule.name}</TableCell> : null }
+                        {n.holidayList ? <TableCell>{n.holidayList.name}</TableCell> : null}
+                        
                         <TableCell>
                           <Switch
                             // checked={true}

@@ -78,7 +78,7 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
           <FormGroup row
             className={classes.formGroup}>
   
-              {nameDropDown}
+              {/* {nameDropDown} */}
               {holidayDate}
 
           </FormGroup>
