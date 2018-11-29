@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "start": "node ./server/server.ts",
     "nodemon": "nodemon ./server/server.ts",
-    "heroku-prebuild": "cd client_src && yarn install",
-    "heroku-postbuild": "cd client_src && yarn run build",
+    "heroku-postbuild": "cd client_src && yarn install",
     "posttest": "npm run lint"
   },
   "engines": {
