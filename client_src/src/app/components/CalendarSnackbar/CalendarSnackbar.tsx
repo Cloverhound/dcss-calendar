@@ -2,7 +2,7 @@ import * as React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import CalendarSnackbarContent from './CalendarSnackbarContent'
+import CalendarSnackbarContent from '../CalendarSnackBarContent/CalendarSnackbarContent'
 
 interface IProps {
   handleClose: any,
