@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import green from '@material-ui/core/colors/green';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar';
+// import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   BrowserRouter as Router,
@@ -119,7 +119,6 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
   }
 
   handleFormSubmit = () => {
-    console.log('handling form submit')
     const { submitUpdateHolidayList, holidayListReducer } = this.props;
     submitUpdateHolidayList(holidayListReducer)
   }
@@ -151,11 +150,11 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Holiday List</Typography>
 
-            <CalendarSnackbar
+            {/* <CalendarSnackbar
               handleClose = {this.handleCloseMessage}
               hideDuration = {6000}
               message = {message} 
-            />
+            /> */}
 
             <TextField
               id="edit-holiday-list-name"

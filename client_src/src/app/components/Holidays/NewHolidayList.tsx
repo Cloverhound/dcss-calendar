@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar'
+// import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
@@ -148,11 +148,11 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">New Holiday List</Typography>
 
-            <CalendarSnackbar
+            {/* <CalendarSnackbar
               handleClose = {this.handleCloseMessage}
               hideDuration = {6000}
               message = {message} 
-            />
+            /> */}
 
 
             <TextField

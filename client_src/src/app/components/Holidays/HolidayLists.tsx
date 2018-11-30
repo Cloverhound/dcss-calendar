@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar'
+// import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
@@ -67,11 +67,11 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
     return (
       <div>
-        <CalendarSnackbar
+        {/* <CalendarSnackbar
                 handleClose = {this.handleCloseMessage}
                 hideDuration = {6000}
                 message = {message} 
-              />
+              /> */}
         {loading ? <CircularProgress className={classes.progress} /> : table}
         
       </div>
