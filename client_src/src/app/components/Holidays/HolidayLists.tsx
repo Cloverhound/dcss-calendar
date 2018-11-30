@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import CalendarTable from '../CalendarTable/CalendarTable'

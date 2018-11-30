@@ -15,7 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 
-import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar'
+import EnhancedTableToolbar from '../EnhancedTableToolbar/EnhancedTableToolBar';
 import EnhancedTableHead from '../EnhancedTableHead/EnhancedTableHead';
 
 import { connect } from 'react-redux'
