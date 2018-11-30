@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import green from '@material-ui/core/colors/green';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar';
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   BrowserRouter as Router,
