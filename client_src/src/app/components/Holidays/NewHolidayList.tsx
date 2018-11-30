@@ -9,6 +9,11 @@ import TextField from '@material-ui/core/TextField';
 import CalendarSnackbar  from '../calendarSnackbar/calendarSnackBar'
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
 import HolidayRow from './HolidayRow';
 import { addHoliday, changeHolidayListName, submitNewHolidayListToServer, handleCloseMessage, resetHolidayListState } from '../../actions';
@@ -175,9 +180,11 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
               <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
                 Submit
               </Button>
-              <Button variant="outlined" color="primary" className={classes.button}>
-                Cancel
-              </Button>
+              <Link to="/holiday_lists">
+                <Button variant="outlined" color="primary" className={classes.button}>
+                  Cancel
+                </Button>
+              </Link>
             </div>
           </form>
         </div>

@@ -8,7 +8,6 @@ let initialState = {
 }
 
 const holidayListReducer = (state = initialState, action) => {
-  
   switch (action.type) {
 
     case 'GET_HOLIDAY_LIST_FROM_SERVER_SUCCEEDED':
@@ -45,7 +44,7 @@ const holidayListReducer = (state = initialState, action) => {
 }
 
 const resetHolidayListState = () => {
-  return {...initialState}
+  return {...initialState, name: "", holidays: [{name: "", date: "", index: 0}]}
 }
 
 const handleHolidayListLoading = (state) => {

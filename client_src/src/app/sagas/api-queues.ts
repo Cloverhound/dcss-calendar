@@ -15,6 +15,7 @@ export async function createQueue(payload) {
 }
 
 export async function updateQueue(payload) {
+  console.log('updating queue', payload)
   try {
     let response = await fetch(`/api/Queues/${payload.id}`, {
       method: 'PATCH',
