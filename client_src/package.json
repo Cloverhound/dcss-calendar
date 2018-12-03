@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "./node_modules/.bin/webpack",
-    "start": "webpack-dashboard -- webpack",
+    "start": "webpack-dashboard -- webpack --watch",
     "build": "webpack -p"
   },
   "engines": {
