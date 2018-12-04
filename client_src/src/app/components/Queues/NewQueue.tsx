@@ -100,11 +100,6 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, scheduleReducer, queueReducer, holidayListsReducer } = this.props;
-    const { toQueues } = queueReducer
-
-    if(toQueues === true) {
-      return <Redirect to={'/queues'}/>
-    }
 
     let scheduleMenuItems = scheduleReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
@@ -151,11 +146,9 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
             <div className={classes.submitCancelContainer}>
-              {/* <Link to="/"> */}
                 <Button onClick={this.handleSubmitNewQueue} variant="contained" color="primary" className={classes.button}>
                   Save
                 </Button>
-              {/* </Link> */}
               <Link to="/">
                 <Button variant="outlined" color="primary" className={classes.button}>
                   Cancel
@@ -178,12 +171,14 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  getHolidayListsFromServer: () => (dispatch(getHolidayListsFromServer())),
-  submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer(obj))),
-  changeQueue: (obj) => (dispatch(changeQueue(obj))),
-  resetQueueState: ()=> (dispatch(resetQueueState()))
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
+    getHolidayListsFromServer: () => (dispatch(getHolidayListsFromServer())),
+    submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer({...obj, history: ownProps.history}))),
+    changeQueue: (obj) => (dispatch(changeQueue(obj))),
+    resetQueueState: ()=> (dispatch(resetQueueState()))
+  } 
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewQueue));
