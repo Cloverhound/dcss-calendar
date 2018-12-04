@@ -12,7 +12,8 @@ export function* callGetSchedules() {
 }
 
 export function* callCreateSchedule(action) {
-  const { timeRanges, name } = action.payload
+  console.log("action", action)
+  const { timeRanges, name, history } = action.payload
   let newTimeRange = {};
   timeRanges.forEach(timeRange => {
     let days = Object.keys(timeRange.week);
@@ -31,7 +32,7 @@ export function* callCreateSchedule(action) {
     console.log("REQUEST_FAILED", result.error)
   } else {
     console.log("REQUEST_SUCCESSFUL")
-    yield call(callGetSchedules)
+    yield call([history, history.push], '/schedules')
     yield put({ type: "RESET_TIME_RANGES" })
   }
 }

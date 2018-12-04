@@ -13,7 +13,6 @@ interface IProps {
 
 class Schedules extends React.Component<IProps> {
 
-  // Note: Can remove after React router is moved to Redux/ redux-saga
   componentWillMount = () => {
     this.getSchedules()
   }
