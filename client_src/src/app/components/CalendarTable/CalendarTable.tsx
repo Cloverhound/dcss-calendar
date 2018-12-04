@@ -119,6 +119,33 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  statusColor = (status) => {
+    let statusStyle = "";
+      switch (status) {
+        case "Open":
+          statusStyle = "#01d901"
+          break;
+        case "Closed":
+          statusStyle = "#d90101"
+          break;
+        case "Holiday":
+          statusStyle = "#d90101"
+          break;
+        case "Closing":
+          statusStyle = "#FDDD08"
+          break;
+        default:
+          statusStyle = "#d90101"
+          break;
+      }
+      return <TableCell component="th" scope="row" padding="default">
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusStyle }}></div>
+                <div style={{ paddingLeft: "5px" }}>{status}</div>
+              </div>
+            </TableCell>
+  }
+
   render() {
     const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
@@ -152,6 +179,9 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   for(var i = 0; i < columnNames.length; i++) {
                     let columnName = columnNames[i]
                     let tableCell = <TableCell>{row[columnName]}</TableCell>
+                    if(columnName === 'Status') {
+                      tableCell = this.statusColor(row["Status"])
+                    }
                     tableCells.push(tableCell)
                   }
 
