@@ -5,6 +5,8 @@ var moment = require('moment-timezone');
 var queue;
 
 module.exports = function (Queue) {
+  Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
+  
   queue = Queue
   Queue.getAll = allQueues
 

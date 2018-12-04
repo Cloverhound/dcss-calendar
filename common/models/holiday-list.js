@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = function(HolidayList) {
-  
+  HolidayList.validatesUniquenessOf('name', {message: 'Name already exists'});
+
     HolidayList.remoteMethod(
       'createWithHolidays', {
         http: {path: '/createWithHolidays', verb: 'post'},
