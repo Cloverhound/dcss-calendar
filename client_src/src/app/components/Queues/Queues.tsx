@@ -27,7 +27,8 @@ class Queues extends React.Component<IProps> {
       'Status': el.queue.status,
       'Name': el.queue.name, 
       'Schedule Name': el.schedule.name,
-      'Holiday Name': el.holidayList.name
+      'Holiday Name': el.holidayList.name,
+      'Prompt Status': null
       }
     })
   }
