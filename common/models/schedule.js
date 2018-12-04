@@ -2,6 +2,8 @@
 var moment = require('moment-timezone');
 
 module.exports = function(Schedule) {
+  Schedule.validatesUniquenessOf('name', {message: 'Name already exists'});
+
   Schedule.status = function(rangeId, cb) {
     Schedule.findById(rangeId, function(err, instance) {
       var response = instance;
