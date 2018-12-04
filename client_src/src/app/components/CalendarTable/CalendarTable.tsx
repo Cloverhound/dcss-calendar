@@ -11,12 +11,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
 
 import CalendarTableHead from '../CalendarTableHead/CalendarTableHead';
 import CalendarTableToolbar from '../CalendarTableToolbar/CalendarTableToolBar';
 
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -57,6 +59,21 @@ const styles = theme => createStyles({
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
+  statusContainer: {
+    display: "flex", 
+    alignItems: "center"
+  },
+  statusColor: {
+    width: "10px", 
+    height: "10px", 
+    borderRadius: "50%"
+  },
+  statusText: {
+    paddingLeft: "5px"
+  },
+  button: {
+    margin: theme.spacing.unit,
+  }
 });
 
 interface IStateTable {
@@ -119,6 +136,51 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  statusColor = (status) => {
+    const { classes } = this.props;
+    let statusStyle = "";
+      switch (status) {
+        case "Open":
+          statusStyle = "#01d901"
+          break;
+        case "Closed":
+          statusStyle = "#d90101"
+          break;
+        case "Holiday":
+          statusStyle = "#d90101"
+          break;
+        case "Closing":
+          statusStyle = "#FDDD08"
+          break;
+        default:
+          statusStyle = "#d90101"
+          break;
+      }
+      return <TableCell component="th" scope="row" padding="default">
+              <div className={classes.statusContainer}>
+                <div className={classes.statusColor}style={{ backgroundColor: statusStyle }}></div>
+                <div className={classes.statusText}>{status}</div>
+              </div>
+            </TableCell>
+  }
+
+  promptStatus = (id) => {
+    const { classes } = this.props;
+    return  <TableCell>
+              <Switch
+                // checked={true}
+                // onChange={this.handleChangeSwitch}
+                value="checkedB"
+                color="primary"
+              />
+              <Link to={`/prompts/${id}/edit`}>
+                <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
+                  Edit
+                </Button>
+              </Link>
+            </TableCell>
+  }
+
   render() {
     const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
@@ -152,6 +214,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                   for(var i = 0; i < columnNames.length; i++) {
                     let columnName = columnNames[i]
                     let tableCell = <TableCell>{row[columnName]}</TableCell>
+                    if(columnName === 'Status') {
+                      tableCell = this.statusColor(row["Status"])
+                    } else if (columnName === 'Prompt Status') {
+                      tableCell = this.promptStatus(row.id)
+                    }
                     tableCells.push(tableCell)
                   }
 
