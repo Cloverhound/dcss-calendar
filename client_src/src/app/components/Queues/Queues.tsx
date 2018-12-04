@@ -1,5 +1,4 @@
 import * as React from 'react';
-import EnhancedTable from '../Table/EnhancedTable/EnhancedTable';
 import CalendarTable from '../CalendarTable/CalendarTable';
 
 import { connect } from 'react-redux'
@@ -51,7 +50,6 @@ class Queues extends React.Component<IProps> {
     let columnNames = ['Status', 'Name', 'Schedule Name', 'Holiday Name', 'Prompt Status'];
     return (
       <div>
-        {/* <EnhancedTable /> */}
         <CalendarTable 
           data={data} 
           basePath={"queues"} 
