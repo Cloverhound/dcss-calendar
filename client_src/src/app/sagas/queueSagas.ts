@@ -35,13 +35,15 @@ export function* callUpdateQueue(action) {
 }
 
 export function* callCreateQueue(action) {
-  const { scheduleId, queueName, holidayListId } = action.payload
+  console.log("action", action)
+  const { scheduleId, queueName, holidayListId, history } = action.payload
 
   const result = yield call(createQueue, { name: queueName, scheduleId, holidayListId })
 
   if (result.error) {
     yield put(submitNewQueueToServerFailed(result.error))
   } else {
+    yield call([history, history.push], '/')
     yield put(submitNewQueueToServerSucceeded(result))}
 }
 
@@ -66,3 +68,7 @@ export function* callDeleteQueue(action) {
     yield call(callGetQueues);
   }
 }
+
+// function forwardTo(location) {
+//   history.push(location);
+//  }

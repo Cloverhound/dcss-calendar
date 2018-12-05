@@ -15,9 +15,9 @@
     "validations": [],
     "relations": {
       "holidays": {
-          "type": "hasMany",
-          "model": "Holiday",
-          "foreignKey": "holidayListId" 
+        "type": "hasMany",
+        "model": "Holiday",
+        "foreignKey": "holidayListId" 
       },
       "queues": {
         "type": "hasMany",

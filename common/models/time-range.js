@@ -2,6 +2,8 @@
 var moment = require('moment');
 
 module.exports = function(Timerange) {
+  Timerange.validatesUniquenessOf('name', {message: 'Name already exists'});
+
   Timerange.status = function(rangeId, cb) {
     Timerange.findById(rangeId, function(err, instance) {
       var response = instance;

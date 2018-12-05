@@ -157,11 +157,9 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
               </Button>
             </div>
             <div className={classes.submitCancelContainer}>
-              <Link to="/schedules">
-                <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
-                  Submit
-                </Button>
-              </Link>
+              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
+                Submit
+              </Button>
               <Link to="/schedules">
                 <Button variant="outlined" color="primary" className={classes.button}>
                   Cancel
@@ -181,14 +179,16 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
-  updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
-  resetTimeRanges: () => (dispatch(resetTimeRanges()))
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    addScheduleSelect: () => (dispatch(addScheduleSelect())),
+    requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit({...obj, history: ownProps.history}))),
+    updateNameField: (obj) => (dispatch(updateNameField(obj))),
+    getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
+    updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
+    resetTimeRanges: () => (dispatch(resetTimeRanges()))
+  }
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewSchedule));

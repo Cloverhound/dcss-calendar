@@ -17,6 +17,7 @@ import {  submitDeleteHolidayListToServerSucceeded,
 
 
 export function* callCreateHolidayList(action) {
+  const { history } = action.payload
   yield put(holidayListLoading())
 
   const result = yield call(createHolidayList, action.payload)
@@ -24,6 +25,7 @@ export function* callCreateHolidayList(action) {
     yield put(submitNewHolidayListToServerFailed(result.error))
   } else {
     yield put(submitNewHolidayListToServerSucceeded(result))
+    yield call([history, history.push], '/holiday_lists')
   }
 }
 
