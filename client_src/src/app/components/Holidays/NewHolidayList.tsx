@@ -132,15 +132,11 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
 
   render() {
     const { classes, holidayListReducer } = this.props;
-    const { holidays, name, message, loading, toLists } = holidayListReducer;
+    const { holidays, name, message, loading } = holidayListReducer;
   
     let holidayComponents = holidays.map((holiday) => {
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
-
-    if(toLists === true) {
-      return <Redirect to={'/holiday_lists'}/>
-    }
 
     return (
       <div className={classes.root}>
@@ -201,13 +197,15 @@ const mapStateToProps = state => {
 }
 
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addHoliday: () => (dispatch(addHoliday())),
-  changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
-  requestNewHolidayListSubmit: (obj) => (dispatch(submitNewHolidayListToServer(obj))),
-  handleCloseMessage: () => (dispatch(handleCloseMessage())),
-  resetHolidayListState: () => (dispatch(resetHolidayListState()))
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    addHoliday: () => (dispatch(addHoliday())),
+    changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
+    requestNewHolidayListSubmit: (obj) => (dispatch(submitNewHolidayListToServer({...obj, history: ownProps.history}))),
+    handleCloseMessage: () => (dispatch(handleCloseMessage())),
+    resetHolidayListState: () => (dispatch(resetHolidayListState()))
+  }
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewHolidayList));

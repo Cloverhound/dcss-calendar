@@ -3,8 +3,7 @@ let initialState = {
   holidays: [{name: "", date: "", index: 0}],
   active: "true",
   message: {type: "", content: ""},
-  loading: false,
-  toLists: false 
+  loading: false
 }
 
 const holidayListReducer = (state = initialState, action) => {
@@ -89,8 +88,7 @@ const handleUpdateHolidayListFailed = (state, payload) => {
 const handleNewHolidayListSucceeded = (state, payload) => {
   console.log('Handling new holiday list succeeded', payload)
   let loading = false
-  let toLists = true
-  return {...state, loading, toLists}
+  return {...state, loading }
 }
 
 const handleNewHolidayListFailed = (state, payload) => {
