@@ -170,9 +170,8 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
               {holidayComponents}
             </div>
 
-            {loading ? <CircularProgress className={classes.progress} /> : null}
-
             <div className={classes.addIconContainer}>
+              {loading ? <CircularProgress className={classes.progress} /> : null}
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
