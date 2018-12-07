@@ -165,15 +165,15 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
               {holidayComponents}
             </div>
 
-            {loading ? <CircularProgress className={classes.progress} /> : null}
 
             <div className={classes.addIconContainer}>
+            {loading ? <CircularProgress className={classes.progress} /> : null}
               <Button onClick={this.handleAddHoliday} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
             </div>
             <div className={classes.submitCancelContainer}>
-              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
+              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} disabled={loading}>
                 Submit
               </Button>
               <Link to="/holiday_lists">
