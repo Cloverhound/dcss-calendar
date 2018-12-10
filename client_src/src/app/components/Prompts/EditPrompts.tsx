@@ -196,7 +196,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
               </FormControl>
             </div> */}
             <div className={classes.uploadSection}>
-              <Typography className={classes.subTitle} variant="subtitle1">Optional Message</Typography>
+              <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
                 <div className={classes.optionalContainer}>
                   <Typography className={classes.title} variant="body1">English</Typography>
@@ -204,13 +204,28 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     ref={'optional-message-eng'}
                     type='file'
                     onChange={(e) => this.handleInputChange(e)}
+                    accept="audio/*"
                   />
                   <Button
                     className={classes.button}
                     type='file'
                     variant='outlined'
                   >
+                    Preview
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
                     Upload
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                   Delete
                   </Button>
                 </div>
                 <div className={classes.optionalContainer}>
@@ -220,39 +235,12 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                       type='file'
                     />
                     <Button
-                      className={classes.button}
-                      type='file'
-                      variant='outlined'
-                    >
-                      Upload
-                    </Button>
-                </div>
-              </Paper>
-            </div>
-
-            <div className={classes.uploadSection}>
-              <Typography className={classes.subTitle} variant="subtitle1">Office Info Prompts</Typography>
-              <div className={classes.optionalWrapper}>
-                <Tabs 
-                  value={value}
-                  className={classes.tabs}
-                  onChange={this.handleTabChange}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  centered>
-                  <Tab label="English" />
-                  <Tab label="Spanish" />
-                </Tabs>
-
-              {/* {value === 0 && <TabContainer>Item One</TabContainer>}
-              {value === 1 && <TabContainer>Item Two</TabContainer>} */}
-
-                <Paper className={classes.optionalContainer}>
-                  <input
-                    className={classes.input}
-                    ref={'optional-message-span'}
+                    className={classes.button}
                     type='file'
-                  />
+                    variant='outlined'
+                  >
+                    Preview
+                  </Button>
                   <Button
                     className={classes.button}
                     type='file'
@@ -260,8 +248,78 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                   >
                     Upload
                   </Button>
-                </Paper>
-              </div>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                   Delete
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+
+            <div className={classes.uploadSection}>
+            <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
+              <Paper className={classes.optionalWrapper}>
+                <div className={classes.optionalContainer}>
+                  <Typography className={classes.title} variant="body1">English</Typography>
+                  <input 
+                    ref={'optional-message-eng'}
+                    type='file'
+                    onChange={(e) => this.handleInputChange(e)}
+                  />
+                   <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Preview
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Upload
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                   Delete
+                  </Button>
+                </div>
+                <div className={classes.optionalContainer}>
+                  <Typography className={classes.title} variant="body1">Spanish</Typography>
+                    <input 
+                      ref={'optional-message-span'}
+                      type='file'
+                    />
+                     <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Preview
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                    Upload
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    type='file'
+                    variant='outlined'
+                  >
+                   Delete
+                  </Button>
+                </div>
+              </Paper>
             </div>
             
             {/*
