@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "engines": {
-    "node": ">=4"
+    "yarn": "1.9.4"
   },
   "scripts": {
     "lint": "eslint .",
@@ -11,9 +11,6 @@
     "nodemon": "nodemon ./server/server.ts",
     "heroku-postbuild": "cd client_src && yarn install && yarn build",
     "posttest": "npm run lint"
-  },
-  "engines": {
-    "yarn": "1.9.4"
   },
   "dependencies": {
     "compression": "^1.0.3",
