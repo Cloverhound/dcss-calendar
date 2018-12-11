@@ -8,7 +8,11 @@ require('dotenv').config();
 
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }))
+var multer = require('multer');
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }))
+app.use(multer().any());
 app.use(bodyParser.json())
 var logger = function(req, res, next) {
   let body = JSON.stringify(req.body, null, 2)

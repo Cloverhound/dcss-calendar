@@ -141,7 +141,7 @@ function TabContainer(props) {
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     value: 0,
-    filePath: ''
+    targetFile: ''
   }
 
   componentWillMount = () => {
@@ -170,7 +170,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleInputChange = (e) => {
-    this.setState({ filePath: e.target.value });
+    this.setState({ targetFile: e.target.files[0] });
   }
 
   handleTabChange = (event, value) => {
@@ -180,9 +180,12 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   handleSubmitUpload = (e) => {
     e.preventDefault()
     const { submitUploadPromptToServer } = this.props;
-    const { filePath } = this.state;
+    const { targetFile } = this.state;
+    const formData = new FormData();
+    
+    formData.append('file', targetFile);
 
-    submitUploadPromptToServer({path: filePath})
+    submitUploadPromptToServer(formData)
   }
 
   render() {
