@@ -89,3 +89,6 @@ export const submitDeleteHolidayListToServerFailed      = obj => ({type: "SUBMIT
 
 export const handleCloseMessage = ()  => ({type: "HANDLE_CLOSE_MESSAGE"})
 
+// PROMPTS
+export const submitUploadPromptToServer = obj => ({type: "SUBMIT_UPLOAD_PROMPT_TO_SERVER", payload: obj})
+

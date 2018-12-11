@@ -2,6 +2,7 @@ import { takeLatest, all } from 'redux-saga/effects'
 import { callCreateSchedule, callGetSchedules, callUpdateSchedule, callDeleteSchedule } from './scheduleSagas'
 import { callCreateQueue, callGetQueues, callUpdateQueue, callDeleteQueue, callGetQueue  } from './queueSagas'
 import { callCreateHolidayList, callGetHolidayLists, callGetHolidayList, callUpdateHolidayList, callDeleteHolidayList } from './holidaySagas'
+import { callCreatePrompt } from './promptSagas';
 
 export default function* root() {
   yield all([
@@ -23,5 +24,7 @@ export default function* root() {
     yield takeLatest('GET_HOLIDAY_LIST_FROM_SERVER', callGetHolidayList),
     yield takeLatest('SUBMIT_UPDATE_HOLIDAY_LIST_TO_SERVER', callUpdateHolidayList),
     yield takeLatest('SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER', callDeleteHolidayList),
+
+    yield takeLatest('SUBMIT_UPLOAD_PROMPT_TO_SERVER', callCreatePrompt),
   ])
 }

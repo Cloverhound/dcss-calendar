@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges } from '../../actions'
+import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges, submitUploadPromptToServer } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -119,7 +119,8 @@ interface IProps {
   getSchedulesFromServer: any,
   updateTimeRanges: any,
   resetTimeRanges: any,
-  click: any
+  click: any,
+  submitUploadPromptToServer: any,
 }
 
 function TabContainer(props) {
@@ -140,6 +141,7 @@ function TabContainer(props) {
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     value: 0,
+    filePath: ''
   }
 
   componentWillMount = () => {
@@ -168,12 +170,20 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleInputChange = (e) => {
-    console.log("handle input change", e.target);
+    this.setState({ filePath: e.target.value });
   }
 
   handleTabChange = (event, value) => {
     this.setState({ value });
   };
+
+  handleSubmitUpload = (e) => {
+    e.preventDefault()
+    const { submitUploadPromptToServer } = this.props;
+    const { filePath } = this.state;
+
+    submitUploadPromptToServer({path: filePath})
+  }
 
   render() {
     const { classes, scheduleReducer } = this.props;
@@ -210,6 +220,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e)}
                   >
                     Preview
                   </Button>
@@ -217,6 +228,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e)}
                   >
                     Upload
                   </Button>
@@ -357,7 +369,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   updateNameField: (obj) => (dispatch(updateNameField(obj))),
   getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
   updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
-  resetTimeRanges: () => (dispatch(resetTimeRanges()))
+  resetTimeRanges: () => (dispatch(resetTimeRanges())),
+  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj)))
 })
 
 
