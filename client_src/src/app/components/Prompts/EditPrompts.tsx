@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
-import { submitUploadPromptToServer } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, submitUploadPromptToServer, getPromptsWithQueueIdFromServer, updateTargetFile } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -101,25 +101,30 @@ const styles = theme => createStyles({
 interface IProps {
   click: any,
   submitUploadPromptToServer: any,
+  getPromptsFromServer: any,
+  getPromptFromServer: any,
+  getPromptsWithQueueIdFromServer: any,
+  updateTargetFile: any,
+  promptsReducer: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
-  state = {
-    value: 0,
-    targetFile: ''
+
+  componentWillMount = () => {
+    const { getPromptsWithQueueIdFromServer } = this.props;
+    // getPromptsWithQueueIdFromServer()
   }
 
   handleInputChange = (e) => {
-    this.setState({ targetFile: e.target.files[0] });
+    const { updateTargetFile } = this.props
+    updateTargetFile({ targetFile: e.target.files[0] })
   }
 
   handleSubmitUpload = (e) => {
     e.preventDefault()
-    const { submitUploadPromptToServer } = this.props;
-    const { targetFile } = this.state;
+    const { promptsReducer, submitUploadPromptToServer } = this.props;
     const formData = new FormData();
-    
-    formData.append('file', targetFile);
+    formData.append('file', promptsReducer.targetFile);
 
     submitUploadPromptToServer(formData)
   }
@@ -274,15 +279,19 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     scheduleReducer: state.scheduleReducer
-//   }
-// }
+const mapStateToProps = state => {
+  return {
+    promptsReducer: state.promptsReducer
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj)))
+  getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
+  getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
+  getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
+  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj))),
+  updateTargetFile: (obj) => (dispatch(updateTargetFile(obj)))
 })
 
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(EditPrompts));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditPrompts));
