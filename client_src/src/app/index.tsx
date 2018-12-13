@@ -1,3 +1,5 @@
+import { polyfill } from 'es6-promise'; polyfill();
+import 'isomorphic-fetch';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './components/App';
