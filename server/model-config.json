@@ -50,5 +50,9 @@
   "HolidayList": {
     "dataSource": "db",
     "public": true
+  },
+  "Prompt": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -19,6 +19,7 @@ const schedulesReducer = (state: any = initialState, action) => {
 }
 
 function handleGetSchedulesFromServerSucceeded(state, payload) {
+  console.log('Handling get schedules from server succeeded')
   let schedules = payload.map(schedule => {
     let keys = Object.keys(schedule)
     let newWeek = keys.reduce((acc, key) => {

@@ -13,12 +13,7 @@ interface IProps {
 
 class Schedules extends React.Component<IProps> {
 
-  componentWillMount = () => {
-    this.getSchedules()
-  }
-
   createTableData = () => {
-    console.log('Creating table data')
     const {schedules} = this.props;
     return schedules.map((schedule, index) => {
       return {id: schedule.id, name: schedule.name}
@@ -59,6 +54,7 @@ const mapStateToProps = state => {
     schedules: state.schedulesReducer.schedules
   }
 }
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedules: () => dispatch(getSchedulesFromServer()),

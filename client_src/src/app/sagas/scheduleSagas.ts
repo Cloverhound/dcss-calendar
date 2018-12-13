@@ -4,10 +4,9 @@ import { postSchedules, getSchedules, putSchedules, deleteSchedules } from './ap
 export function* callGetSchedules() {
   const result = yield call(getSchedules)
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put({type: "GET_SCHEDULES_FROM_SERVER_FAILED", payload: result.error})
   } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
+    yield put({type: "GET_SCHEDULES_FROM_SERVER_SUCCEEDED", payload: result})
   }
 }
 

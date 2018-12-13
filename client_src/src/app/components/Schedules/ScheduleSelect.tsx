@@ -49,13 +49,13 @@ interface IProps {
   index: any,
   deleteRecurringTimeRange: any,
   changeStartEndTimeOfRecurringTimeRange: any,
-  open: any,
-  closed: any
+  start: any,
+  end: any
 }
 
 class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
 
-  handleOpenClosedTime = (event) => {
+  handleStartEndTimeChange = (event) => {
     const { changeStartEndTimeOfRecurringTimeRange, row } = this.props
     changeStartEndTimeOfRecurringTimeRange({row, name: event.target.name, value: event.target.value })
   }
@@ -72,7 +72,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
   }
 
   render() {
-    const { classes, row, open, closed } = this.props;
+    const { classes, row, start, end } = this.props;
     let week = row.week
     let keys = Object.keys(week)
 
@@ -99,15 +99,15 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
           <div className={classes.timeContainer}>
             <TextField
               id="time"
-              label="Open"
+              label="Start"
               type="time"
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
               }}
-              name="open"
-              value={open}
-              onChange={this.handleOpenClosedTime}
+              name="start"
+              value={start}
+              onChange={this.handleStartEndTimeChange}
             />
             <TextField
               id="time"
@@ -119,7 +119,7 @@ class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps>
               }}
               name="closed"
               value={closed}
-              onChange={this.handleOpenClosedTime}
+              onChange={this.handleStartEndTimeChange}
             />
           </div>
 

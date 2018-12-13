@@ -70,8 +70,8 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
 
   render() {
     const { classes, scheduleReducer } = this.props;
-    let timeRangesComponent = scheduleReducer.timeRanges.map((el) => {
-      return <ScheduleSelect row={el} open={el.open} closed={el.closed}/>
+    let timeRangesComponent = scheduleReducer.recurringTimeRanges.map((el) => {
+      return <ScheduleSelect row={el} start={el.start} end={el.end}/>
     })
 
     return (
