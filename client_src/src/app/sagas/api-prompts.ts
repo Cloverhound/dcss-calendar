@@ -24,7 +24,7 @@ export async function getPrompt(payload) {
 }
 export async function getPromptsWithQueueId(payload) {
   try {
-    let response = await fetch(`/api/Prompts?filter[where][queueId]=${payload.id}`, {
+    let response = await fetch(`/api/Prompts?filter[where][queueId]=${payload}`, {
       method: 'GET',
     });
     let responseJson = await response.json()
