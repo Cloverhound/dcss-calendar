@@ -23,6 +23,10 @@
       "type": "string",
       "required": true
     },
+    "enabled": {
+      "type": "boolean",
+      "required": true
+    },
     "queueId": {
       "type": "number",
       "required": true
