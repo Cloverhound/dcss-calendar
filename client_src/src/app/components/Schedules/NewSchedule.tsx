@@ -3,7 +3,6 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -117,13 +116,10 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, scheduleReducer } = this.props;
-    let timeRangesComponent = scheduleReducer.timeRanges.map((el, i) => {
-      return <ScheduleSelect row={el} open={el.open} closed={el.closed}/>
+    let timeRangesComponent = scheduleReducer.recurringTimeRanges.map((el, i) => {
+      return <ScheduleSelect row={el} start={el.start} end={el.end}/>
     })
 
-    let menuItem = scheduleReducer.schedules.map(schedule => {
-      return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
-    })
     return (
       <div className={classes.root}>
         <div className={classes.paper}>

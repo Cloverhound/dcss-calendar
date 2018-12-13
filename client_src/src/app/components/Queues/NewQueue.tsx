@@ -68,7 +68,7 @@ const styles = theme => createStyles({
 });
 
 interface IProps {
-  scheduleReducer: any,
+  schedulesReducer: any,
   submitNewQueueToServer: any,
   getSchedulesFromServer: any,
   changeQueue: any,
@@ -99,9 +99,9 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   };
 
   render() {
-    const { classes, scheduleReducer, queueReducer, holidayListsReducer } = this.props;
+    const { classes, schedulesReducer, queueReducer, holidayListsReducer } = this.props;
 
-    let scheduleMenuItems = scheduleReducer.schedules.map(schedule => {
+    let scheduleMenuItems = schedulesReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
     let holidayListMenuItems = holidayListsReducer.holidayLists.map(holiday => {
@@ -165,7 +165,7 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 const mapStateToProps = state => {
   return {
     queueReducer: state.queueReducer,
-    scheduleReducer: state.scheduleReducer,
+    schedulesReducer: state.schedulesReducer,
     queuesReducer: state.queuesReducer,
     holidayListsReducer: state.holidayListsReducer
   }

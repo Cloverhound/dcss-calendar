@@ -74,7 +74,7 @@ const styles = theme => createStyles({
 interface IProps {
   queueReducer: any,
   queuesReducer: any,
-  scheduleReducer: any,
+  schedulesReducer: any,
   holidayListsReducer: any,
   getSchedulesFromServer: any,
   getHolidayListsFromServer: any,
@@ -112,10 +112,10 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, scheduleReducer, queueReducer, holidayListsReducer } = this.props;
+    const { classes, schedulesReducer, queueReducer, holidayListsReducer } = this.props;
     const { message, loading } = queueReducer;
 
-    let scheduleMenuItems = scheduleReducer.schedules.map(schedule => {
+    let scheduleMenuItems = schedulesReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
     })
     let holidayListMenuItems = holidayListsReducer.holidayLists.map(holiday => {
@@ -189,7 +189,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 const mapStateToProps = state => {
   return {
     queueReducer: state.queueReducer,
-    scheduleReducer: state.scheduleReducer,
+    schedulesReducer: state.schedulesReducer,
     queuesReducer: state.queuesReducer,
     holidayListsReducer: state.holidayListsReducer
   }
