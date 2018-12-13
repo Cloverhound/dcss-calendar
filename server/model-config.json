@@ -54,5 +54,13 @@
   "Prompt": {
     "dataSource": "db",
     "public": true
+  },
+  "RecurringTimeRange": {
+    "dataSource": "db",
+    "public": true
+  },
+  "SingleDateTimeRange": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -1,31 +1,30 @@
 {
-    "name": "HolidayList",
-    "plural": "HolidayLists",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-      "validateUpsert": true
+  "name": "HolidayList",
+  "plural": "HolidayLists",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "holidays": {
+      "type": "hasMany",
+      "model": "Holiday",
+      "foreignKey": "holidayListId"
     },
-    "properties": {
-      "name": {
-        "type": "string",
-        "required": true
-      }
-    },
-    "validations": [],
-    "relations": {
-      "holidays": {
-        "type": "hasMany",
-        "model": "Holiday",
-        "foreignKey": "holidayListId" 
-      },
-      "queues": {
-        "type": "hasMany",
-        "model": "Queue",
-        "foreignKey": "holidayListId"
-      }
-    },
-    "acls": [],
-    "methods": {}
-  }
-  
+    "queues": {
+      "type": "hasMany",
+      "model": "Queue",
+      "foreignKey": "holidayListId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

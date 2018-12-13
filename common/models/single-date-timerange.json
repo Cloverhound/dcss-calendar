@@ -1,42 +1,34 @@
 {
-  "name": "Prompt",
-  "plural": "Prompts",
+  "name": "SingleDateTimeRange",
+  "plural": "SingleDateTimeRanges",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "name": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "start" : {
       "type": "string",
       "required": true
     },
-    "language": {
+    "end" : {
       "type": "string",
       "required": true
     },
-    "type": {
-      "type": "string",
-      "required": true
-    },
-    "url": {
-      "type": "string",
-      "required": true
-    },
-    "enabled": {
-      "type": "boolean",
-      "required": true
-    },
-    "queueId": {
+    "scheduleId": {
       "type": "number",
       "required": true
     }
   },
   "validations": [],
   "relations": {
-    "queue": {
+    "schedule": {
       "type": "belongsTo",
-      "model": "Queue",
+      "model": "Schedule",
       "foreignKey": ""
     }
   },
