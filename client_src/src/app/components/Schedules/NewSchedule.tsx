@@ -3,16 +3,14 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
+import ScheduleSelect from './ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges } from '../../actions'
+import { addRecurringTimeRange, submitNewScheduleToServer, changeScheduleName, resetSchedule } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -92,17 +90,14 @@ interface IProps {
   addScheduleSelect: any,
   requestScheduleSubmit: any,
   updateNameField: any,
-  getSchedulesFromServer: any,
-  updateTimeRanges: any,
-  resetTimeRanges: any
+  resetSchedule: any
 }
 
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
-    const { getSchedulesFromServer, resetTimeRanges } = this.props;
-    getSchedulesFromServer()
-    resetTimeRanges()
+    const { resetSchedule } = this.props;
+    resetSchedule()
   }
 
   handleNameInput = event => {
@@ -181,12 +176,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    addScheduleSelect: () => (dispatch(addScheduleSelect())),
-    requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit({...obj, history: ownProps.history}))),
-    updateNameField: (obj) => (dispatch(updateNameField(obj))),
-    getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-    updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
-    resetTimeRanges: () => (dispatch(resetTimeRanges()))
+    addScheduleSelect: () => (dispatch(addRecurringTimeRange())),
+    submitNewScheduleToServer: (obj) => (dispatch(submitNewScheduleToServer({...obj, history: ownProps.history}))),
+    changeScheduleName: (obj) => (dispatch(changeScheduleName(obj))),
+    resetSchedule: () => (dispatch(resetSchedule()))
   }
 }
 

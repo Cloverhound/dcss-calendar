@@ -22,10 +22,12 @@
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-router-dom": "^4.3.1",
+    "react-swipeable-views": "^0.13.0",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.2",
     "typesafe-actions": "^2.0.4",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "yarn": "^1.9.4"
   },
   "devDependencies": {
     "@types/react": "^16.4.14",
@@ -36,7 +38,7 @@
     "redux-devtools-extension": "^2.13.5",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^5.1.1",
-    "webpack": "^4.19.0",
+    "webpack": "^4.27.1",
     "webpack-cli": "^3.1.0",
     "webpack-dashboard": "^2.0.0",
     "webpack-dev-middleware": "^3.3.0",

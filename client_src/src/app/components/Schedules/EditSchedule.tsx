@@ -1,212 +1,71 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import createStyles from '@material-ui/core/styles/createStyles';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
+import * as React from 'react'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import Typography from '@material-ui/core/Typography'
+import AppBar from '@material-ui/core/AppBar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import RegularEditScheduleTab from './RegularEditScheduleTab'
 
-import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleEdit, updateNameField, getSchedulesFromServer, updateTimeRanges } from '../../actions'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 
 const styles = theme => createStyles({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    // marginTop: '65px',
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2
-  },
-  title: {
-    margin: theme.spacing.unit,
-  },
-  arrowContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '50px',
-    backgroundColor: '#3f51b5;',
-    borderRadius: "5px 5px 0 0"
-  },
-  arrow: {
-    margin: '10px',
-    fill: 'white',
-    "&:hover": {
-      cursor: 'pointer'
-    },
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
   },
   paper: {
-    display: 'flex',
+    // display: 'flex',
     justifyContent: 'center',
     width: '100%',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '25px',
-    maxWidth: '850px',
-  },
-  formControl: {
-    marginTop: theme.spacing.unit * 2,
-    margin: theme.spacing.unit,
-    minWidth: 120,
-    maxWidth: 200,
-  },
-  selectContainer: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2
-  },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  addIconContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '10px',
-  },
-  submitCancelContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '50px',
   }
 });
 
-interface IProps {
-  scheduleReducer: any,
-  addScheduleSelect: any,
-  requestScheduleEdit: any,
-  updateNameField: any,
-  getSchedulesFromServer: any,
-  updateTimeRanges: any,
-  match: any
+
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
 }
 
-class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
-
-  componentWillMount = () => {
-    this.handleGetSchedule(this.props.match.params.id)
+class EditSchedule extends React.Component<WithStyles<typeof styles> > {
+  state = {
+    value: 0,
   }
 
-  handleGetSchedule = (id) => {
-    const { updateTimeRanges } = this.props
-    updateTimeRanges({ id })
-  };
-
-  handleNameInput = event => {
-    const { updateNameField } = this.props;
-    updateNameField({ name: event.target.value })
-  };
-
-  handleAddScheduleSelect = () => {
-    const { addScheduleSelect } = this.props
-    addScheduleSelect()
-  }
-
-  handleFormSubmit = () => {
-    const { requestScheduleEdit, scheduleReducer } = this.props;
-    requestScheduleEdit(scheduleReducer)
+  handleChange = (event, value) => {
+    this.setState({ value })
   }
 
   render() {
-    const { classes, scheduleReducer } = this.props;
-    let timeRangesComponent = scheduleReducer.timeRanges.map((el, i) => {
-      return <ScheduleSelect row={el} open={el.open} closed={el.closed}/>
-    })
-
-    let menuItem = scheduleReducer.schedules.map(schedule => {
-      return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
-    })
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
-          <form className={classes.form}>
-            <Typography className={classes.title} variant="title">Schedule</Typography>
-            <div className={classes.inputContainer}>
-              {/* <FormControl className={classes.formControl}>
-                <Select
-                  value={scheduleReducer.dropDownID}
-                  onChange={this.handleScheduleSelect}
-                  name="scheduleName"
-                  displayEmpty
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value="new" disabled>
-                    New Schedule
-                  </MenuItem>
-                  {menuItem}
-                </Select>
-                <FormHelperText>Select A Schedule</FormHelperText>
-              </FormControl> */}
+          <div className={classes.root}>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+            >
+              <Tab label="Regular" />
+              <Tab label="Special" />
+            </Tabs>
+            
+          </AppBar>
 
-              <FormControl className={classes.formControl}>
-                <Input
-                  value={this.props.scheduleReducer.name}
-                  onChange={this.handleNameInput}
-                  name="newScheduleName"
-                  placeholder="Edit Name"
-                  autoFocus={true}
-                />
-              </FormControl>
-            </div>
-
-            <div className={classes.selectContainer}>
-              {timeRangesComponent}
-            </div>
-
-            <div className={classes.addIconContainer}>
-              <Button onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                <AddIcon />
-              </Button>
-            </div>
-            <div className={classes.submitCancelContainer}>
-              <Link to="/schedules">
-                <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button}>
-                  Submit
-                </Button>
-              </Link>
-              <Link to="/schedules">
-                <Button variant="outlined" color="primary" className={classes.button}>
-                  Cancel
-                </Button>
-              </Link>
-            </div>
-          </form>
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab/></TabContainer>}
+          {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
+          </div> 
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    scheduleReducer: state.scheduleReducer
-  }
-}
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleEdit: (obj) => (dispatch(requestScheduleEdit(obj))),
-  updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj)))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditSchedule));
+export default withStyles(styles, { withTheme: true })(EditSchedule)

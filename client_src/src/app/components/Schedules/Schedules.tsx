@@ -2,13 +2,13 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
 
 import { connect } from 'react-redux'
-import { getSchedulesFromServer, requestScheduleDelete } from '../../actions'
+import { getSchedulesFromServer, submitDeleteScheduleToServer } from '../../actions'
 
 interface IProps {
   schedules: any,
   getSchedules: any,
   history: any,
-  requestScheduleDelete: any
+  submitDeleteScheduleToServer: any
 }
 
 class Schedules extends React.Component<IProps> {
@@ -32,8 +32,8 @@ class Schedules extends React.Component<IProps> {
   }
 
   handleDeleteSchedule = (id) => {
-    const { requestScheduleDelete } = this.props;
-    requestScheduleDelete(id)
+    const { submitDeleteScheduleToServer } = this.props;
+    submitDeleteScheduleToServer(id)
   }
 
   render() {
@@ -56,13 +56,13 @@ class Schedules extends React.Component<IProps> {
 
 const mapStateToProps = state => {
   return {
-    schedules: state.scheduleReducer.schedules
+    schedules: state.schedulesReducer.schedules
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedules: () => dispatch(getSchedulesFromServer()),
-  requestScheduleDelete: (obj) => dispatch(requestScheduleDelete(obj))
+  submitDeleteScheduleToServer: (obj) => dispatch(submitDeleteScheduleToServer(obj))
 })
 
 

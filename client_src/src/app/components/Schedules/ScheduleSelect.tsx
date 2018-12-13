@@ -1,13 +1,6 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Button from '@material-ui/core/Button';
-import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -16,16 +9,10 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { updateChecked, deleteRow, updateOpenClosedTime } from '../../actions/index';
+import { toggleRecurringDay, deleteRecurringTimeRange, changeStartEndTimeOfRecurringTimeRange } from '../../actions/index';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 
 const styles = theme => createStyles({
   root: {
@@ -33,50 +20,10 @@ const styles = theme => createStyles({
     alignItems: 'center',
     marginTop: theme.spacing.unit * 2,
     margin: theme.spacing.unit,
-    // border: '1px solid black',
     borderRadius: '5px',
-  },
-  arrowContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '50px',
-    backgroundColor: '#3f51b5;',
-    borderRadius: "5px 5px 0 0"
-  },
-  arrow: {
-    margin: '10px',
-    fill: 'white',
-    "&:hover": {
-      cursor: 'pointer'
-    },
-  },
-  paper: {
-    width: '500px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '25px',
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-    manWidth: 150,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
-  button: {
-    marginTop: '30px',
-    margin: theme.spacing.unit,
-  },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
   },
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
     width: 200,
   },
   addButton: {
@@ -86,7 +33,7 @@ const styles = theme => createStyles({
   formGroup: {
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: '24px',
+    marginLeft: '10px',
   },
   timeContainer: {
     display: 'flex',
@@ -97,39 +44,35 @@ const styles = theme => createStyles({
 
 interface IProps {
   scheduleSelect: any,
-  updateChecked: any,
+  toggleRecurringDay: any,
   row: any,
   index: any,
-  deleteRow: any,
-  updateOpenClosedTime: any,
+  deleteRecurringTimeRange: any,
+  changeStartEndTimeOfRecurringTimeRange: any,
   open: any,
   closed: any
 }
 
 class ScheduleSelect extends React.Component<WithStyles<typeof styles> & IProps> {
 
-  handleChange = event => {
-    // this.setState({ [event.target.name]: event.target.value });
-  };
-
   handleOpenClosedTime = (event) => {
-    const { updateOpenClosedTime, row } = this.props
-    updateOpenClosedTime({row, name: event.target.name, value: event.target.value })
+    const { changeStartEndTimeOfRecurringTimeRange, row } = this.props
+    changeStartEndTimeOfRecurringTimeRange({row, name: event.target.name, value: event.target.value })
   }
 
   handleCheckChange = (row, day) => event => {
-    const { updateChecked } = this.props
-    updateChecked({ row, day, event: event.target.checked });
+    const { toggleRecurringDay } = this.props
+    toggleRecurringDay({ row, day, event: event.target.checked });
   };
 
   handleDelete = (event) => {
-    const { deleteRow, row } = this.props;
+    const { deleteRecurringTimeRange, row } = this.props;
     event.preventDefault()
-    deleteRow({ row })
+    deleteRecurringTimeRange({ row })
   }
 
   render() {
-    const { classes, scheduleSelect, row, open, closed } = this.props;
+    const { classes, row, open, closed } = this.props;
     let week = row.week
     let keys = Object.keys(week)
 
@@ -197,12 +140,12 @@ const mapStateToProps = state => {
   return {
     scheduleSelect: state.scheduleSelect
   }
-}
+} 
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  updateChecked: (obj) => dispatch(updateChecked(obj)),
-  deleteRow: (obj) => dispatch(deleteRow(obj)),
-  updateOpenClosedTime: (obj) => dispatch(updateOpenClosedTime(obj))
+  toggleRecurringDay: (obj) => dispatch(toggleRecurringDay(obj)),
+  deleteRecurringTimeRange: (obj) => dispatch(deleteRecurringTimeRange(obj)),
+  changeStartEndTimeOfRecurringTimeRange: (obj) => dispatch(changeStartEndTimeOfRecurringTimeRange(obj))
 })
 
 
