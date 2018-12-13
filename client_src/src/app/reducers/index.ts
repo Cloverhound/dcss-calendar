@@ -6,6 +6,7 @@ import queuesReducer from './QueuesReducer';
 import queueReducer from './QueueReducer'
 import holidayListsReducer from './HolidayListsReducer'
 import holidayListReducer from './HolidayListReducer'
+import promptsReducer from './PromptsReducer'
 ​
 export default combineReducers({
   counter,
@@ -14,5 +15,6 @@ export default combineReducers({
   queuesReducer,
   queueReducer,
   holidayListsReducer,
-  holidayListReducer
+  holidayListReducer,
+  promptsReducer
 })

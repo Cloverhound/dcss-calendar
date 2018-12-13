@@ -57,7 +57,6 @@ export function* callGetQueues() {
   }
 }
 
-
 export function* callDeleteQueue(action) {
   console.log(" DELETE queue action.payload", action.payload.id)
   const result = yield call(deleteQueue, action.payload.id);

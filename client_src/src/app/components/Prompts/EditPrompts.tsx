@@ -1,26 +1,13 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import AddIcon from '@material-ui/icons/Add';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import ScheduleSelect from '../ScheduleSelect/ScheduleSelect';
 
 import { connect } from 'react-redux';
-import { addScheduleSelect, requestScheduleSubmit, updateNameField, getSchedulesFromServer, updateTimeRanges, resetTimeRanges } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, submitUploadPromptToServer, getPromptsWithQueueIdFromServer, updateTargetFile } from '../../actions'
 import {
-  BrowserRouter as Router,
-  Route,
   Link
 } from 'react-router-dom';
 
@@ -112,89 +99,43 @@ const styles = theme => createStyles({
 });
 
 interface IProps {
-  scheduleReducer: any,
-  addScheduleSelect: any,
-  requestScheduleSubmit: any,
-  updateNameField: any,
-  getSchedulesFromServer: any,
-  updateTimeRanges: any,
-  resetTimeRanges: any,
-  click: any
-}
-
-function TabContainer(props) {
-
-  return (
-    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-      <input 
-        ref={'file-upload'}
-        type='file'
-      />
-      <Button type='file'>
-        {props.children}
-      </Button>
-    </div>
-  );
+  click: any,
+  submitUploadPromptToServer: any,
+  getPromptsFromServer: any,
+  getPromptFromServer: any,
+  getPromptsWithQueueIdFromServer: any,
+  updateTargetFile: any,
+  promptsReducer: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
-  state = {
-    value: 0,
-  }
 
   componentWillMount = () => {
-    const { getSchedulesFromServer, resetTimeRanges } = this.props;
-    getSchedulesFromServer()
-    resetTimeRanges()
-  }
-
-  handleNameInput = event => {
-    const { updateNameField } = this.props;
-    updateNameField({ name: event.target.value })
-  };
-
-  handleAddScheduleSelect = () => {
-    const { addScheduleSelect } = this.props
-    addScheduleSelect()
-  }
-
-  handleFormSubmit = () => {
-    const { requestScheduleSubmit, scheduleReducer } = this.props;
-    requestScheduleSubmit(scheduleReducer)
-  }
-
-  handleChange = (e) => {
-    console.log("CLICKED!", e);
+    const { getPromptsWithQueueIdFromServer } = this.props;
+    // getPromptsWithQueueIdFromServer()
   }
 
   handleInputChange = (e) => {
-    console.log("handle input change", e.target);
+    const { updateTargetFile } = this.props
+    updateTargetFile({ targetFile: e.target.files[0] })
   }
 
-  handleTabChange = (event, value) => {
-    this.setState({ value });
-  };
+  handleSubmitUpload = (e) => {
+    e.preventDefault()
+    const { promptsReducer, submitUploadPromptToServer } = this.props;
+    const formData = new FormData();
+    formData.append('file', promptsReducer.targetFile);
+
+    submitUploadPromptToServer(formData)
+  }
 
   render() {
-    const { classes, scheduleReducer } = this.props;
-    const { value } = this.state;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Prompts</Typography>
-
-            {/* <div className={classes.inputContainer}>
-              <FormControl className={classes.formControl}>
-                <Input
-                  value={this.props.scheduleReducer.name}
-                  onChange={this.handleNameInput}
-                  name="newScheduleName"
-                  placeholder="Queue Name"
-                  autoFocus={true}
-                />
-              </FormControl>
-            </div> */}
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
@@ -210,6 +151,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e)}
                   >
                     Preview
                   </Button>
@@ -217,6 +159,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e)}
                   >
                     Upload
                   </Button>
@@ -321,15 +264,6 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                 </div>
               </Paper>
             </div>
-            
-            {/*
-            <div className={classes.addIconContainer}>
-              <Button onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                <AddIcon />
-              </Button>
-            </div>
-          */}
-
 
             <div className={classes.submitCancelContainer}>
               <Link to="/">
@@ -347,17 +281,16 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    scheduleReducer: state.scheduleReducer
+    promptsReducer: state.promptsReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  addScheduleSelect: () => (dispatch(addScheduleSelect())),
-  requestScheduleSubmit: (obj) => (dispatch(requestScheduleSubmit(obj))),
-  updateNameField: (obj) => (dispatch(updateNameField(obj))),
-  getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-  updateTimeRanges: (obj) => (dispatch(updateTimeRanges(obj))),
-  resetTimeRanges: () => (dispatch(resetTimeRanges()))
+  getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
+  getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
+  getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
+  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj))),
+  updateTargetFile: (obj) => (dispatch(updateTargetFile(obj)))
 })
 
 
