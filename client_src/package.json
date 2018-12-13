@@ -9,9 +9,6 @@
     "start": "webpack-dashboard -- webpack --watch",
     "build": "webpack -p"
   },
-  "engines": {
-    "yarn": "1.9.4"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",

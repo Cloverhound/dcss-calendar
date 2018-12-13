@@ -105,14 +105,15 @@ interface IProps {
   getPromptFromServer: any,
   getPromptsWithQueueIdFromServer: any,
   updateTargetFile: any,
-  promptsReducer: any
+  promptsReducer: any,
+  match: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
     const { getPromptsWithQueueIdFromServer } = this.props;
-    // getPromptsWithQueueIdFromServer()
+    getPromptsWithQueueIdFromServer(JSON.parse(this.props.match.params.id))
   }
 
   handleInputChange = (e) => {
