@@ -25,6 +25,7 @@ module.exports = function (Queue) {
 };
 
 var getStatus = function(response) {
+  console.log("status response")
   var days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat'];
   var currentTime = moment().tz(process.env.TIME_ZONE);
 

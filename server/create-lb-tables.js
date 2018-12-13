@@ -1,6 +1,7 @@
 var server = require('./server.ts');
 var ds = server.dataSources.db;
-var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday', 'HolidayList', 'Prompt'];
+var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday', 'HolidayList', 'Prompt', 'SingleDateTimeRange'];
+// var lbTables = ['RecurringTimeRange'];
 
 
 ds.automigrate(lbTables, function(er) {

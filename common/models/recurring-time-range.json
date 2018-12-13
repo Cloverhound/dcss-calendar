@@ -1,0 +1,61 @@
+{
+  "name": "RecurringTimeRange",
+  "plural": "RecurringTimeRanges",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "sun": {
+      "type": "boolean",
+      "required": true
+    },
+    "mon": {
+      "type": "boolean",
+      "required": true
+    },
+    "tues": {
+      "type": "boolean",
+      "required": true
+    },
+    "weds": {
+      "type": "boolean",
+      "required": true
+    },
+    "thurs": {
+      "type": "boolean",
+      "required": true
+    },
+    "fri": {
+      "type": "boolean",
+      "required": true
+    },
+    "sat": {
+      "type": "boolean",
+      "required": true
+    },
+    "start": {
+      "type": "string",
+      "required": true
+    },
+    "end": {
+      "type": "string",
+      "required": true
+    },
+    "scheduleId": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "schedule": {
+      "type": "belongsTo",
+      "model": "Schedule",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
