@@ -121,11 +121,17 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     updateTargetFile({ targetFile: e.target.files[0] })
   }
 
-  handleSubmitUpload = (e) => {
-    e.preventDefault()
+  handleSubmitUpload = (e, obj) => {
+    const { language, type} = obj
     const { promptsReducer, submitUploadPromptToServer } = this.props;
+    e.preventDefault()
     const formData = new FormData();
+
     formData.append('file', promptsReducer.targetFile);
+    formData.append('queueId', this.props.match.params.id);
+    formData.append('language', language);
+    formData.append('type', type);
+    formData.append('enabled', "false");
 
     submitUploadPromptToServer(formData)
   }
@@ -152,7 +158,6 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e)}
                   >
                     Preview
                   </Button>
@@ -160,7 +165,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e)}
+                    onClick={(e) => this.handleSubmitUpload(e, { language: 'eng', type: 'office directions' })}
                   >
                     Upload
                   </Button>
@@ -189,6 +194,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e, { language: 'span', type: 'directions' })}
                   >
                     Upload
                   </Button>
@@ -224,6 +230,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e, { language: 'eng', type: 'optional' })}
                   >
                     Upload
                   </Button>
@@ -252,6 +259,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
                     className={classes.button}
                     type='file'
                     variant='outlined'
+                    onClick={(e) => this.handleSubmitUpload(e, { language: 'span', type: 'optional' })}
                   >
                     Upload
                   </Button>

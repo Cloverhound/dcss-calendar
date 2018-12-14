@@ -36,11 +36,14 @@ module.exports = function (Prompt) {
 function s3Upload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
   Prompt.upload = function (promptFile, cb) {
-    var response;
-    var params = {
+    const { queueId, language, type, enabled} = promptFile.body
+    let fileName = promptFile.files[0].originalname
+    let buffer = promptFile.files[0].buffer
+    let response;
+    let params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: promptFile.files[0].originalname,
-      Body: promptFile.files[0].buffer
+      Key: fileName,
+      Body: buffer
     };
 
     s3.upload(params, async function (err, data) {
@@ -51,7 +54,7 @@ function s3Upload(Prompt) {
       }
       //success
       if (data) {
-        let newPrompt = await createPrompt(Prompt, data.Location)
+        let newPrompt = await createPrompt(Prompt, data.Location, fileName, promptFile.body)
         response = newPrompt
       }
       cb(null, response)
@@ -59,17 +62,21 @@ function s3Upload(Prompt) {
   }
 }
 
-async function createPrompt(Prompt, url) {
+async function createPrompt(Prompt, url, fileName, body) {
+  const { queueId, language, type, enabled} = body
+  let isTrue = (enabled == "true")
   let newPrompt = await new Promise(function (resolve, reject) {
     Prompt.create({
-      name: Date.now(),
-      language: "english",
-      type: "office directions",
+      name: fileName,
+      language: language,
+      type: type,
+      enabled: isTrue,
       url,
-      queueId: 1
+      queueId: queueId
     }, function (createPromptErr, createdPrompt) {
 
       if (createPromptErr) {
+        resolve(createPromptErr)
         return createPromptErr
       }
 
