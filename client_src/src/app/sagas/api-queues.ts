@@ -50,7 +50,7 @@ export async function getQueue(id) {
 
 export async function getQueues() {
   try {
-    let response = await fetch('/api/Queues/getAll', {
+    let response = await fetch('/api/Queues', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',

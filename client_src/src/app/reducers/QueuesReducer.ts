@@ -1,12 +1,11 @@
 let initialState = {
-  selected: {},
-  array: []
+  queues: []
 }
 
 const queuesReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_QUEUES_FROM_SERVER_DONE':
-      return { ...state, array: action.payload.getAll }
+      return { ...state, queue: action.payload }
     default:
       return state
   }

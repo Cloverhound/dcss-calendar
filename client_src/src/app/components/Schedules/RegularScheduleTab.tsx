@@ -5,7 +5,7 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import ScheduleSelect from './ScheduleSelect';
+import RecurringTimeRange from './RecurringTimeRange';
 
 import { connect } from 'react-redux';
 import { addRecurringTimeRange, submitUpdateScheduleToServer, changeScheduleName } from '../../actions'
@@ -70,9 +70,14 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
 
   render() {
     const { classes, scheduleReducer } = this.props;
-    let timeRangesComponent = scheduleReducer.recurringTimeRanges.map((el) => {
-      return <ScheduleSelect row={el} start={el.start} end={el.end}/>
-    })
+    let timeRanges = scheduleReducer.recurringTimeRanges
+    let timeRangesComponent = []
+    
+    if( timeRanges && timeRanges.length > 0) {
+      timeRangesComponent = timeRanges.map((timeRange) => {
+        return <RecurringTimeRange timeRange={timeRange}/>
+      })
+    }
 
     return (
         <form style={{width: "50%", margin: "auto"}}>

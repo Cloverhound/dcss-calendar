@@ -1,76 +1,70 @@
 'use strict';
 
-// var Schedule = require('../../server/boot/script/Schedule')
-var moment = require('moment-timezone');
-var queue;
 
 module.exports = function (Queue) {
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
-  
-  queue = Queue
-  Queue.getAll = allQueues
 
   Queue.remoteMethod(
-    'getAll', {
-      http: {
-        path: '/getAll',
-        verb: 'get',
-      },
-      returns: {
-        arg: 'getAll',
-        type: 'array',
-      },
-    }
-  );
+    'status', {
+      http: {path: '/:id/status', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', required: true}
+      ],
+      returns: {arg: 'status', type: 'any'},
+  })
+
+
+  Queue.status = (id, cb) => {
+    Queue.findById(id, function(findErr, queue) {
+      if(findErr) {
+        console.log('Failed to find queue', findErr)
+        cb(findErr)
+        return
+      }
+
+      let status = getStatus(queue)
+      cb(status)
+    })
+  }
 };
 
-var getStatus = function(response) {
-  console.log("status response")
-  var days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat'];
-  var currentTime = moment().tz(process.env.TIME_ZONE);
 
-  var currentDay = days[moment().tz(process.env.TIME_ZONE).format('d')];
+var getStatus = function(queue) {
+  console.log("Getting status of queue")
 
-  var OPEN_HOUR = moment.tz(response[currentDay + '_open'], 'HH:mm', process.env.TIME_ZONE);
-  var CLOSE_HOUR = moment.tz(response[currentDay + '_closed'], 'HH:mm', process.env.TIME_ZONE);
+  let recurringTimeRanges = queue.schedule.recurringTimeRanges
+  let singleDateTimeRanges = queue.schedule.singleDateTimeRanges
+  let holidays = queue.holidayList.holidays
 
-  if (currentTime.isBetween(OPEN_HOUR, CLOSE_HOUR)) {
-    if (CLOSE_HOUR.diff(currentTime, 'hours') <= 1) {
-      response = 'Closing';
-    } else {
-      response = 'Open';
-    }
-  } else {
-    response = 'Closed';
+  let response = {
+    recurringTimeRange: false,
+    singleDateTimeRange: false,
+    holiday: false
   }
+
+  for(var i = 0; i < holidays; i++) {
+    if(holidays[i].isToday()) {
+      response.holiday = true
+      break
+    }
+  }
+
+  for(var i = 0; i < recurringTimeRanges; i++) {
+    if(recurringTimeRanges[i].isNow()) {
+      response.recurringTimeRange = true
+      break
+    }
+  }
+
+  for(var i = 0; i < singleDateTimeRanges; i++) {
+    if(singleDateTimeRanges[i].isNow()) {
+      response.singleDateTimeRange = true
+      break
+    }
+  }
+
   return response
 }
 
-function allQueues(cb) {
-  queue.find(async function (err, instance) {
-    var response = instance;
-    let res = [];
-    for (let i = 0; i < response.length; i++) {
-      let queue = response[i];
-      let scheduleQueueObj = await new Promise(function (resolve, reject) {
-        queue.schedule(function (err, tr) {
-          queue.status = getStatus(tr)
-          resolve({
-            queue,
-            schedule: tr
-          })
-        })
-      })
-      let holidayList = await new Promise(function (resolve, reject) {
-        queue.holidayList(function (err, tr) {
-          resolve({
-            holidayList: tr
-          })
-        })
-      })
-      res.push({...scheduleQueueObj, ...holidayList})
-    }
-    console.log(res)
-    cb(null, res);
-  });
-}
+
+

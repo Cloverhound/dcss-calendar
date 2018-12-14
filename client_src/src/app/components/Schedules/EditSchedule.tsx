@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import RegularEditScheduleTab from './RegularEditScheduleTab'
+import RegularEditScheduleTab from './RegularScheduleTab'
 
 
 const styles = theme => createStyles({

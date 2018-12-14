@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { getQueuesFromServer, submitDeleteQueueToServer } from '../../actions'
 interface IProps {
   queuesReducer: any,
-  selected?: any,
   getQueuesFromServer: any,
   submitDeleteQueueToServer: any
 }
@@ -20,14 +19,18 @@ class Queues extends React.Component<IProps> {
     console.log('Creating table data')
     const { queuesReducer } = this.props;
 
-    return queuesReducer.array.map((el, index) => {
+    if(queuesReducer.queues.length == 0) {
+      return []
+    }
+
+    return queuesReducer.queues.map((queue) => {
       return { 
-      id: el.queue.id,
-      'Status': el.queue.status,
-      'Name': el.queue.name, 
-      'Schedule Name': el.schedule.name,
-      'Holiday Name': el.holidayList.name,
-      'Prompt Status': null
+        'id': queue.id,
+        'Status': queue.status,
+        'Name': queue.name, 
+        'Schedule Name': queue.schedule.name,
+        'Holiday Name': queue.holidayList.name,
+        'Prompt Status': null
       }
     })
   }
