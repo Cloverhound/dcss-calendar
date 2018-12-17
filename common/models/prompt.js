@@ -10,28 +10,35 @@ AWS.config.update({
 var s3 = new AWS.S3();
 
 module.exports = function (Prompt) {
+  s3Delete(Prompt)
   s3Upload(Prompt)
 
   Prompt.remoteMethod(
     'upload', {
-      http: {
-        path: '/upload',
-        verb: 'post'
-      },
-      accepts: [{
-        arg: 'req',
-        type: 'object',
-        http: function (ctx) {
-          return ctx.req;
-        }
-      }],
-      returns: {
-        arg: 'res',
-        type: 'string'
-      },
+      http: { path: '/upload', verb: 'post' },
+      accepts: [
+        {arg: 'req', type: 'object',
+        http: function (ctx) {return ctx.req} }
+      ],
+      returns: { arg: 'res', type: 'string' },
     }
   )
+  Prompt.remoteMethod(
+    'deleteFile', {
+      http: {path: '/:id/deleteFile', verb: 'delete'},
+      accepts: [
+        {arg: 'id', type: 'number', require: true}
+      ],
+      returns: {arg: 'status', type: 'string'},
+    })
 };
+
+function s3Delete(Prompt) {
+  // Prompt.deleteFile = function (id, cb) {
+  //   Prompt
+  //   cb(null, id)
+  // }
+}
 
 function s3Upload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))

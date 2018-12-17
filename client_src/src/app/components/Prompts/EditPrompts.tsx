@@ -5,8 +5,10 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+import Prompt from './Prompt'
+
 import { connect } from 'react-redux';
-import { getPromptsFromServer, getPromptFromServer, submitUploadPromptToServer, getPromptsWithQueueIdFromServer, updateTargetFile } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -100,11 +102,9 @@ const styles = theme => createStyles({
 
 interface IProps {
   click: any,
-  submitUploadPromptToServer: any,
   getPromptsFromServer: any,
   getPromptFromServer: any,
   getPromptsWithQueueIdFromServer: any,
-  updateTargetFile: any,
   promptsReducer: any,
   match: any
 }
@@ -116,28 +116,9 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     getPromptsWithQueueIdFromServer(JSON.parse(this.props.match.params.id))
   }
 
-  handleInputChange = (e) => {
-    const { updateTargetFile } = this.props
-    updateTargetFile({ targetFile: e.target.files[0] })
-  }
-
-  handleSubmitUpload = (e, obj) => {
-    const { language, type} = obj
-    const { promptsReducer, submitUploadPromptToServer } = this.props;
-    e.preventDefault()
-    const formData = new FormData();
-
-    formData.append('file', promptsReducer.targetFile);
-    formData.append('queueId', this.props.match.params.id);
-    formData.append('language', language);
-    formData.append('type', type);
-    formData.append('enabled', "false");
-
-    submitUploadPromptToServer(formData)
-  }
-
   render() {
-    const { classes } = this.props;
+    const { classes, promptsReducer, match } = this.props;
+    let queueId = JSON.parse(match.params.id);
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -146,134 +127,17 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
-                <div className={classes.optionalContainer}>
-                  <Typography className={classes.title} variant="body1">English</Typography>
-                  <input 
-                    ref={'optional-message-eng'}
-                    type='file'
-                    onChange={(e) => this.handleInputChange(e)}
-                    accept="audio/*"
-                  />
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e, { language: 'eng', type: 'office directions' })}
-                  >
-                    Upload
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                   Delete
-                  </Button>
-                </div>
-                <div className={classes.optionalContainer}>
-                  <Typography className={classes.title} variant="body1">Spanish</Typography>
-                    <input 
-                      ref={'optional-message-span'}
-                      type='file'
-                    />
-                    <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e, { language: 'span', type: 'directions' })}
-                  >
-                    Upload
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                   Delete
-                  </Button>
-                </div>
+                <Prompt queueId={queueId} language={promptsReducer.office_directions_eng.language} type={promptsReducer.office_directions_eng.type} />
+                <Prompt queueId={queueId} language={promptsReducer.office_directions_span.language} type={promptsReducer.office_directions_span.type} />
               </Paper>
             </div>
-
             <div className={classes.uploadSection}>
             <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
               <Paper className={classes.optionalWrapper}>
-                <div className={classes.optionalContainer}>
-                  <Typography className={classes.title} variant="body1">English</Typography>
-                  <input 
-                    ref={'optional-message-eng'}
-                    type='file'
-                    onChange={(e) => this.handleInputChange(e)}
-                  />
-                   <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e, { language: 'eng', type: 'optional' })}
-                  >
-                    Upload
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                   Delete
-                  </Button>
-                </div>
-                <div className={classes.optionalContainer}>
-                  <Typography className={classes.title} variant="body1">Spanish</Typography>
-                    <input 
-                      ref={'optional-message-span'}
-                      type='file'
-                    />
-                     <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                    onClick={(e) => this.handleSubmitUpload(e, { language: 'span', type: 'optional' })}
-                  >
-                    Upload
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    type='file'
-                    variant='outlined'
-                  >
-                   Delete
-                  </Button>
-                </div>
+                <Prompt queueId={queueId} language={promptsReducer.optional_announcements_eng.language} type={promptsReducer.optional_announcements_eng.type} />
+                <Prompt queueId={queueId} language={promptsReducer.optional_announcements_span.language} type={promptsReducer.optional_announcements_span.type} />
               </Paper>
             </div>
-
             <div className={classes.submitCancelContainer}>
               <Link to="/">
                 <Button variant="outlined" color="primary" className={classes.button}>
@@ -298,8 +162,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
   getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
   getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
-  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj))),
-  updateTargetFile: (obj) => (dispatch(updateTargetFile(obj)))
 })
 
 
