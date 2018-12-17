@@ -10,7 +10,7 @@ AWS.config.update({
 var s3 = new AWS.S3();
 
 module.exports = function (Prompt) {
-  s3Delete(Prompt)
+  deletePrompt(Prompt)
   s3Upload(Prompt)
 
   Prompt.remoteMethod(
@@ -33,17 +33,50 @@ module.exports = function (Prompt) {
     })
 };
 
-function s3Delete(Prompt) {
-  // Prompt.deleteFile = function (id, cb) {
-  //   Prompt
-  //   cb(null, id)
-  // }
+function deletePrompt(Prompt) {
+  Prompt.deleteFile = function (id, cb) {
+    let res;
+    Prompt.findById(id, function(err, instance){
+      res = instance;
+      if(!err){
+        Prompt.destroyById(id, async function(err){
+          if (err) {
+            res = err;
+          } else {
+           res = await s3Delete(instance.name)
+          }
+        })
+      } else {
+        res = err;
+      }
+      cb(null, res)
+    })
+  }
+}
+
+async function s3Delete(fileName) {
+  var params = {
+    Bucket: process.env.AWS_BUCKET_NAME, 
+    Key: fileName
+   };
+   let deletePromise = await new Promise(function(resolve, reject) {
+     s3.deleteObject(params, function (err, data) {
+       if (err) {
+         return reject({
+           err,
+           stack: err.stack
+         })
+       } else {
+         return resolve(data)
+       }
+     });
+   })
+   return deletePromise
 }
 
 function s3Upload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
   Prompt.upload = function (promptFile, cb) {
-    const { queueId, language, type, enabled} = promptFile.body
     let fileName = promptFile.files[0].originalname
     let buffer = promptFile.files[0].buffer
     let response;
@@ -54,12 +87,10 @@ function s3Upload(Prompt) {
     };
 
     s3.upload(params, async function (err, data) {
-      //handle error
       if (err) {
         console.log("Error", err);
         response = err
       }
-      //success
       if (data) {
         let newPrompt = await createPrompt(Prompt, data.Location, fileName, promptFile.body)
         response = newPrompt
@@ -83,13 +114,11 @@ async function createPrompt(Prompt, url, fileName, body) {
     }, function (createPromptErr, createdPrompt) {
 
       if (createPromptErr) {
-        resolve(createPromptErr)
-        return createPromptErr
+        return reject(createPromptErr)
       }
 
       if (createdPrompt !== 'FAILED') {
-        resolve(createdPrompt)
-        return createdPrompt
+       return resolve(createdPrompt)
       }
     })
   })

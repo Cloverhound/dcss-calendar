@@ -44,10 +44,10 @@ const promptsReducer = (state = initialState, action) => {
     case 'UPDATE_TARGET_FILE':
       return {...state, targetFile: action.payload.targetFile}
     case 'UPDATE_PROMPTS':
-      let office_directions_eng = action.payload.find(prompt => prompt.type === "office directions" && prompt.language === "english")
-      let office_directions_span = action.payload.find(prompt => prompt.type === "office directions" && prompt.language === "spanish")
-      let optional_announcements_eng = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "english")
-      let optional_announcements_span = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "spanish")
+      let office_directions_eng = action.payload.find(prompt => prompt.type === "office directions" && prompt.language === "English")
+      let office_directions_span = action.payload.find(prompt => prompt.type === "office directions" && prompt.language === "Spanish")
+      let optional_announcements_eng = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "English")
+      let optional_announcements_span = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "Spanish")
       return {
               ...state, prompts: action.payload, 
               ...(office_directions_eng && {office_directions_eng}),

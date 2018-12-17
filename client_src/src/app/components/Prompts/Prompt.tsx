@@ -48,18 +48,17 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitUpload = (e) => {
-    const { queueId, language, type } = this.props
+    const { queueId, promptObj } = this.props
     const { promptsReducer, submitUploadPromptToServer } = this.props;
     e.preventDefault()
     const formData = new FormData();
 
     formData.append('file', promptsReducer.targetFile);
     formData.append('queueId', queueId);
-    formData.append('language', language);
-    formData.append('type', type);
+    formData.append('language', promptObj.language);
+    formData.append('type', promptObj.type);
     formData.append('enabled', "false");
-    console.log( promptsReducer.targetFile, queueId, language, type)
-    submitUploadPromptToServer(formData)
+    submitUploadPromptToServer(formData) 
   }
 
   render() {
