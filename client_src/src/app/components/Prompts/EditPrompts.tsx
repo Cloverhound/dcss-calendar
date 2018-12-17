@@ -118,6 +118,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, promptsReducer, match } = this.props;
+    const { office_directions_eng, office_directions_span, optional_announcements_eng, optional_announcements_span } = promptsReducer;
     let queueId = JSON.parse(match.params.id);
     return (
       <div className={classes.root}>
@@ -127,15 +128,15 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
-                <Prompt queueId={queueId} language={promptsReducer.office_directions_eng.language} type={promptsReducer.office_directions_eng.type} />
-                <Prompt queueId={queueId} language={promptsReducer.office_directions_span.language} type={promptsReducer.office_directions_span.type} />
+                <Prompt queueId={queueId} promptObj={office_directions_eng}/>
+                <Prompt queueId={queueId} promptObj={office_directions_span}/>
               </Paper>
             </div>
             <div className={classes.uploadSection}>
             <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
               <Paper className={classes.optionalWrapper}>
-                <Prompt queueId={queueId} language={promptsReducer.optional_announcements_eng.language} type={promptsReducer.optional_announcements_eng.type} />
-                <Prompt queueId={queueId} language={promptsReducer.optional_announcements_span.language} type={promptsReducer.optional_announcements_span.type} />
+                <Prompt queueId={queueId} promptObj={optional_announcements_eng}/>
+                <Prompt queueId={queueId} promptObj={optional_announcements_span}/>
               </Paper>
             </div>
             <div className={classes.submitCancelContainer}>

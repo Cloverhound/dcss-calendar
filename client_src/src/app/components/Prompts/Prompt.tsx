@@ -35,7 +35,9 @@ interface IProps {
   promptsReducer: any,
   language: any,
   type: any,
-  queueId: any
+  queueId: any,
+  id: any,
+  promptObj: any
 }
 
 class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -61,37 +63,49 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, language } = this.props;
+    const { promptObj, classes } = this.props;
+    let inputShow;
+    if(!promptObj.id) {
+      inputShow = <div className={classes.optionalContainer}>
+                    <Typography className={classes.title} variant="body1">{promptObj.language}</Typography>
+                    <input
+                      ref={'optional-message-span'}
+                      type='file'
+                      onChange={(e) => this.handleInputChange(e)}
+                    />
+                    <Button
+                      className={classes.button}
+                      type='file'
+                      variant='outlined'
+                      onClick={(e) => this.handleSubmitUpload(e)}
+                    >
+                      Upload
+                    </Button>
+                  </div>
+    } else {
+      inputShow = <div className={classes.optionalContainer}>
+                    <Typography className={classes.title} variant="body1">{promptObj.language}</Typography>
+                    <Typography className={classes.title} variant="body1">{promptObj.name}</Typography>
+                    <Button
+                      className={classes.button}
+                      type='file'
+                      variant='outlined'
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      className={classes.button}
+                      type='file'
+                      variant='outlined'
+                    >
+                      Delete
+                    </Button>
+                  </div>
+    }
+   
     return (
-      <div className={classes.optionalContainer}>
-        <Typography className={classes.title} variant="body1">{language}</Typography>
-          <input 
-            ref={'optional-message-span'}
-            type='file'
-            onChange={(e) => this.handleInputChange(e)}
-          />
-          <Button
-          className={classes.button}
-          type='file'
-          variant='outlined'
-        >
-          Preview
-        </Button>
-        <Button
-          className={classes.button}
-          type='file'
-          variant='outlined'
-          onClick={(e) => this.handleSubmitUpload(e)}
-        >
-          Upload
-        </Button>
-        <Button
-          className={classes.button}
-          type='file'
-          variant='outlined'
-        >
-          Delete
-        </Button>
+      <div>
+        {inputShow}
       </div>
     )
   }

@@ -3,14 +3,16 @@ let initialState = {
   prompts: [],
   office_directions_eng:
   {
+    id: undefined,
     enabled: false,
     language: "English",
     name: "",
     type: "office directions",
-    url: ""
+    url: "",
   },
   office_directions_span:
   {
+    id: undefined,
     enabled: false,
     language: "Spanish",
     name: "",
@@ -19,6 +21,7 @@ let initialState = {
   },
   optional_announcements_eng:
   {
+    id: undefined,
     enabled: false,
     language: "English",
     name: "",
@@ -27,6 +30,7 @@ let initialState = {
   },
   optional_announcements_span:
   {
+    id: undefined,
     enabled: false,
     language: "Spanish",
     name: "",
