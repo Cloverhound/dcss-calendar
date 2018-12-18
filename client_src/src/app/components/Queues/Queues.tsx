@@ -11,12 +11,7 @@ interface IProps {
 
 class Queues extends React.Component<IProps> {
 
-  componentWillMount = () => {
-    this.getQueues()
-  }
-
   createTableData = () => {
-    console.log('Creating table data')
     const { queuesReducer } = this.props;
 
     if(queuesReducer.queues.length == 0) {
@@ -36,7 +31,6 @@ class Queues extends React.Component<IProps> {
   }
 
   getQueues = () => {
-    console.log('Getting Queues');
     const { getQueuesFromServer } = this.props;
     getQueuesFromServer()
   }

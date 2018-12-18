@@ -15,15 +15,15 @@
       "type": "boolean",
       "required": true
     },
-    "tues": {
+    "tue": {
       "type": "boolean",
       "required": true
     },
-    "weds": {
+    "wed": {
       "type": "boolean",
       "required": true
     },
-    "thurs": {
+    "thu": {
       "type": "boolean",
       "required": true
     },

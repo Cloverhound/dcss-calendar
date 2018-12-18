@@ -4,7 +4,7 @@ var moment = require('moment')
 module.exports = function(RecurringTimeRange) {
 
   RecurringTimeRange.prototype.isNow = function() {
-    let days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat']
+    let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     let currentTime = moment().tz(process.env.TIME_ZONE)
     let currentDay = days[currentTime.format('d')]
     

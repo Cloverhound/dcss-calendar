@@ -1,72 +1,68 @@
 import { call, put } from 'redux-saga/effects'
-import { postSchedules, getSchedules, putSchedules, deleteSchedules } from './api-schedules'
+import { createSchedule, getSchedules, updateSchedule, deleteSchedule, getSchedule } from './api-schedules'
+import {scheduleLoading,
+        getSchedulesFromServerSucceeded,
+        getSchedulesFromServerFailed,
+        getScheduleFromServerSucceeded,
+        getScheduleFromServerFailed,
+        submitNewScheduleToServerSucceeded,
+        submitNewScheduleToServerFailed,
+        submitUpdateScheduleToServerSucceeded,
+        submitUpdateScheduleToServerFailed,
+        submitDeleteScheduleToServerSucceeded,
+        submitDeleteScheduleToServerFailed} from '../actions/index'
 
 export function* callGetSchedules() {
+  yield put(scheduleLoading())
+
   const result = yield call(getSchedules)
   if (result.error) {
-    yield put({type: "GET_SCHEDULES_FROM_SERVER_FAILED", payload: result.error})
+    yield put(getSchedulesFromServerFailed(result.error))
   } else {
-    yield put({type: "GET_SCHEDULES_FROM_SERVER_SUCCEEDED", payload: result})
+    yield put(getSchedulesFromServerSucceeded(result))
+  }
+}
+
+export function* callGetSchedule(action) {
+  yield put(scheduleLoading())
+
+  const result = yield call(getSchedule, action.payload)
+  if (result.error) {
+    yield put(getScheduleFromServerFailed(result.error))
+  } else {
+    yield put(getScheduleFromServerSucceeded(result))
   }
 }
 
 export function* callCreateSchedule(action) {
-  console.log("action", action)
-  const { timeRanges, name, history } = action.payload
-  let newTimeRange = {};
-  timeRanges.forEach(timeRange => {
-    let days = Object.keys(timeRange.week);
-    days.forEach(day => {
-      if (timeRange.week[day].checked) {
-        let dayOpen = day + "_open"
-        let dayClosed = day + "_closed"
-        newTimeRange = { ...newTimeRange, name, [dayOpen]: timeRange.open, [dayClosed]: timeRange.closed }
-      }
-    })
-  })
+  yield put(scheduleLoading())
 
-  const result = yield call(postSchedules, newTimeRange)
-
+  const result = yield call(createSchedule, action.payload)
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put(submitNewScheduleToServerFailed(result.error))
   } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield call([history, history.push], '/schedules')
-    yield put({ type: "RESET_TIME_RANGES" })
+    yield put(submitNewScheduleToServerSucceeded(result))
   }
 }
 
 export function* callUpdateSchedule(action) {
-  const { timeRanges, name, id } = action.payload
-  let newTimeRange = {};
-  timeRanges.forEach(timeRange => {
-    let days = Object.keys(timeRange.week);
-    days.forEach(day => {
-      if (timeRange.week[day].checked) {
-        let dayOpen = day + "_open"
-        let dayClosed = day + "_closed"
-        newTimeRange = { ...newTimeRange, name, id: timeRanges[0].id_db, [dayOpen]: timeRange.open, [dayClosed]: timeRange.closed }
-      }
-    })
-  })
+  yield put(scheduleLoading())
 
-  const result = yield call(putSchedules, newTimeRange)
-
+  const result = yield call(updateSchedule, action.payload)
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put(submitUpdateScheduleToServerFailed(result.error))
   } else {
-    console.log("REQUEST_SUCCESSFUL")
-    yield call(callGetSchedules)
-    // yield put({type: "REQUEST_GET_SCHEDULES_DONE", payload: result})
+    yield put(submitUpdateScheduleToServerSucceeded(result))
   }
 }
 
 export function* callDeleteSchedule(action) {
-  const result = yield call(deleteSchedules, action.payload)
+  yield put(scheduleLoading())
+  
+  const result = yield call(updateSchedule, action.payload)
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put(submitDeleteScheduleToServerFailed(result.error))
   } else {
-    yield call(callGetSchedules)
-    console.log("REQUEST_SUCCESSFUL")
+    yield put(submitDeleteScheduleToServerSucceeded(result))
   }
 }

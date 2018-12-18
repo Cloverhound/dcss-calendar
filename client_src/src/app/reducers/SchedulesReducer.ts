@@ -21,8 +21,7 @@ const schedulesReducer = (state: any = initialState, action) => {
 function handleGetSchedulesFromServerSucceeded(state, payload) {
   console.log('Handling get schedules from server succeeded', payload)
   
-
-  // return { ...state, schedules }
+  return { ...state, schedules: payload }
 }
 
 function handleGetSchedulesFromServerFailed(state, payload) {
@@ -41,7 +40,8 @@ function handleSubmitDeleteScheduleToServerFailed(state, payload) {
 }
 
 function handleCloseMessage(state) {
-
+  let message = {type: "", content: ""} 
+  return {...state, message}
 }
 
 export default schedulesReducer

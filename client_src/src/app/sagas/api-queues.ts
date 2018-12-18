@@ -10,7 +10,7 @@ export async function createQueue(payload) {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 
@@ -49,8 +49,9 @@ export async function getQueue(id) {
 }
 
 export async function getQueues() {
+  console.log('Getting queues')
   try {
-    let response = await fetch('/api/Queues', {
+    let response = await fetch('/api/Queues?filter=%7B%22include%22%3A%5B%22schedule%22%2C%22holidayList%22%5D%7D', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -61,7 +62,7 @@ export async function getQueues() {
     
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 

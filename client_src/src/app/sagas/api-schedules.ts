@@ -1,7 +1,7 @@
 // Schedules
-export async function postSchedules(payload) {
+export async function createSchedule(payload) {
   try {
-    let response = await fetch('/api/Schedules', {
+    let response = await fetch('/api/Schedules/createWithTimeRanges', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -11,7 +11,7 @@ export async function postSchedules(payload) {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 
@@ -26,13 +26,30 @@ export async function getSchedules() {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 
-export async function putSchedules(payload) {
+export async function getSchedule(payload) {
+  console.log('Getting schedule -- ', payload.id)
   try {
-    let response = await fetch(`/api/Schedules/${payload.id}`, {
+    let response = await fetch('/api/schedules/' + payload.id + '?filter=%7B%22include%22%3A%5B%22recurringTimeRanges%22%2C%20%22singleDateTimeRanges%22%5D%7D', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
+
+export async function updateSchedule(payload) {
+  try {
+    let response = await fetch(`/api/Schedules/${payload.id}/updateWithTimeRanges`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -42,13 +59,13 @@ export async function putSchedules(payload) {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 
-export async function deleteSchedules(payload) {
+export async function deleteSchedule(payload) {
   try {
-    let response = await fetch(`/api/Schedules/${payload}`, {
+    let response = await fetch(`/api/Schedules/${payload}/deleteWithTimeRanges`, {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
@@ -57,7 +74,7 @@ export async function deleteSchedules(payload) {
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
-    console.log(error)
+    return {error}
   }
 }
 

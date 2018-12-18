@@ -44,48 +44,56 @@ const styles = theme => createStyles({
 
 interface IProps {
   toggleRecurringDay: any,
-  timeRange: any,
   deleteRecurringTimeRange: any,
   changeStartTimeOfRecurringTimeRange: any,
-  changeEndTimeOfRecurringTimeRange: any
+  changeEndTimeOfRecurringTimeRange: any,
+  start: string,
+  end: string,
+  mon_checked: boolean,
+  tue_checked: boolean,
+  wed_checked: boolean,
+  thu_checked: boolean,
+  fri_checked: boolean,
+  sat_checked: boolean,
+  sun_checked: boolean,
+  index: number
+
 }
 
 class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleStartTimeChange = (event) => {
-    const { changeStartTimeOfRecurringTimeRange, timeRange } = this.props
-    changeStartTimeOfRecurringTimeRange({timeRange, value: event.target.value })
+    const { changeStartTimeOfRecurringTimeRange, index } = this.props
+    changeStartTimeOfRecurringTimeRange({index, value: event.target.value })
   }
 
   handleEndTimeChange = (event) => {
-    const { changeEndTimeOfRecurringTimeRange, timeRange } = this.props
-    changeEndTimeOfRecurringTimeRange({timeRange, value: event.target.value })
+    const { changeEndTimeOfRecurringTimeRange, index } = this.props
+    changeEndTimeOfRecurringTimeRange({index, value: event.target.value })
   }
 
-  handleCheckChange = (day) => event => {
-    const { toggleRecurringDay, timeRange } = this.props
-    toggleRecurringDay({ timeRange, day, event: event.target.checked });
+  handleCheckChange = (event) =>  {
+    const { toggleRecurringDay, index } = this.props
+    toggleRecurringDay({ index, day: event.target.value})
   };
 
   handleDelete = (event) => {
-    const { deleteRecurringTimeRange, timeRange } = this.props;
+    const { deleteRecurringTimeRange, index } = this.props
     event.preventDefault()
-    deleteRecurringTimeRange({ timeRange })
+    deleteRecurringTimeRange({ index })
   }
 
   render() {
-    const { classes, timeRange } = this.props
-    const { week } = timeRange
+    const { classes } = this.props
+    let days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-    let keys = Object.keys(timeRange)
-
-    let checkBox = keys.map(day => {
+    let checkBoxes = days.map(day => {
       return <FormControlLabel
         control={
           <Checkbox
-            checked={week[day].checked}
-            onChange={this.handleCheckChange(day)}
-            value={week[day]}
+            checked={this.props[day + '_checked']}
+            onChange={this.handleCheckChange}
+            value={day}
           />
         }
         label={day[0].toUpperCase() + day.slice(1)}
@@ -96,7 +104,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
         <Paper >
           <FormGroup row
             className={classes.formGroup}>
-            {checkBox}
+            {checkBoxes}
           </FormGroup>
           <div className={classes.timeContainer}>
             <TextField
@@ -108,7 +116,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
                 shrink: true,
               }}
               name="start"
-              value={timeRange.start}
+              value={this.props.start}
               onChange={this.handleStartTimeChange}
             />
             <TextField
@@ -120,7 +128,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
                 shrink: true,
               }}
               name="end"
-              value={timeRange.end}
+              value={this.props.end}
               onChange={this.handleEndTimeChange}
             />
           </div>
@@ -147,4 +155,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 
-export default connect(mapDispatchToProps)(withStyles(styles)(RecurringTimeRange));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(RecurringTimeRange));

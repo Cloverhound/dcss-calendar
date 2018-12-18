@@ -6,7 +6,11 @@ import { getQueueFromServerSucceeded,
          submitUpdateQueueToServerSucceeded,
          submitNewQueueToServerSucceeded, 
          submitNewQueueToServerFailed,
-         submitUpdateQueueToServerFailed} from '../actions/index'
+         submitUpdateQueueToServerFailed,
+         getQueuesFromServerSucceeded,
+         getQueuesFromServerFailed,
+         submitDeleteQueueToServerSucceeded,
+         submitDeleteQueueToServerFailed} from '../actions/index'
 
 
 export function* callGetQueue(action) {
@@ -35,7 +39,6 @@ export function* callUpdateQueue(action) {
 }
 
 export function* callCreateQueue(action) {
-  console.log("action", action)
   const { scheduleId, queueName, holidayListId, history } = action.payload
 
   const result = yield call(createQueue, { name: queueName, scheduleId, holidayListId })
@@ -51,23 +54,18 @@ export function* callGetQueues() {
   const result = yield call(getQueues);
   
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put(getQueuesFromServerFailed(result.error))
   } else {
-    yield put({type: "GET_QUEUES_FROM_SERVER_DONE", payload: result})
+    yield put(getQueuesFromServerSucceeded(result))
   }
 }
 
 export function* callDeleteQueue(action) {
-  console.log(" DELETE queue action.payload", action.payload.id)
   const result = yield call(deleteQueue, action.payload.id);
   
   if (result.error) {
-    console.log("REQUEST_FAILED", result.error)
+    yield put(submitDeleteQueueToServerFailed(result.error))
   } else {
-    yield call(callGetQueues);
+    yield put(submitDeleteQueueToServerSucceeded(result))
   }
 }
-
-// function forwardTo(location) {
-//   history.push(location);
-//  }

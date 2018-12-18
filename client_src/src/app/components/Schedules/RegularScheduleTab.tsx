@@ -6,9 +6,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import RecurringTimeRange from './RecurringTimeRange';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 
 import { connect } from 'react-redux';
-import { addRecurringTimeRange, submitUpdateScheduleToServer, changeScheduleName } from '../../actions'
+import { addRecurringTimeRange, submitUpdateScheduleToServer, changeScheduleName, getScheduleFromServer, handleCloseMessage } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -39,6 +41,9 @@ const styles = theme => createStyles({
   submitCancelContainer: {
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
@@ -47,7 +52,9 @@ interface IProps {
   addRecurringTimeRange: any,
   requestScheduleEdit: any,
   changeScheduleName: any,
-  match: any
+  getScheduleFromServer: any,
+  match: any,
+  handleCloseMessage: any
 }
 
 
@@ -68,19 +75,49 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
     requestScheduleEdit(scheduleReducer)
   }
 
+  componentWillMount () {
+    const { id } = this.props.match.params
+    const { getScheduleFromServer } = this.props;
+    getScheduleFromServer({id})
+  }
+
+  handleCloseMessage = () => {
+    const { handleCloseMessage } = this.props
+    handleCloseMessage()
+  }
+
   render() {
     const { classes, scheduleReducer } = this.props;
-    let timeRanges = scheduleReducer.recurringTimeRanges
+    const {recurringTimeRanges, loading, message } = scheduleReducer
+    
     let timeRangesComponent = []
     
-    if( timeRanges && timeRanges.length > 0) {
-      timeRangesComponent = timeRanges.map((timeRange) => {
-        return <RecurringTimeRange timeRange={timeRange}/>
+    if( recurringTimeRanges && recurringTimeRanges.length > 0) {
+      timeRangesComponent = recurringTimeRanges.map((timeRange) => {
+        return <RecurringTimeRange 
+          index={timeRange.index}
+          start={timeRange.start}
+          end={timeRange.start}
+          mon_checked={timeRange.week.mon.checked}
+          tue_checked={timeRange.week.tues.checked}
+          wed_checked={timeRange.week.weds.checked}
+          thu_checked={timeRange.week.thurs.checked}
+          fri_checked={timeRange.week.fri.checked}
+          say_checked={timeRange.week.sat.checked}
+          sun_checked={timeRange.week.sun.checked}
+        />
       })
     }
 
     return (
         <form style={{width: "50%", margin: "auto"}}>
+
+            <CalendarSnackbar
+                  handleClose = {this.handleCloseMessage}
+                  hideDuration = {6000}
+                  message = {message} 
+                />
+
             <FormControl className={classes.formControl}>
             <Input
                 value={this.props.scheduleReducer.name}
@@ -95,16 +132,17 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
               {timeRangesComponent}
             </div>
 
-            <div className={classes.submitCancelContainer} style={{width: "70%", display: "inline-block"}}>
+            <div className={classes.submitCancelContainer} style={{width: "100%", display: "inline-block"}}>
             <div className={classes.addIconContainer}>
                 <Button style={{float: "right"}} onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
                 </Button>
             </div>
-                <div>
-                <div style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "40%"}}>
+            <div>
+                {loading ? <CircularProgress className={classes.progress} /> : null}
+                <div style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "100%"}}>
                     <Link to="/schedules">
-                    <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{width: "90px"}}>
+                    <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{width: "90px"}} disabled={loading}>
                         Save
                     </Button>
                     </Link>
@@ -114,7 +152,7 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
                     </Button>
                     </Link>
                 </div>
-                </div>
+            </div>
             </div>
         </form>     
     )
@@ -131,7 +169,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addRecurringTimeRange: () => (dispatch(addRecurringTimeRange())),
   submitUpdateScheduleToserver: (obj) => (dispatch(submitUpdateScheduleToServer(obj))),
-  changeScheduleName: (obj) => (dispatch(changeScheduleName(obj)))
+  changeScheduleName: (obj) => (dispatch(changeScheduleName(obj))),
+  getScheduleFromServer: (obj) => (dispatch(getScheduleFromServer(obj))),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 
