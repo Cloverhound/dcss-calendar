@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
-import { submitUploadPromptToServer, updateTargetFile } from '../../actions'
+import { submitUploadPromptToServer, updateTargetFile, submitDeletePromptToServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -31,16 +31,18 @@ const styles = theme => createStyles({
 
 interface IProps {
   submitUploadPromptToServer: any,
+  submitDeletePromptToServer: any,
   updateTargetFile: any,
   promptsReducer: any,
   language: any,
   type: any,
   queueId: any,
   id: any,
-  promptObj: any
+  promptObj: any,
+  name: any
 }
 
-class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
+class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
 
   handleInputChange = (e) => {
     const { updateTargetFile } = this.props
@@ -48,25 +50,31 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitUpload = (e) => {
-    const { queueId, promptObj } = this.props
+    const { queueId, language, type } = this.props
     const { promptsReducer, submitUploadPromptToServer } = this.props;
     e.preventDefault()
     const formData = new FormData();
 
     formData.append('file', promptsReducer.targetFile);
     formData.append('queueId', queueId);
-    formData.append('language', promptObj.language);
-    formData.append('type', promptObj.type);
+    formData.append('language', language);
+    formData.append('type', type);
     formData.append('enabled', "false");
     submitUploadPromptToServer(formData) 
   }
 
+  handleDelete(e) {
+    e.preventDefault()
+    const { submitDeletePromptToServer, id } = this.props
+    submitDeletePromptToServer({id})
+  }
+
   render() {
-    const { promptObj, classes } = this.props;
+    const { classes, id, language, name } = this.props;
     let inputShow;
-    if(!promptObj.id) {
+    if(!id) {
       inputShow = <div className={classes.optionalContainer}>
-                    <Typography className={classes.title} variant="body1">{promptObj.language}</Typography>
+                    <Typography className={classes.title} variant="body1">{language}</Typography>
                     <input
                       ref={'optional-message-span'}
                       type='file'
@@ -83,8 +91,8 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
                   </div>
     } else {
       inputShow = <div className={classes.optionalContainer}>
-                    <Typography className={classes.title} variant="body1">{promptObj.language}</Typography>
-                    <Typography className={classes.title} variant="body1">{promptObj.name}</Typography>
+                    <Typography className={classes.title} variant="body1">{language}</Typography>
+                    <Typography className={classes.title} variant="body1">{name}</Typography>
                     <Button
                       className={classes.button}
                       type='file'
@@ -96,6 +104,7 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps> {
                       className={classes.button}
                       type='file'
                       variant='outlined'
+                      onClick={(e) => this.handleDelete(e)}
                     >
                       Delete
                     </Button>
@@ -118,7 +127,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj))),
-  updateTargetFile: (obj) => (dispatch(updateTargetFile(obj)))
+  updateTargetFile: (obj) => (dispatch(updateTargetFile(obj))),
+  submitDeletePromptToServer: (obj) => (dispatch(submitDeletePromptToServer(obj)))
 })
 
 

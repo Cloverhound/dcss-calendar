@@ -43,7 +43,8 @@ function deletePrompt(Prompt) {
           if (err) {
             res = err;
           } else {
-           res = await s3Delete(instance.name)
+            console.log("s3 key",instance.s3_key)
+           res = await s3Delete(instance.s3_key)
           }
         })
       } else {
@@ -77,12 +78,13 @@ async function s3Delete(fileName) {
 function s3Upload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
   Prompt.upload = function (promptFile, cb) {
-    let fileName = promptFile.files[0].originalname
-    let buffer = promptFile.files[0].buffer
+    let fileName = promptFile.files[0].originalname;
+    let buffer = promptFile.files[0].buffer;
+    let s3_key = Date.now() + "_" + fileName;
     let response;
     let params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: fileName,
+      Key: s3_key,
       Body: buffer
     };
 
@@ -92,7 +94,7 @@ function s3Upload(Prompt) {
         response = err
       }
       if (data) {
-        let newPrompt = await createPrompt(Prompt, data.Location, fileName, promptFile.body)
+        let newPrompt = await createPrompt(Prompt, data.Location, fileName, promptFile.body, s3_key)
         response = newPrompt
       }
       cb(null, response)
@@ -100,14 +102,15 @@ function s3Upload(Prompt) {
   }
 }
 
-async function createPrompt(Prompt, url, fileName, body) {
+async function createPrompt(Prompt, url, fileName, body, s3_key) {
   const { queueId, language, type, enabled} = body
   let isTrue = (enabled == "true")
   let newPrompt = await new Promise(function (resolve, reject) {
     Prompt.create({
       name: fileName,
-      language: language,
-      type: type,
+      language,
+      type,
+      s3_key,
       enabled: isTrue,
       url,
       queueId: queueId

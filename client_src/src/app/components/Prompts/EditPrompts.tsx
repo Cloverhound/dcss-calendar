@@ -128,15 +128,15 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
-                <Prompt queueId={queueId} promptObj={office_directions_eng}/>
-                <Prompt queueId={queueId} promptObj={office_directions_span}/>
+                <Prompt queueId={queueId} id={office_directions_eng.id} language={office_directions_eng.language} type={office_directions_eng.type} name={office_directions_eng.name}/>
+                {/* <Prompt queueId={queueId} promptObj={office_directions_span}/> */}
               </Paper>
             </div>
             <div className={classes.uploadSection}>
             <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
               <Paper className={classes.optionalWrapper}>
-                <Prompt queueId={queueId} promptObj={optional_announcements_eng}/>
-                <Prompt queueId={queueId} promptObj={optional_announcements_span}/>
+                {/* <Prompt queueId={queueId} promptObj={optional_announcements_eng}/> */}
+                {/* <Prompt queueId={queueId} promptObj={optional_announcements_span}/> */}
               </Paper>
             </div>
             <div className={classes.submitCancelContainer}>
