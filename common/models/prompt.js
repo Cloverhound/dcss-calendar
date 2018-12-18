@@ -43,7 +43,6 @@ function deletePrompt(Prompt) {
           if (err) {
             res = err;
           } else {
-            console.log("s3 key",instance.s3_key)
            res = await s3Delete(instance.s3_key)
           }
         })

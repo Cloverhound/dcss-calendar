@@ -15,7 +15,7 @@ export function* callGetPrompt(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    console.log("prompt result", result)
+    console.log("callGetPrompt result", result)
   }
 }
 
@@ -34,8 +34,11 @@ export function* callCreatePrompt(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
+    console.log("result.res.queueId", result.res.queueId);
+    
     yield call(callGetPrompts)
-    console.log("prompt result", result)
+    yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
+    console.log("callCreatePrompt result", result)
   }
 }
 
@@ -44,7 +47,7 @@ export function* callDeletePrompt(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    // yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
     console.log("callDeletePrompt result", result)
   }
 }
