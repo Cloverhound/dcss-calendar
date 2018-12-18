@@ -39,7 +39,8 @@ interface IProps {
   queueId: any,
   id: any,
   promptObj: any,
-  name: any
+  name: any,
+  url: any
 }
 
 class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
@@ -70,7 +71,7 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, id, language, name } = this.props;
+    const { classes, id, language, name, url } = this.props;
     let inputShow;
     if(!id) {
       inputShow = <div className={classes.optionalContainer}>
@@ -92,14 +93,15 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     } else {
       inputShow = <div className={classes.optionalContainer}>
                     <Typography className={classes.title} variant="body1">{language}</Typography>
-                    <Typography className={classes.title} variant="body1">{name}</Typography>
-                    <Button
-                      className={classes.button}
-                      type='file'
-                      variant='outlined'
-                    >
-                      Preview
-                    </Button>
+                    <figure>
+                      <figcaption>{name}</figcaption>
+                      <audio
+                          controls
+                          src={url}>
+                              Your browser does not support the
+                              <code>audio</code> element.
+                      </audio>
+                    </figure>
                     <Button
                       className={classes.button}
                       type='file'
