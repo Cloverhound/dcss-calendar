@@ -46,3 +46,16 @@ export async function createPrompt(payload) {
     console.log(error)
   }
 }
+
+export async function deletePrompt(payload) {
+  try {
+    let response = await fetch(`/api/Prompts/${payload.id}/deleteFile`, {
+      method: 'DELETE',
+      body: payload
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
