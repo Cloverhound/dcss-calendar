@@ -30,6 +30,7 @@ class CalendarTableHead extends React.Component<IPropsTableHead>{
             return (
               <TableCell
                 key={columnName}
+                sortDirection={orderBy === columnName ? order : false}
               >
                 <Tooltip
                   title="Sort"

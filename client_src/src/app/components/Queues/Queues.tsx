@@ -54,7 +54,7 @@ class Queues extends React.Component<IProps> {
           data={data} 
           basePath={"queues"} 
           populateTable={this.getQueues} 
-          orderBy={"name"} 
+          orderBy={"Name"} 
           columnNames={columnNames}
           title={"Queues"}
           addButtonText={"Add Queue"}

@@ -257,7 +257,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableBody>
           </Table>
         </div>
-        <TablePagination
+        {/* <TablePagination
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -270,7 +270,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
     );
   }
