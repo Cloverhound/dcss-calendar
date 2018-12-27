@@ -47,7 +47,7 @@ class Queues extends React.Component<IProps> {
   render() {
     let data = this.createTableData();
 
-    let columnNames = ['Status', 'Name', 'Schedule Name', 'Holiday Name', 'Prompt Status'];
+    let columnNames = ['Status', 'Name', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
     return (
       <div>
         <CalendarTable 

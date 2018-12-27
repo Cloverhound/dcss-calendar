@@ -181,6 +181,24 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
+  deleteTableCell = (id) => {
+    const { classes, handleDelete } = this.props;
+    return <TableCell>
+        <div className={classes.addButton}>
+          <Tooltip title="Edit">
+            <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+    </TableCell>
+  }
+
   render() {
     const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
@@ -218,27 +236,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       tableCell = this.statusColor(row["Status"])
                     } else if (columnName === 'Prompt Status') {
                       tableCell = this.promptStatus(row.id)
+                    } else if (columnName === '') {
+                      tableCell = this.deleteTableCell(row.id)
                     }
                     tableCells.push(tableCell)
                   }
-
-                  let deleteTableCell = (
-                      <TableCell>
-                          <div className={classes.addButton}>
-                            <Tooltip title="Edit">
-                              <IconButton onClick={() => this.handleEdit(row.id)} aria-label="Edit">
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete">
-                              <IconButton onClick={event => handleDelete(row.id)} aria-label={"Delete"}>
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                      </TableCell>
-                  )
-                  tableCells.push(deleteTableCell)
 
                   return (
                         <TableRow 
@@ -257,7 +259,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableBody>
           </Table>
         </div>
-        {/* <TablePagination
+        <TablePagination
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -270,7 +272,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        /> */}
+        />
       </Paper>
     );
   }

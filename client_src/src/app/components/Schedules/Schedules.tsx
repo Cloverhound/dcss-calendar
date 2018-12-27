@@ -21,7 +21,7 @@ class Schedules extends React.Component<IProps> {
     console.log('Creating table data')
     const {schedules} = this.props;
     return schedules.map((schedule, index) => {
-      return {id: schedule.id, name: schedule.name}
+      return {id: schedule.id, Name: schedule.name}
     })
   }
 
@@ -38,13 +38,13 @@ class Schedules extends React.Component<IProps> {
 
   render() {
     let data = this.createTableData()
-    let columnNames = ['name', 'active']
+    let columnNames = ['Name', 'Active']
     return (
       <CalendarTable 
           data={data} 
           basePath={"schedules"} 
           populateTable={this.getSchedules} 
-          orderBy={"name"} 
+          orderBy={"Name"} 
           columnNames={columnNames}
           title={"Schedules"}
           addButtonText={"Add Schedule"}
