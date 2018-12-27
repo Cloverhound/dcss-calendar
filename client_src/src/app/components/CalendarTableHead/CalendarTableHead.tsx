@@ -21,8 +21,6 @@ class CalendarTableHead extends React.Component<IPropsTableHead>{
 
   render() {
     const { order, orderBy, columnNames} = this.props;
-
-    columnNames.push('') // For the delete column
     return (
       <TableHead>
         <TableRow>
@@ -30,6 +28,8 @@ class CalendarTableHead extends React.Component<IPropsTableHead>{
             return (
               <TableCell
                 key={columnName}
+                padding={'default'}
+                sortDirection={orderBy === columnName ? order : false}
               >
                 <Tooltip
                   title="Sort"
