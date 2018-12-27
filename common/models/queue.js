@@ -70,7 +70,6 @@ function allQueues(cb) {
       })
       res.push({...scheduleQueueObj, ...holidayList})
     }
-    console.log(res)
     cb(null, res);
   });
 }
