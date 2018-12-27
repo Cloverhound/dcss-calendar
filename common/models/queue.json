@@ -20,10 +20,12 @@
       "default": false
     },
     "scheduleId": {
-      "type": "number"
+      "type": "number",
+      "required": true
     },
     "holidayListId": {
-      "type": "number"
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],
