@@ -60,14 +60,9 @@ var getStatus = async function(queue) {
     if(singleDateTimeRanges[i].isNow()) {
       return 'open'
     }
-<<<<<<< HEAD
-    cb(null, res);
-  });
-=======
-  }
 
+  }
   return 'closed'
->>>>>>> 965ab442734b266704f4ef7e18fb36b6085784cd
 }
 
 
