@@ -112,12 +112,20 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}>
-            <Typography className={classes.title} variant="title">New Queue</Typography>
+            <Typography className={classes.title} variant="title">New County</Typography>
              <TextField
               label="Name"
               name="queueName"
               className={classes.textField}
               value={queueReducer.queueName}
+              onChange={this.handleChangeQueue}
+              margin="normal"
+            />
+            <TextField
+              label="County Code"
+              name="county_code"
+              className={classes.textField}
+              value={queueReducer.county_code}
               onChange={this.handleChangeQueue}
               margin="normal"
             />

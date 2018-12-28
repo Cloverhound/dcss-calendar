@@ -86,9 +86,10 @@ const getQueueFromServerSucceeded = (state, payload) => {
   let queueName = payload.name
   let scheduleId = payload.scheduleId
   let holidayListId = payload.holidayListId
+  let county_code = payload.county_code
   let loading = false
-
-  return {...state, id, queueName, scheduleId, holidayListId, loading}
+  console.log("county_code", county_code)
+  return {...state, id, queueName, county_code, scheduleId, holidayListId, loading}
 }
 
 const getQueueFromServerFailed = (state, payload) => {

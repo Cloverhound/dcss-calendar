@@ -22,7 +22,8 @@ class Queues extends React.Component<IProps> {
       return { 
         'id': queue.id,
         'Status': queue.status,
-        'Name': queue.name, 
+        'Name': queue.name,
+        'County Code': queue.county_code,
         'Schedule Name': queue.schedule.name,
         'Holiday Name': queue.holidayList.name,
         'Prompt Status': null
@@ -44,7 +45,7 @@ class Queues extends React.Component<IProps> {
   render() {
     let data = this.createTableData();
 
-    let columnNames = ['Status', 'Name', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
     return (
       <div>
         <CalendarTable 
@@ -53,7 +54,7 @@ class Queues extends React.Component<IProps> {
           populateTable={this.getQueues} 
           orderBy={"Name"} 
           columnNames={columnNames}
-          title={"Queues"}
+          title={"Counties"}
           addButtonText={"Add Queue"}
           handleDelete={this.handleDeleteQueue}
         />

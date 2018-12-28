@@ -115,7 +115,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             button
             selected={this.state.selectedIndex === 0}
             onClick={event => this.handleListItemClick(event, 0)}>
-            <ListItemText primary="Queues" />
+            <ListItemText primary="Counties" />
           </ListItem>
         </NavLink>
         <NavLink className={classes.navLink} to="/schedules">
@@ -153,7 +153,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
                 <MenuIcon />
               </IconButton>
               <Typography variant="title" color="inherit" noWrap>
-                Queue Settings
+                County Settings
               </Typography>
             </Toolbar>
           </AppBar>

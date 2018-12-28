@@ -28,8 +28,8 @@ export function* callGetQueue(action) {
 export function* callUpdateQueue(action) {
   yield put(queueLoading())
 
-  const { id, scheduleId, queueName, holidayListId } = action.payload
-  const result = yield call(updateQueue, { id: id, data: { name: queueName, scheduleId, holidayListId } })
+  const { id, scheduleId, queueName, county_code, holidayListId } = action.payload
+  const result = yield call(updateQueue, { id: id, data: { name: queueName, county_code, scheduleId, holidayListId } })
 
   if (result.error) {
     yield put(submitUpdateQueueToServerFailed(result.error))
@@ -39,9 +39,9 @@ export function* callUpdateQueue(action) {
 }
 
 export function* callCreateQueue(action) {
-  const { scheduleId, queueName, holidayListId, history } = action.payload
+  const { scheduleId, queueName, county_code, holidayListId, history } = action.payload
 
-  const result = yield call(createQueue, { name: queueName, scheduleId, holidayListId })
+  const result = yield call(createQueue, { name: queueName, county_code, scheduleId, holidayListId })
 
   if (result.error) {
     yield put(submitNewQueueToServerFailed(result.error))
