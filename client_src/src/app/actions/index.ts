@@ -31,8 +31,8 @@ export const submitDeleteScheduleToServerSucceeded   = obj => ({ type: "SUBMIT_D
 export const submitDeleteScheduleToServerFailed      = obj => ({ type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER_FAILED", payload: obj })
 
 export const changeScheduleName                      = obj => ({ type: "CHANGE_SCHEDULE_NAME", payload: obj });
-export const changeStartTimeOfRecurringTimeRange     = obj => ({ type: "CHANGE_START_TIME_OF_RECURRING_TIME_RANGE", payload: obj })
-export const changeEndTimeOfRecurringTimeRange       = obj => ({ type: "CHANGE_END_TIME_OF_RECURRING_TIME_RANGE", payload: obj })
+export const changeStartOfRecurringTimeRange         = obj => ({ type: "CHANGE_START_OF_RECURRING_TIME_RANGE", payload: obj })
+export const changeEndOfRecurringTimeRange           = obj => ({ type: "CHANGE_END_OF_RECURRING_TIME_RANGE", payload: obj })
 export const resetSchedule                           = ()  => ({ type: "RESET_SCHEDULE" })
 
 

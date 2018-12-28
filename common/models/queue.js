@@ -14,56 +14,55 @@ module.exports = function (Queue) {
   })
 
 
-  Queue.status = (id, cb) => {
-    Queue.findById(id, function(findErr, queue) {
-      if(findErr) {
-        console.log('Failed to find queue', findErr)
-        cb(findErr)
-        return
-      }
-
-      let status = getStatus(queue)
-      cb(status)
-    })
+  Queue.status = (id) => {
+    return Queue.findById(id)
+      .then(async function(queue) {
+          try {
+            let status = await getStatus(queue)
+            return Promise.resolve(status)
+          } catch(e) {
+            console.log('Failed to get status', e)
+            return Promise.resolve(e)
+          }
+      }).catch(function(err) {
+          console.log('Failed to find queue to get status', err)
+          return Promise.resolve(err)
+      })
   }
-};
+}
 
 
-var getStatus = function(queue) {
-  console.log("Getting status of queue")
 
-  let recurringTimeRanges = queue.schedule.recurringTimeRanges
-  let singleDateTimeRanges = queue.schedule.singleDateTimeRanges
-  let holidays = queue.holidayList.holidays
+var getStatus = async function(queue) {
+  console.log("Getting status of queue", queue)
 
-  let response = {
-    recurringTimeRange: false,
-    singleDateTimeRange: false,
-    holiday: false
-  }
+  let schedule = await queue.schedule.get()
+  
+  let holidayList = await queue.holidayList.get()
+  let holidays = await holidayList.holidays.find()
 
-  for(var i = 0; i < holidays; i++) {
+  for(var i = 0; i < holidays.length; i++) {
     if(holidays[i].isToday()) {
-      response.holiday = true
-      break
+      return 'holiday'
     }
   }
 
-  for(var i = 0; i < recurringTimeRanges; i++) {
+  let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+  let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
+
+  for(var i = 0; i < recurringTimeRanges.length; i++) {
     if(recurringTimeRanges[i].isNow()) {
-      response.recurringTimeRange = true
-      break
+      return 'open'
     }
   }
 
-  for(var i = 0; i < singleDateTimeRanges; i++) {
+  for(var i = 0; i < singleDateTimeRanges.length; i++) {
     if(singleDateTimeRanges[i].isNow()) {
-      response.singleDateTimeRange = true
-      break
+      return 'open'
     }
   }
 
-  return response
+  return 'closed'
 }
 
 

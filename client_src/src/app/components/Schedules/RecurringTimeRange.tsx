@@ -1,3 +1,4 @@
+require('rc-time-picker/assets/index.css');
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -5,14 +6,16 @@ import Paper from '@material-ui/core/Paper';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import TimePicker from 'rc-time-picker';
 import { connect } from 'react-redux';
-import { toggleRecurringDay, deleteRecurringTimeRange, changeStartTimeOfRecurringTimeRange, changeEndTimeOfRecurringTimeRange } from '../../actions/index';
+import { toggleRecurringDay, deleteRecurringTimeRange, changeStartOfRecurringTimeRange, changeEndOfRecurringTimeRange } from '../../actions/index';
 
+var moment = require('moment-timezone');
+
+const format = 'h:mm a';
 
 const styles = theme => createStyles({
   root: {
@@ -45,8 +48,8 @@ const styles = theme => createStyles({
 interface IProps {
   toggleRecurringDay: any,
   deleteRecurringTimeRange: any,
-  changeStartTimeOfRecurringTimeRange: any,
-  changeEndTimeOfRecurringTimeRange: any,
+  changeStartOfRecurringTimeRange: any,
+  changeEndOfRecurringTimeRange: any,
   start: string,
   end: string,
   mon_checked: boolean,
@@ -62,14 +65,14 @@ interface IProps {
 
 class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IProps> {
 
-  handleStartTimeChange = (event) => {
-    const { changeStartTimeOfRecurringTimeRange, index } = this.props
-    changeStartTimeOfRecurringTimeRange({index, value: event.target.value })
+  handleStartTimeChange = (value) => {
+    const { changeStartOfRecurringTimeRange, index } = this.props
+    changeStartOfRecurringTimeRange({index, value: value.format(format) })
   }
 
-  handleEndTimeChange = (event) => {
-    const { changeEndTimeOfRecurringTimeRange, index } = this.props
-    changeEndTimeOfRecurringTimeRange({index, value: event.target.value })
+  handleEndTimeChange = (value) => {
+    const { changeEndOfRecurringTimeRange, index } = this.props
+    changeEndOfRecurringTimeRange({index, value: value.format(format) })
   }
 
   handleCheckChange = (event) =>  {
@@ -99,6 +102,17 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
         label={day[0].toUpperCase() + day.slice(1)}
       />
     })
+
+    let startValue = moment(this.props.start, format)
+    if(!startValue.isValid()) {
+      startValue = null
+    }
+
+    let endValue = moment(this.props.end, format)
+    if(!endValue.isValid()) {
+      endValue = null
+    }
+
     return (
       <div className={classes.root}>
         <Paper >
@@ -107,29 +121,21 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
             {checkBoxes}
           </FormGroup>
           <div className={classes.timeContainer}>
-            <TextField
-              id="time"
-              label="Start"
-              type="time"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              name="start"
-              value={this.props.start}
+            <TimePicker
+              showSecond={false}
               onChange={this.handleStartTimeChange}
+              format={format}
+              use12Hours
+              placeholder={"Start Time"}
+              value={startValue}
             />
-            <TextField
-              id="time"
-              label="End"
-              type="time"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              name="end"
-              value={this.props.end}
+            <TimePicker
+              showSecond={false}
               onChange={this.handleEndTimeChange}
+              format={format}
+              use12Hours
+              placeholder={"End Time"}
+              value={endValue}
             />
           </div>
 
@@ -150,8 +156,8 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
 const mapDispatchToProps = (dispatch, ownProps) => ({
   toggleRecurringDay: (obj) => dispatch(toggleRecurringDay(obj)),
   deleteRecurringTimeRange: (obj) => dispatch(deleteRecurringTimeRange(obj)),
-  changeStartTimeOfRecurringTimeRange: (obj) => dispatch(changeStartTimeOfRecurringTimeRange(obj)),
-  changeEndTimeOfRecurringTimeRange: (obj) => dispatch(changeEndTimeOfRecurringTimeRange(obj))
+  changeStartOfRecurringTimeRange: (obj) => dispatch(changeStartOfRecurringTimeRange(obj)),
+  changeEndOfRecurringTimeRange: (obj) => dispatch(changeEndOfRecurringTimeRange(obj))
 })
 
 

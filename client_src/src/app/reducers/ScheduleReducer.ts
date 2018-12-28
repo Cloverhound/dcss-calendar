@@ -2,15 +2,13 @@ var emptyRecurringTimeRange = {
     index: 0,
     start: "",
     end: "",
-    week: {
-        mon: {checked: false},
-        tue: {checked: false},
-        wed: {checked: false},
-        thu: {checked: false},
-        fri: {checked: false},
-        sat: {checked: false},
-        sun: {checked: false}
-    }
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+    sun: false
 }
 
 var emptySingleDateTimeRange = {
@@ -42,7 +40,7 @@ const ScheduleReducer = (state: any = initialState, action) => {
         case 'ADD_RECURRING_TIME_RANGE':
             return addRecurringTimeRange(state)
         case 'CHANGE_SCHEDULE_NAME':
-            return updateRegularScheduleName
+            return changeScheduleName(state, action.payload)
         case 'CHANGE_START_OF_RECURRING_TIME_RANGE':
             return changeStartOfRecurringTimeRange(state, action.payload)
         case 'CHANGE_END_OF_RECURRING_TIME_RANGE':
@@ -77,6 +75,10 @@ function handleGetScheduleSucceeded(payload) {
     if(!payload.singleDateTimeRanges || payload.singleDateTimeRanges.length == 0) {
         payload.singleDateTimeRanges = [{...emptySingleDateTimeRange}]
     }
+
+    updateIndices(payload.recurringTimeRanges)
+    updateIndices(payload.singleDateTimeRanges)
+    
     return payload
 }
 
@@ -88,7 +90,7 @@ function handleGetScheduleFailed(state, payload) {
 }
 
 function toggleRecurringDay(state, payload) {
-    console.log('Toggling Recurring Day', payload)
+    console.log('Toggling Recurring Day', payload, state)
 
     let index = payload.index
     let day = payload.day
@@ -96,12 +98,12 @@ function toggleRecurringDay(state, payload) {
     let recurringTimeRanges = [...state.recurringTimeRanges]
     let recurringTimeRange = recurringTimeRanges[index]
     
-    recurringTimeRange.week[day].checked = !recurringTimeRange.week[day].checked
+    recurringTimeRange[day] = !recurringTimeRange[day]
     return { ...state, recurringTimeRanges }
 }
 
 function deleteRecurringTimeRange(state, payload) {
-    console.log('Deleting Recurring Time Range', payload)
+    console.log('Deleting Recurring Time Range', payload, state)
 
     if (state.recurringTimeRanges.length === 1) {
         return { ...initialState }
@@ -114,17 +116,18 @@ function deleteRecurringTimeRange(state, payload) {
 }
 
 function addRecurringTimeRange(state) {
-    console.log('Adding recurring time range')
+    console.log('Adding recurring time range', state)
     let recurringTimeRanges = [...state.recurringTimeRanges]
     let index = recurringTimeRanges.length
     let recurringTimeRange = { ...emptyRecurringTimeRange, index }
     recurringTimeRanges.push(recurringTimeRange)
+    console.log('Time ranges after adding', recurringTimeRanges)
     return { ...state, recurringTimeRanges}
 }
 
-function updateRegularScheduleName(state, payload) {
-    console.log('Updating regular schedule name',  payload.value)
-    return { ...state, regularSchedule: {...state.regularSchedule, name: payload.name }}
+function changeScheduleName(state, payload) {
+    console.log('Changing schedule name',  payload.name)
+    return { ...state, name: payload.name}
 }
 
 function changeStartOfRecurringTimeRange(state, payload) {
@@ -143,10 +146,10 @@ function changeStartOfRecurringTimeRange(state, payload) {
 }
 
 function changeEndOfRecurringTimeRange(state, payload) {
-    console.log('Changing start end time of recurring time range', payload)
+    console.log('Changing end time of recurring time range', payload)
 
     let recurringTimeRanges = [...state.recurringTimeRanges]
-    let recurringTimeRange : any = recurringTimeRanges[payload.index]
+    let recurringTimeRange  = recurringTimeRanges[payload.index]
 
     if(!recurringTimeRange) {
         console.error('Error: No recurring time range found. This should not have happened.')
@@ -164,10 +167,13 @@ function resetSchedule() {
 
   
 const updateIndices = (elements) => {
-    return elements.map((element, i) => {
+    console.log('Updating indices', elements)
+    let ret = elements.map((element, i) => {
       element.index = i
       return element
     })
+    console.log('Updatd indices', ret)
+    return ret
 }
 
 

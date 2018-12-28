@@ -59,7 +59,7 @@ export function* callUpdateSchedule(action) {
 export function* callDeleteSchedule(action) {
   yield put(scheduleLoading())
   
-  const result = yield call(updateSchedule, action.payload)
+  const result = yield call(deleteSchedule, action.payload)
   if (result.error) {
     yield put(submitDeleteScheduleToServerFailed(result.error))
   } else {

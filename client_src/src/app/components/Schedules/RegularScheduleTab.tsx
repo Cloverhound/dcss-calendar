@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 
 import { connect } from 'react-redux';
-import { addRecurringTimeRange, submitUpdateScheduleToServer, changeScheduleName, getScheduleFromServer, handleCloseMessage } from '../../actions'
+import { addRecurringTimeRange, submitUpdateScheduleToServer, submitNewScheduleToServer, changeScheduleName, getScheduleFromServer, handleCloseMessage } from '../../actions'
 import {
   BrowserRouter as Router,
   Route,
@@ -50,11 +50,13 @@ const styles = theme => createStyles({
 interface IProps {
   scheduleReducer: any,
   addRecurringTimeRange: any,
-  requestScheduleEdit: any,
+  submitUpdateScheduleToServer: any,
+  submitNewScheduleToServer: any,
   changeScheduleName: any,
   getScheduleFromServer: any,
   match: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  newOrUpdate: string
 }
 
 
@@ -71,11 +73,21 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
   }
 
   handleFormSubmit = () => {
-    const { requestScheduleEdit, scheduleReducer } = this.props;
-    requestScheduleEdit(scheduleReducer)
+    const { scheduleReducer } = this.props;
+    if(this.props.newOrUpdate == 'new') {
+      this.props.submitNewScheduleToServer(scheduleReducer)
+    }
+    else if(this.props.newOrUpdate == "update") {
+      this.props.submitUpdateScheduleToServer(scheduleReducer)
+    } else {
+      console.log('NewOrUpdate prop is not recognized')
+    }   
   }
 
   componentWillMount () {
+    if(!this.props.match) {
+      return
+    }
     const { id } = this.props.match.params
     const { getScheduleFromServer } = this.props;
     getScheduleFromServer({id})
@@ -97,14 +109,14 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
         return <RecurringTimeRange 
           index={timeRange.index}
           start={timeRange.start}
-          end={timeRange.start}
-          mon_checked={timeRange.week.mon.checked}
-          tue_checked={timeRange.week.tues.checked}
-          wed_checked={timeRange.week.weds.checked}
-          thu_checked={timeRange.week.thurs.checked}
-          fri_checked={timeRange.week.fri.checked}
-          say_checked={timeRange.week.sat.checked}
-          sun_checked={timeRange.week.sun.checked}
+          end={timeRange.end}
+          mon_checked={timeRange.mon}
+          tue_checked={timeRange.tue}
+          wed_checked={timeRange.wed}
+          thu_checked={timeRange.thu}
+          fri_checked={timeRange.fri}
+          sat_checked={timeRange.sat}
+          sun_checked={timeRange.sun}
         />
       })
     }
@@ -168,7 +180,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addRecurringTimeRange: () => (dispatch(addRecurringTimeRange())),
-  submitUpdateScheduleToserver: (obj) => (dispatch(submitUpdateScheduleToServer(obj))),
+  submitUpdateScheduleToServer: (obj) => (dispatch(submitUpdateScheduleToServer(obj))),
+  submitNewScheduleToServer: (obj) => (dispatch(submitNewScheduleToServer(obj))),
   changeScheduleName: (obj) => (dispatch(changeScheduleName(obj))),
   getScheduleFromServer: (obj) => (dispatch(getScheduleFromServer(obj))),
   handleCloseMessage: () => (dispatch(handleCloseMessage()))

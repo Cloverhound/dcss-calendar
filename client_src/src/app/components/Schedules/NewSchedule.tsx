@@ -1,11 +1,13 @@
 import * as React from 'react'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import RegularEditScheduleTab from './RegularScheduleTab'
+import {resetSchedule} from '../../actions'
 
 
 const styles = theme => createStyles({
@@ -29,13 +31,21 @@ function TabContainer(props) {
   );
 }
 
-class NewSchedule extends React.Component<WithStyles<typeof styles> > {
+interface IProps {
+  resetSchedule: any
+}
+
+class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
   state = {
     value: 0,
   }
 
   handleChange = (event, value) => {
     this.setState({ value })
+  }
+
+  componentWillMount () {
+    this.props.resetSchedule()
   }
 
   render() {
@@ -58,7 +68,7 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> > {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab/></TabContainer>}
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab newOrUpdate={'new'}/></TabContainer>}
           {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
           </div> 
         </div>
@@ -68,4 +78,9 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> > {
 }
 
 
-export default withStyles(styles, { withTheme: true })(NewSchedule)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  resetSchedule: () => (dispatch(resetSchedule()))
+})
+
+
+export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(NewSchedule))

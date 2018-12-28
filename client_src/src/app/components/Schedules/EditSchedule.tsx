@@ -1,5 +1,6 @@
 import * as React from 'react'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
@@ -21,7 +22,8 @@ const styles = theme => createStyles({
 })
 
 interface IProps {
-  match: any
+  match: any,
+  resetSchedule: any
 }
 
 
@@ -43,7 +45,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   componentWillMount () {
-    resetSchedule()
+    this.props.resetSchedule()
   }
 
   render() {
@@ -66,7 +68,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match}/></TabContainer>}
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match} newOrUpdate={'update'}/></TabContainer>}
           {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
           </div> 
         </div>
@@ -75,5 +77,9 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 }
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  resetSchedule: () => (dispatch(resetSchedule()))
+})
 
-export default withStyles(styles, { withTheme: true })(EditSchedule)
+
+export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(EditSchedule))

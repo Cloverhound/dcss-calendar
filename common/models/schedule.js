@@ -1,5 +1,4 @@
 'use strict';
-var moment = require('moment-timezone');
 
 module.exports = function(Schedule) {
   Schedule.validatesUniquenessOf('name', {message: 'Name already exists'});
@@ -48,7 +47,7 @@ module.exports = function(Schedule) {
             createTimeRangePromises.push(createSingleDateTimeRange(createdSchedule, singleDateTimeRangeParameter))
           })
 
-          let result = await Promise.all(createHolidayPromises)
+          let result = await Promise.all(createTimeRangePromises)
           if(result !== 'FAILED') {
             cb(null, createdSchedule)
           }
@@ -74,38 +73,35 @@ module.exports = function(Schedule) {
             return          
           } else {
             console.log('Successfuly updated attributes of schedule', updatedSchedule)
+            console.log('Deleting recurring time ranges of schedule', schedule)
+            schedule.recurringTimeRanges.destroyAll(function(destroyErr) {
+              if(destroyErr) {
+                console.log('Failed to destroy recurring time ranges of schedule', schedule)
+                cb(destroyErr)
+                return
+              }
+    
+              let createRecurringTimeRangesResult = createRecurringTimeRanges(schedule, scheduleParameter.recurringTimeRanges)
+              return
+            })
+    
+            console.log('Deleting single date time ranges of schedule', schedule)
+            schedule.singleDateTimeRanges.destroyAll(function(destroyErr) {
+              if(destroyErr) {
+                console.log('Failed to destroy single date time ranges of schedule', schedule)
+                cb(destroyErr)
+              }
+    
+              let createSingleDateTimeRangesResult = createSingleDateTimeRanges(schedule, scheduleParameter.singleDateTimeRanges)
+            })
           }        
-        })
-
-        console.log('Deleting recurring time ranges of schedule', schedule)
-        schedule.recurringTimeRanges.destroyAll(function(destroyErr) {
-          if(destroyErr) {
-            console.log('Failed to destroy recurring time ranges of schedule', schedule)
-            cb(destroyErr)
-            return
-          }
-
-          let createRecurringTimeRangesResult = createRecurringTimeRanges(schedule, scheduleParameter.recurringTimeRanges)
-          cb(null, createRecurringTimeRangesResult)
-          return
-        })
-
-        console.log('Deleting single date time ranges of schedule', schedule)
-        schedule.singleDateTimeRanges.destroyAll(function(destroyErr) {
-          if(destroyErr) {
-            console.log('Failed to destroy single date time ranges of schedule', schedule)
-            cb(destroyErr)
-          }
-
-          let createSingleDateTimeRangesResult = createSingleDateTimeRanges(schedule, scheduleParameter.singleDateTimeRanges)
-          cb(null, createSingleDateTimeRangesResult)
         })
       })
     }
 
     // NOT NEEDED IF WE USE A CASCADE DELETE
     Schedule.deleteWithTimeRanges = function(id, cb) {
-      console.log('Deleting Schedule With Time Ranges', id)
+      console.log('Deleting Schedule and its Time Ranges -- ', id)
         
       Schedule.findById(id, function(findErr, schedule) {
         if(findErr) {
@@ -121,7 +117,7 @@ module.exports = function(Schedule) {
             cb(destroyTimeRangesErr)
             return
           }
-
+          console.log('Successfully deleted recurring time ranges')
           console.log('Deleting single date time ranges of schedule', schedule)
           schedule.singleDateTimeRanges.destroyAll(function(destroyTimeRangesErr) {
             if(destroyTimeRangesErr) {
@@ -130,13 +126,16 @@ module.exports = function(Schedule) {
               return
             }
 
+            console.log('Successfully destroyed single date time ranges')
+            console.log('Destroying schedule')
             schedule.destroy(function(destroySchedErr) {
               if(destroySchedErr) {
                 console.log('Failed to destroy schedule', destroySchedErr)
                 cb(destroySchedErr)
                 return
               }
-              cb(null, id)
+              console.log('Successfully destroyed schedule')
+              cb(null,id)
             })
           })
         })
@@ -146,7 +145,7 @@ module.exports = function(Schedule) {
 
 
 function createRecurringTimeRanges(createdSchedule, recurringTimeRanges) {
-  console.log('Creating recurring time ranges', scheduleDb, recurringTimeRanges)
+  console.log('Creating recurring time ranges', createdSchedule, recurringTimeRanges)
   let createPromises = []
   for(var i = 0; i < recurringTimeRanges.length; i++) {
     createPromises.push(createRecurringTimeRange(createdSchedule, recurringTimeRanges[i]))
@@ -155,7 +154,7 @@ function createRecurringTimeRanges(createdSchedule, recurringTimeRanges) {
 }
 
 function createSingleDateTimeRanges(createdSchedule, singleDateTimeRanges) {
-  console.log('Creating single date time ranges', scheduleDb, singleDateTimeRanges)
+  console.log('Creating single date time ranges', createdSchedule, singleDateTimeRanges)
   let createPromises = []
   for(var i = 0; i < singleDateTimeRanges.length; i++) {
     createPromises.push(createSingleDateTimeRange(createdSchedule, singleDateTimeRanges[i]))
@@ -184,6 +183,10 @@ function createRecurringTimeRange(createdSchedule, recurringTimeRangeParameter) 
 function createSingleDateTimeRange(createdSchedule, singleDateTimeRangeParameter) {
   console.log('Creating single date time range', singleDateTimeRangeParameter)
   delete singleDateTimeRangeParameter.id
+  if(!singleDateTimeRangeParameter.start || !singleDateTimeRange.end || !singleDateTimeRange.date) {
+    console.log('Not creating single date time range because start, end, and date must be provided', singleDateTimeRangeParameter)
+    return 
+  }
   return new Promise(function(resolve, reject) {
     createdSchedule.singleDateTimeRanges.create(singleDateTimeRangeParameter, function(createTimeRangeError, createdTimeRange) {
       if(createTimeRangeError) {
