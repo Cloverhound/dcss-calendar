@@ -19,23 +19,9 @@ const schedulesReducer = (state: any = initialState, action) => {
 }
 
 function handleGetSchedulesFromServerSucceeded(state, payload) {
-  console.log('Handling get schedules from server succeeded')
-  let schedules = payload.map(schedule => {
-    let keys = Object.keys(schedule)
-    let newWeek = keys.reduce((acc, key) => {
-      if (key === "id") {
-        acc[key] = schedule.id
-      } else if (key === "name") {
-        acc[key] = schedule.name
-      } else {
-        acc.hours = { ...acc.hours, [key]: schedule[key] }
-      }
-      return acc
-    }, { hours: {} })
-    return newWeek
-  })
-
-  return { ...state, schedules }
+  console.log('Handling get schedules from server succeeded', payload)
+  
+  return { ...state, schedules: payload }
 }
 
 function handleGetSchedulesFromServerFailed(state, payload) {
@@ -54,7 +40,8 @@ function handleSubmitDeleteScheduleToServerFailed(state, payload) {
 }
 
 function handleCloseMessage(state) {
-
+  let message = {type: "", content: ""} 
+  return {...state, message}
 }
 
 export default schedulesReducer

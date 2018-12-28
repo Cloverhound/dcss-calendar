@@ -1,12 +1,13 @@
 import * as React from 'react'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import RegularEditScheduleTab from './RegularEditScheduleTab'
-
+import RegularEditScheduleTab from './RegularScheduleTab'
+import {resetSchedule} from '../../actions'
 
 const styles = theme => createStyles({
   root: {
@@ -18,7 +19,12 @@ const styles = theme => createStyles({
     justifyContent: 'center',
     width: '100%',
   }
-});
+})
+
+interface IProps {
+  match: any,
+  resetSchedule: any
+}
 
 
 function TabContainer(props) {
@@ -29,13 +35,17 @@ function TabContainer(props) {
   );
 }
 
-class EditSchedule extends React.Component<WithStyles<typeof styles> > {
+class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
     value: 0,
   }
 
   handleChange = (event, value) => {
     this.setState({ value })
+  }
+
+  componentWillMount () {
+    this.props.resetSchedule()
   }
 
   render() {
@@ -58,7 +68,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> > {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab/></TabContainer>}
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match} newOrUpdate={'update'}/></TabContainer>}
           {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
           </div> 
         </div>
@@ -67,5 +77,9 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> > {
   }
 }
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  resetSchedule: () => (dispatch(resetSchedule()))
+})
 
-export default withStyles(styles, { withTheme: true })(EditSchedule)
+
+export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(EditSchedule))

@@ -1,36 +1,44 @@
-'use strict';
-var moment = require('moment');
+'use strict'
+var moment = require('moment-timezone')
 
 module.exports = function(RecurringTimeRange) {
-  // Timerange.validatesUniquenessOf('name', {message: 'Name already exists'});
 
-  // Timerange.status = function(rangeId, cb) {
-  //   Timerange.findById(rangeId, function(err, instance) {
-  //     var response = instance;
-  //     var days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat'];
-  //     var currentTime = moment();
-  //     var currentDay = days[moment().format('d')];
+  RecurringTimeRange.prototype.isNow = function() {
+    console.log('Checking if recurring time range is now', this)
+    
+    let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    let currentTime = moment().tz(process.env.TIME_ZONE)
+    let currentDay = days[currentTime.format('d')]
+    
+    if(!this[currentDay]) {
+        return false
+    }
 
-  //     var OPEN_HOUR = moment(response[currentDay + '_open'], 'HH:mm');
-  //     var CLOSE_HOUR = moment(response[currentDay + '_closed'], 'HH:mm');
+    let start = moment.tz(this.start, 'h:mm a', process.env.TIME_ZONE)
+    let end = moment.tz(this.end, 'h:mm a', process.env.TIME_ZONE)
 
-  //     if (currentTime.isBetween(OPEN_HOUR, CLOSE_HOUR)) {
-  //       if (CLOSE_HOUR.diff(currentTime, 'hours') <= 1) {
-  //         response = 'closing';
-  //       } else {
-  //         response = 'open';
-  //       }
-  //     } else {
-  //       response = 'closed';
-  //     }
-  //     cb(null, response);
-  //   });
-  // };
-  // RecurringTimeRange.remoteMethod(
-  //   'status', {
-  //     http: {path: '/status', verb: 'get'},
-  //     accepts: {arg: 'id', type: 'number', http: {source: 'query'}},
-  //     returns: {arg: 'status', type: 'string'},
-  //   }
-  // );
-};
+    console.log('start', start)
+    console.log('end', end)
+    let isBetween = currentTime.isBetween(start, end)
+    console.log('isBetween', isBetween)
+    
+    return isBetween
+}
+
+  RecurringTimeRange.prototype.isClosing = function() {
+    console.log('Checking if recurring time range is closing', this)
+    let days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat']
+    let currentTime = moment().tz(process.env.TIME_ZONE)
+    let currentDay = days[currentTime.format('d')]
+    
+    if(!this[currentDay]) {
+        return false
+    }
+
+    let start = moment.tz(this.start, 'HH:mm', process.env.TIME_ZONE)
+    let end = moment.tz(this.end, 'HH:mm', process.env.TIME_ZONE)
+    
+    return currentTime.isBetween(start, end) && end.diff(currentTime, 'hours') <= 1
+  }
+  
+}

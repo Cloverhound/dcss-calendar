@@ -4,13 +4,19 @@ export const sendRouteComponent = component => ({ type: "CHANGE_ROUTE_COMPONENT"
 
 
 
+export const scheduleLoading                         = ()  => ({type: "SCHEDULE_LOADING"})
+
 export const toggleRecurringDay                      = obj => ({ type: "TOGGLE_RECURRING_DAY", payload: obj });
 export const deleteRecurringTimeRange                = obj => ({ type: "DELETE_RECURRING_TIME_RANGE", payload: obj });
 export const addRecurringTimeRange                   = ()  => ({ type: "ADD_RECURRING_TIME_RANGE" });
 
 export const getSchedulesFromServer                  = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER" });
-export const getSchedulesFromServerSucceeded         = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER_SUCCEEDED" });
-export const getSchedulesFromServerFailed            = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER_FAILED" });
+export const getSchedulesFromServerSucceeded         = obj => ({ type: "GET_SCHEDULES_FROM_SERVER_SUCCEEDED", payload: obj  });
+export const getSchedulesFromServerFailed            = obj => ({ type: "GET_SCHEDULES_FROM_SERVER_FAILED", payload: obj  });
+
+export const getScheduleFromServer                   = obj => ({ type: "GET_SCHEDULE_FROM_SERVER", payload: obj });
+export const getScheduleFromServerSucceeded          = obj => ({ type: "GET_SCHEDULE_FROM_SERVER_SUCCEEDED", payload: obj  });
+export const getScheduleFromServerFailed             = obj => ({ type: "GET_SCHEDULE_FROM_SERVER_FAILED", payload: obj  });
 
 export const submitNewScheduleToServer               = obj => ({ type: "SUBMIT_NEW_SCHEDULE_TO_SERVER", payload: obj });
 export const submitNewScheduleToServerSucceeded      = obj => ({ type: "SUBMIT_NEW_SCHEDULE_TO_SERVER_SUCCEEDED", payload: obj });
@@ -25,7 +31,8 @@ export const submitDeleteScheduleToServerSucceeded   = obj => ({ type: "SUBMIT_D
 export const submitDeleteScheduleToServerFailed      = obj => ({ type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER_FAILED", payload: obj })
 
 export const changeScheduleName                      = obj => ({ type: "CHANGE_SCHEDULE_NAME", payload: obj });
-export const changeStartEndTimeOfRecurringTimeRange  = obj => ({ type: "CHANGE_START_END_TIME_OF_RECURRING_TIME_RANGE", payload: obj })
+export const changeStartOfRecurringTimeRange         = obj => ({ type: "CHANGE_START_OF_RECURRING_TIME_RANGE", payload: obj })
+export const changeEndOfRecurringTimeRange           = obj => ({ type: "CHANGE_END_OF_RECURRING_TIME_RANGE", payload: obj })
 export const resetSchedule                           = ()  => ({ type: "RESET_SCHEDULE" })
 
 
@@ -35,8 +42,8 @@ export const resetSchedule                           = ()  => ({ type: "RESET_SC
 export const queueLoading                        = ()  => ({type: "QUEUE_LOADING"})
 
 export const getQueuesFromServer                 = ()  => ({ type: "GET_QUEUES_FROM_SERVER" });
-export const getQueuesFromServerSucceeded        = ()  => ({ type: "GET_QUEUES_FROM_SERVER_SUCCEEDED" });
-export const getQueuesFromServerFailed           = ()  => ({ type: "GET_QUEUES_FROM_SERVER_FAILED"})
+export const getQueuesFromServerSucceeded        = obj => ({ type: "GET_QUEUES_FROM_SERVER_SUCCEEDED", payload: obj });
+export const getQueuesFromServerFailed           = obj => ({ type: "GET_QUEUES_FROM_SERVER_FAILED", payload: obj})
 
 export const getQueueFromServer                  = obj => ({ type: "GET_QUEUE_FROM_SERVER", payload: obj });
 export const getQueueFromServerSucceeded         = obj => ({ type: "GET_QUEUE_FROM_SERVER_SUCCEEDED", payload: obj });

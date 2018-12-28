@@ -13,6 +13,7 @@ Open two terminal windows/tabs
 1)
 ```
 Cloverhound/dcss-calendar/client_src npm start
+Or Cloverhound/dcss-calendar/node_modules/.bin/webpack
 ```
 2)
 ```

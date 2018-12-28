@@ -1,75 +1,74 @@
 'use strict';
 
-// var Schedule = require('../../server/boot/script/Schedule')
-var moment = require('moment-timezone');
-var queue;
 
 module.exports = function (Queue) {
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
-  
-  queue = Queue
-  Queue.getAll = allQueues
 
   Queue.remoteMethod(
-    'getAll', {
-      http: {
-        path: '/getAll',
-        verb: 'get',
-      },
-      returns: {
-        arg: 'getAll',
-        type: 'array',
-      },
-    }
-  );
-};
+    'status', {
+      http: {path: '/:id/status', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', required: true}
+      ],
+      returns: {arg: 'status', type: 'any'},
+  })
 
-var getStatus = function(response) {
-  console.log("status response")
-  var days = ['sun', 'mon', 'tues', 'weds', 'thurs', 'fri', 'sat'];
-  var currentTime = moment().tz(process.env.TIME_ZONE);
 
-  var currentDay = days[moment().tz(process.env.TIME_ZONE).format('d')];
-
-  var OPEN_HOUR = moment.tz(response[currentDay + '_open'], 'HH:mm', process.env.TIME_ZONE);
-  var CLOSE_HOUR = moment.tz(response[currentDay + '_closed'], 'HH:mm', process.env.TIME_ZONE);
-
-  if (currentTime.isBetween(OPEN_HOUR, CLOSE_HOUR)) {
-    if (CLOSE_HOUR.diff(currentTime, 'hours') <= 1) {
-      response = 'Closing';
-    } else {
-      response = 'Open';
-    }
-  } else {
-    response = 'Closed';
+  Queue.status = (id) => {
+    return Queue.findById(id)
+      .then(async function(queue) {
+          try {
+            let status = await getStatus(queue)
+            return Promise.resolve(status)
+          } catch(e) {
+            console.log('Failed to get status', e)
+            return Promise.resolve(e)
+          }
+      }).catch(function(err) {
+          console.log('Failed to find queue to get status', err)
+          return Promise.resolve(err)
+      })
   }
-  return response
 }
 
-function allQueues(cb) {
-  queue.find(async function (err, instance) {
-    var response = instance;
-    let res = [];
-    for (let i = 0; i < response.length; i++) {
-      let queue = response[i];
-      let scheduleQueueObj = await new Promise(function (resolve, reject) {
-        queue.schedule(function (err, tr) {
-          queue.status = getStatus(tr)
-          resolve({
-            queue,
-            schedule: tr
-          })
-        })
-      })
-      let holidayList = await new Promise(function (resolve, reject) {
-        queue.holidayList(function (err, tr) {
-          resolve({
-            holidayList: tr
-          })
-        })
-      })
-      res.push({...scheduleQueueObj, ...holidayList})
+
+
+var getStatus = async function(queue) {
+  console.log("Getting status of queue", queue)
+
+  let schedule = await queue.schedule.get()
+  
+  let holidayList = await queue.holidayList.get()
+  let holidays = await holidayList.holidays.find()
+
+  for(var i = 0; i < holidays.length; i++) {
+    if(holidays[i].isToday()) {
+      return 'holiday'
     }
+  }
+
+  let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+  let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
+
+  for(var i = 0; i < recurringTimeRanges.length; i++) {
+    if(recurringTimeRanges[i].isNow()) {
+      return 'open'
+    }
+  }
+
+  for(var i = 0; i < singleDateTimeRanges.length; i++) {
+    if(singleDateTimeRanges[i].isNow()) {
+      return 'open'
+    }
+<<<<<<< HEAD
     cb(null, res);
   });
+=======
+  }
+
+  return 'closed'
+>>>>>>> 965ab442734b266704f4ef7e18fb36b6085784cd
 }
+
+
+

@@ -1,99 +1,163 @@
-let emptyRecurringTimeRange = {
-    id: 0,
+var emptyRecurringTimeRange = {
+    index: 0,
     start: "",
     end: "",
-    week: {
-        mon: {checked: false},
-        tues: {checked: false},
-        weds: {checked: false},
-        thurs: {checked: false},
-        fri: {checked: false},
-        sat: {checked: false},
-        sun: {checked: false}
-    }
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+    sun: false
 }
 
-let emptySingleDateTimeRange = {
-    id: 0,
+var emptySingleDateTimeRange = {
+    index: 0,
     date: "",
     start: "",
     end: ""
 }
 
 
-let initialState = {
+var initialState = {
     name: "",
     recurringTimeRanges: [{...emptyRecurringTimeRange}],
-    singleDateTimeRanges: [{...emptySingleDateTimeRange}]
+    singleDateTimeRanges: [{...emptySingleDateTimeRange}],
+    message: {type: "", content: ""},
+    loading: false
 }
 
 const ScheduleReducer = (state: any = initialState, action) => {
     switch (action.type) {
+        case 'GET_SCHEDULE_FROM_SERVER_SUCCEEDED':
+            return handleGetScheduleSucceeded(action.payload)
+        case 'GET_SCHEDULE_FROM_SERVER_FAILED':
+            return handleGetScheduleFailed(state, action.payload)
         case 'TOGGLE_RECURRING_DAY':
             return toggleRecurringDay(state, action.payload)
         case 'DELETE_RECURRING_TIME_RANGE':
             return deleteRecurringTimeRange(state, action.payload)
         case 'ADD_RECURRING_TIME_RANGE':
-            return addRecurringTimeRange(state, action.payload)
+            return addRecurringTimeRange(state)
         case 'CHANGE_SCHEDULE_NAME':
-            return updateRegularScheduleName
-        case 'CHANGE_START_END_TIME_OF_RECURRING_TIME_RANGE':
-            return updateStartEndTimeOfRecurringTimeRange(state, action.payload)
+            return changeScheduleName(state, action.payload)
+        case 'CHANGE_START_OF_RECURRING_TIME_RANGE':
+            return changeStartOfRecurringTimeRange(state, action.payload)
+        case 'CHANGE_END_OF_RECURRING_TIME_RANGE':
+            return changeEndOfRecurringTimeRange(state, action.payload)
         case 'RESET_SCHEDULE':
             return resetSchedule()
+        case 'SCHEDULE_LOADING':
+            return handleScheduleLoading(state)
+        case 'HANDLE_CLOSE_MESSAGE':
+            return handleCloseMessage(state)
         default:
             return state
     }
 }
 
-function toggleRecurringDay(state, payload) {
-    console.log('Toggling Recurring Day', payload.recurringTimeRange.id)
+const handleCloseMessage = (state) => {
+    let message = {type: "", content: ""} 
+    return {...state, message}
+  }
 
-    let id = payload.id
-    let day = payload.day
-    let checked = payload.event
+const handleScheduleLoading = (state) => {
+    let loading = true
+    return {...state, loading}
+  }
 
-    let recurringTimeRanges = {...state.recurringTimeRanges}
-    let recurringTimeRange = recurringTimeRanges.find((currTimeRange) => currTimeRange.id === id)
+function handleGetScheduleSucceeded(payload) {
+    console.log('Handling get schedule succeeded', payload)
+    payload.loading = false
+    if(!payload.recurringTimeRanges || payload.recurringTimeRanges.length == 0) {
+        payload.recurringTimeRanges = [{...emptyRecurringTimeRange}]
+    }
+    if(!payload.singleDateTimeRanges || payload.singleDateTimeRanges.length == 0) {
+        payload.singleDateTimeRanges = [{...emptySingleDateTimeRange}]
+    }
+
+    updateIndices(payload.recurringTimeRanges)
+    updateIndices(payload.singleDateTimeRanges)
     
-    recurringTimeRange.week[day].checked = checked
+    return payload
+}
+
+function handleGetScheduleFailed(state, payload) {
+    console.log('Handling get schedule failed', payload)
+    let message = {type: "error", content: "Failed to get schedule: " + payload.message}
+    let loading = false
+    return {...state, message, loading}
+}
+
+function toggleRecurringDay(state, payload) {
+    console.log('Toggling Recurring Day', payload, state)
+
+    let index = payload.index
+    let day = payload.day
+
+    let recurringTimeRanges = [...state.recurringTimeRanges]
+    let recurringTimeRange = recurringTimeRanges[index]
+    
+    recurringTimeRange[day] = !recurringTimeRange[day]
     return { ...state, recurringTimeRanges }
 }
 
 function deleteRecurringTimeRange(state, payload) {
-    console.log('Deleting Recurring Time Range', payload.id)
+    console.log('Deleting Recurring Time Range', payload, state)
 
     if (state.recurringTimeRanges.length === 1) {
         return { ...initialState }
     }
 
-    let recurringTimeRanges = {...state.recurringTimeRanges}
-    recurringTimeRanges.splice(payload.id, 1);
-    recurringTimeRanges = updateIDs(recurringTimeRanges)
+    let recurringTimeRanges = [...state.recurringTimeRanges]
+    recurringTimeRanges.splice(payload.index, 1);
+    recurringTimeRanges = updateIndices(recurringTimeRanges)
     return { ...state, recurringTimeRanges }
 }
 
-function addRecurringTimeRange(state, payload) {
-    console.log('Adding recurring time range')
-    var recurringTimeRanges = {...state.recurringTimeRanges}
-    var id = recurringTimeRanges.length
-    var recurringTimeRange = { ...emptyRecurringTimeRange, id }
+function addRecurringTimeRange(state) {
+    console.log('Adding recurring time range', state)
+    let recurringTimeRanges = [...state.recurringTimeRanges]
+    let index = recurringTimeRanges.length
+    let recurringTimeRange = { ...emptyRecurringTimeRange, index }
     recurringTimeRanges.push(recurringTimeRange)
+    console.log('Time ranges after adding', recurringTimeRanges)
     return { ...state, recurringTimeRanges}
 }
 
-function updateRegularScheduleName(state, payload) {
-    console.log('Updating regular schedule name', payload.id, payload.value)
-    return { ...state, regularSchedule: {...state.regularSchedule, name: payload.name }}
+function changeScheduleName(state, payload) {
+    console.log('Changing schedule name',  payload.name)
+    return { ...state, name: payload.name}
 }
 
-function updateStartEndTimeOfRecurringTimeRange(state, payload) {
-    console.log('Updating start end time of recurring time range', payload.id)
+function changeStartOfRecurringTimeRange(state, payload) {
+    console.log('Changing start time of recurring time range', payload)
 
-    let regularSchedule = {...state.regularSchedule}
-    let recurringTimeRange = regularSchedule.recurringTimeranges.find(payload.id)
-    recurringTimeRange[payload.name] = payload.value
-    return { ...state, regularSchedule }
+    let recurringTimeRanges = [...state.recurringTimeRanges]
+    let recurringTimeRange  = recurringTimeRanges[payload.index]
+
+    if(!recurringTimeRange) {
+        console.error('Error: No recurring time range found. This should not have happened.')
+        return {...state}
+    }
+
+    recurringTimeRange.start = payload.value
+    return { ...state, recurringTimeRanges }
+}
+
+function changeEndOfRecurringTimeRange(state, payload) {
+    console.log('Changing end time of recurring time range', payload)
+
+    let recurringTimeRanges = [...state.recurringTimeRanges]
+    let recurringTimeRange  = recurringTimeRanges[payload.index]
+
+    if(!recurringTimeRange) {
+        console.error('Error: No recurring time range found. This should not have happened.')
+        return {...state}
+    }
+    
+    recurringTimeRange.end = payload.value
+    return { ...state, recurringTimeRanges }
 }
 
 function resetSchedule() {
@@ -102,11 +166,14 @@ function resetSchedule() {
 }
 
   
-const updateIDs = (elements) => {
-    return elements.map((element, i) => {
-      element.id = i
+const updateIndices = (elements) => {
+    console.log('Updating indices', elements)
+    let ret = elements.map((element, i) => {
+      element.index = i
       return element
     })
+    console.log('Updatd indices', ret)
+    return ret
 }
 
 

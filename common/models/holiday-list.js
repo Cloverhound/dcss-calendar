@@ -19,7 +19,7 @@ module.exports = function(HolidayList) {
         returns: {arg: 'status', type: 'string'},
       })
     HolidayList.remoteMethod(
-      'deleteWithHolidays', {
+      'deleteWithHolidays', {  // NOT NEEDED IF WE USE A CASCADE DELETE
         http: {path: '/:id/deleteWithHolidays', verb: 'delete'},
         accepts: [
           {arg: 'id', type: 'number', required: true}
@@ -91,16 +91,18 @@ module.exports = function(HolidayList) {
           if(destroyErr) {
             console.log('Failed to destroy holidays of holiday list', holidayList)
             cb(destroyErr)
+            return
           }
 
           let createHolidaysResult = createHolidays(holidayList, holidayListParameter.holidays)
           cb(null, createHolidaysResult)
+          return
         })
       })
     }
 
 
-      
+     // NOT NEEDED IF WE USE A CASCADE DELETE
     HolidayList.deleteWithHolidays = function(id, cb) {
       console.log('Deleting Holiday List With Holidays', id)
         
@@ -133,11 +135,11 @@ module.exports = function(HolidayList) {
 
 }
 
-function createHolidays(holidayListDb, holidays) {
-  console.log('Creating holidays', holidayListDb, holidays)
+function createHolidays(holidayListDB, holidays) {
+  console.log('Creating holidays', holidayListDB, holidays)
   let createPromises = []
   for(var i = 0; i < holidays.length; i++) {
-    createPromises.push(createHoliday(holidayListDb, holidays[i]))
+    createPromises.push(createHoliday(holidayListDB, holidays[i]))
   }
   return Promise.all(createPromises)
 }
