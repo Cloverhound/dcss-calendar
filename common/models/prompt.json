@@ -23,6 +23,10 @@
       "type": "string",
       "required": true
     },
+    "s3_key": {
+      "type": "string",
+      "required": true
+    },
     "enabled": {
       "type": "boolean",
       "required": true

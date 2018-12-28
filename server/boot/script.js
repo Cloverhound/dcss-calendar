@@ -7,4 +7,5 @@ module.exports = function(app) {
   var HolidayList = app.models.HolidayList;
   var RecurringTimeRange = app.models.RecurringTimeRange;
   var SingleDateTimeRange = app.models.SingleDateTimeRange;
+  var Prompt = app.models.Prompt;
 };

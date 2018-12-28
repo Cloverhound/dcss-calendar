@@ -102,5 +102,6 @@ export const getPromptsFromServer = () => ({type: "GET_PROMPTS_FROM_SERVER" })
 export const getPromptFromServer = obj => ({type: "GET_PROMPT_FROM_SERVER", payload: obj})
 export const getPromptsWithQueueIdFromServer = obj => ({type: "GET_PROMPTS_WITH_QUEUE_ID", payload: obj})
 export const submitUploadPromptToServer = obj => ({type: "SUBMIT_UPLOAD_PROMPT_TO_SERVER", payload: obj})
+export const submitDeletePromptToServer = obj => ({type: "SUBMIT_DELETE_PROMPT_TO_SERVER", payload: obj})
 export const updateTargetFile = obj => ({type: "UPDATE_TARGET_FILE", payload: obj})
 

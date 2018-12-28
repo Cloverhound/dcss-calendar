@@ -1,8 +1,5 @@
 let initialState = {
   id: 0,
-  queueName: '',
-  scheduleId: 0,
-  holidayListId: 0,
   message: {type: "", content: ""},
   loading: false,
   toQueues: false

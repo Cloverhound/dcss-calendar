@@ -28,7 +28,7 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     console.log('Creating table data')
     const {holidayLists} = this.props;
     return holidayLists.map((holidayList, index) => {
-      return {id: holidayList.id, name: holidayList.name}
+      return {id: holidayList.id, Name: holidayList.name}
     })
   }
 
@@ -53,12 +53,12 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     const { classes, holidayListsReducer } = this.props
     const { message, loading } = holidayListsReducer
     let data = this.createTableData()
-    let columnNames = ['name', 'active']
+    let columnNames = ['Name', 'Active']
     let table = <CalendarTable 
                     data={data} 
                     basePath={"holiday_lists"} 
                     populateTable={this.handleGetHolidayLists} 
-                    orderBy={"name"} 
+                    orderBy={"Name"} 
                     columnNames={columnNames}
                     title={"Holiday Lists"}
                     addButtonText={"Add Holiday List"}

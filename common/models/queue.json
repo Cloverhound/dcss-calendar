@@ -8,22 +8,29 @@
   },
   "properties": {
     "name": {
-      "type": "string",
+      "type": "String",
       "required": true
     },
+    "queue_code": {
+      "type": "Number",
+      "required": true,
+      "default": false
+    },
     "force_open": {
-      "type": "boolean",
+      "type": "Boolean",
       "default": false
     },
     "force_closed": {
-      "type": "boolean",
+      "type": "Boolean",
       "default": false
     },
     "scheduleId": {
-      "type": "number"
+      "type": "Number",
+      "required": true
     },
     "holidayListId": {
-      "type": "number"
+      "type": "Number",
+      "required": true
     }
   },
   "validations": [],

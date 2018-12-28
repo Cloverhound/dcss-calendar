@@ -58,7 +58,6 @@ export function* callGetQueues() {
 }
 
 export function* callDeleteQueue(action) {
-  console.log(" DELETE queue action.payload", action.payload.id)
   const result = yield call(deleteQueue, action.payload.id);
   
   if (result.error) {
@@ -67,7 +66,3 @@ export function* callDeleteQueue(action) {
     yield call(callGetQueues);
   }
 }
-
-// function forwardTo(location) {
-//   history.push(location);
-//  }
