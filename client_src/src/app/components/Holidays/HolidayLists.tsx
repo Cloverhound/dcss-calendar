@@ -53,7 +53,7 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     const { classes, holidayListsReducer } = this.props
     const { message, loading } = holidayListsReducer
     let data = this.createTableData()
-    let columnNames = ['Name', 'Active']
+    let columnNames = ['Name', 'Active', '']
     let table = <CalendarTable 
                     data={data} 
                     basePath={"holiday_lists"} 

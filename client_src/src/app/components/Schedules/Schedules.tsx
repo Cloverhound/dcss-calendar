@@ -33,7 +33,7 @@ class Schedules extends React.Component<IProps> {
 
   render() {
     let data = this.createTableData()
-    let columnNames = ['Name', 'Active']
+    let columnNames = ['Name', 'Active', '']
     return (
       <CalendarTable 
           data={data} 
