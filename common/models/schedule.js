@@ -57,7 +57,7 @@ module.exports = function(Schedule) {
 
     Schedule.updateWithTimeRanges = function(id, scheduleParameter, cb) {
       console.log('Updating Schedule With Tiime Ranges', id, scheduleParameter)
-        
+      let response;
       Schedule.findById(id, function(findErr, schedule) {
         if(findErr) {
           console.log('Failed to find schedule to update', findErr)
@@ -66,7 +66,7 @@ module.exports = function(Schedule) {
         }
 
         console.log('Updating attributes of schedule')
-        schedule.updateAttributes(scheduleParameter, async function(updateErr, updatedSchedule) {
+        schedule.updateAttributes(scheduleParameter, function(updateErr, updatedSchedule) {
           if(updateErr) {
             console.log('Failed to update schedule', schedule, updateErr)
             cb(updateErr)
@@ -74,27 +74,28 @@ module.exports = function(Schedule) {
           } else {
             console.log('Successfuly updated attributes of schedule', updatedSchedule)
             console.log('Deleting recurring time ranges of schedule', schedule)
-            schedule.recurringTimeRanges.destroyAll(function(destroyErr) {
+            schedule.recurringTimeRanges.destroyAll(async function(destroyErr) {
               if(destroyErr) {
                 console.log('Failed to destroy recurring time ranges of schedule', schedule)
                 cb(destroyErr)
                 return
               }
     
-              let createRecurringTimeRangesResult = createRecurringTimeRanges(schedule, scheduleParameter.recurringTimeRanges)
+              let createRecurringTimeRangesResult = await createRecurringTimeRanges(schedule, scheduleParameter.recurringTimeRanges)
               return
             })
     
             console.log('Deleting single date time ranges of schedule', schedule)
-            schedule.singleDateTimeRanges.destroyAll(function(destroyErr) {
+            schedule.singleDateTimeRanges.destroyAll(async function(destroyErr) {
               if(destroyErr) {
                 console.log('Failed to destroy single date time ranges of schedule', schedule)
                 cb(destroyErr)
               }
     
-              let createSingleDateTimeRangesResult = createSingleDateTimeRanges(schedule, scheduleParameter.singleDateTimeRanges)
+              let createSingleDateTimeRangesResult =  await createSingleDateTimeRanges(schedule, scheduleParameter.singleDateTimeRanges)
+              cb(null, {})
             })
-          }        
+          } 
         })
       })
     }

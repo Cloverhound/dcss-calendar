@@ -23,7 +23,8 @@ const styles = theme => createStyles({
 
 interface IProps {
   match: any,
-  resetSchedule: any
+  resetSchedule: any,
+  history: any
 }
 
 
@@ -49,7 +50,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
 
     return (
       <div className={classes.root}>
@@ -68,7 +69,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match} newOrUpdate={'update'}/></TabContainer>}
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match} newOrUpdate={'update'} history={history}/></TabContainer>}
           {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
           </div> 
         </div>

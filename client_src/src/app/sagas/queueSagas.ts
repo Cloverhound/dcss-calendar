@@ -26,6 +26,7 @@ export function* callGetQueue(action) {
 }
 
 export function* callUpdateQueue(action) {
+  const { history } = action.payload
   yield put(queueLoading())
 
   const { id, scheduleId, queueName, county_code, holidayListId } = action.payload
@@ -34,6 +35,7 @@ export function* callUpdateQueue(action) {
   if (result.error) {
     yield put(submitUpdateQueueToServerFailed(result.error))
   } else {
+    yield call([history, history.push], '/')
     yield put(submitUpdateQueueToServerSucceeded(result))
   }
 }

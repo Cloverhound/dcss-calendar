@@ -56,15 +56,16 @@ export function* callGetHolidayList(action) {
 
 
 export function* callUpdateHolidayList(action) {
+  const { history } = action.payload
   yield put(holidayListLoading())
 
   const result = yield call(updateHolidayList, action.payload)
-  console.log('result', result)
   if (result.error) {
     console.log('yes error')
     yield put(submitUpdateHolidayListToServerFailed(result.error))
   } else {
     yield put(submitUpdateHolidayListToServerSucceeded(result))
+    yield call([history, history.push], '/holiday_lists')
   } 
 }
 
