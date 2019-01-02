@@ -2,7 +2,6 @@
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-var path = require('path');
 var app = module.exports = loopback();
 require('dotenv').config();
 
@@ -26,7 +25,8 @@ var logger = function(req, res, next) {
   next(); // Passing the request to the next handler in the stack.
 }
 app.use(logger);
-app.use(loopback.static(path.resolve(__dirname, './storage')))
+
+
 
 app.start = function() {
   // start the web server

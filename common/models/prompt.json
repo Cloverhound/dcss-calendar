@@ -19,7 +19,11 @@
       "type": "string",
       "required": true
     },
-    "file_path": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "s3_key": {
       "type": "string",
       "required": true
     },

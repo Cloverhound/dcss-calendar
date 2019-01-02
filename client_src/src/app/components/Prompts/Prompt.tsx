@@ -97,7 +97,7 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                       <figcaption>{name}</figcaption>
                       <audio
                           controls
-                          src={'/girltalk_mini_test.wav'}>
+                          src={url}>
                               Your browser does not support the
                               <code>audio</code> element.
                       </audio>
