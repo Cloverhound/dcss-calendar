@@ -40,7 +40,6 @@ export async function getSchedule(payload) {
       },
     });
     let responseJson = await response.json()
-    console.log('Response json', responseJson)
     return responseJson
   } catch (error) {
     return {error}
@@ -57,8 +56,6 @@ export async function updateSchedule(payload) {
       body: JSON.stringify(payload)
     });
     let responseJson = await response.json()
-    console.log('responseJson', responseJson);
-    
     return responseJson
   } catch (error) {
     return {error}
