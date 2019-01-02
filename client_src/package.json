@@ -18,7 +18,7 @@
     "@types/react-redux": "^6.0.9",
     "es6-promise": "^4.2.5",
     "isomorphic-fetch": "^2.2.1",
-    "rc-time-picker": "^3.4.0",
+    "rc-time-picker-ch": "^3.5.0",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-router-dom": "^4.3.1",

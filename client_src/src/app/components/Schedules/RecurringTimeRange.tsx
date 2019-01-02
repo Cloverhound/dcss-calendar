@@ -1,4 +1,4 @@
-require('rc-time-picker/assets/index.css');
+require('rc-time-picker-ch/assets/index.css');
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -9,7 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import TimePicker from 'rc-time-picker';
+import TimePicker from 'rc-time-picker-ch';
 import { connect } from 'react-redux';
 import { toggleRecurringDay, deleteRecurringTimeRange, changeStartOfRecurringTimeRange, changeEndOfRecurringTimeRange } from '../../actions/index';
 
@@ -128,6 +128,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
               use12Hours
               placeholder={"Start Time"}
               value={startValue}
+              allowEmpty={false}
             />
             <TimePicker
               showSecond={false}
@@ -136,6 +137,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
               use12Hours
               placeholder={"End Time"}
               value={endValue}
+              allowEmpty={false}
             />
           </div>
 
