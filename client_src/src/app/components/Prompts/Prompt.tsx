@@ -40,7 +40,7 @@ interface IProps {
   id: any,
   promptObj: any,
   name: any,
-  file_path: any
+  url: any
 }
 
 class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
@@ -71,7 +71,7 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, id, language, name, file_path } = this.props;
+    const { classes, id, language, name, url } = this.props;
     let inputShow;
     if(!id) {
       inputShow = <div className={classes.optionalContainer}>
@@ -97,7 +97,7 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                       <figcaption>{name}</figcaption>
                       <audio
                           controls
-                          src={`/${file_path}`}>
+                          src={'/girltalk_mini_test.wav'}>
                               Your browser does not support the
                               <code>audio</code> element.
                       </audio>

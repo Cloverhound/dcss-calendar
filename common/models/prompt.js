@@ -1,9 +1,17 @@
 'use strict';
-var fs = require("fs")
+
+const AWS = require('aws-sdk');
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+var s3 = new AWS.S3();
 
 module.exports = function (Prompt) {
   deletePrompt(Prompt)
-  fileUpload(Prompt)
+  s3Upload(Prompt)
 
   Prompt.remoteMethod(
     'upload', {
@@ -31,11 +39,11 @@ function deletePrompt(Prompt) {
     Prompt.findById(id, function(err, instance){
       res = instance;
       if(!err){
-        Prompt.destroyById(id, function(err){
+        Prompt.destroyById(id, async function(err){
           if (err) {
             res = err;
           } else {
-           res = deleteFile(instance.file_path)
+           res = await s3Delete(instance.s3_key)
           }
         })
       } else {
@@ -46,31 +54,54 @@ function deletePrompt(Prompt) {
   }
 }
 
-function deleteFile(file_path) {
-  fs.unlink(`./server/storage/${file_path}`, (err) => {
-    if (err) throw err;
-    console.log(`${file_path} was deleted`);
-  });
+async function s3Delete(fileName) {
+  var params = {
+    Bucket: process.env.AWS_BUCKET_NAME, 
+    Key: fileName
+   };
+   let deletePromise = await new Promise(function(resolve, reject) {
+     s3.deleteObject(params, function (err, data) {
+       if (err) {
+         return reject({
+           err,
+           stack: err.stack
+         })
+       } else {
+         return resolve(data)
+       }
+     });
+   })
+   return deletePromise
 }
 
-function fileUpload(Prompt) {
+function s3Upload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
   Prompt.upload = function (promptFile, cb) {
-    let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;
-    let path = Date.now() + "_" + fileName
+    let buffer = promptFile.files[0].buffer;
+    let s3_key = Date.now() + "_" + fileName;
+    let response;
+    let params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: s3_key,
+      Body: buffer
+    };
 
-    fs.writeFile(`./server/storage/${path}`, buffer, async (err) => {
+    s3.upload(params, async function (err, data) {
       if (err) {
-        cb(err)
+        console.log("Error", err);
+        response = err
       }
-      let newPrompt = await createPrompt(Prompt, path, fileName, promptFile.body)
-      cb(null, newPrompt)
-    })
+      if (data) {
+        let newPrompt = await createPrompt(Prompt, data.Location, fileName, promptFile.body, s3_key)
+        response = newPrompt
+      }
+      cb(null, response)
+    });
   }
 }
 
-async function createPrompt(Prompt, path, fileName, body) {
+async function createPrompt(Prompt, url, fileName, body, s3_key) {
   const { queueId, language, type, enabled} = body
   let isTrue = (enabled == "true")
   let newPrompt = await new Promise(function (resolve, reject) {
@@ -78,13 +109,16 @@ async function createPrompt(Prompt, path, fileName, body) {
       name: fileName,
       language,
       type,
+      s3_key,
       enabled: isTrue,
-      file_path: path,
+      url,
       queueId: queueId
     }, function (createPromptErr, createdPrompt) {
+
       if (createPromptErr) {
         return reject(createPromptErr)
       }
+
       if (createdPrompt !== 'FAILED') {
        return resolve(createdPrompt)
       }
