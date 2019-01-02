@@ -35,23 +35,26 @@ export function* callGetSchedule(action) {
 }
 
 export function* callCreateSchedule(action) {
+  const { history, obj } = action.payload
   yield put(scheduleLoading())
-
-  const result = yield call(createSchedule, action.payload)
+  const result = yield call(createSchedule, obj)
   if (result.error) {
     yield put(submitNewScheduleToServerFailed(result.error))
   } else {
     yield put(submitNewScheduleToServerSucceeded(result))
+    yield call([history, history.push], '/schedules')
   }
 }
 
 export function* callUpdateSchedule(action) {
+  const { history, obj } = action.payload;
   yield put(scheduleLoading())
-
-  const result = yield call(updateSchedule, action.payload)
+  
+  const result = yield call(updateSchedule, obj)
   if (result.error) {
     yield put(submitUpdateScheduleToServerFailed(result.error))
   } else {
+    yield call([history, history.push], '/schedules')
     yield put(submitUpdateScheduleToServerSucceeded(result))
   }
 }

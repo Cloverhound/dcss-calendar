@@ -32,7 +32,8 @@ function TabContainer(props) {
 }
 
 interface IProps {
-  resetSchedule: any
+  resetSchedule: any,
+  history: any
 }
 
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
@@ -49,7 +50,7 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
 
     return (
       <div className={classes.root}>
@@ -68,7 +69,7 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab newOrUpdate={'new'}/></TabContainer>}
+          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}
           {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
           </div> 
         </div>

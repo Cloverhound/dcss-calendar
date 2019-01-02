@@ -205,7 +205,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addHoliday: () => (dispatch(addHoliday())),
   changeHolidayListName: (obj) => (dispatch(changeHolidayListName(obj))),
-  submitUpdateHolidayList: (obj) => (dispatch(submitUpdateHolidayListToServer(obj))),
+  submitUpdateHolidayList: (obj) => (dispatch(submitUpdateHolidayListToServer({...obj, history: ownProps.history}))),
   requestGetHolidayList: (obj) => (dispatch(getHolidayListFromServer(obj))),
   handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })

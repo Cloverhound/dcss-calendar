@@ -147,21 +147,19 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
             <div className={classes.submitCancelContainer} style={{width: "100%", display: "inline-block"}}>
             <div className={classes.addIconContainer}>
                 <Button style={{float: "right"}} onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                <AddIcon />
+                  <AddIcon />
                 </Button>
             </div>
             <div>
                 {loading ? <CircularProgress className={classes.progress} /> : null}
                 <div style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "100%"}}>
-                    <Link to="/schedules">
                     <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{width: "90px"}} disabled={loading}>
                         Save
                     </Button>
-                    </Link>
                     <Link to="/schedules">
-                    <Button variant="outlined" color="primary" className={classes.button}>
-                        Cancel
-                    </Button>
+                      <Button variant="outlined" color="primary" className={classes.button}>
+                          Cancel
+                      </Button>
                     </Link>
                 </div>
             </div>
@@ -180,8 +178,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addRecurringTimeRange: () => (dispatch(addRecurringTimeRange())),
-  submitUpdateScheduleToServer: (obj) => (dispatch(submitUpdateScheduleToServer(obj))),
-  submitNewScheduleToServer: (obj) => (dispatch(submitNewScheduleToServer(obj))),
+  submitUpdateScheduleToServer: (obj) => (dispatch(submitUpdateScheduleToServer({obj, history: ownProps.history}))),
+  submitNewScheduleToServer: (obj) => (dispatch(submitNewScheduleToServer({obj, history: ownProps.history}))),
   changeScheduleName: (obj) => (dispatch(changeScheduleName(obj))),
   getScheduleFromServer: (obj) => (dispatch(getScheduleFromServer(obj))),
   handleCloseMessage: () => (dispatch(handleCloseMessage()))

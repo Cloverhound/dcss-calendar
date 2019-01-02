@@ -207,7 +207,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
   getHolidayListsFromServer: () => dispatch(getHolidayListsFromServer()),
   changeQueue: (obj) => (dispatch(changeQueue(obj))),
-  submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer(obj))),
+  submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer({...obj, history: ownProps.history}))),
   getQueueFromServer: (obj) => (dispatch(getQueueFromServer(obj))),
   handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
