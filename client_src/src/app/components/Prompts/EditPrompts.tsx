@@ -91,10 +91,24 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     getPromptsWithQueueIdFromServer(JSON.parse(this.props.match.params.id))
   }
 
+  officeDirectionPrompts = () => {
+    const { promptsReducer, match } = this.props;
+    const { office_directions } = promptsReducer;
+    let queueId = JSON.parse(match.params.id);
+    return office_directions.map(prompt => {
+      if(prompt.language === "English") {
+        return <Prompt queueId={queueId} id={prompt.id} language={"English"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+      } else if (prompt.language === "Spanish") {
+        return <Prompt queueId={queueId} id={prompt.id} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+      }
+    })
+  }
+
   render() {
     const { classes, promptsReducer, match } = this.props;
-    const { office_directions_eng, office_directions_span, optional_announcements_eng, optional_announcements_span } = promptsReducer;
+    const { optional_announcements_eng, optional_announcements_span } = promptsReducer;
     let queueId = JSON.parse(match.params.id);
+    let office_directions = this.officeDirectionPrompts()
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -103,8 +117,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
               <Paper className={classes.optionalWrapper}>
-                <Prompt queueId={queueId} id={office_directions_eng.id} language={"English"} type={office_directions_eng.type} name={office_directions_eng.name} file_path={office_directions_eng.file_path}/>
-                <Prompt queueId={queueId} id={office_directions_span.id} language={"Spanish"} type={office_directions_span.type} name={office_directions_span.name} file_path={office_directions_span.file_path}/>
+                {office_directions}
               </Paper>
             </div>
             <div className={classes.uploadSection}>

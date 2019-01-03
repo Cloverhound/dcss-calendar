@@ -34,8 +34,6 @@ export function* callCreatePrompt(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    console.log("result.res.queueId", result.res.queueId);
-    
     yield call(callGetPrompts)
     yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
     console.log("callCreatePrompt result", result)
