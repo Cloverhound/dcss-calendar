@@ -60,14 +60,14 @@ interface IProps {
 }
 
 
-class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> & IProps> {
+class RegularScheduleTab extends React.Component<WithStyles<typeof styles> & IProps> {
  
   handleNameInput = event => {
     const { changeScheduleName } = this.props;
     changeScheduleName({ name: event.target.value })
   };
 
-  handleAddScheduleSelect = () => {
+  handleAddRecurringTimeRange = () => {
     const { addRecurringTimeRange } = this.props
     addRecurringTimeRange()
   }
@@ -82,15 +82,6 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
     } else {
       console.log('NewOrUpdate prop is not recognized')
     }   
-  }
-
-  componentWillMount () {
-    if(!this.props.match) {
-      return
-    }
-    const { id } = this.props.match.params
-    const { getScheduleFromServer } = this.props;
-    getScheduleFromServer({id})
   }
 
   handleCloseMessage = () => {
@@ -146,7 +137,7 @@ class RegularEditScheduleTab extends React.Component<WithStyles<typeof styles> &
 
             <div className={classes.submitCancelContainer} style={{width: "100%", display: "inline-block"}}>
             <div className={classes.addIconContainer}>
-                <Button style={{float: "right"}} onClick={this.handleAddScheduleSelect} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+                <Button style={{float: "right"}} onClick={this.handleAddRecurringTimeRange} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                   <AddIcon />
                 </Button>
             </div>
@@ -181,9 +172,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   submitUpdateScheduleToServer: (obj) => (dispatch(submitUpdateScheduleToServer({obj, history: ownProps.history}))),
   submitNewScheduleToServer: (obj) => (dispatch(submitNewScheduleToServer({obj, history: ownProps.history}))),
   changeScheduleName: (obj) => (dispatch(changeScheduleName(obj))),
-  getScheduleFromServer: (obj) => (dispatch(getScheduleFromServer(obj))),
   handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(RegularEditScheduleTab));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(RegularScheduleTab));

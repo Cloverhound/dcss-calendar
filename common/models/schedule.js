@@ -184,7 +184,7 @@ function createRecurringTimeRange(createdSchedule, recurringTimeRangeParameter) 
 function createSingleDateTimeRange(createdSchedule, singleDateTimeRangeParameter) {
   console.log('Creating single date time range', singleDateTimeRangeParameter)
   delete singleDateTimeRangeParameter.id
-  if(!singleDateTimeRangeParameter.start || !singleDateTimeRange.end || !singleDateTimeRange.date) {
+  if(!singleDateTimeRangeParameter.start || !singleDateTimeRangeParameter.end || !singleDateTimeRangeParameter.date) {
     console.log('Not creating single date time range because start, end, and date must be provided', singleDateTimeRangeParameter)
     return 
   }

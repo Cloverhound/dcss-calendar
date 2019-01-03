@@ -6,7 +6,8 @@ import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import RegularEditScheduleTab from './RegularScheduleTab'
+import RegularScheduleTab from './RegularScheduleTab'
+import SpecialScheduleTab from './SpecialScheduleTab'
 import {resetSchedule} from '../../actions'
 
 
@@ -69,8 +70,8 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}
-          {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
+          {this.state.value === 0 && <TabContainer><RegularScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}
+          {this.state.value === 1 && <TabContainer><SpecialScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}  
           </div> 
         </div>
       </div>
