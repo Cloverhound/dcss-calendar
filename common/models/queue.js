@@ -13,6 +13,13 @@ module.exports = function (Queue) {
       returns: {arg: 'status', type: 'any'},
   })
 
+  Queue.remoteMethod(
+    'createQueueAndPrompts', {
+      http: {path: '/createQueueAndPrompts', verb: 'post'},
+      accepts: {arg: 'queue', type: 'any', http: {source: 'body'}},
+      returns: {arg: 'status', type: 'any'},
+  })
+
 
   Queue.status = (id) => {
     return Queue.findById(id)
@@ -29,8 +36,46 @@ module.exports = function (Queue) {
           return Promise.resolve(err)
       })
   }
+
+  Queue.createQueueAndPrompts = async (body) => {
+    return Queue.create(body)
+      .then(async function(res) {
+        let prompts = await createPrompts(res)
+        return prompts
+      })
+      .catch(err => err)
+  }
 }
 
+let createPrompts = (obj) => {
+  let promptsArray = [{
+      index: 0,
+      language: "English",
+      type: "office directions",
+      enabled: false,
+      queueId: obj.id
+    },
+    {
+      index: 1,
+      language: "Spanish",
+      type: "office directions",
+      enabled: false,
+      queueId: obj.id
+    }
+  ]
+
+  let array = [];
+  let actions = promptsArray.map(prompt => {
+    return new Promise(function(resolve, reject) {
+      obj.prompts.create(prompt)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  })
+
+  let results = Promise.all(actions)
+  return results
+}
 
 
 var getStatus = async function(queue) {
