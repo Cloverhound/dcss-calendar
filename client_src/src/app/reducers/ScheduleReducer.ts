@@ -37,14 +37,24 @@ const ScheduleReducer = (state: any = initialState, action) => {
             return toggleRecurringDay(state, action.payload)
         case 'DELETE_RECURRING_TIME_RANGE':
             return deleteRecurringTimeRange(state, action.payload)
+        case 'DELETE_SINGLE_DATE_TIME_RANGE':
+            return deleteSingleDateTimeRange(state, action.payload)
         case 'ADD_RECURRING_TIME_RANGE':
             return addRecurringTimeRange(state)
+        case 'ADD_SINGLE_DATE_TIME_RANGE':
+            return addSingleDateTimeRange(state)
         case 'CHANGE_SCHEDULE_NAME':
             return changeScheduleName(state, action.payload)
         case 'CHANGE_START_OF_RECURRING_TIME_RANGE':
             return changeStartOfRecurringTimeRange(state, action.payload)
         case 'CHANGE_END_OF_RECURRING_TIME_RANGE':
             return changeEndOfRecurringTimeRange(state, action.payload)
+        case 'CHANGE_START_OF_SINGLE_DATE_TIME_RANGE':
+            return changeStartOfSingleDateTimeRange(state, action.payload)
+        case 'CHANGE_END_OF_SINGLE_DATE_TIME_RANGE':
+            return changeEndOfSingleDateTimeRange(state, action.payload)
+        case 'CHANGE_DATE_OF_SINGLE_DATE_TIME_RANGE':
+            return changeDateOfSingleDateTimeRange(state, action.payload)
         case 'RESET_SCHEDULE':
             return resetSchedule()
         case 'SCHEDULE_LOADING':
@@ -106,7 +116,7 @@ function deleteRecurringTimeRange(state, payload) {
     console.log('Deleting Recurring Time Range', payload, state)
 
     if (state.recurringTimeRanges.length === 1) {
-        return { ...initialState }
+        return { ...state, recurringTimeRanges: [{...emptyRecurringTimeRange}] }
     }
 
     let recurringTimeRanges = [...state.recurringTimeRanges]
@@ -115,14 +125,35 @@ function deleteRecurringTimeRange(state, payload) {
     return { ...state, recurringTimeRanges }
 }
 
+function deleteSingleDateTimeRange(state, payload) {
+    console.log('Deleting Single Date Time Range', payload, state)
+
+    if (state.singleDateTimeRanges.length === 1) {
+        return { ...state, singleDateTimeRanges: [{...emptySingleDateTimeRange}] }
+    }
+
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    singleDateTimeRanges.splice(payload.index, 1);
+    singleDateTimeRanges = updateIndices(singleDateTimeRanges)
+    return { ...state, singleDateTimeRanges }
+}
+
 function addRecurringTimeRange(state) {
     console.log('Adding recurring time range', state)
     let recurringTimeRanges = [...state.recurringTimeRanges]
     let index = recurringTimeRanges.length
     let recurringTimeRange = { ...emptyRecurringTimeRange, index }
     recurringTimeRanges.push(recurringTimeRange)
-    console.log('Time ranges after adding', recurringTimeRanges)
     return { ...state, recurringTimeRanges}
+}
+
+function addSingleDateTimeRange(state) {
+    console.log('Adding single date time range', state)
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    let index = singleDateTimeRanges.length
+    let singleDateTimeRange = { ...emptySingleDateTimeRange, index }
+    singleDateTimeRanges.push(singleDateTimeRange)
+    return { ...state, singleDateTimeRanges}
 }
 
 function changeScheduleName(state, payload) {
@@ -145,6 +176,21 @@ function changeStartOfRecurringTimeRange(state, payload) {
     return { ...state, recurringTimeRanges }
 }
 
+function changeStartOfSingleDateTimeRange(state, payload) {
+    console.log('Changing start time of single date time range', payload)
+
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    let singleDateTimeRange  = singleDateTimeRanges[payload.index]
+
+    if(!singleDateTimeRange) {
+        console.error('Error: No single date time range found. This should not have happened.')
+        return {...state}
+    }
+
+    singleDateTimeRange.start = payload.value
+    return { ...state, singleDateTimeRanges }
+}
+
 function changeEndOfRecurringTimeRange(state, payload) {
     console.log('Changing end time of recurring time range', payload)
 
@@ -158,6 +204,31 @@ function changeEndOfRecurringTimeRange(state, payload) {
     
     recurringTimeRange.end = payload.value
     return { ...state, recurringTimeRanges }
+}
+
+function changeEndOfSingleDateTimeRange(state, payload) {
+    console.log('Changing end time of single date time range', payload)
+
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    let singleDateTimeRange  = singleDateTimeRanges[payload.index]
+
+    if(!singleDateTimeRange) {
+        console.error('Error: No single date time range found. This should not have happened.')
+        return {...state}
+    }
+    
+    singleDateTimeRange.end = payload.value
+    return { ...state, singleDateTimeRanges }
+}
+
+function changeDateOfSingleDateTimeRange(state, payload) {
+    console.log('Changing date of single date time range', state, payload)
+    let singleDateTimRanges = [...state.singleDateTimeRanges]
+    let singleDateTimeRange = singleDateTimRanges[payload.index]
+    if(!singleDateTimeRange) {console.log('No single date time range with index found!'); return;}
+    singleDateTimeRange.date = payload.date
+  
+    return {...state, singleDateTimRanges}
 }
 
 function resetSchedule() {

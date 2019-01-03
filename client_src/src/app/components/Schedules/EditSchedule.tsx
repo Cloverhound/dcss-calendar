@@ -6,8 +6,9 @@ import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import RegularEditScheduleTab from './RegularScheduleTab'
-import {resetSchedule} from '../../actions'
+import RegularScheduleTab from './RegularScheduleTab'
+import SpecialScheduleTab from './SpecialScheduleTab'
+import {resetSchedule, getScheduleFromServer} from '../../actions'
 
 const styles = theme => createStyles({
   root: {
@@ -24,7 +25,8 @@ const styles = theme => createStyles({
 interface IProps {
   match: any,
   resetSchedule: any,
-  history: any
+  history: any,
+  getScheduleFromServer: any
 }
 
 
@@ -41,12 +43,15 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
     value: 0,
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value })
+  componentWillMount() {
+    this.props.resetSchedule()
+    const { id } = this.props.match.params
+    const { getScheduleFromServer } = this.props;
+    getScheduleFromServer({id})
   }
 
-  componentWillMount () {
-    this.props.resetSchedule()
+  handleChange = (event, value) => {
+    this.setState({ value })
   }
 
   render() {
@@ -69,8 +74,8 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
             
           </AppBar>
 
-          {this.state.value === 0 && <TabContainer><RegularEditScheduleTab match={this.props.match} newOrUpdate={'update'} history={history}/></TabContainer>}
-          {this.state.value === 1 && <TabContainer>Hello, World</TabContainer>}   
+          {this.state.value === 0 && <TabContainer><RegularScheduleTab match={this.props.match} newOrUpdate={'update'} history={history}/></TabContainer>}
+          {this.state.value === 1 && <TabContainer><SpecialScheduleTab match={this.props.match} newOrUpdate={'update'} history={history}/></TabContainer>}   
           </div> 
         </div>
       </div>
@@ -79,7 +84,8 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  resetSchedule: () => (dispatch(resetSchedule()))
+  resetSchedule: () => (dispatch(resetSchedule())),
+  getScheduleFromServer: (obj) => (dispatch(getScheduleFromServer(obj)))
 })
 
 

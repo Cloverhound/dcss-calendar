@@ -10,6 +10,12 @@ export const toggleRecurringDay                      = obj => ({ type: "TOGGLE_R
 export const deleteRecurringTimeRange                = obj => ({ type: "DELETE_RECURRING_TIME_RANGE", payload: obj });
 export const addRecurringTimeRange                   = ()  => ({ type: "ADD_RECURRING_TIME_RANGE" });
 
+export const changeStartOfSingleDateTimeRange        = obj => ({ type: "CHANGE_START_OF_SINGLE_DATE_TIME_RANGE", payload: obj})
+export const changeEndOfSingleDateTimeRange          = obj => ({ type: "CHANGE_END_OF_SINGLE_DATE_TIME_RANGE", payload: obj})
+export const changeDateOfSingleDateTimeRange         = obj => ({ type: "CHANGE_DATE_OF_SINGLE_DATE_TIME_RANGE", payload: obj })
+export const deleteSingleDateTimeRange               = obj => ({ type: "DELETE_SINGLE_DATE_TIME_RANGE", payload: obj})
+export const addSingleDateTimeRange                  = ()  => ({ type: "ADD_SINGLE_DATE_TIME_RANGE" })
+
 export const getSchedulesFromServer                  = ()  => ({ type: "GET_SCHEDULES_FROM_SERVER" });
 export const getSchedulesFromServerSucceeded         = obj => ({ type: "GET_SCHEDULES_FROM_SERVER_SUCCEEDED", payload: obj  });
 export const getSchedulesFromServerFailed            = obj => ({ type: "GET_SCHEDULES_FROM_SERVER_FAILED", payload: obj  });
