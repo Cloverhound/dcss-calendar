@@ -94,8 +94,6 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   render() {
     const { classes, promptsReducer, match } = this.props;
     const { office_directions_eng, office_directions_span, optional_announcements_eng, optional_announcements_span } = promptsReducer;
-    console.log("office_directions_eng", office_directions_eng);
-    
     let queueId = JSON.parse(match.params.id);
     return (
       <div className={classes.root}>
