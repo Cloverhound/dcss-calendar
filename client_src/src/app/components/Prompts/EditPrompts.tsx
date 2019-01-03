@@ -4,9 +4,10 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
 import Prompt from './Prompt'
 import { connect } from 'react-redux';
-import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, addOfficePrompts } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -23,7 +24,7 @@ const styles = theme => createStyles({
   subTitle: {
     margin: theme.spacing.unit,
   },
-  uploadSection: {
+    uploadSection: {
     margin: '20px 0px',
   },
   paper: {
@@ -81,7 +82,8 @@ interface IProps {
   getPromptFromServer: any,
   getPromptsWithQueueIdFromServer: any,
   promptsReducer: any,
-  match: any
+  match: any,
+  addOfficePrompts: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -91,15 +93,20 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     getPromptsWithQueueIdFromServer(JSON.parse(this.props.match.params.id))
   }
 
+  handleAddOfficePrompts = () => {
+    const { addOfficePrompts } = this.props;
+    addOfficePrompts()
+  }
+
   officeDirectionPrompts = () => {
     const { promptsReducer, match } = this.props;
     const { office_directions } = promptsReducer;
     let queueId = JSON.parse(match.params.id);
     return office_directions.map(prompt => {
       if(prompt.language === "English") {
-        return <Prompt queueId={queueId} id={prompt.id} language={"English"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+        return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"English"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
       } else if (prompt.language === "Spanish") {
-        return <Prompt queueId={queueId} id={prompt.id} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+        return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
       }
     })
   }
@@ -119,6 +126,12 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
               <Paper className={classes.optionalWrapper}>
                 {office_directions}
               </Paper>
+              <div className={classes.addIconContainer}>
+            {/* {loading ? <CircularProgress className={classes.progress} /> : null} */}
+              <Button onClick={this.handleAddOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+                <AddIcon />
+              </Button>
+            </div>
             </div>
             <div className={classes.uploadSection}>
             <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
@@ -151,6 +164,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
   getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
   getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
+  addOfficePrompts: () => (dispatch(addOfficePrompts()))
 })
 
 

@@ -40,7 +40,8 @@ interface IProps {
   id: any,
   promptObj: any,
   name: any,
-  file_path: any
+  file_path: any,
+  index: any
 }
 
 class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
@@ -51,16 +52,17 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitUpload = (e) => {
-    const { queueId, language, type } = this.props
+    const { queueId, language, type, index } = this.props
     const { promptsReducer, submitUploadPromptToServer } = this.props;
     e.preventDefault()
     const formData = new FormData();
-
     formData.append('file', promptsReducer.targetFile);
+    formData.append('index', index);
     formData.append('queueId', queueId);
     formData.append('language', language);
     formData.append('type', type);
     formData.append('enabled', "false");
+
     submitUploadPromptToServer(formData) 
   }
 

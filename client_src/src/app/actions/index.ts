@@ -111,4 +111,5 @@ export const getPromptsWithQueueIdFromServer = obj => ({type: "GET_PROMPTS_WITH_
 export const submitUploadPromptToServer = obj => ({type: "SUBMIT_UPLOAD_PROMPT_TO_SERVER", payload: obj})
 export const submitDeletePromptToServer = obj => ({type: "SUBMIT_DELETE_PROMPT_TO_SERVER", payload: obj})
 export const updateTargetFile = obj => ({type: "UPDATE_TARGET_FILE", payload: obj})
+export const addOfficePrompts = () => ({type: "ADD_OFFICE_PROMPTS"})
 

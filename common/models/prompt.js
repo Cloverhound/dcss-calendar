@@ -56,9 +56,11 @@ function deleteFile(file_path) {
 function fileUpload(Prompt) {
   // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
   Prompt.upload = function (promptFile, cb) {
+    console.log('promptFile', promptFile);
+    
     let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;
-    let path = Date.now() + "_" + fileName
+    let path = Date.now() + "_" + fileName;
 
     fs.writeFile(`./server/storage/${path}`, buffer, async (err) => {
       if (err) {
@@ -71,11 +73,12 @@ function fileUpload(Prompt) {
 }
 
 async function createPrompt(Prompt, path, fileName, body) {
-  const { queueId, language, type, enabled} = body
+  const { queueId, index, language, type, enabled } = body;
   let isTrue = (enabled == "true")
   let newPrompt = await new Promise(function (resolve, reject) {
     Prompt.create({
       name: fileName,
+      index,
       language,
       type,
       enabled: isTrue,

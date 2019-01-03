@@ -24,7 +24,9 @@ export function* callGetPromptsWithQueueId(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    yield put({type:"UPDATE_PROMPTS", payload: result})
+    if(result.length){
+      yield put({type:"UPDATE_PROMPTS", payload: result})
+    }
     console.log("callGetPromptsWithQueueId result", result)
   }
 }
