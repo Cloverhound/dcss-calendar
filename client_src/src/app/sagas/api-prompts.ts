@@ -34,10 +34,11 @@ export async function getPromptsWithQueueId(payload) {
   }
 }
 
-export async function createPrompt(payload) {
+
+export async function updatePrompt(payload) {
   try {
     let response = await fetch('/api/Prompts/upload', {
-      method: 'POST',
+      method: 'PUT',
       body: payload
     });
     let responseJson = await response.json()
@@ -52,6 +53,46 @@ export async function deletePrompt(payload) {
     let response = await fetch(`/api/Prompts/${payload.id}/deleteFile`, {
       method: 'DELETE',
       body: payload
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function createPrompts(payload) {
+  try {
+    let response = await fetch(`/api/Prompts/${payload.queueId}/createPrompts`, {
+      method: 'GET'
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function clearPrompt(payload) {
+  try {
+    let response = await fetch(`/api/Prompts/${payload.id}/clearPrompt`, {
+      method: 'PUT'
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deletePromptRows(payload) {
+  try {
+    let response = await fetch(`/api/Prompts/deletePromptRows`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
     });
     let responseJson = await response.json()
     return responseJson
