@@ -73,9 +73,10 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, id, language, name, file_path } = this.props;
+    const { classes, language, name, file_path } = this.props;
+    console.log("this.props", this.props)
     let inputShow;
-    if(!id) {
+    if(!file_path) {
       inputShow = <div className={classes.optionalContainer}>
                     <Typography className={classes.title} variant="body1">{language}</Typography>
                     <input

@@ -94,21 +94,26 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitNewOfficePrompts = () => {
-    const { promptsReducer, submitNewOfficePromptsToServer } = this.props;
+    const { submitNewOfficePromptsToServer } = this.props;
     let queueId = JSON.parse(this.props.match.params.id)
     submitNewOfficePromptsToServer({queueId})
   }
 
   officeDirectionPrompts = () => {
-    const { promptsReducer, match } = this.props;
+    const { classes, promptsReducer, match } = this.props;
     const { office_directions } = promptsReducer;
     let queueId = JSON.parse(match.params.id);
-    return office_directions.map(prompt => {
-      if(prompt.language === "English") {
-        return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"English"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
-      } else if (prompt.language === "Spanish") {
-        return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
-      }
+    return office_directions.map(nestedArray => {
+     let rows = nestedArray.map(prompt => {
+        if(prompt.language === "English") {
+          return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"English"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+        } else if (prompt.language === "Spanish") {
+          return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
+        }
+      })
+      return <Paper className={classes.optionalWrapper}>
+              {rows}
+            </Paper>
     })
   }
 
@@ -124,9 +129,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
             <Typography className={classes.title} variant="title">Edit Prompts</Typography>
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
-              <Paper className={classes.optionalWrapper}>
                 {office_directions}
-              </Paper>
               <div className={classes.addIconContainer}>
             {/* {loading ? <CircularProgress className={classes.progress} /> : null} */}
               <Button onClick={this.handleSubmitNewOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>

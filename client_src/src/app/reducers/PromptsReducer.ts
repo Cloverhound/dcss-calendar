@@ -2,7 +2,7 @@ let initialState = {
   targetFile: '',
   prompts: [],
   office_directions: [
-    {
+   [ {
       id: undefined,
       index: 0,
       enabled: false,
@@ -19,7 +19,7 @@ let initialState = {
       name: "",
       type: "office directions",
       url: ""
-    }
+    }]
   ],
   optional_announcements: [
     {
@@ -107,15 +107,23 @@ const promptsReducer = (state = initialState, action) => {
         office_directions.push(prompt)
       }
     })
-    office_directions.sort((a,b) => a.id - b.id)
+    office_directions.sort((a,b) => a.index - b.index)
+
+    let nested_office_directions = []
+    if(office_directions.length){
+      for(let i = 0; i < office_directions.length; i+2) {
+        nested_office_directions.push(office_directions.splice(0,2))
+      }
+    }
+
     let optional_announcements_eng = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "English")
     let optional_announcements_span = action.payload.find(prompt => prompt.type === "optional announcements" && prompt.language === "Spanish")
-    !office_directions.length ? office_directions = state.office_directions_initial : null
+    !nested_office_directions.length ? nested_office_directions = state.office_directions_initial : null
     !optional_announcements_eng ? optional_announcements_eng = state.optional_announcements_eng_initial : null
     !optional_announcements_span ? optional_announcements_span = state.optional_announcements_span_initial : null
-      return {
+    return {
               ...state,
-              office_directions,
+              office_directions: [...nested_office_directions],
               ...(optional_announcements_eng && {optional_announcements_eng}),
               ...(optional_announcements_span && {optional_announcements_span}),
             }

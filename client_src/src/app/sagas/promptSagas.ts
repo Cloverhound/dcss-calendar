@@ -57,7 +57,7 @@ export function* callCreatePrompts(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    // yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: result.status[0].queueId})
     console.log("callCreatePrompts result", result)
   }
 }
