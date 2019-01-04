@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Prompt from './Prompt'
 import { connect } from 'react-redux';
-import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, addOfficePrompts } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, submitNewOfficePromptsToServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -83,7 +83,7 @@ interface IProps {
   getPromptsWithQueueIdFromServer: any,
   promptsReducer: any,
   match: any,
-  addOfficePrompts: any
+  submitNewOfficePromptsToServer: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -93,9 +93,10 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     getPromptsWithQueueIdFromServer(JSON.parse(this.props.match.params.id))
   }
 
-  handleAddOfficePrompts = () => {
-    const { addOfficePrompts } = this.props;
-    addOfficePrompts()
+  handleSubmitNewOfficePrompts = () => {
+    const { promptsReducer, submitNewOfficePromptsToServer } = this.props;
+    let queueId = JSON.parse(this.props.match.params.id)
+    submitNewOfficePromptsToServer({queueId})
   }
 
   officeDirectionPrompts = () => {
@@ -128,7 +129,7 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
               </Paper>
               <div className={classes.addIconContainer}>
             {/* {loading ? <CircularProgress className={classes.progress} /> : null} */}
-              <Button onClick={this.handleAddOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+              <Button onClick={this.handleSubmitNewOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>
                 <AddIcon />
               </Button>
             </div>
@@ -164,7 +165,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
   getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
   getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
-  addOfficePrompts: () => (dispatch(addOfficePrompts()))
+  submitNewOfficePromptsToServer: (obj) => (dispatch(submitNewOfficePromptsToServer(obj)))
 })
 
 

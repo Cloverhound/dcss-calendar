@@ -4,6 +4,7 @@ var fs = require("fs")
 module.exports = function (Prompt) {
   deletePrompt(Prompt)
   fileUpload(Prompt)
+  // createPrompts(Prompt)
 
   Prompt.remoteMethod(
     'upload', {
@@ -23,7 +24,53 @@ module.exports = function (Prompt) {
       ],
       returns: {arg: 'status', type: 'string'},
     })
+
+  Prompt.remoteMethod(
+    'createPrompts', {
+      http: {path: '/:queueId/createPrompts', verb: 'get'},
+      accepts: [
+        {arg: 'queueId', type: 'number', require: true}
+      ],
+      returns: {arg: 'status', type: 'string'},
+    })
+
+    Prompt.createPrompts = (queueId) => {
+      let filter = {where: {queueId: queueId}, order: 'index DESC', limit: 1}
+      return Prompt.find(filter)
+        .then(async function(res) {
+          let prompts = await makePrompts(Prompt, queueId, res[0].index)
+          return prompts
+        })
+    }
 };
+
+
+let makePrompts = (Prompt, queueId, index) => {
+  let promptsArray = [{
+      index: index + 1,
+      language: "English",
+      type: "office directions",
+      enabled: false,
+      queueId
+    },
+    {
+      index: index + 2,
+      language: "Spanish",
+      type: "office directions",
+      enabled: false,
+      queueId
+    }
+  ]
+
+  let actions = promptsArray.map(prompt => {
+    return new Promise(function(resolve, reject) {
+      Prompt.create(prompt)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  })
+  return Promise.all(actions) 
+}
 
 function deletePrompt(Prompt) {
   Prompt.deleteFile = function (id, cb) {

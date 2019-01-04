@@ -64,7 +64,6 @@ let createPrompts = (obj) => {
     }
   ]
 
-  let array = [];
   let actions = promptsArray.map(prompt => {
     return new Promise(function(resolve, reject) {
       obj.prompts.create(prompt)

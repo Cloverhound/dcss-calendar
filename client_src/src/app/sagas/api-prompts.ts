@@ -59,3 +59,16 @@ export async function deletePrompt(payload) {
     console.log(error)
   }
 }
+
+export async function createPrompts(payload) {
+  console.log("api create payload", payload)
+  try {
+    let response = await fetch(`/api/Prompts/${payload.queueId}/createPrompts`, {
+      method: 'GET'
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}
