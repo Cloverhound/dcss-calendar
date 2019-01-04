@@ -38,7 +38,6 @@ export function* callUpdatePrompt(action) {
   } else {
     // yield call(callGetPrompts)
     yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
-    console.log("updatePrompt result", result)
   }
 }
 
