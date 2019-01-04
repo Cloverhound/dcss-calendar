@@ -137,7 +137,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   };
 
   handlePromptsToggle = () => {
-    
+
   }
 
   statusColor = (status) => {
@@ -179,10 +179,10 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
-  promptStatus = () => {
+  promptStatus = (bool) => {
     return  <TableCell>
               <Switch
-                checked={true}
+                checked={bool}
                 onChange={this.handlePromptsToggle}
                 value="checkedB"
                 color="primary"
@@ -246,7 +246,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     } else if (columnName === 'Prompts') {
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
-                      tableCell = this.promptStatus()
+                      tableCell = this.promptStatus(row["Optional Prompts Toggle"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }

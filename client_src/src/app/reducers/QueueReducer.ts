@@ -2,7 +2,7 @@ let initialState = {
   id: 0,
   message: {type: "", content: ""},
   loading: false,
-  toQueues: false
+  toQueues: false,
 }
 
 const queueReducer = (state = initialState, action) => {

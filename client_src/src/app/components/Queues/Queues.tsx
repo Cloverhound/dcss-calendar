@@ -27,7 +27,7 @@ class Queues extends React.Component<IProps> {
         'Schedule Name': queue.schedule.name,
         'Holiday Name': queue.holidayList.name,
         'Prompts': null,
-        'Optional Prompts Toggle': null
+        'Optional Prompts Toggle': queue.optional_prompt_enabled
       }
     })
   }

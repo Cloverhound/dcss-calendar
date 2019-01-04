@@ -24,7 +24,7 @@
       "default": false
     },
     "optional_prompt_enabled": {
-      "type": "boolean",
+      "type": "Boolean",
       "default": false
     },
     "scheduleId": {

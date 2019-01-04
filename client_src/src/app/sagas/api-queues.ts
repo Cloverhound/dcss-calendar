@@ -1,4 +1,5 @@
 export async function createQueue(payload) {
+  console.log("paylaod", payload)
   try {
     let response = await fetch('/api/Queues/createQueueAndPrompts', {
       method: 'POST',
@@ -59,7 +60,7 @@ export async function getQueues() {
     });
     
     let responseJson = await response.json()
-    
+    console.log("responseJson", responseJson)
     return responseJson
   } catch (error) {
     return {error}
