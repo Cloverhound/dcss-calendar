@@ -48,7 +48,8 @@ module.exports = function (Queue) {
 }
 
 let createPrompts = (obj) => {
-  let promptsArray = [{
+  let promptsArray = [
+    {
       index: 0,
       language: "English",
       type: "office directions",
@@ -59,6 +60,20 @@ let createPrompts = (obj) => {
       index: 1,
       language: "Spanish",
       type: "office directions",
+      enabled: false,
+      queueId: obj.id
+    },
+    {
+      index: 0,
+      language: "English",
+      type: "optional announcements",
+      enabled: false,
+      queueId: obj.id
+    },
+    {
+      index: 1,
+      language: "Spanish",
+      type: "optional announcements",
       enabled: false,
       queueId: obj.id
     }

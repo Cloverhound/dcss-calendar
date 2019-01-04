@@ -124,7 +124,8 @@ function deleteFile(file_path) {
 // Upload Prompt
 function fileUpload(Prompt) {
   return Prompt.upload = (promptFile) => {
-
+    console.log('promptFile', promptFile);
+    
     let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;
     let path = Date.now() + "_" + fileName;
