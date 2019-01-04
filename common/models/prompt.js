@@ -2,10 +2,6 @@
 var fs = require("fs")
 
 module.exports = function (Prompt) {
-  deletePrompt(Prompt)
-  fileUpload(Prompt)
-  // createPrompts(Prompt)
-
   Prompt.remoteMethod(
     'upload', {
       http: { path: '/upload', verb: 'put' },
@@ -23,8 +19,8 @@ module.exports = function (Prompt) {
         {arg: 'id', type: 'number', require: true}
       ],
       returns: {arg: 'status', type: 'string'},
-    })
-
+    }
+  )
   Prompt.remoteMethod(
     'createPrompts', {
       http: {path: '/:queueId/createPrompts', verb: 'get'},
@@ -32,18 +28,34 @@ module.exports = function (Prompt) {
         {arg: 'queueId', type: 'number', require: true}
       ],
       returns: {arg: 'status', type: 'string'},
-    })
-
-    Prompt.createPrompts = (queueId) => {
-      let filter = {where: {queueId: queueId}, order: 'index DESC', limit: 1}
-      return Prompt.find(filter)
-        .then(async function(res) {
-          let prompts = await makePrompts(Prompt, queueId, res[0].index)
-          return prompts
-        })
     }
+  )
+  Prompt.remoteMethod(
+    'clearPrompt', {
+      http: {path: '/:id/clearPrompt', verb: 'put'},
+      accepts: [
+        {arg: 'id', type: 'number', require: true}
+      ],
+      returns: {arg: 'status', type: 'string'},
+    }
+  )
+  createPrompts(Prompt)
+  deletePrompt(Prompt)
+  fileUpload(Prompt)
+  clearPrompt(Prompt)
 };
 
+// Create Prompts
+let createPrompts = (Prompt) => {
+  Prompt.createPrompts = (queueId) => {
+    let filter = {where: {queueId: queueId}, order: 'index DESC', limit: 1}
+    return Prompt.find(filter)
+      .then(async function(res) {
+        let prompts = await makePrompts(Prompt, queueId, res[0].index)
+        return prompts
+      })
+  }
+}
 
 let makePrompts = (Prompt, queueId, index) => {
   let promptsArray = [{
@@ -72,6 +84,7 @@ let makePrompts = (Prompt, queueId, index) => {
   return Promise.all(actions) 
 }
 
+// Delete Prompt
 function deletePrompt(Prompt) {
   Prompt.deleteFile = function (id, cb) {
     let res;
@@ -100,6 +113,7 @@ function deleteFile(file_path) {
   });
 }
 
+// Upload Prompt
 function fileUpload(Prompt) {
   return Prompt.upload = (promptFile) => {
 
@@ -132,4 +146,44 @@ const updatePrompt = (Prompt, path, fileName, body) => {
       .then(res => resolve(res))
       .catch(err => reject(err))
   })
+}
+
+// Clear Prompt
+const clearPrompt = (Prompt) => {
+  Prompt.clearPrompt = (id) => {
+
+  return new Promise(function(resolve, reject){
+    Prompt.findById(id)
+    .then(res => resolve(resetPrompt(Prompt, res)))
+    .then(err => reject(err))
+  })
+  .then(res => res)
+  .then(err => err)
+  }
+}
+
+const resetPrompt = (Prompt, obj) => {
+  let where = {id: obj.id}
+  let data = {
+      name: null,
+      file_path: null
+  }
+  return new Promise(function(resolve, reject){
+    Prompt.upsertWithWhere(where, data)
+      .then(res => resolve(deleteFileFromLocal(obj)))
+      .catch(err => reject(err))
+  })
+  .then(res => res)
+  .catch(err => err)
+}
+
+const deleteFileFromLocal = (obj) => {
+  return new Promise(function(resolve, reject){
+   fs.unlink(`./server/storage/${obj.file_path}`, (err) => {
+      if (err) throw reject(err);
+    return resolve({queueId: obj.queueId, path: `${obj.file_path} was deleted`})
+    });
+  })
+  .then(res => res)
+  .then(err => err)
 }

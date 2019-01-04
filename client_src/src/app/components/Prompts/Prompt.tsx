@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
-import { submitUpdatePromptToServer, updateTargetFile, submitDeletePromptToServer } from '../../actions'
+import { submitUpdatePromptToServer, updateTargetFile, submitDeletePromptToServer, submitClearPromptToServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -32,6 +32,7 @@ const styles = theme => createStyles({
 interface IProps {
   submitUpdatePromptToServer: any,
   submitDeletePromptToServer: any,
+  submitClearPromptToServer: any,
   updateTargetFile: any,
   promptsReducer: any,
   language: any,
@@ -67,6 +68,12 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     e.preventDefault()
     const { submitDeletePromptToServer, id } = this.props
     submitDeletePromptToServer({id})
+  }
+
+  handleSubmitClear(e) {
+    e.preventDefault()
+    const { submitClearPromptToServer, id } = this.props
+    submitClearPromptToServer({id})
   }
 
   render() {
@@ -105,9 +112,9 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                       className={classes.button}
                       type='file'
                       variant='outlined'
-                      onClick={(e) => this.handleDelete(e)}
+                      onClick={(e) => this.handleSubmitClear(e)}
                     >
-                      Delete
+                      Clear
                     </Button>
                   </div>
     }
@@ -129,7 +136,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   submitUpdatePromptToServer: (obj) => (dispatch(submitUpdatePromptToServer(obj))),
   updateTargetFile: (obj) => (dispatch(updateTargetFile(obj))),
-  submitDeletePromptToServer: (obj) => (dispatch(submitDeletePromptToServer(obj)))
+  submitDeletePromptToServer: (obj) => (dispatch(submitDeletePromptToServer(obj))),
+  submitClearPromptToServer: (obj) => (dispatch(submitClearPromptToServer(obj)))
 })
 
 
