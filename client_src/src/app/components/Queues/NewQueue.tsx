@@ -9,10 +9,12 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { submitNewQueueToServer, getSchedulesFromServer, getHolidayListsFromServer, changeQueue, resetQueueState } from '../../actions/index'
+import { submitNewQueueToServer, getSchedulesFromServer, getHolidayListsFromServer, changeQueue, resetQueueState, handleCloseMessage } from '../../actions/index'
 
 import {
   Link
@@ -64,6 +66,9 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  progress: {
+    margin: theme.spacing.unit * 2,
   }
 });
 
@@ -76,7 +81,8 @@ interface IProps {
   queuesReducer: any,
   getHolidayListsFromServer: any,
   holidayListsReducer: any,
-  resetQueueState: any
+  resetQueueState: any,
+  handleCloseMessage: any
 }
 
 class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -96,10 +102,16 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   handleChangeQueue = event => {
     const { changeQueue } = this.props;
     changeQueue({ name: event.target.name, value: event.target.value })
-  };
+  }
+
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
 
   render() {
     const { classes, schedulesReducer, queueReducer, holidayListsReducer } = this.props;
+    const { message, loading } = queueReducer;
 
     let scheduleMenuItems = schedulesReducer.schedules.map(schedule => {
       return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
@@ -108,10 +120,19 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       return <MenuItem value={holiday.id}>{holiday.name}</MenuItem>
     })
 
+    console.log("message", message)
+
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
-          <form className={classes.form}>
+          <form className={classes.form}> 
+
+            <CalendarSnackbar
+                handleClose = {this.handleCloseMessage}
+                hideDuration = {6000}
+                message = {message} 
+            />
+
             <Typography className={classes.title} variant="title">New County</Typography>
              <TextField
               label="Name"
@@ -154,6 +175,7 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
             <div className={classes.submitCancelContainer}>
+                {loading ? <CircularProgress className={classes.progress} /> : null}
                 <Button onClick={this.handleSubmitNewQueue} variant="contained" color="primary" className={classes.button}>
                   Save
                 </Button>
@@ -185,7 +207,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getHolidayListsFromServer: () => (dispatch(getHolidayListsFromServer())),
     submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer({...obj, history: ownProps.history}))),
     changeQueue: (obj) => (dispatch(changeQueue(obj))),
-    resetQueueState: ()=> (dispatch(resetQueueState()))
+    resetQueueState: ()=> (dispatch(resetQueueState())),
+    handleCloseMessage: () => (dispatch(handleCloseMessage()))
   } 
 }
 

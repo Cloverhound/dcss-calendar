@@ -28,25 +28,32 @@ module.exports = function (Queue) {
             return Promise.resolve(status)
           } catch(e) {
             console.log('Failed to get status', e)
-            return Promise.resolve(e)
+            return Promise.reject(e)
           }
       }).catch(function(err) {
           console.log('Failed to find queue to get status', err)
-          return Promise.resolve(err)
+          return Promise.reject(err)
       })
   }
 
   Queue.createQueueAndPrompts = async (body) => {
+    console.log('Creating queue and prompts')
     return Queue.create(body)
       .then(async function(res) {
+        console.log('Created Queue', res)
         let prompts = await createPrompts(res)
+        console.log('Created Promps', prompts)
         return prompts
       })
-      .catch(err => err)
+      .catch(err => {
+        console.log('Error in creating Queue', err)
+        return Promise.reject(err)
+      })
   }
 }
 
 let createPrompts = (obj) => {
+  console.log('Creating prompts')
   let promptsArray = [
     {
       index: 0,

@@ -42,6 +42,7 @@ export function* callUpdateQueue(action) {
 
 export function* callCreateQueue(action) {
   const { scheduleId, queueName, county_code, holidayListId, history } = action.payload
+  yield put(queueLoading())
 
   const result = yield call(createQueue, { name: queueName, county_code, scheduleId, holidayListId })
 

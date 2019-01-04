@@ -12,7 +12,7 @@
       "required": true
     },
     "county_code": {
-      "type": "Number",
+      "type": "String",
       "required": true
     },
     "force_open": {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
 
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { getQueuesFromServer, submitDeleteQueueToServer } from '../../actions'
 interface IProps {
   queuesReducer: any,
@@ -44,6 +45,10 @@ class Queues extends React.Component<IProps> {
 
   render() {
     let data = this.createTableData();
+
+    if(this.props.queuesReducer.reload) {
+      location.reload()
+    }
 
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
     return (
