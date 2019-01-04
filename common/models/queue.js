@@ -1,6 +1,5 @@
 'use strict';
 
-
 module.exports = function (Queue) {
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
 

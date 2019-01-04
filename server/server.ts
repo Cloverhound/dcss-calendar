@@ -4,7 +4,8 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path')
 var app = module.exports = loopback();
-require('dotenv').config();
+require('dotenv').config()
+var logger = require('./logger')
 
 
 
@@ -15,7 +16,11 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }))
 app.use(multer().any());
 app.use(bodyParser.json())
-var logger = function(req, res, next) {
+var httpLogger = function(req, res, next) {
+  const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+  const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
+  logger.info('Http ' + req.method + ' Request by ' + login + ' to ' + req.url)
+
   let body = JSON.stringify(req.body, null, 2)
   if(Object.keys(body).length > 0 ) {
     if(body != '{}') {
@@ -23,10 +28,28 @@ var logger = function(req, res, next) {
     }
   }
   
-  next(); // Passing the request to the next handler in the stack.
+  next(); 
 }
-app.use(logger);
+app.use(httpLogger);
 app.use(loopback.static(path.resolve(__dirname, './storage'))); 
+
+const basicAuthParser = require('basic-auth')
+
+var basicAuth = function (req, res, next) {
+  const user = basicAuthParser(req)
+  const validUser = user &&
+                  user.name === 'test' &&
+                  user.pass === 'test'
+
+  if (!validUser) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
+    return res.sendStatus(401)
+  }
+
+  next()
+}
+
+app.use(basicAuth);
 
 app.start = function() {
   // start the web server
