@@ -107,7 +107,7 @@ function deletePrompt(Prompt) {
 }
 
 function deleteFile(file_path) {
-  fs.unlink(`./server/storage/${file_path}`, (err) => {
+  fs.unlink(`${process.env.FILE_STORAGE_PATH}${file_path}`, (err) => {
     if (err) throw err;
     console.log(`${file_path} was deleted`);
   });
@@ -122,7 +122,7 @@ function fileUpload(Prompt) {
     let path = Date.now() + "_" + fileName;
 
     return new Promise(function(resolve, reject){
-      fs.writeFile(`./server/storage/${path}`, buffer, async function(err) {
+      fs.writeFile(`${process.env.FILE_STORAGE_PATH}${path}`, buffer, async function(err) {
         if (err) reject(err)
         let newPrompt = await updatePrompt(Prompt, path, fileName, promptFile.body)
         return resolve(newPrompt)
@@ -179,7 +179,7 @@ const resetPrompt = (Prompt, obj) => {
 
 const deleteFileFromLocal = (obj) => {
   return new Promise(function(resolve, reject){
-   fs.unlink(`./server/storage/${obj.file_path}`, (err) => {
+   fs.unlink(`${process.env.FILE_STORAGE_PATH}${obj.file_path}`, (err) => {
       if (err) throw reject(err);
     return resolve({queueId: obj.queueId, path: `${obj.file_path} was deleted`})
     });
