@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { createPrompt, getPrompts, getPromptsWithQueueId, getPrompt, deletePrompt } from './api-prompts'
+import { updatePrompt, getPrompts, getPromptsWithQueueId, getPrompt, deletePrompt, createPrompts, clearPrompt, deletePromptRows } from './api-prompts'
 
 export function* callGetPrompts() {
   const result = yield call(getPrompts)
@@ -24,21 +24,20 @@ export function* callGetPromptsWithQueueId(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    yield put({type:"UPDATE_PROMPTS", payload: result})
+    if(result.length){
+      yield put({type:"UPDATE_PROMPTS", payload: result})
+    }
     console.log("callGetPromptsWithQueueId result", result)
   }
 }
 
-export function* callCreatePrompt(action) {
-  const result = yield call(createPrompt, action.payload)
+export function* callUpdatePrompt(action) {
+  const result = yield call(updatePrompt, action.payload)
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    console.log("result.res.queueId", result.res.queueId);
-    
-    yield call(callGetPrompts)
+    // yield call(callGetPrompts)
     yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
-    console.log("callCreatePrompt result", result)
   }
 }
 
@@ -49,6 +48,36 @@ export function* callDeletePrompt(action) {
   } else {
     yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
     console.log("callDeletePrompt result", result)
+  }
+}
+
+export function* callCreatePrompts(action) {
+  const result = yield call(createPrompts, action.payload)
+  if (result.error) {
+    console.log("prompt error", result)
+  } else {
+    yield call(callGetPromptsWithQueueId, {payload: result.status[0].queueId})
+    console.log("callCreatePrompts result", result)
+  }
+}
+
+export function* callClearPrompt(action) {
+  const result = yield call(clearPrompt, action.payload)
+  if (result.error) {
+    console.log("prompt error", result)
+  } else {
+    yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    console.log("callCreatePrompts result", result)
+  }
+}
+
+export function* callDeletePromptRows(action) {
+  const result = yield call(deletePromptRows, action.payload.rows)
+  if (result.error) {
+    console.log("prompt error", result)
+  } else {
+    yield call(callGetPromptsWithQueueId, {payload: action.payload.queueId})
+    console.log("callCreatePrompts result", result)
   }
 }
 

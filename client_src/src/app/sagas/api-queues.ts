@@ -1,6 +1,6 @@
 export async function createQueue(payload) {
   try {
-    let response = await fetch('/api/Queues', {
+    let response = await fetch('/api/Queues/createQueueAndPrompts', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
