@@ -84,3 +84,19 @@ export async function clearPrompt(payload) {
     console.log(error)
   }
 }
+
+export async function deletePromptRows(payload) {
+  try {
+    let response = await fetch(`/api/Prompts/deletePromptRows`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    console.log(error)
+  }
+}

@@ -5,9 +5,12 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Prompt from './Prompt'
 import { connect } from 'react-redux';
-import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, submitNewOfficePromptsToServer } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, submitNewOfficePromptsToServer, submitDeletePromptRowsToServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -48,6 +51,11 @@ const styles = theme => createStyles({
     display: 'flex',
     flexDirection: 'column'
   },
+  paperWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   optionalContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -73,6 +81,10 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '50px',
+  },
+  addButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   }
 });
 
@@ -83,7 +95,8 @@ interface IProps {
   getPromptsWithQueueIdFromServer: any,
   promptsReducer: any,
   match: any,
-  submitNewOfficePromptsToServer: any
+  submitNewOfficePromptsToServer: any,
+  submitDeletePromptRowsToServer
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -99,6 +112,16 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     submitNewOfficePromptsToServer({queueId})
   }
 
+  handleDeletePromptRows = (rows) => {
+    const { submitDeletePromptRowsToServer } = this.props;
+    const idEng = rows[0].props.id
+    const idSpan = rows[1].props.id
+
+    if(!rows[0].props.file_path && !rows[1].props.file_path && rows[0].props.index != 0){
+      submitDeletePromptRowsToServer({queueId: rows[0].props.queueId, rows: {row1: idEng, row2: idSpan}})
+    }
+  }
+
   officeDirectionPrompts = () => {
     const { classes, promptsReducer, match } = this.props;
     const { office_directions } = promptsReducer;
@@ -111,9 +134,19 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
           return <Prompt queueId={queueId} id={prompt.id} index={prompt.index} language={"Spanish"} type={prompt.type} name={prompt.name} file_path={prompt.file_path}/>
         }
       })
-      return <Paper className={classes.optionalWrapper}>
-              {rows}
-            </Paper>
+      return  <div className={classes.paperWrapper}>
+                <Paper className={classes.optionalWrapper}>
+                  {rows}
+                </Paper>
+                <div className={classes.addButton}>
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => this.handleDeletePromptRows(rows)} aria-label="Delete Prompt Row">
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+                </div>
+              </div>
+      
     })
   }
 
@@ -168,7 +201,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPromptsFromServer: () => (dispatch(getPromptsFromServer())),
   getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
   getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
-  submitNewOfficePromptsToServer: (obj) => (dispatch(submitNewOfficePromptsToServer(obj)))
+  submitNewOfficePromptsToServer: (obj) => (dispatch(submitNewOfficePromptsToServer(obj))),
+  submitDeletePromptRowsToServer: (obj) => (dispatch(submitDeletePromptRowsToServer(obj)))
 })
 
 

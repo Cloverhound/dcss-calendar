@@ -39,10 +39,18 @@ module.exports = function (Prompt) {
       returns: {arg: 'status', type: 'string'},
     }
   )
+  Prompt.remoteMethod(
+    'deletePromptRows', {
+      http: {path: '/deletePromptRows', verb: 'delete'},
+      accepts: {arg: 'payload', type: 'any', http: {source: 'body'}},
+      returns: {arg: 'status', type: 'string'},
+    }
+  )
   createPrompts(Prompt)
   deletePrompt(Prompt)
   fileUpload(Prompt)
   clearPrompt(Prompt)
+  deletePromptRows(Prompt)
 };
 
 // Create Prompts
@@ -151,7 +159,6 @@ const updatePrompt = (Prompt, path, fileName, body) => {
 // Clear Prompt
 const clearPrompt = (Prompt) => {
   Prompt.clearPrompt = (id) => {
-
   return new Promise(function(resolve, reject){
     Prompt.findById(id)
     .then(res => resolve(resetPrompt(Prompt, res)))
@@ -185,5 +192,20 @@ const deleteFileFromLocal = (obj) => {
     });
   })
   .then(res => res)
-  .then(err => err)
+  .catch(err => err)
+}
+
+// Delete Prompt Rows
+const deletePromptRows = (Prompt) => {
+  Prompt.deletePromptRows = (body) => {
+    let keys = Object.keys(body)
+    let deleted = keys.map(key => {
+      return new Promise(function(resolve, reject){
+        Prompt.destroyById(body[key])
+          .then(res => resolve(res))
+          .catch(err => reject(err))
+      })
+    })
+    return Promise.all(deleted)
+  }
 }

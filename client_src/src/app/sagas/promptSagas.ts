@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { updatePrompt, getPrompts, getPromptsWithQueueId, getPrompt, deletePrompt, createPrompts, clearPrompt } from './api-prompts'
+import { updatePrompt, getPrompts, getPromptsWithQueueId, getPrompt, deletePrompt, createPrompts, clearPrompt, deletePromptRows } from './api-prompts'
 
 export function* callGetPrompts() {
   const result = yield call(getPrompts)
@@ -68,6 +68,16 @@ export function* callClearPrompt(action) {
     console.log("prompt error", result)
   } else {
     yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    console.log("callCreatePrompts result", result)
+  }
+}
+
+export function* callDeletePromptRows(action) {
+  const result = yield call(deletePromptRows, action.payload.rows)
+  if (result.error) {
+    console.log("prompt error", result)
+  } else {
+    yield call(callGetPromptsWithQueueId, {payload: action.payload.queueId})
     console.log("callCreatePrompts result", result)
   }
 }
