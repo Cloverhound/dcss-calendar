@@ -29,41 +29,6 @@ module.exports = function(Schedule) {
       returns: {arg: 'status', type: 'string'},
     })
 
-  
-//   Schedule.createOptionsFromRemotingContext = function(ctx) {
-//       var base = this.base.createOptionsFromRemotingContext(ctx);
-//       return extend(base, {
-//         fullCtx: ctx,
-//       })
-//     }
-  
-//   Schedule.observe('after save', async function(ctx) {
-//       console.log('ctx', ctx)
-//       let req = ctx.options.fullCtx.req
-//       var auth = req.headers['authorization']
-//       var tmp = auth.split(' ');  
-//       var buf = new Buffer(tmp[1], 'base64')
-//       var plain_auth = buf.toString()
-//       var creds = plain_auth.split(':');      // split on a ':'
-//       var username = creds[0];
-  
-//       logger.info("User " + username + " is saving schedule", ctx.instance);
-//   })
-
-//   Schedule.observe('after delete', async function(ctx) {
-//     let req = ctx.options.fullCtx.req
-//     var auth = req.headers['authorization']
-//     var tmp = auth.split(' ');  
-//     var buf = new Buffer(tmp[1], 'base64')
-//     var plain_auth = buf.toString()
-//     var creds = plain_auth.split(':');      // split on a ':'
-//     var username = creds[0];
-
-//     logger.info("User " + username + " is deleting schedule", ctx.instance);
-// })
-
-
-
   Schedule.createWithTimeRanges = function(scheduleParameter, cb) {
       console.log('Creating Schedule With Time Ranges', scheduleParameter)
         
