@@ -136,6 +136,10 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  handlePromptsToggle = () => {
+    
+  }
+
   statusColor = (status) => {
     const { classes } = this.props;
     let statusStyle = "";
@@ -164,20 +168,25 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
-  promptStatus = (id) => {
+  promptsEdit = (id) => {
     const { classes } = this.props;
     return  <TableCell>
-              <Switch
-                // checked={true}
-                // onChange={this.handleChangeSwitch}
-                value="checkedB"
-                color="primary"
-              />
               <Link to={`/prompts/${id}/edit`}>
                 <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
                   Edit
                 </Button>
               </Link>
+            </TableCell>
+  }
+
+  promptStatus = () => {
+    return  <TableCell>
+              <Switch
+                checked={true}
+                onChange={this.handlePromptsToggle}
+                value="checkedB"
+                color="primary"
+              />
             </TableCell>
   }
 
@@ -234,8 +243,10 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     let tableCell = <TableCell>{row[columnName]}</TableCell>
                     if(columnName === 'Status') {
                       tableCell = this.statusColor(row["Status"])
-                    } else if (columnName === 'Prompt Status') {
-                      tableCell = this.promptStatus(row.id)
+                    } else if (columnName === 'Prompts') {
+                      tableCell = this.promptsEdit(row.id)
+                    } else if (columnName === 'Optional Prompts Toggle') {
+                      tableCell = this.promptStatus()
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }

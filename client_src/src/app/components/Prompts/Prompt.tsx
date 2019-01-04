@@ -59,8 +59,6 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     const formData = new FormData();
     formData.append('file', promptsReducer.targetFile);
     formData.append('id', id);
-    formData.append('enabled', "false");
-
     submitUpdatePromptToServer(formData) 
   }
 

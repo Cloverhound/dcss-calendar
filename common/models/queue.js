@@ -53,28 +53,24 @@ let createPrompts = (obj) => {
       index: 0,
       language: "English",
       type: "office directions",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 1,
       language: "Spanish",
       type: "office directions",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 0,
       language: "English",
       type: "optional announcements",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 1,
       language: "Spanish",
       type: "optional announcements",
-      enabled: false,
       queueId: obj.id
     }
   ]

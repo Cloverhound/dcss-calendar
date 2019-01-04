@@ -23,6 +23,10 @@
       "type": "Boolean",
       "default": false
     },
+    "optional_prompt_enabled": {
+      "type": "boolean",
+      "default": false
+    },
     "scheduleId": {
       "type": "Number",
       "required": true

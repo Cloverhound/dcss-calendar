@@ -26,7 +26,8 @@ class Queues extends React.Component<IProps> {
         'County Code': queue.county_code,
         'Schedule Name': queue.schedule.name,
         'Holiday Name': queue.holidayList.name,
-        'Prompt Status': null
+        'Prompts': null,
+        'Optional Prompts Toggle': null
       }
     })
   }
@@ -45,7 +46,7 @@ class Queues extends React.Component<IProps> {
   render() {
     let data = this.createTableData();
 
-    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts','Optional Prompts Toggle', ''];
     return (
       <div>
         <CalendarTable 
