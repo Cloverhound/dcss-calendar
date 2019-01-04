@@ -34,10 +34,11 @@ export async function getPromptsWithQueueId(payload) {
   }
 }
 
-export async function createPrompt(payload) {
+
+export async function updatePrompt(payload) {
   try {
     let response = await fetch('/api/Prompts/upload', {
-      method: 'POST',
+      method: 'PUT',
       body: payload
     });
     let responseJson = await response.json()

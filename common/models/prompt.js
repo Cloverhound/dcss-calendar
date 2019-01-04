@@ -8,7 +8,7 @@ module.exports = function (Prompt) {
 
   Prompt.remoteMethod(
     'upload', {
-      http: { path: '/upload', verb: 'post' },
+      http: { path: '/upload', verb: 'put' },
       accepts: [
         {arg: 'req', type: 'object',
         http: function (ctx) {return ctx.req} }
@@ -101,44 +101,35 @@ function deleteFile(file_path) {
 }
 
 function fileUpload(Prompt) {
-  // console.log("PROMPT : ", Object.getOwnPropertyNames(Prompt))
-  Prompt.upload = function (promptFile, cb) {
-    console.log('promptFile', promptFile);
-    
+  return Prompt.upload = (promptFile) => {
+
     let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;
     let path = Date.now() + "_" + fileName;
 
-    fs.writeFile(`./server/storage/${path}`, buffer, async (err) => {
-      if (err) {
-        cb(err)
-      }
-      let newPrompt = await createPrompt(Prompt, path, fileName, promptFile.body)
-      cb(null, newPrompt)
+    return new Promise(function(resolve, reject){
+      fs.writeFile(`./server/storage/${path}`, buffer, async function(err) {
+        if (err) reject(err)
+        let newPrompt = await updatePrompt(Prompt, path, fileName, promptFile.body)
+        return resolve(newPrompt)
+      })
+
     })
+    .then(res => res)
+    .catch(err => err)
   }
 }
 
-async function createPrompt(Prompt, path, fileName, body) {
-  const { queueId, index, language, type, enabled } = body;
-  let isTrue = (enabled == "true")
-  let newPrompt = await new Promise(function (resolve, reject) {
-    Prompt.create({
+const updatePrompt = (Prompt, path, fileName, body) => {
+  let where = {id: body.id}
+  let data = {
       name: fileName,
-      index,
-      language,
-      type,
-      enabled: isTrue,
       file_path: path,
-      queueId: queueId
-    }, function (createPromptErr, createdPrompt) {
-      if (createPromptErr) {
-        return reject(createPromptErr)
-      }
-      if (createdPrompt !== 'FAILED') {
-       return resolve(createdPrompt)
-      }
-    })
+      enabled: true
+  }
+  return new Promise(function(resolve, reject){
+    Prompt.upsertWithWhere(where, data)
+      .then(res => resolve(res))
+      .catch(err => reject(err))
   })
-  return newPrompt
 }

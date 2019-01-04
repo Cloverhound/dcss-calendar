@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
-import { submitUploadPromptToServer, updateTargetFile, submitDeletePromptToServer } from '../../actions'
+import { submitUpdatePromptToServer, updateTargetFile, submitDeletePromptToServer } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -30,7 +30,7 @@ const styles = theme => createStyles({
 });
 
 interface IProps {
-  submitUploadPromptToServer: any,
+  submitUpdatePromptToServer: any,
   submitDeletePromptToServer: any,
   updateTargetFile: any,
   promptsReducer: any,
@@ -52,18 +52,15 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitUpload = (e) => {
-    const { queueId, language, type, index } = this.props
-    const { promptsReducer, submitUploadPromptToServer } = this.props;
+    const { id } = this.props
+    const { promptsReducer, submitUpdatePromptToServer } = this.props;
     e.preventDefault()
     const formData = new FormData();
     formData.append('file', promptsReducer.targetFile);
-    formData.append('index', index);
-    formData.append('queueId', queueId);
-    formData.append('language', language);
-    formData.append('type', type);
+    formData.append('id', id);
     formData.append('enabled', "false");
 
-    submitUploadPromptToServer(formData) 
+    submitUpdatePromptToServer(formData) 
   }
 
   handleDelete(e) {
@@ -74,7 +71,6 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, language, name, file_path } = this.props;
-    console.log("this.props", this.props)
     let inputShow;
     if(!file_path) {
       inputShow = <div className={classes.optionalContainer}>
@@ -131,7 +127,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  submitUploadPromptToServer: (obj) => (dispatch(submitUploadPromptToServer(obj))),
+  submitUpdatePromptToServer: (obj) => (dispatch(submitUpdatePromptToServer(obj))),
   updateTargetFile: (obj) => (dispatch(updateTargetFile(obj))),
   submitDeletePromptToServer: (obj) => (dispatch(submitDeletePromptToServer(obj)))
 })
