@@ -23,6 +23,7 @@ module.exports = function (Prompt) {
       ],
       returns: {arg: 'status', type: 'string'},
     })
+
 };
 
 function deletePrompt(Prompt) {
