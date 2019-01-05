@@ -62,10 +62,6 @@ class Queues extends React.Component<IProps> {
     let data = this.createTableData();
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts','Optional Prompts Toggle', ''];
 
-    if(this.props.queuesReducer.reload) {
-      location.reload()
-    }
-
     return (
       <div>
         <CalendarSnackbar

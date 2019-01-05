@@ -210,7 +210,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
+  
     if(toEdit === true) {
       return <Redirect to={`/${basePath}/${id}/edit`}/>
     }

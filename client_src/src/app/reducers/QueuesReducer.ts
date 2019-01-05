@@ -1,6 +1,5 @@
 let initialState = {
   queues: [],
-  reload: false,
   message: {type: "", content: ""}
 }
 
@@ -27,11 +26,9 @@ const queuesReducer = (state = initialState, action) => {
 
 const handleSubmitDeleteQueueToServerSucceeded = (state, payload) => {
   console.log('Handling submit delete queue to server succeeded', payload)
-  let queues  = state.queues
-  queues = queues.filter(queue => queue.id != payload.status)
+  let message = {type: "success", content: "Successfully deleted queue."}
   let loading = false
-  let reload = true
-  return {...state, queues, loading, reload}
+  return {...state, message, loading}
 }
 
 const handleSubmitDeleteQueueToServerFailed = (state, payload) => {
@@ -43,7 +40,6 @@ const handleSubmitDeleteQueueToServerFailed = (state, payload) => {
 
 const handleGetQueuesFromServerSucceeded = (state, payload) => {
   console.log('Handling get queues from server succeded', payload)
-  payload.reload = false
   return { ...state, queues: payload }
 }
 

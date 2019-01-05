@@ -56,7 +56,6 @@ export function* callCreateQueue(action) {
 
 export function* callGetQueues() {
   const result = yield call(getQueues);
-  
   if (result.error) {
     yield put(getQueuesFromServerFailed(result.error))
   } else {
@@ -70,6 +69,7 @@ export function* callDeleteQueue(action) {
   if (result.error) {
     yield put(submitDeleteQueueToServerFailed(result.error))
   } else {
+    yield call(callGetQueues)
     yield put(submitDeleteQueueToServerSucceeded(result))
   }
 }
