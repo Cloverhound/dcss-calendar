@@ -56,8 +56,6 @@ export function* callCreateQueue(action) {
 
 export function* callGetQueues() {
   const result = yield call(getQueues);
-  console.log('result', result);
-  
   if (result.error) {
     yield put(getQueuesFromServerFailed(result.error))
   } else {
