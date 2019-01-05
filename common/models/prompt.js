@@ -70,14 +70,12 @@ let makePrompts = (Prompt, queueId, index) => {
       index: index + 1,
       language: "English",
       type: "office directions",
-      enabled: false,
       queueId
     },
     {
       index: index + 2,
       language: "Spanish",
       type: "office directions",
-      enabled: false,
       queueId
     }
   ]
@@ -148,7 +146,6 @@ const updatePrompt = (Prompt, path, fileName, body) => {
   let data = {
       name: fileName,
       file_path: path,
-      enabled: true
   }
   return new Promise(function(resolve, reject){
     Prompt.upsertWithWhere(where, data)

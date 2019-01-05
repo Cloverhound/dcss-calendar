@@ -1,6 +1,7 @@
 let initialState = {
   queues: [],
-  reload: false
+  reload: false,
+  message: {type: "", content: ""}
 }
 
 const queuesReducer = (state = initialState, action) => {
@@ -13,6 +14,12 @@ const queuesReducer = (state = initialState, action) => {
       return handleSubmitDeleteQueueToServerSucceeded(state, action.payload)
     case 'SUBMIT_DELETE_QUEUE_TO_SERVER_FAILED':
       return handleSubmitDeleteQueueToServerFailed(state, action.payload)
+    case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_SUCCEEDED":
+      return handleSubmitOptionalPromptsToServerSucceeded(state, action.payload)
+    case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_FAILED":
+      return handleSubmitOptionalPromptsToServerFailed(state, action.payload)
+    case 'HANDLE_CLOSE_MESSAGE':
+      return handleCloseMessage(state)
     default:
       return state
   }
@@ -43,6 +50,25 @@ const handleGetQueuesFromServerSucceeded = (state, payload) => {
 const handleGetQueuesFromServerFailed = (state, payload) => {
   console.log('Handling Get Queues From Server failed', payload)
   return { ...state}
+}
+
+const handleSubmitOptionalPromptsToServerSucceeded = (state, payload) => {
+  console.log('Handling update Optional Prompts Toggle Succeeded', payload)
+  let message = {type: "success", content: "Successfully toggled optional prompts."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleSubmitOptionalPromptsToServerFailed = (state, payload) => {
+  console.log('Handling update Optional Prompts Toggle Failed', payload)
+  let message = {type: "error", content: "Failed to toggle optional prompts."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleCloseMessage = (state) => {
+  let message = {type: "", content: ""} 
+  return {...state, message}
 }
 
 export default queuesReducer

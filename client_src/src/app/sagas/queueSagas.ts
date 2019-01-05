@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { getQueues, getQueue, createQueue, updateQueue, deleteQueue } from './api-queues'
+import { getQueues, getQueue, createQueue, updateQueue, deleteQueue, optionalPromptToggle } from './api-queues'
 import { getQueueFromServerSucceeded, 
          getQueueFromServerFailed, 
          queueLoading, 
@@ -10,7 +10,9 @@ import { getQueueFromServerSucceeded,
          getQueuesFromServerSucceeded,
          getQueuesFromServerFailed,
          submitDeleteQueueToServerSucceeded,
-         submitDeleteQueueToServerFailed} from '../actions/index'
+         submitDeleteQueueToServerFailed,
+         submitOptionalPromptsToggleToServerFailed,
+         submitOptionalPromptsToggleToServerSucceeded} from '../actions/index'
 
 
 export function* callGetQueue(action) {
@@ -22,7 +24,6 @@ export function* callGetQueue(action) {
   } else {
     yield put(getQueueFromServerSucceeded(result))
   }
-
 }
 
 export function* callUpdateQueue(action) {
@@ -70,5 +71,16 @@ export function* callDeleteQueue(action) {
     yield put(submitDeleteQueueToServerFailed(result.error))
   } else {
     yield put(submitDeleteQueueToServerSucceeded(result))
+  }
+}
+
+export function* callOptionalPromptsToggle(action) {
+  const result = yield call(optionalPromptToggle, action.payload);
+  if (result.error) {
+    yield put(submitOptionalPromptsToggleToServerFailed(result.error))
+  } else {
+    console.log("result", result)
+    yield call(callGetQueues)
+    yield put(submitOptionalPromptsToggleToServerSucceeded(result))
   }
 }

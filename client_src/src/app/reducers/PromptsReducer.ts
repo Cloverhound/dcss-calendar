@@ -1,11 +1,11 @@
 let initialState = {
   targetFile: '',
   prompts: [],
+  optional_prompt_status: false,
   office_directions: [
    [ {
       id: undefined,
       index: 0,
-      enabled: false,
       language: "English",
       name: "",
       type: "office directions",
@@ -14,7 +14,6 @@ let initialState = {
     {
       id: undefined,
       index: 1,
-      enabled: false,
       language: "Spanish",
       name: "",
       type: "office directions",
@@ -25,7 +24,6 @@ let initialState = {
     {
       id: undefined,
       index: 0,
-      enabled: false,
       language: "English",
       name: "",
       type: "optional announcements",
@@ -34,7 +32,6 @@ let initialState = {
     {
       id: undefined,
       index: 1,
-      enabled: false,
       language: "Spanish",
       name: "",
       type: "optional announcements",
@@ -45,7 +42,6 @@ let initialState = {
     {
       id: undefined,
       index: 0,
-      enabled: false,
       language: "English",
       name: "",
       type: "office directions",
@@ -54,7 +50,6 @@ let initialState = {
     {
       id: undefined,
       index: 1,
-      enabled: false,
       language: "Spanish",
       name: "",
       type: "office directions",
@@ -66,7 +61,6 @@ let initialState = {
   optional_announcements_eng_initial:
   {
     id: undefined,
-    enabled: false,
     language: "English",
     name: "",
     type: "optional announcements",
@@ -75,7 +69,6 @@ let initialState = {
   optional_announcements_span_initial:
   {
     id: undefined,
-    enabled: false,
     language: "Spanish",
     name: "",
     type: "optional announcements",

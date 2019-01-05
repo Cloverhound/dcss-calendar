@@ -84,7 +84,6 @@ const handleUpdateHolidayListFailed = (state, payload) => {
   return {...state, message, loading}
 }
 
-
 const handleNewHolidayListSucceeded = (state, payload) => {
   console.log('Handling new holiday list succeeded', payload)
   let loading = false

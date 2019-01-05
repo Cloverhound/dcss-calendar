@@ -19,6 +19,19 @@ module.exports = function (Queue) {
       returns: {arg: 'status', type: 'any'},
   })
 
+  Queue.remoteMethod(
+    'optionalPromptToggle', {
+      http: {path: '/optionalPromptToggle', verb: 'put'},
+      accepts: {arg: 'queue', type: 'any', http: {source: 'body'}},
+      returns: {arg: 'status', type: 'any'},
+  })
+
+  Queue.optionalPromptToggle = (body) => {
+    let where = {id: body.id}
+    return Queue.upsertWithWhere(where, {optional_prompt_enabled: !body.bool})
+      .then(res => res)
+      .catch(err => err)
+  }
 
   Queue.status = (code) => {
     console.log('Getting status of queue with code', code)
@@ -60,28 +73,24 @@ let createPrompts = (obj) => {
       index: 0,
       language: "English",
       type: "office directions",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 1,
       language: "Spanish",
       type: "office directions",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 0,
       language: "English",
       type: "optional announcements",
-      enabled: false,
       queueId: obj.id
     },
     {
       index: 1,
       language: "Spanish",
       type: "optional announcements",
-      enabled: false,
       queueId: obj.id
     }
   ]
