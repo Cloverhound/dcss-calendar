@@ -12,7 +12,7 @@
       "required": false
     },
     "date": {
-      "type": "date",
+      "type": "string",
       "required": true
     }
   },

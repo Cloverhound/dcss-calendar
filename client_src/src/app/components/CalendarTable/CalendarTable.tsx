@@ -94,7 +94,8 @@ interface IPropsTable {
   basePath: string,
   title: string,
   addButtonText: string,
-  orderBy: string
+  orderBy: string,
+  handleOptionalPromptsToggle: any
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -136,10 +137,6 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  handlePromptsToggle = () => {
-
-  }
-
   statusColor = (status) => {
     const { classes } = this.props;
     let statusStyle = "";
@@ -179,12 +176,13 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
-  promptStatus = (bool) => {
+  optionalPromptToggle = (id, bool) => {
+    const {handleOptionalPromptsToggle} = this.props
     return  <TableCell>
               <Switch
                 checked={bool}
-                onChange={this.handlePromptsToggle}
-                value="checkedB"
+                onChange={() => handleOptionalPromptsToggle(id, bool)}
+                value={bool}
                 color="primary"
               />
             </TableCell>
@@ -246,7 +244,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     } else if (columnName === 'Prompts') {
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
-                      tableCell = this.promptStatus(row["Optional Prompts Toggle"])
+                      tableCell = this.optionalPromptToggle(row.id, row["Optional Prompts Toggle"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }

@@ -1,6 +1,6 @@
 import { takeLatest, all } from 'redux-saga/effects'
 import { callCreateSchedule, callGetSchedules, callUpdateSchedule, callDeleteSchedule, callGetSchedule } from './scheduleSagas'
-import { callCreateQueue, callGetQueues, callUpdateQueue, callDeleteQueue, callGetQueue  } from './queueSagas'
+import { callCreateQueue, callGetQueues, callUpdateQueue, callDeleteQueue, callGetQueue, callOptionalPromptsToggle  } from './queueSagas'
 import { callCreateHolidayList, callGetHolidayLists, callGetHolidayList, callUpdateHolidayList, callDeleteHolidayList } from './holidaySagas'
 import { callGetPrompts, callGetPrompt, callGetPromptsWithQueueId, callUpdatePrompt, callDeletePrompt, callCreatePrompts, callClearPrompt, callDeletePromptRows } from './promptSagas';
 
@@ -18,6 +18,7 @@ export default function* root() {
     yield takeLatest('SUBMIT_UPDATE_QUEUE_TO_SERVER', callUpdateQueue),
     yield takeLatest('GET_QUEUES_FROM_SERVER', callGetQueues),
     yield takeLatest('GET_QUEUE_FROM_SERVER', callGetQueue),
+    yield takeLatest('SUBMIT_OPTIONAL_PROMPTS_TOGGLE', callOptionalPromptsToggle),
 
 
     yield takeLatest('SUBMIT_NEW_HOLIDAY_LIST_TO_SERVER', callCreateHolidayList),

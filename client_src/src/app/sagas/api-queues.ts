@@ -1,5 +1,4 @@
 export async function createQueue(payload) {
-  console.log("paylaod", payload)
   try {
     let response = await fetch('/api/Queues/createQueueAndPrompts', {
       method: 'POST',
@@ -78,6 +77,24 @@ export async function deleteQueue(payload) {
     });
     let responseJson = await response.json()
     console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
+
+export async function optionalPromptToggle(payload) {
+  console.log('optionalPromptToggle -- ', payload)
+  try {
+    let response = await fetch('/api/Queues/optionalPromptToggle', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    console.log('Response json optional', responseJson)
     return responseJson
   } catch (error) {
     return {error}

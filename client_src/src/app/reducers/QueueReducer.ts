@@ -74,7 +74,7 @@ const handleSubmitUpdateQueueToServerSucceeded = (state) => {
 }
 
 const handleSubmitUpdateQueueToServerFailed = (state, payload) => {
-  console.log('andling update queue failed', payload)
+  console.log('Handling update queue failed', payload)
   let message = {type: "error", content: "Failed to update: " + payload.message}
   let loading = false
   return {...state, message, loading}
@@ -93,6 +93,8 @@ const getQueueFromServerSucceeded = (state, payload) => {
 
 const getQueueFromServerFailed = (state, payload) => {
   console.log('Handling get queue from server failed', payload)
-  return state
+  let message = {type: "error", content: "Failed to get queue: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
 }
 export default queueReducer

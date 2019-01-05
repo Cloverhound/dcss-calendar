@@ -1,12 +1,15 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
-
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
-import { getQueuesFromServer, submitDeleteQueueToServer } from '../../actions'
+import { Redirect } from 'react-router-dom'
+import { getQueuesFromServer, submitDeleteQueueToServer, submitOptionalPromptsToggle, handleCloseMessage } from '../../actions'
 interface IProps {
   queuesReducer: any,
   getQueuesFromServer: any,
-  submitDeleteQueueToServer: any
+  submitDeleteQueueToServer: any,
+  submitOptionalPromptsToggle: any,
+  handleCloseMessage: any
 }
 
 class Queues extends React.Component<IProps> {
@@ -43,12 +46,33 @@ class Queues extends React.Component<IProps> {
     submitDeleteQueueToServer({id})
   }
 
-  render() {
-    let data = this.createTableData();
+  handleOptionalPromptsToggle = (id, bool) => {
+    const { submitOptionalPromptsToggle } = this.props
+    submitOptionalPromptsToggle({id, bool})
+  }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+  
+
+  render() {
+    let {message} = this.props.queuesReducer;
+    let data = this.createTableData();
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts','Optional Prompts Toggle', ''];
+
+    if(this.props.queuesReducer.reload) {
+      location.reload()
+    }
+
     return (
       <div>
+        <CalendarSnackbar
+                handleClose = {this.handleCloseMessage}
+                hideDuration = {6000}
+                message = {message} 
+            />
         <CalendarTable 
           data={data} 
           basePath={"queues"} 
@@ -58,6 +82,7 @@ class Queues extends React.Component<IProps> {
           title={"Counties"}
           addButtonText={"Add Queue"}
           handleDelete={this.handleDeleteQueue}
+          handleOptionalPromptsToggle={this.handleOptionalPromptsToggle}
         />
       </div>
     )
@@ -74,6 +99,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getQueuesFromServer: () => dispatch(getQueuesFromServer()),
     submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
+    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
+    handleCloseMessage: () => (dispatch(handleCloseMessage()))
   }
 }
 

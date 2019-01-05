@@ -13,8 +13,8 @@ module.exports = function(SingleDateTimeRange) {
             return false
         }
 
-        let start = moment.tz(this.start, 'h:mm a', process.env.TIME_ZONE)
-        let end = moment.tz(this.end, 'h:mm a', process.env.TIME_ZONE)
+        let start = moment(this.start, 'h:mm a').tz(process.env.TIME_ZONE)
+        let end = moment(this.end, 'h:mm a').tz(process.env.TIME_ZONE)
 
         console.log('single start', start)
         console.log('single end', end)

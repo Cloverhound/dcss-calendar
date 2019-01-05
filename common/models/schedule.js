@@ -1,5 +1,7 @@
 'use strict';
 
+var extend = require('extend')
+
 module.exports = function(Schedule) {
   Schedule.validatesUniquenessOf('name', {message: 'Name already exists'});
 
@@ -27,7 +29,7 @@ module.exports = function(Schedule) {
       returns: {arg: 'status', type: 'string'},
     })
 
-    Schedule.createWithTimeRanges = function(scheduleParameter, cb) {
+  Schedule.createWithTimeRanges = function(scheduleParameter, cb) {
       console.log('Creating Schedule With Time Ranges', scheduleParameter)
         
         Schedule.create({name: scheduleParameter.name}, async function(schedErr, createdSchedule) {

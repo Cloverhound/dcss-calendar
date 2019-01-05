@@ -8,14 +8,15 @@ module.exports = function(RecurringTimeRange) {
     
     let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     let currentTime = moment().tz(process.env.TIME_ZONE)
+    console.log('CurrentTime', currentTime)
     let currentDay = days[currentTime.format('d')]
     
     if(!this[currentDay]) {
         return false
     }
 
-    let start = moment.tz(this.start, 'h:mm a', process.env.TIME_ZONE)
-    let end = moment.tz(this.end, 'h:mm a', process.env.TIME_ZONE)
+    let start = moment(this.start, 'h:mm a').tz(process.env.TIME_ZONE)
+    let end = moment(this.end, 'h:mm a').tz(process.env.TIME_ZONE)
 
     console.log('start', start)
     console.log('end', end)
