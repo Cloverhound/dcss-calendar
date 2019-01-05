@@ -96,8 +96,6 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleSubmitNewQueue = () => {
     const { submitNewQueueToServer, queueReducer } = this.props;
-    console.log("queueReducer", queueReducer);
-    
     submitNewQueueToServer(queueReducer)
   }
 
