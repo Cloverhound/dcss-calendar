@@ -27,10 +27,6 @@
       "type": "string",
       "required": false
     },
-    "enabled": {
-      "type": "boolean",
-      "required": true
-    },
     "queueId": {
       "type": "number",
       "required": true

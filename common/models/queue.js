@@ -5,9 +5,9 @@ module.exports = function (Queue) {
 
   Queue.remoteMethod(
     'status', {
-      http: {path: '/:id/status', verb: 'get'},
+      http: {path: '/:code/status', verb: 'get'},
       accepts: [
-        {arg: 'id', type: 'number', required: true}
+        {arg: 'code', type: 'string', required: true}
       ],
       returns: {arg: 'status', type: 'any'},
   })
@@ -20,11 +20,12 @@ module.exports = function (Queue) {
   })
 
 
-  Queue.status = (id) => {
-    return Queue.findById(id)
-      .then(async function(queue) {
+  Queue.status = (code) => {
+    console.log('Getting status of queue with code', code)
+    return Queue.find({where: {county_code: code}})
+      .then(async function(queues) {
           try {
-            let status = await getStatus(queue)
+            let status = await getStatus(queues[0])
             return Promise.resolve(status)
           } catch(e) {
             console.log('Failed to get status', e)
