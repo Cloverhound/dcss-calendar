@@ -66,7 +66,8 @@ let createPrompts = (Prompt) => {
 }
 
 let makePrompts = (Prompt, queueId, index) => {
-  let promptsArray = [{
+  let promptsArray = [
+    {
       index: index + 1,
       language: "English",
       type: "office directions",
@@ -122,7 +123,6 @@ function deleteFile(file_path) {
 // Upload Prompt
 function fileUpload(Prompt) {
   return Prompt.upload = (promptFile) => {
-    console.log('promptFile', promptFile);
     
     let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;

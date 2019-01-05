@@ -22,6 +22,7 @@ class Queues extends React.Component<IProps> {
     }
 
     return queuesReducer.queues.map((queue) => {
+      console.log("queue", queue)
       return { 
         'id': queue.id,
         'Status': queue.status,
@@ -61,10 +62,6 @@ class Queues extends React.Component<IProps> {
     let {message} = this.props.queuesReducer;
     let data = this.createTableData();
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts','Optional Prompts Toggle', ''];
-
-    if(this.props.queuesReducer.reload) {
-      location.reload()
-    }
 
     return (
       <div>
