@@ -32,20 +32,51 @@ module.exports = function (Queue) {
       accepts: [
         {arg: 'code', type: 'string', required: true}
       ],
-      returns: {arg: 'status', type: 'any'},
+      returns: {arg: 'files', type: 'any'},
   })
+
+  Queue.remoteMethod(
+    'optionalPrompts', {
+      http: {path: '/:code/optionalPrompts', verb: 'get'},
+      accepts: [
+        {arg: 'code', type: 'string', required: true}
+      ],
+      returns: {arg: 'files', type: 'any'},
+  })
+
+  Queue.optionalPrompts = (code) => {
+    let where = {where: {county_code: code}}
+
+    return Queue.find(where)
+      .then(async function(res) {
+        return res[0].optional_prompt_enabled ? await findOptionalPrompts(res) : "Optional Prompts Disabled"
+      })
+      .catch(err => err)
+  }
+
+  const findOptionalPrompts = (queue) => {
+    let where = {where: {queueId: queue[0].id, type: "optional announcements"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
+    
+    return new Promise(function(resolve, reject){
+      queue[0].prompts.find(where)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+    .then(res => res)
+    .catch(err => err)
+  }
 
   Queue.directionPrompts = (code) => {
     let where = {where: {county_code: code}}
 
     return Queue.find(where)
       .then(async function(res) {
-        return await findPrompts(res)
+        return await findDirectionPrompts(res)
       })
       .catch(err => err)
   }
 
-  const findPrompts = (queue) => {
+  const findDirectionPrompts = (queue) => {
     let where = {where: {queueId: queue[0].id, type: "office directions"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
     
     return new Promise(function(resolve, reject){
