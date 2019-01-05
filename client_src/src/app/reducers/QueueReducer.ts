@@ -93,6 +93,8 @@ const getQueueFromServerSucceeded = (state, payload) => {
 
 const getQueueFromServerFailed = (state, payload) => {
   console.log('Handling get queue from server failed', payload)
-  return state
+  let message = {type: "error", content: "Failed to get queue: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
 }
 export default queueReducer
