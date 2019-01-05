@@ -22,7 +22,6 @@ class Queues extends React.Component<IProps> {
     }
 
     return queuesReducer.queues.map((queue) => {
-      console.log("queue", queue)
       return { 
         'id': queue.id,
         'Status': queue.status,
