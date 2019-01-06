@@ -1,6 +1,5 @@
 let initialState = {
   queues: [],
-  reload: false,
   queueToDeleteID: null,
   message: {type: "", content: ""}
 }

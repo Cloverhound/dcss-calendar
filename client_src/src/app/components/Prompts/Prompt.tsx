@@ -79,9 +79,6 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { promptsReducer } = this.props
-    // console.log("promptsReducer", promptsReducer.targetFile);
-    
     const { classes, language, name, file_path } = this.props;
     let inputShow;
     if(!file_path) {
