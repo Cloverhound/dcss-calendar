@@ -19,7 +19,7 @@ const queuesReducer = (state = initialState, action) => {
     case 'HANDLE_DELETE_QUEUE_CLICKED':
       return handleDeleteQueueClicked(state, action.payload)
     case 'HANDLE_DELETE_CANCEL':
-      return handleDeleteCancel(state)
+      return handleDeleteQueueCancel(state)
     case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_SUCCEEDED":
       return handleSubmitOptionalPromptsToServerSucceeded(state, action.payload)
     case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_FAILED":
@@ -38,7 +38,7 @@ const handleSubmitDeleteQueueToServer = (state, payload) => {
   return {...state, queueToDeleteID}
 }
 
-const handleDeleteCancel = (state) => {
+const handleDeleteQueueCancel = (state) => {
   console.log('Handling cancel delete queue')
 
   let queueToDeleteID = null
@@ -51,7 +51,6 @@ const handleDeleteQueueClicked = (state, payload) => {
   let queueToDeleteID = payload.id
   return {...state, queueToDeleteID}
 }
-
 
 const handleSubmitDeleteQueueToServerSucceeded = (state, payload) => {
   console.log('Handling submit delete queue to server succeeded', payload)

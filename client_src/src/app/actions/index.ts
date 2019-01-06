@@ -41,6 +41,8 @@ export const changeStartOfRecurringTimeRange         = obj => ({ type: "CHANGE_S
 export const changeEndOfRecurringTimeRange           = obj => ({ type: "CHANGE_END_OF_RECURRING_TIME_RANGE", payload: obj })
 export const resetSchedule                           = ()  => ({ type: "RESET_SCHEDULE" })
 
+export const handleDeleteScheduleClicked            = obj => ({ type: "HANDLE_DELETE_SCHEDULE_CLICKED", payload: obj})
+export const handleDeleteScheduleCancel           = () => ({ type: "HANDLE_DELETE_SCHEDULE_CANCEL"})
 
 
 
@@ -78,7 +80,7 @@ export const submitOptionalPromptsToggleToServerFailed      = obj => ({type: "SU
 
 export const handleDeleteQueueClicked            = obj => ({ type: "HANDLE_DELETE_QUEUE_CLICKED", payload: obj})
 export const handleDeleteProceed                 = () =>  ({ type: "HANDLE_DELETE_PROCEED"})
-export const handleDeleteCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
+export const handleDeleteQueueCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
 
 
 
