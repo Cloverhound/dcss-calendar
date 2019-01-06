@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
-
+import DeleteAlert from '../Modal/DeleteAlert'
 import { connect } from 'react-redux'
 import { getSchedulesFromServer, submitDeleteScheduleToServer } from '../../actions'
 
@@ -39,7 +39,7 @@ class Schedules extends React.Component<IProps> {
           data={data} 
           basePath={"schedules"} 
           populateTable={this.getSchedules} 
-          orderBy={"Name"} 
+          orderBy={"Name"}
           columnNames={columnNames}
           title={"Schedules"}
           addButtonText={"Add Schedule"}

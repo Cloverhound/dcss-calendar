@@ -66,6 +66,7 @@ export function* callDeleteSchedule(action) {
   if (result.error) {
     yield put(submitDeleteScheduleToServerFailed(result.error))
   } else {
+    yield call(callGetSchedules)
     yield put(submitDeleteScheduleToServerSucceeded(result))
   }
 }

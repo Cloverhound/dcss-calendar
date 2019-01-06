@@ -2,8 +2,7 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteCancel, handleCloseMessage, submitOptionalPromptsToggle} from '../../actions'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteCancel, handleCloseMessage} from '../../actions'
 import DeleteAlert from '../Modal/DeleteAlert'
 
 
@@ -13,7 +12,6 @@ interface IProps {
   submitDeleteQueueToServer: any,
   handleDeleteQueueClicked: any,
   handleDeleteCancel: any,
-  submitOptionalPromptsToggle: any,
   handleCloseMessage: any
 }
 
@@ -58,20 +56,10 @@ class Queues extends React.Component<IProps> {
     handleCloseMessage()
   }
 
-  handleOptionalPromptsToggle = (id, bool) => {
-    const { submitOptionalPromptsToggle } = this.props
-    submitOptionalPromptsToggle({id, bool})
-  } 
-
   render() {
     let data = this.createTableData();
     let queuesReducer = this.props.queuesReducer
     const { message } = queuesReducer;
-
-
-    if(queuesReducer.reload) {
-      location.reload()
-    }
 
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
     console.log('Queue To Delete ID', queuesReducer.queueToDeleteID)
@@ -97,8 +85,6 @@ class Queues extends React.Component<IProps> {
           title={"Counties"}
           addButtonText={"Add Queue"}
           handleDelete={this.handleDeleteQueueClicked}
-          handleOptionalPromptsToggle={this.handleOptionalPromptsToggle}
-
         />
       </div>
     )
@@ -117,7 +103,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
     handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
     handleDeleteCancel: () => dispatch(handleDeleteCancel()),
-    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
     handleCloseMessage: () => (dispatch(handleCloseMessage()))
   }
 }

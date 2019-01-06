@@ -13,10 +13,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-
 import CalendarTableHead from '../CalendarTableHead/CalendarTableHead';
 import CalendarTableToolbar from '../CalendarTableToolbar/CalendarTableToolBar';
 
+import {submitOptionalPromptsToggle} from '../../actions'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom';
 
@@ -95,7 +95,8 @@ interface IPropsTable {
   title: string,
   addButtonText: string,
   orderBy: string,
-  handleOptionalPromptsToggle: any
+  handleOptionalPromptsToggle: any,
+  submitOptionalPromptsToggle: any
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -177,16 +178,21 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 
   optionalPromptToggle = (id, bool) => {
-    const {handleOptionalPromptsToggle} = this.props
+    // const {handleOptionalPromptsToggle} = this.props
     return  <TableCell>
               <Switch
                 checked={bool}
-                onChange={() => handleOptionalPromptsToggle(id, bool)}
+                onChange={() => this.handleOptionalPromptsToggle(id, bool)}
                 value={bool}
                 color="primary"
               />
             </TableCell>
   }
+
+  handleOptionalPromptsToggle = (id, bool) => {
+    const { submitOptionalPromptsToggle } = this.props
+    submitOptionalPromptsToggle({id, bool})
+  } 
 
   deleteTableCell = (id) => {
     const { classes, handleDelete } = this.props;
@@ -287,5 +293,10 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 }
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj))
+  }
+}
 
-export default connect()(withStyles(styles)(CalendarTable));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CalendarTable));
