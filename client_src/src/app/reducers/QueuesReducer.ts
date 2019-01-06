@@ -21,7 +21,11 @@ const queuesReducer = (state = initialState, action) => {
       return handleDeleteQueueClicked(state, action.payload)
     case 'HANDLE_DELETE_CANCEL':
       return handleDeleteCancel(state)
-    case "HANDLE_CLOSE_MESSAGE":
+    case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_SUCCEEDED":
+      return handleSubmitOptionalPromptsToServerSucceeded(state, action.payload)
+    case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_FAILED":
+      return handleSubmitOptionalPromptsToServerFailed(state, action.payload)
+    case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
     default:
       return state
@@ -52,11 +56,9 @@ const handleDeleteQueueClicked = (state, payload) => {
 
 const handleSubmitDeleteQueueToServerSucceeded = (state, payload) => {
   console.log('Handling submit delete queue to server succeeded', payload)
-  let queues  = state.queues
-  queues = queues.filter(queue => queue.id != payload.status)
+  let message = {type: "success", content: "Successfully deleted queue."}
   let loading = false
-  let reload = true
-  return {...state, queues, loading, reload}
+  return {...state, message, loading}
 }
 
 const handleSubmitDeleteQueueToServerFailed = (state, payload) => {
@@ -68,7 +70,6 @@ const handleSubmitDeleteQueueToServerFailed = (state, payload) => {
 
 const handleGetQueuesFromServerSucceeded = (state, payload) => {
   console.log('Handling get queues from server succeded', payload)
-  payload.reload = false
   return { ...state, queues: payload }
 }
 
@@ -76,6 +77,20 @@ const handleGetQueuesFromServerFailed = (state, payload) => {
   console.log('Handling Get Queues From Server failed', payload)
   let message = {type: "error", content: "Failed to get counties from server: " + payload.message }
   return { ...state, message}
+}
+
+const handleSubmitOptionalPromptsToServerSucceeded = (state, payload) => {
+  console.log('Handling update Optional Prompts Toggle Succeeded', payload)
+  let message = {type: "success", content: "Successfully toggled optional prompts."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleSubmitOptionalPromptsToServerFailed = (state, payload) => {
+  console.log('Handling update Optional Prompts Toggle Failed', payload)
+  let message = {type: "error", content: "Failed to toggle optional prompts."}
+  let loading = false
+  return {...state, message, loading}
 }
 
 const handleCloseMessage = (state) => {

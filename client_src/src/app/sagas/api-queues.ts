@@ -59,7 +59,6 @@ export async function getQueues() {
     });
     
     let responseJson = await response.json()
-    
     return responseJson
   } catch (error) {
     return {error}
@@ -77,6 +76,24 @@ export async function deleteQueue(payload) {
     });
     let responseJson = await response.json()
     console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
+
+export async function optionalPromptToggle(payload) {
+  console.log('optionalPromptToggle -- ', payload)
+  try {
+    let response = await fetch('/api/Queues/optionalPromptToggle', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    console.log('Response json optional', responseJson)
     return responseJson
   } catch (error) {
     return {error}

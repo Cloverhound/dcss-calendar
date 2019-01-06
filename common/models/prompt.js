@@ -66,18 +66,17 @@ let createPrompts = (Prompt) => {
 }
 
 let makePrompts = (Prompt, queueId, index) => {
-  let promptsArray = [{
+  let promptsArray = [
+    {
       index: index + 1,
       language: "English",
       type: "office directions",
-      enabled: false,
       queueId
     },
     {
       index: index + 2,
       language: "Spanish",
       type: "office directions",
-      enabled: false,
       queueId
     }
   ]
@@ -124,7 +123,6 @@ function deleteFile(file_path) {
 // Upload Prompt
 function fileUpload(Prompt) {
   return Prompt.upload = (promptFile) => {
-    console.log('promptFile', promptFile);
     
     let buffer = promptFile.files[0].buffer;
     let fileName = promptFile.files[0].originalname;
@@ -148,7 +146,6 @@ const updatePrompt = (Prompt, path, fileName, body) => {
   let data = {
       name: fileName,
       file_path: path,
-      enabled: true
   }
   return new Promise(function(resolve, reject){
     Prompt.upsertWithWhere(where, data)

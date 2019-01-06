@@ -2,7 +2,7 @@ let initialState = {
   id: 0,
   message: {type: "", content: ""},
   loading: false,
-  toQueues: false
+  toQueues: false,
 }
 
 const queueReducer = (state = initialState, action) => {
@@ -74,7 +74,7 @@ const handleSubmitUpdateQueueToServerSucceeded = (state) => {
 }
 
 const handleSubmitUpdateQueueToServerFailed = (state, payload) => {
-  console.log('andling update queue failed', payload)
+  console.log('Handling update queue failed', payload)
   let message = {type: "error", content: "Failed to update: " + payload.message}
   let loading = false
   return {...state, message, loading}

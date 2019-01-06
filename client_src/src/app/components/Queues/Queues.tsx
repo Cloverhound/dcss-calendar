@@ -1,17 +1,19 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
-
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteCancel, handleCloseMessage } from '../../actions'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteCancel, handleCloseMessage, submitOptionalPromptsToggle} from '../../actions'
 import DeleteAlert from '../Modal/DeleteAlert'
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
+
+
 interface IProps {
   queuesReducer: any,
   getQueuesFromServer: any,
   submitDeleteQueueToServer: any,
   handleDeleteQueueClicked: any,
   handleDeleteCancel: any,
+  submitOptionalPromptsToggle: any,
   handleCloseMessage: any
 }
 
@@ -32,7 +34,8 @@ class Queues extends React.Component<IProps> {
         'County Code': queue.county_code,
         'Schedule Name': queue.schedule.name,
         'Holiday Name': queue.holidayList.name,
-        'Prompt Status': null
+        'Prompts': null,
+        'Optional Prompts Toggle': queue.optional_prompt_enabled
       }
     })
   }
@@ -54,6 +57,11 @@ class Queues extends React.Component<IProps> {
     const { handleCloseMessage  } = this.props
     handleCloseMessage()
   }
+
+  handleOptionalPromptsToggle = (id, bool) => {
+    const { submitOptionalPromptsToggle } = this.props
+    submitOptionalPromptsToggle({id, bool})
+  } 
 
   render() {
     let data = this.createTableData();
@@ -89,6 +97,8 @@ class Queues extends React.Component<IProps> {
           title={"Counties"}
           addButtonText={"Add Queue"}
           handleDelete={this.handleDeleteQueueClicked}
+          handleOptionalPromptsToggle={this.handleOptionalPromptsToggle}
+
         />
       </div>
     )
@@ -107,6 +117,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
     handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
     handleDeleteCancel: () => dispatch(handleDeleteCancel()),
+    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
     handleCloseMessage: () => (dispatch(handleCloseMessage()))
   }
 }
