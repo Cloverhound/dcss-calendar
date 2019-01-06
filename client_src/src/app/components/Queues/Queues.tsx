@@ -73,7 +73,7 @@ class Queues extends React.Component<IProps> {
       location.reload()
     }
 
-    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
     console.log('Queue To Delete ID', queuesReducer.queueToDeleteID)
     return (
       <div>
