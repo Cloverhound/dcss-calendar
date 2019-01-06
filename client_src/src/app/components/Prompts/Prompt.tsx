@@ -3,7 +3,11 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import ClearIcon from '@material-ui/icons/Clear';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
 import { connect } from 'react-redux';
 import { submitUpdatePromptToServer, updateTargetFile, submitDeletePromptToServer, submitClearPromptToServer } from '../../actions'
 import {
@@ -75,6 +79,9 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
+    const { promptsReducer } = this.props
+    // console.log("promptsReducer", promptsReducer.targetFile);
+    
     const { classes, language, name, file_path } = this.props;
     let inputShow;
     if(!file_path) {
@@ -85,14 +92,13 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                       type='file'
                       onChange={(e) => this.handleInputChange(e)}
                     />
-                    <Button
-                      className={classes.button}
-                      type='file'
-                      variant='outlined'
-                      onClick={(e) => this.handleSubmitUpload(e)}
-                    >
-                      Upload
-                    </Button>
+                    <Tooltip title="Upload">
+                      <IconButton onClick={(e) => this.handleSubmitUpload(e)}>
+                        <SvgIcon color="action">
+                          <path d="M5,10h4v6h6v-6h4l-7-7L5,10z M5,18v2h14v-2H5z"/>
+                        </SvgIcon>
+                      </IconButton>
+                    </Tooltip>
                   </div>
     } else {
       inputShow = <div className={classes.optionalContainer}>
@@ -106,14 +112,11 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                               <code>audio</code> element.
                       </audio>
                     </figure>
-                    <Button
-                      className={classes.button}
-                      type='file'
-                      variant='outlined'
-                      onClick={(e) => this.handleSubmitClear(e)}
-                    >
-                      Clear
-                    </Button>
+                    <Tooltip title="Remove">
+                      <IconButton onClick={(e) => this.handleSubmitClear(e)}>
+                        <ClearIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
     }
    

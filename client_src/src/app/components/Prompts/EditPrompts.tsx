@@ -8,9 +8,10 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import Prompt from './Prompt'
 import { connect } from 'react-redux';
-import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, submitNewOfficePromptsToServer, submitDeletePromptRowsToServer } from '../../actions'
+import { getPromptsFromServer, getPromptFromServer, getPromptsWithQueueIdFromServer, submitNewOfficePromptsToServer, submitDeletePromptRowsToServer, handleCloseMessage } from '../../actions'
 import {
   Link
 } from 'react-router-dom';
@@ -27,8 +28,11 @@ const styles = theme => createStyles({
   subTitle: {
     margin: theme.spacing.unit,
   },
-    uploadSection: {
+  uploadSection: {
     margin: '20px 0px',
+  },
+  uploadSection2: {
+    margin: '20px 45px 20px 0px',
   },
   paper: {
     display: 'flex',
@@ -49,12 +53,14 @@ const styles = theme => createStyles({
   },
   optionalWrapper: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: "100%"
   },
   paperWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    margin: '15px 0px'
   },
   optionalContainer: {
     display: 'flex',
@@ -96,7 +102,8 @@ interface IProps {
   promptsReducer: any,
   match: any,
   submitNewOfficePromptsToServer: any,
-  submitDeletePromptRowsToServer
+  submitDeletePromptRowsToServer: any,
+  handleCloseMessage: any
 }
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -150,9 +157,14 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
     })
   }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+
   render() {
     const { classes, promptsReducer, match } = this.props;
-    const { optional_announcements_eng, optional_announcements_span } = promptsReducer;
+    const { optional_announcements_eng, optional_announcements_span, message } = promptsReducer;
     let queueId = JSON.parse(match.params.id);
     let office_directions = this.officeDirectionPrompts()
     return (
@@ -160,17 +172,24 @@ class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
         <div className={classes.paper}>
           <form className={classes.form}>
             <Typography className={classes.title} variant="title">Edit Prompts</Typography>
+
+            <CalendarSnackbar
+              handleClose = {this.handleCloseMessage}
+              hideDuration = {3000}
+              message = {message} 
+            />
+
             <div className={classes.uploadSection}>
               <Typography className={classes.subTitle} variant="subtitle1">Office Directions</Typography>
                 {office_directions}
               <div className={classes.addIconContainer}>
             {/* {loading ? <CircularProgress className={classes.progress} /> : null} */}
-              <Button onClick={this.handleSubmitNewOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                <AddIcon />
-              </Button>
+                <Button onClick={this.handleSubmitNewOfficePrompts}variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+                  <AddIcon />
+                </Button>
+              </div>
             </div>
-            </div>
-            <div className={classes.uploadSection}>
+            <div className={classes.uploadSection2}>
             <Typography className={classes.subTitle} variant="subtitle1">Optional Introduction Announcements</Typography>
               <Paper className={classes.optionalWrapper}>
                 <Prompt queueId={queueId} id={optional_announcements_eng.id} language={"English"} type={optional_announcements_eng.type} name={optional_announcements_eng.name} file_path={optional_announcements_eng.file_path}/>
@@ -202,7 +221,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPromptFromServer: (obj) => (dispatch(getPromptFromServer(obj))),
   getPromptsWithQueueIdFromServer: (obj) => (dispatch(getPromptsWithQueueIdFromServer(obj))),
   submitNewOfficePromptsToServer: (obj) => (dispatch(submitNewOfficePromptsToServer(obj))),
-  submitDeletePromptRowsToServer: (obj) => (dispatch(submitDeletePromptRowsToServer(obj)))
+  submitDeletePromptRowsToServer: (obj) => (dispatch(submitDeletePromptRowsToServer(obj))),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 

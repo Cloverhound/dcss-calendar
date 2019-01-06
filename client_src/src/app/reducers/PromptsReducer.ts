@@ -1,5 +1,6 @@
 let initialState = {
   targetFile: '',
+  message: {type: "", content: ""},
   prompts: [],
   optional_prompt_status: false,
   office_directions: [
@@ -78,23 +79,50 @@ let initialState = {
 
 const promptsReducer = (state = initialState, action) => {
   switch (action.type) {
+
+
+    case "SUBMIT_UPDATE_PROMPT_TO_SERVER_SUCCEEDED":
+      return submitUpdatePromptToServerSucceeded(state, action)
+
+    case "SUBMIT_UPDATE_PROMPT_TO_SERVER_FAILED":
+      return submitUpdatePromptToServerFailed(state)
+
+    case 'HANDLE_CLOSE_MESSAGE':
+      return handleCloseMessage(state)
+
     case 'UPDATE_TARGET_FILE':
       return {...state, targetFile: action.payload.targetFile}
 
     case 'ADD_OFFICE_PROMPTS':
-      let newArray: any[] = [...state.office_directions];
-      let index = state.office_directions.length - 1
-      let initialArray: any[] = JSON.parse(JSON.stringify(state.office_directions_initial))
-      
-      initialArray.forEach(obj => {
-        index += 1
-        obj.index = index
-        newArray.push(obj)
-      })
-      return {...state, office_directions: newArray}
+      return addOfficePrompts(state)
 
     case 'UPDATE_PROMPTS':
-    let office_directions: any[] = [];
+      return updatePrompts(state, action)
+
+    default:
+      return state
+  }
+}
+
+const submitUpdatePromptToServerSucceeded = (state, action) => {
+  let message = {type: "success", content: `Successfully uploaded ${action.payload.name}`}
+  let loading = false
+  return {...state, targetFile: '', message}
+}
+
+const submitUpdatePromptToServerFailed = (state) => {
+  let message = {type: "error", content: "Failed to upload prompt"}
+  let loading = false
+  return {...state, targetFile: '', message}
+}
+
+const handleCloseMessage = (state) => {
+  let message = {type: "", content: ""} 
+  return {...state, message}
+}
+
+const updatePrompts = (state, action) => {
+  let office_directions: any[] = [];
     action.payload.forEach(prompt => {
       if(prompt.type === "office directions") {
         office_directions.push(prompt)
@@ -120,9 +148,20 @@ const promptsReducer = (state = initialState, action) => {
               ...(optional_announcements_eng && {optional_announcements_eng}),
               ...(optional_announcements_span && {optional_announcements_span}),
             }
-    default:
-      return state
   }
-}
+
+  const addOfficePrompts = (state) => {
+    let newArray: any[] = [...state.office_directions];
+      let index = state.office_directions.length - 1
+      let initialArray: any[] = JSON.parse(JSON.stringify(state.office_directions_initial))
+      
+      initialArray.forEach(obj => {
+        index += 1
+        obj.index = index
+        newArray.push(obj)
+      })
+      return {...state, office_directions: newArray}
+  }
+
 
 export default promptsReducer;

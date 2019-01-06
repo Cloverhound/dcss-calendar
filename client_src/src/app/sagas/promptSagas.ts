@@ -34,9 +34,9 @@ export function* callGetPromptsWithQueueId(action) {
 export function* callUpdatePrompt(action) {
   const result = yield call(updatePrompt, action.payload)
   if (result.error) {
-    console.log("prompt error", result)
+    yield put({type: "SUBMIT_UPDATE_PROMPT_TO_SERVER_FAILED"})
   } else {
-    // yield call(callGetPrompts)
+    yield put({type: "SUBMIT_UPDATE_PROMPT_TO_SERVER_SUCCEEDED", payload: result.res})
     yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
   }
 }
