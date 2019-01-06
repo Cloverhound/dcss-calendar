@@ -3,11 +3,16 @@ import CalendarTable from '../CalendarTable/CalendarTable';
 
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getQueuesFromServer, submitDeleteQueueToServer } from '../../actions'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteCancel, handleCloseMessage } from '../../actions'
+import DeleteAlert from '../Modal/DeleteAlert'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 interface IProps {
   queuesReducer: any,
   getQueuesFromServer: any,
-  submitDeleteQueueToServer: any
+  submitDeleteQueueToServer: any,
+  handleDeleteQueueClicked: any,
+  handleDeleteCancel: any,
+  handleCloseMessage: any
 }
 
 class Queues extends React.Component<IProps> {
@@ -33,26 +38,48 @@ class Queues extends React.Component<IProps> {
   }
 
   getQueues = () => {
-    const { getQueuesFromServer } = this.props;
-    getQueuesFromServer()
+    this.props.getQueuesFromServer()
+  }
+
+  handleDeleteQueueClicked = (id) => {
+    this.props.handleDeleteQueueClicked({id})
   }
 
   handleDeleteQueue = (id) => {
-    console.log("Handling Delete Queue");
-    const { submitDeleteQueueToServer } = this.props;
-    submitDeleteQueueToServer({id})
+    console.log('Handling delete queue', this.props.queuesReducer.queueToDeleteID)
+    this.props.submitDeleteQueueToServer({id: this.props.queuesReducer.queueToDeleteID})
+  }
+
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
   }
 
   render() {
     let data = this.createTableData();
+    let queuesReducer = this.props.queuesReducer
+    const { message } = queuesReducer;
 
-    if(this.props.queuesReducer.reload) {
+
+    if(queuesReducer.reload) {
       location.reload()
     }
 
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompt Status', ''];
+    console.log('Queue To Delete ID', queuesReducer.queueToDeleteID)
     return (
       <div>
+        <CalendarSnackbar
+          handleClose = {this.handleCloseMessage}
+          hideDuration = {6000}
+          message = {message} 
+         />
+        <DeleteAlert 
+          entity={"Queue"} 
+          open={queuesReducer.queueToDeleteID} 
+          handleCancel={this.props.handleDeleteCancel} 
+          handleProceed={this.handleDeleteQueue}
+        />
         <CalendarTable 
           data={data} 
           basePath={"queues"} 
@@ -61,7 +88,7 @@ class Queues extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Counties"}
           addButtonText={"Add Queue"}
-          handleDelete={this.handleDeleteQueue}
+          handleDelete={this.handleDeleteQueueClicked}
         />
       </div>
     )
@@ -78,6 +105,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getQueuesFromServer: () => dispatch(getQueuesFromServer()),
     submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
+    handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
+    handleDeleteCancel: () => dispatch(handleDeleteCancel()),
+    handleCloseMessage: () => (dispatch(handleCloseMessage()))
   }
 }
 

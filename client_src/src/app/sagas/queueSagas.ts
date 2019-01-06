@@ -64,6 +64,7 @@ export function* callGetQueues() {
 }
 
 export function* callDeleteQueue(action) {
+  console.log('Call Delete Queue', action.payload)
   const result = yield call(deleteQueue, action.payload.id);
   
   if (result.error) {

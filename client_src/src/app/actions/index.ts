@@ -63,13 +63,16 @@ export const submitNewQueueToServer              = obj => ({ type: "SUBMIT_NEW_Q
 export const submitNewQueueToServerSucceeded     = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER_SUCCEEDED", payload: obj });
 export const submitNewQueueToServerFailed        = obj => ({ type: "SUBMIT_NEW_QUEUE_TO_SERVER_FAILED", payload: obj });
 
-export const submitDeleteQueueToServer           = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload:obj });
+export const submitDeleteQueueToServer           = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER", payload: obj });
 export const submitDeleteQueueToServerSucceeded  = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER_SUCCEEDED", payload:obj });
 export const submitDeleteQueueToServerFailed     = obj => ({ type: "SUBMIT_DELETE_QUEUE_TO_SERVER_FAILED", payload:obj });
 
 export const changeQueue                         = obj => ({ type: "CHANGE_QUEUE", payload: obj });
-export const resetQueueState                     = ()  => ({type: "RESET_QUEUE_STATE"}) 
+export const resetQueueState                     = ()  => ({ type: "RESET_QUEUE_STATE"}) 
 
+export const handleDeleteQueueClicked            = obj => ({ type: "HANDLE_DELETE_QUEUE_CLICKED", payload: obj})
+export const handleDeleteProceed                 = () =>  ({ type: "HANDLE_DELETE_PROCEED"})
+export const handleDeleteCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
 
 
 
