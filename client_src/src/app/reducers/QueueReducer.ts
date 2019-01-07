@@ -3,6 +3,8 @@ let initialState = {
   message: {type: "", content: ""},
   loading: false,
   toQueues: false,
+  queueName: '',
+  county_code: ''
 }
 
 const queueReducer = (state = initialState, action) => {

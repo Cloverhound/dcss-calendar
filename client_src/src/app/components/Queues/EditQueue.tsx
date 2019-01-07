@@ -135,7 +135,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               />
 
              <TextField
-              label="County Code"
+              label="Name"
               name="queueName"
               className={classes.textField}
               value={queueReducer.queueName}
