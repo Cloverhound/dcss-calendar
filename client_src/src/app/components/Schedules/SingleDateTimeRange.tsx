@@ -35,12 +35,12 @@ const styles = theme => createStyles({
   formGroup: {
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: '10px',
+    margin: theme.spacing.unit * 2
   },
   timeContainer: {
     display: 'flex',
     justifyContent: 'center',
-    padding: "0 0 25px 0"
+    marginTop: '10px'
   },
   date: {
     marginLeft: theme.spacing.unit,
@@ -112,24 +112,26 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
           <FormGroup row
             className={classes.formGroup}>
             {dateComponent}
-            <TimePicker
-              showSecond={false}
-              onChange={this.handleStartTimeChange}
-              format={format}
-              use12Hours
-              placeholder={"Start Time"}
-              value={startValue}
-              allowEmpty={false}
-            />
-            <TimePicker
-              showSecond={false}
-              onChange={this.handleEndTimeChange}
-              format={format}
-              use12Hours
-              placeholder={"End Time"}
-              value={endValue}
-              allowEmpty={false}
-            />
+            <div className={classes.timeContainer}>
+              <TimePicker
+                showSecond={false}
+                onChange={this.handleStartTimeChange}
+                format={format}
+                use12Hours
+                placeholder={"Start Time"}
+                value={startValue}
+                allowEmpty={false}
+              />
+              <TimePicker
+                showSecond={false}
+                onChange={this.handleEndTimeChange}
+                format={format}
+                use12Hours
+                placeholder={"End Time"}
+                value={endValue}
+                allowEmpty={false}
+              />
+            </div>
           </FormGroup>
         </Paper>
         <div className={classes.addButton}>
