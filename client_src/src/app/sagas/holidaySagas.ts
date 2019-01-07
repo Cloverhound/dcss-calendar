@@ -72,11 +72,13 @@ export function* callUpdateHolidayList(action) {
 
 export function* callDeleteHolidayList(action) {
   yield put(holidayListsLoading())
+  console.log('holiday list delete action', action);
   
-  const result = yield call(deleteHolidayList, action.payload)
+  const result = yield call(deleteHolidayList, action.payload.id)
   if (result.error) {
     yield put(submitDeleteHolidayListToServerFailed(result.error))
   } else {
+    yield put({type: "RESET_HOLIDAY_LIST_TO_DELETE_ID", payload: action.payload.id})
     yield put(submitDeleteHolidayListToServerSucceeded(result))
   } 
 }

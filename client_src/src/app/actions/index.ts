@@ -41,6 +41,8 @@ export const changeStartOfRecurringTimeRange         = obj => ({ type: "CHANGE_S
 export const changeEndOfRecurringTimeRange           = obj => ({ type: "CHANGE_END_OF_RECURRING_TIME_RANGE", payload: obj })
 export const resetSchedule                           = ()  => ({ type: "RESET_SCHEDULE" })
 
+export const handleDeleteScheduleClicked            = obj => ({ type: "HANDLE_DELETE_SCHEDULE_CLICKED", payload: obj})
+export const handleDeleteScheduleCancel           = () => ({ type: "HANDLE_DELETE_SCHEDULE_CANCEL"})
 
 
 
@@ -78,7 +80,7 @@ export const submitOptionalPromptsToggleToServerFailed      = obj => ({type: "SU
 
 export const handleDeleteQueueClicked            = obj => ({ type: "HANDLE_DELETE_QUEUE_CLICKED", payload: obj})
 export const handleDeleteProceed                 = () =>  ({ type: "HANDLE_DELETE_PROCEED"})
-export const handleDeleteCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
+export const handleDeleteQueueCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
 
 
 
@@ -113,6 +115,9 @@ export const submitUpdateHolidayListToServerFailed      = obj => ({type: "SUBMIT
 export const submitDeleteHolidayListToServer            = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER", payload: obj });
 export const submitDeleteHolidayListToServerSucceeded   = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED", payload: obj });
 export const submitDeleteHolidayListToServerFailed      = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER_FAILED", payload: obj });
+
+export const handleDeleteHolidayListClicked      = obj => ({type: "HANDLE_DELETE_HOLIDAY_LIST_CLICKED", payload: obj });
+export const handleDeleteHolidayListCancel     = obj => ({type: "HANDLE_DELETE_HOLIDAY_LIST_CANCEL", payload: obj });
 
 
 
