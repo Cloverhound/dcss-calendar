@@ -54,9 +54,10 @@ const handleQueueLoading = (state) => {
 
 const handleSubmitNewQueueToServerSucceeded = (state) => {
   console.log('Handling new queue succeeded')
+  let message = {type: "success", content: "Successfully created queue."}
   let loading = false
   let toQueues = true
-  return {...state, loading, toQueues}
+  return {...state, loading, toQueues, message}
 }
 
 const handleSubmitNewQueueToServerFailed = (state, payload) => {
