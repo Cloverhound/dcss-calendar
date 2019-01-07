@@ -1,5 +1,6 @@
 const initialState = {
-  holidayLists: []
+  holidayLists: [],
+  holidayListToDeleteID: null
 }
   
 const holidayListsReducer = (state=initialState, action) => {
@@ -14,11 +15,38 @@ const holidayListsReducer = (state=initialState, action) => {
       return handleSubmitDeleteHolidayListToServerFailed(state, action.payload)
     case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
+    case 'HANDLE_DELETE_HOLIDAY_LIST_CLICKED':
+      return handleDeleteHolidayListClicked(state, action.payload)
+    case 'HANDLE_DELETE_HOLIDAY_LIST_CANCEL':
+      return handleDeleteHolidayListCancel(state)
+    case 'RESET_HOLIDAY_LIST_TO_DELETE_ID':
+      return resetHolidayListToDeleteId(state, action.payload)
     // case 'HOLIDAY_LISTS_LOADING':
     //   return handleHolidayListsLoading(state)
     default:
       return state
   }
+}
+
+const resetHolidayListToDeleteId = (state, payload) => {
+  console.log('Handling submit delete holiday list to server', payload)
+
+  let holidayListToDeleteID = null
+  return {...state, holidayListToDeleteID}
+}
+
+const handleDeleteHolidayListCancel = (state) => {
+  console.log('Handling cancel delete holiday list')
+
+  let holidayListToDeleteID = null
+  return {...state, holidayListToDeleteID}
+}
+
+const handleDeleteHolidayListClicked = (state, payload) => {
+  console.log('Handling delete holiday list clicked', payload)
+
+  let holidayListToDeleteID = payload.id
+  return {...state, holidayListToDeleteID}
 }
 
 const handleHolidayListsLoading = (state) => {

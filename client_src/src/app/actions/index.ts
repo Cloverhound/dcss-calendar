@@ -116,6 +116,9 @@ export const submitDeleteHolidayListToServer            = obj => ({type: "SUBMIT
 export const submitDeleteHolidayListToServerSucceeded   = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER_SUCCEEDED", payload: obj });
 export const submitDeleteHolidayListToServerFailed      = obj => ({type: "SUBMIT_DELETE_HOLIDAY_LIST_TO_SERVER_FAILED", payload: obj });
 
+export const handleDeleteHolidayListClicked      = obj => ({type: "HANDLE_DELETE_HOLIDAY_LIST_CLICKED", payload: obj });
+export const handleDeleteHolidayListCancel     = obj => ({type: "HANDLE_DELETE_HOLIDAY_LIST_CANCEL", payload: obj });
+
 
 
 
