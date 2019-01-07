@@ -85,7 +85,7 @@ const promptsReducer = (state = initialState, action) => {
       return submitUpdatePromptToServerSucceeded(state, action)
 
     case "SUBMIT_UPDATE_PROMPT_TO_SERVER_FAILED":
-      return submitUpdatePromptToServerFailed(state)
+      return submitUpdatePromptToServerFailed(state, action.payload)
 
     case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
@@ -110,8 +110,8 @@ const submitUpdatePromptToServerSucceeded = (state, action) => {
   return {...state, targetFile: '', message}
 }
 
-const submitUpdatePromptToServerFailed = (state) => {
-  let message = {type: "error", content: "Failed to upload prompt"}
+const submitUpdatePromptToServerFailed = (state, payload) => {
+  let message = {type: "error", content: "Failed to upload prompt: " + payload.message }
   let loading = false
   return {...state, targetFile: '', message}
 }
