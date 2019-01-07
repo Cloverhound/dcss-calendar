@@ -32,7 +32,7 @@ const styles = theme => createStyles({
     marginBottom: theme.spacing.unit * 2
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   addIconContainer: {
     display: 'flex',
@@ -40,10 +40,16 @@ const styles = theme => createStyles({
   },
   submitCancelContainer: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: '50px',
   },
   progress: {
     margin: theme.spacing.unit * 2,
+  },
+  textField: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    width: 200,
   }
 });
 
@@ -113,51 +119,50 @@ class RegularScheduleTab extends React.Component<WithStyles<typeof styles> & IPr
     }
 
     return (
-        <form style={{width: "50%", margin: "auto"}}>
+      <form style={{ width: "50%", margin: "auto" }}>
+        <CalendarSnackbar
+          handleClose={this.handleCloseMessage}
+          hideDuration={6000}
+          message={message}
+        />
 
-            <CalendarSnackbar
-              handleClose = {this.handleCloseMessage}
-              hideDuration = {6000}
-              message = {message} 
-            />
+        <FormControl className={classes.formControl}>
+          <Input
+            value={this.props.scheduleReducer.name}
+            className={classes.textField}
+            onChange={this.handleNameInput}
+            name="newScheduleName"
+            placeholder="Edit Name"
+            autoFocus={true}
+          />
+        </FormControl>
 
-            <FormControl className={classes.formControl}>
-            <Input
-                value={this.props.scheduleReducer.name}
-                onChange={this.handleNameInput}
-                name="newScheduleName"
-                placeholder="Edit Name"
-                autoFocus={true}
-            />
-            </FormControl>
+        <div className={classes.selectContainer}>
+          {timeRangesComponent}
+        </div>
 
-            <div className={classes.selectContainer}>
-              {timeRangesComponent}
-            </div>
-
-            <div className={classes.submitCancelContainer} style={{width: "100%", display: "inline-block"}}>
-            <div className={classes.addIconContainer}>
-                <Button style={{float: "right"}} onClick={this.handleAddRecurringTimeRange} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
-                  <AddIcon />
+        <div className={classes.submitCancelContainer} style={{ width: "100%", display: "inline-block" }}>
+          <div className={classes.addIconContainer}>
+            <Button style={{ float: "right" }} onClick={this.handleAddRecurringTimeRange} variant="fab" color="secondary" aria-label="Add" className={classes.button}>
+              <AddIcon />
+            </Button>
+          </div>
+          <div>
+            {loading ? <CircularProgress className={classes.progress} /> : null}
+            <div className={classes.submitCancelContainer}>
+              <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{ width: "90px" }} disabled={loading}>
+                Save
+              </Button>
+              <Link to="/schedules">
+                <Button variant="outlined" color="primary" className={classes.button}>
+                  Cancel
                 </Button>
+              </Link>
             </div>
-            <div>
-                {loading ? <CircularProgress className={classes.progress} /> : null}
-                <div style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "100%"}}>
-                    <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{width: "90px"}} disabled={loading}>
-                        Save
-                    </Button>
-                    <Link to="/schedules">
-                      <Button variant="outlined" color="primary" className={classes.button}>
-                          Cancel
-                      </Button>
-                    </Link>
-                </div>
-            </div>
-            </div>
-        </form>     
+          </div>
+        </div>
+      </form>     
     )
-
   }
 }
 

@@ -10,6 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TimePicker from 'rc-time-picker-ch';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { connect } from 'react-redux';
 import { toggleRecurringDay, deleteRecurringTimeRange, changeStartOfRecurringTimeRange, changeEndOfRecurringTimeRange } from '../../actions/index';
 
@@ -42,7 +45,10 @@ const styles = theme => createStyles({
     display: 'flex',
     justifyContent: 'center',
     padding: "0 0 25px 0"
-  }
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+  },
 });
 
 interface IProps {
@@ -129,6 +135,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
               placeholder={"Start Time"}
               value={startValue}
               allowEmpty={false}
+              popupStyle={{fontFamily: '"Roboto"'}}
             />
             <TimePicker
               showSecond={false}
@@ -138,6 +145,7 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
               placeholder={"End Time"}
               value={endValue}
               allowEmpty={false}
+              popupStyle={{fontFamily: '"Roboto"'}}
             />
           </div>
 

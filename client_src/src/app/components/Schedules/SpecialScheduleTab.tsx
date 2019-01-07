@@ -40,7 +40,8 @@ const styles = theme => createStyles({
   },
   submitCancelContainer: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: '50px',
   },
   progress: {
     margin: theme.spacing.unit * 2,
@@ -124,7 +125,7 @@ class RegularScheduleTab extends React.Component<WithStyles<typeof styles> & IPr
             </div>
             <div>
                 {loading ? <CircularProgress className={classes.progress} /> : null}
-                <div style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "100%"}}>
+                <div className={classes.submitCancelContainer}>
                     <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} style={{width: "90px"}} disabled={loading}>
                         Save
                     </Button>
