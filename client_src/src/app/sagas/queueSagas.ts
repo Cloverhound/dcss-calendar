@@ -80,7 +80,6 @@ export function* callOptionalPromptsToggle(action) {
   if (result.error) {
     yield put(submitOptionalPromptsToggleToServerFailed(result.error))
   } else {
-    console.log("result", result)
     yield call(callGetQueues)
     yield put(submitOptionalPromptsToggleToServerSucceeded(result))
   }

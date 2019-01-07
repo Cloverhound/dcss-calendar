@@ -4,9 +4,10 @@ import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 // import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import DeleteAlert from '../Modal/DeleteAlert'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
-import { getHolidayListsFromServer, submitDeleteHolidayListToServer, handleCloseMessage } from '../../actions'
+import { getHolidayListsFromServer, submitDeleteHolidayListToServer, handleCloseMessage, handleDeleteHolidayListClicked, handleDeleteHolidayListCancel } from '../../actions'
 
 const styles = theme => createStyles({
   progress: {
@@ -19,7 +20,9 @@ interface IProps {
   getHolidayLists: any,
   deleteHolidayList: any,
   holidayListsReducer: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  handleDeleteHolidayListClicked:any,
+  handleDeleteHolidayListCancel: any
 }
  
 class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -38,19 +41,24 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     getHolidayLists()
   }
 
-  handleDeleteHolidayList = (holidayListId) => {
-    console.log('Handling Delete Holiday List', holidayListId)
-    const { deleteHolidayList } = this.props
-    deleteHolidayList(holidayListId)
-  }
-
   handleCloseMessage = () => {
     const { handleCloseMessage  } = this.props
     handleCloseMessage()
   }
 
+  handleDeleteHolidayListClicked = (id) => {
+    const {handleDeleteHolidayListClicked} = this.props
+    handleDeleteHolidayListClicked({id})
+  }
+
+  handleDeleteSHolidayList = () => {
+    const {holidayListsReducer, deleteHolidayList} = this.props
+    console.log('Handling delete holiday list', holidayListsReducer.holidayListToDeleteID)
+    deleteHolidayList({id: holidayListsReducer.holidayListToDeleteID})
+  }
+
   render() {
-    const { classes, holidayListsReducer } = this.props
+    const { classes, holidayListsReducer, handleDeleteHolidayListCancel } = this.props
     const { message, loading } = holidayListsReducer
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
@@ -62,7 +70,7 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
                     columnNames={columnNames}
                     title={"Holiday Lists"}
                     addButtonText={"Add Holiday List"}
-                    handleDelete={this.handleDeleteHolidayList}
+                    handleDelete={this.handleDeleteHolidayListClicked}
                 />
 
     return (
@@ -72,6 +80,12 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
                 hideDuration = {6000}
                 message = {message} 
               /> */}
+        <DeleteAlert 
+          entity={"Holiday List"} 
+          open={holidayListsReducer.holidayListToDeleteID} 
+          handleCancel={handleDeleteHolidayListCancel} 
+          handleProceed={this.handleDeleteSHolidayList}
+        />
         {loading ? <CircularProgress className={classes.progress} /> : table}
         
       </div>
@@ -90,7 +104,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getHolidayLists: () => dispatch(getHolidayListsFromServer()),
   deleteHolidayList: (obj) => dispatch(submitDeleteHolidayListToServer(obj)),
-  handleCloseMessage: () => (dispatch(handleCloseMessage()))
+  handleCloseMessage: () => (dispatch(handleCloseMessage())),
+  handleDeleteHolidayListClicked: (obj) => (dispatch(handleDeleteHolidayListClicked(obj))),
+  handleDeleteHolidayListCancel: (obj) => (dispatch(handleDeleteHolidayListCancel(obj)))
 })
 
 
