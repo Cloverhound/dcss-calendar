@@ -61,6 +61,16 @@ const ScheduleReducer = (state: any = initialState, action) => {
             return handleScheduleLoading(state)
         case 'HANDLE_CLOSE_MESSAGE':
             return handleCloseMessage(state)
+
+        case 'SUBMIT_NEW_SCHEDULE_TO_SERVER_SUCCEEDED':
+            return submitNewScheduleToServerSucceeded(state, action.payload)
+         case 'SUBMIT_NEW_SCHEDULE_TO_SERVER_FAILED':
+            return submitNewScheduleToServerFailed(state, action.payload)
+
+        case 'SUBMIT_UPDATE_SCHEDULE_TO_SERVER_SUCCEEDED':
+            return submitUpdateScheduleToServerSucceeded(state, action.payload)
+         case 'SUBMIT_UPDATE_SCHEDULE_TO_SERVER_FAILED':
+            return submitUpdateScheduleToServerFailed(state, action.payload)
         default:
             return state
     }
@@ -246,6 +256,33 @@ const updateIndices = (elements) => {
     console.log('Updatd indices', ret)
     return ret
 }
+
+function submitNewScheduleToServerSucceeded(state, payload) {
+    let message = {type: "success", content: "Successfully created schedule."}
+    let loading = false
+    console.log('Handling submit create schedule to server succeeded')
+    return {...state, message, loading}
+  }
+
+function submitNewScheduleToServerFailed(state, payload) {
+    let message = {type: "error", content: "Failed to create schedule: " + payload.message}
+    let loading = false
+    console.log('Handling submit create schedule to server failed')
+    return {...state, message, loading, scheduleToDeleteID: null}
+  }
+function submitUpdateScheduleToServerSucceeded(state, payload) {
+    let message = {type: "success", content: "Successfully updated schedule."}
+    let loading = false
+    console.log('Handling submit update schedule to server succeeded')
+    return {...state, message, loading}
+  }
+
+function submitUpdateScheduleToServerFailed(state, payload) {
+    let message = {type: "error", content: "Failed to update schedule: " + payload.message}
+    let loading = false
+    console.log('Handling submit update schedule to server failed')
+    return {...state, message, loading, scheduleToDeleteID: null}
+  }
 
 
 export default ScheduleReducer

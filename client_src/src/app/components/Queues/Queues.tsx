@@ -67,7 +67,7 @@ class Queues extends React.Component<IProps> {
       <div>
         <CalendarSnackbar
           handleClose = {this.handleCloseMessage}
-          hideDuration = {6000}
+          hideDuration = {4000}
           message = {message} 
          />
         <DeleteAlert 

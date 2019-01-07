@@ -1,6 +1,7 @@
 const initialState = {
   holidayLists: [],
-  holidayListToDeleteID: null
+  holidayListToDeleteID: null,
+  message: {type: "", content: ""},
 }
   
 const holidayListsReducer = (state=initialState, action) => {
@@ -62,17 +63,18 @@ const handleCloseMessage = (state) => {
 
 const handleSubmitDeleteHolidayListToServerSucceeded = (state, payload) => {
   console.log('Handling submit delete holiday list to server succeeded', payload)
+  let message = {type: "success", content: "Successfully deleted holiday list."}
   let holidayLists  = state.holidayLists
   holidayLists = holidayLists.filter(holidayList => holidayList.id != payload.status)
   let loading = false
-  return {...state, holidayLists, loading}
+  return {...state, holidayLists, loading, message}
 }
 
 const handleSubmitDeleteHolidayListToServerFailed = (state, payload) => {
   console.log('Handling submit delete holiday list to server failed', payload)
   let message = {type: "error", content: "Failed to delete holiday list: " + payload.message}
   let loading = false
-  return {...state, message, loading}
+  return {...state, message, loading, holidayListToDeleteID: null}
 }
 
 const handleGetHolidayListsFromServerSucceeded = (state, payload) => {

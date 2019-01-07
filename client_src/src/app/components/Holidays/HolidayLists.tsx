@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-// import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import DeleteAlert from '../Modal/DeleteAlert'
 
@@ -75,11 +75,11 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
     return (
       <div>
-        {/* <CalendarSnackbar
-                handleClose = {this.handleCloseMessage}
-                hideDuration = {6000}
-                message = {message} 
-              /> */}
+        <CalendarSnackbar
+          handleClose = {this.handleCloseMessage}
+          hideDuration = {4000}
+          message = {message} 
+        />
         <DeleteAlert 
           entity={"Holiday List"} 
           open={holidayListsReducer.holidayListToDeleteID} 

@@ -9,6 +9,8 @@ import Tab from '@material-ui/core/Tab'
 import RegularScheduleTab from './RegularScheduleTab'
 import SpecialScheduleTab from './SpecialScheduleTab'
 import {resetSchedule} from '../../actions'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
+import {handleCloseMessage} from '../../actions/index'
 
 
 const styles = theme => createStyles({
@@ -34,7 +36,9 @@ function TabContainer(props) {
 
 interface IProps {
   resetSchedule: any,
-  history: any
+  history: any,
+  handleCloseMessage: any,
+  scheduleReducer: any
 }
 
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
@@ -50,11 +54,21 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
     this.props.resetSchedule()
   }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+
   render() {
-    const { classes, history } = this.props;
+    const { classes, history, scheduleReducer } = this.props;
 
     return (
       <div className={classes.root}>
+        <CalendarSnackbar
+          handleClose = {this.handleCloseMessage}
+          hideDuration = {4000}
+          message = {scheduleReducer.message} 
+         />
         <div className={classes.paper}>
           <div className={classes.root}>
           <AppBar position="static" color="default">
@@ -79,10 +93,16 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    scheduleReducer: state.scheduleReducer
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  resetSchedule: () => (dispatch(resetSchedule()))
+  resetSchedule: () => (dispatch(resetSchedule())),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 
-export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(NewSchedule))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(NewSchedule))

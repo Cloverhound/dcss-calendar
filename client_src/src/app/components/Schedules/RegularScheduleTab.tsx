@@ -116,10 +116,10 @@ class RegularScheduleTab extends React.Component<WithStyles<typeof styles> & IPr
         <form style={{width: "50%", margin: "auto"}}>
 
             <CalendarSnackbar
-                  handleClose = {this.handleCloseMessage}
-                  hideDuration = {6000}
-                  message = {message} 
-                />
+              handleClose = {this.handleCloseMessage}
+              hideDuration = {6000}
+              message = {message} 
+            />
 
             <FormControl className={classes.formControl}>
             <Input

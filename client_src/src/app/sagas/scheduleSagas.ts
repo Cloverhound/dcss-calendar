@@ -39,10 +39,9 @@ export function* callCreateSchedule(action) {
   yield put(scheduleLoading())
   const result = yield call(createSchedule, obj)
   if (result.error) {
-    yield put(submitNewScheduleToServerFailed(result.error))
+    yield put({type: "SUBMIT_NEW_SCHEDULE_TO_SERVER_FAILED", payload: result.error})
   } else {
-    yield put(submitNewScheduleToServerSucceeded(result))
-    yield call([history, history.push], '/schedules')
+    yield put ({type: "SUBMIT_NEW_SCHEDULE_TO_SERVER_SUCCEEDED", payload: action.payload.id})
   }
 }
 
@@ -54,7 +53,6 @@ export function* callUpdateSchedule(action) {
   if (result.error) {
     yield put(submitUpdateScheduleToServerFailed(result.error))
   } else {
-    yield call([history, history.push], '/schedules')
     yield put(submitUpdateScheduleToServerSucceeded(result))
   }
 }
@@ -64,8 +62,7 @@ export function* callDeleteSchedule(action) {
 
   const result = yield call(deleteSchedule, action.payload.id)
   if (result.error) {
-    console.log("Schedule delete err", result.error)
-    yield put(submitDeleteScheduleToServerFailed(result.error))
+    yield put({type: "SUBMIT_DELETE_SCHEDULE_TO_SERVER_FAILED", payload: result.error})
   } else {
     yield call(callGetSchedules)
     yield put ({type: "RESET_SCHEDULES_TO_DELETE_ID", payload: action.payload.id})
