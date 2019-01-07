@@ -8,7 +8,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackBar'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
