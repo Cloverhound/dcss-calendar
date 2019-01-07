@@ -65,9 +65,11 @@ export function* callClearPrompt(action) {
   const result = yield call(clearPrompt, action.payload)
   if (result.error) {
     console.log("prompt error", result)
+    yield put({type: "SUBMIT_CLEAR_PROMPT_TO_SERVER_FAILED", payload: result.error})
   } else {
     yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
-    console.log("callCreatePrompts result", result)
+    yield put({type: "SUBMIT_CLEAR_PROMPT_TO_SERVER_SUCCEEDED", payload: result.status.name})
+    console.log("callClearPrompts result", result)
   }
 }
 
@@ -77,7 +79,7 @@ export function* callDeletePromptRows(action) {
     console.log("prompt error", result)
   } else {
     yield call(callGetPromptsWithQueueId, {payload: action.payload.queueId})
-    console.log("callCreatePrompts result", result)
+    console.log("callCDeletePrompts result", result)
   }
 }
 

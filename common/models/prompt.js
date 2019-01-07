@@ -186,7 +186,7 @@ const deleteFileFromLocal = (obj) => {
   return new Promise(function(resolve, reject){
    fs.unlink(`${process.env.FILE_STORAGE_PATH}${obj.file_path}`, (err) => {
       if (err) throw reject(err);
-    return resolve({queueId: obj.queueId, path: `${obj.file_path} was deleted`})
+    return resolve({queueId: obj.queueId, name: `${obj.name}`})
     });
   })
   .then(res => res)

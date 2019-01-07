@@ -87,6 +87,12 @@ const promptsReducer = (state = initialState, action) => {
     case "SUBMIT_UPDATE_PROMPT_TO_SERVER_FAILED":
       return submitUpdatePromptToServerFailed(state, action.payload)
 
+    case "SUBMIT_CLEAR_PROMPT_TO_SERVER_SUCCEEDED":
+      return submitClearPromptToServerSucceeded(state, action)
+
+    case "SUBMIT_CLEAR_PROMPT_TO_SERVER_FAILED":
+      return submitClearPromptToServerFailed(state, action.payload)
+
     case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
 
@@ -105,12 +111,24 @@ const promptsReducer = (state = initialState, action) => {
 }
 
 const submitUpdatePromptToServerSucceeded = (state, action) => {
-  let message = {type: "success", content: `Successfully uploaded ${action.payload.name}`}
+  let message = {type: "success", content: `Successfully uploaded prompt: ${action.payload.name}`}
   let loading = false
   return {...state, targetFile: '', message}
 }
 
 const submitUpdatePromptToServerFailed = (state, payload) => {
+  let message = {type: "error", content: "Failed to upload prompt: " + payload.message }
+  let loading = false
+  return {...state, targetFile: '', message}
+}
+
+const submitClearPromptToServerSucceeded = (state, action) => {
+  let message = {type: "success", content: `Successfully cleared prompt: ${action.payload}`}
+  let loading = false
+  return {...state, targetFile: '', message}
+}
+
+const submitClearPromptToServerFailed = (state, payload) => {
   let message = {type: "error", content: "Failed to upload prompt: " + payload.message }
   let loading = false
   return {...state, targetFile: '', message}
