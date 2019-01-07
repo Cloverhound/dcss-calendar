@@ -72,7 +72,7 @@ module.exports = function (Queue) {
 
     return Queue.find(where)
       .then(async function(res) {
-        return res[0].optional_prompt_enabled ? await findOptionalPrompts(res) : "Optional Prompts Disabled"
+        return res[0].optional_prompt_enabled ? await findOptionalPrompts(res) : []
       })
       .catch(err => err)
   }
