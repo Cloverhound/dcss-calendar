@@ -16,7 +16,6 @@ const styles = theme => createStyles({
     backgroundColor: theme.palette.background.paper,
   },
   paper: {
-    // display: 'flex',
     justifyContent: 'center',
     width: '100%',
   }

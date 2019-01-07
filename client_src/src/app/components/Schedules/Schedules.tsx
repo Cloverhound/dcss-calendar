@@ -1,8 +1,9 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable'
 import DeleteAlert from '../Modal/DeleteAlert'
+import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
-import { getSchedulesFromServer, submitDeleteScheduleToServer, handleDeleteScheduleClicked, handleDeleteScheduleCancel } from '../../actions'
+import { getSchedulesFromServer, submitDeleteScheduleToServer, handleDeleteScheduleClicked, handleDeleteScheduleCancel, handleCloseMessage } from '../../actions'
 
 interface IProps {
   schedules: any,
@@ -11,7 +12,8 @@ interface IProps {
   submitDeleteScheduleToServer: any,
   schedulesReducer: any,
   handleDeleteScheduleClicked: any,
-  handleDeleteScheduleCancel: any
+  handleDeleteScheduleCancel: any,
+  handleCloseMessage: any
 }
 
 class Schedules extends React.Component<IProps> {
@@ -39,12 +41,22 @@ class Schedules extends React.Component<IProps> {
     submitDeleteScheduleToServer({id: schedulesReducer.scheduleToDeleteID})
   }
 
+  handleCloseMessage = () => {
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
+  }
+
   render() {
     const {schedulesReducer, handleDeleteScheduleCancel} = this.props
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
     return (
       <div>
+        <CalendarSnackbar
+          handleClose = {this.handleCloseMessage}
+          hideDuration = {4000}
+          message = {schedulesReducer.message} 
+         />
         <DeleteAlert 
           entity={"Schedule"} 
           open={schedulesReducer.scheduleToDeleteID} 
@@ -78,7 +90,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedules: () => dispatch(getSchedulesFromServer()),
   submitDeleteScheduleToServer: (obj) => dispatch(submitDeleteScheduleToServer(obj)),
   handleDeleteScheduleClicked: (obj) => dispatch(handleDeleteScheduleClicked(obj)),
-  handleDeleteScheduleCancel: () => dispatch(handleDeleteScheduleCancel())
+  handleDeleteScheduleCancel: () => dispatch(handleDeleteScheduleCancel()),
+  handleCloseMessage: () => (dispatch(handleCloseMessage()))
 })
 
 
