@@ -113,23 +113,35 @@ module.exports = function(HolidayList) {
           return
         }
 
-        console.log('Deleting holidays of holiday list', holidayList)
-        holidayList.holidays.destroyAll(function(destroyHolsErr) {
-          if(destroyHolsErr) {
-            console.log('Failed to destroy holidays of holiday list', destroyHolsErr)
-            cb(destroyHolsErr)
-            return
-          }
+        let where = {where: {holidayListId: id}}
 
-          holidayList.destroy(function(destroyHolListErr) {
-            if(destroyHolListErr) {
-              console.log('Failed to destroy holiday list', destroyHolListErr)
-              cb(destroyHolListErr)
-              return
-            }
-            cb(null, id)
-          })
+        holidayList.queues.find(where, function (findQueuesErr, queue) {
+          if (findQueuesErr) {
+            console.log('Failed to find queue', findErr)
+            cb(findErr)
+            return
+          } else if (queue.length) {
+            console.log('Aborted. Holiday List in with ', queue)
+            cb(`Aborted. This Holiday List is assigned to a county or counties.`)
+          } else {
+            holidayList.holidays.destroyAll(function (destroyHolsErr) {
+              if (destroyHolsErr) {
+                console.log('Failed to destroy holidays of holiday list', destroyHolsErr)
+                cb(destroyHolsErr)
+                return
+              }
+              holidayList.destroy(function (destroyHolListErr) {
+                if (destroyHolListErr) {
+                  console.log('Failed to destroy holiday list', destroyHolListErr)
+                  cb(destroyHolListErr)
+                  return
+                }
+                cb(null, id)
+              })
+            })
+          }
         })
+        console.log('Deleting holidays of holiday list', holidayList)
       })
     }
 
