@@ -103,46 +103,64 @@ module.exports = function(Schedule) {
     }
 
     // NOT NEEDED IF WE USE A CASCADE DELETE
-    Schedule.deleteWithTimeRanges = function(id, cb) {
-      console.log('Deleting Schedule and its Time Ranges -- ', id)
-        
-      Schedule.findById(id, function(findErr, schedule) {
-        if(findErr) {
-          console.log('Failed to find schedule to delete', findErr)
-          cb(findErr)
-          return
-        }
+    Schedule.deleteWithTimeRanges = function (id, cb) {
+        console.log('Deleting Schedule and its Time Ranges -- ', id)
 
-        console.log('Deleting recurring time ranges of schedule', schedule)
-        schedule.recurringTimeRanges.destroyAll(function(destroyTimeRangesErr) {
-          if(destroyTimeRangesErr) {
-            console.log('Failed to destroy recurring time ranges of schedule', destroyTimeRangesErr)
-            cb(destroyTimeRangesErr)
+        Schedule.findById(id, function (findErr, schedule) {
+          if (findErr) {
+            console.log('Failed to find schedule to delete', findErr)
+            cb(findErr)
             return
           }
-          console.log('Successfully deleted recurring time ranges')
-          console.log('Deleting single date time ranges of schedule', schedule)
-          schedule.singleDateTimeRanges.destroyAll(function(destroyTimeRangesErr) {
-            if(destroyTimeRangesErr) {
-              console.log('Failed to destroy single date time ranges of schedule', destroyTimeRangesErr)
-              cb(destroyTimeRangesErr)
-              return
-            }
 
-            console.log('Successfully destroyed single date time ranges')
-            console.log('Destroying schedule')
-            schedule.destroy(function(destroySchedErr) {
-              if(destroySchedErr) {
-                console.log('Failed to destroy schedule', destroySchedErr)
-                cb(destroySchedErr)
-                return
-              }
-              console.log('Successfully destroyed schedule')
-              cb(null,id)
-            })
+          let where = {
+            where: {
+              scheduleId: id
+            }
+          }
+
+          schedule.queues.find(where, function (findQueuesErr, queue) {
+            if (findQueuesErr) {
+              console.log('Failed to find queue', findQueuesErr)
+              cb(findQueuesErr)
+              return
+            } else if (queue.length) {
+              console.log('Aborted. Schedule is in use with ', queue)
+              cb(`Aborted. This Schedule is assigned to a county or counties.`)
+            } else {
+              console.log('Deleting recurring time ranges of schedule', schedule)
+              schedule.recurringTimeRanges.destroyAll(function (destroyTimeRangesErr) {
+                if (destroyTimeRangesErr) {
+                  console.log('Failed to destroy recurring time ranges of schedule', destroyTimeRangesErr)
+                  cb(destroyTimeRangesErr)
+                  return
+                }
+                console.log('Successfully deleted recurring time ranges')
+                console.log('Deleting single date time ranges of schedule', schedule)
+                schedule.singleDateTimeRanges.destroyAll(function (destroyTimeRangesErr) {
+                  if (destroyTimeRangesErr) {
+                    console.log('Failed to destroy single date time ranges of schedule', destroyTimeRangesErr)
+                    cb(destroyTimeRangesErr)
+                    return
+                  }
+
+                  console.log('Successfully destroyed single date time ranges')
+                  console.log('Destroying schedule')
+                  schedule.destroy(function (destroySchedErr) {
+                    if (destroySchedErr) {
+                      console.log('Failed to destroy schedule', destroySchedErr)
+                      cb(destroySchedErr)
+                      return
+                    }
+                    console.log('Successfully destroyed schedule')
+                    cb(null, id)
+                  })
+                })
+              })
+            }
           })
-        })
-      })
+        }
+      )
     }
 }
 

@@ -64,6 +64,7 @@ export function* callDeleteSchedule(action) {
 
   const result = yield call(deleteSchedule, action.payload.id)
   if (result.error) {
+    console.log("Schedule delete err", result.error)
     yield put(submitDeleteScheduleToServerFailed(result.error))
   } else {
     yield call(callGetSchedules)

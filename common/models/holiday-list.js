@@ -122,7 +122,7 @@ module.exports = function(HolidayList) {
             return
           } else if (queue.length) {
             console.log('Aborted. Holiday List in with ', queue)
-            cb(null, `Aborted. This Holiday List is assigned to a county or counties.`)
+            cb(`Aborted. This Holiday List is assigned to a county or counties.`)
           } else {
             holidayList.holidays.destroyAll(function (destroyHolsErr) {
               if (destroyHolsErr) {
