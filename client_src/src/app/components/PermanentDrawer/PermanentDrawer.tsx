@@ -17,8 +17,8 @@ import { connect } from 'react-redux';
 import { sendRouteComponent } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
-import NewQueue from '../Queues/NewQueue';
-import EditQueue from '../Queues/EditQueue';
+import NewQueue from '../NewQueue/NewQueue';
+import EditQueue from '../EditQueue/EditQueue';
 import Schedules from '../Schedules/Schedules';
 import NewSchedule from '../Schedules/NewSchedule';
 import EditSchedule from '../Schedules/EditSchedule';
