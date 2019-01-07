@@ -63,14 +63,14 @@ function handleGetSchedulesFromServerFailed(state, payload) {
 function handleSubmitDeleteScheduleToServerSucceeded(state, payload) {
   let message = {type: "success", content: "Successfully deleted schedule."}
   let loading = false
-  console.log('Handling submit delete schedule to server succeeded')
+  console.log('Handling submit delete schedule to server succeeded', payload)
   return {...state, message, loading}
 }
 
 function handleSubmitDeleteScheduleToServerFailed(state, payload) {
   let message = {type: "error", content: "Failed to delete schedule: " + payload.message}
   let loading = false
-  console.log('Handling submit delete schedule to server failed')
+  console.log('Handling submit delete schedule to server failed', payload)
   return {...state, message, loading, scheduleToDeleteID: null}
 }
 
