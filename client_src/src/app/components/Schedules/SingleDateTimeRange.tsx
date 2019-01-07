@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TimePicker from 'rc-time-picker-ch';
-import TextField from '@material-ui/core/TextField';
+import DatePicker from "react-datepicker";
 import { connect } from 'react-redux';
 import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStartOfSingleDateTimeRange, changeEndOfSingleDateTimeRange } from '../../actions/index';
 
@@ -47,6 +47,16 @@ const styles = theme => createStyles({
     marginRight: theme.spacing.unit,
     width: 200,
     marginBottom: '8px'
+  },
+  dateInput: {
+    fontSize: theme.typography.fontSize,
+    fontFamily: theme.typography.fontFamily,
+    border: 'none',
+    borderBottom: '1px solid #8D8D8D'
+  },
+  calendar: {
+    fontSize: theme.typography.fontSize,
+    fontFamily: theme.typography.fontFamily
   }
 });
 
@@ -73,9 +83,9 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
     changeEndOfSingleDateTimeRange({index, value: value.format(format) })
   }
 
-  handleDateChange = (event) =>  {
+  handleDateChange = (value) =>  {
     const { changeDateOfSingleDateTimeRange, index } = this.props
-    changeDateOfSingleDateTimeRange({ index, date: event.target.value})
+    changeDateOfSingleDateTimeRange({ index, date: value})
   };
 
   handleDelete = (event) => {
@@ -87,14 +97,13 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
   render() {
     const { classes } = this.props
 
-    let dateComponent = <TextField
-      type="date"
-      value={this.props.date.split('T')[0]}
+    let dateComponent = <DatePicker
+      selected={this.props.date}
+      placeholderText="mm / dd / yyyy"
       onChange={this.handleDateChange}
-      className={classes.date}
-      InputLabelProps={{
-        shrink: true,
-    }} />
+      className={classes.dateInput}
+      calendarClassName={classes.calendar}
+    />
 
     let startValue = moment(this.props.start, format)
     if(!startValue.isValid()) {
