@@ -69,7 +69,7 @@ const handleSubmitDeleteQueueToServerFailed = (state, payload) => {
 
 const handleGetQueuesFromServerSucceeded = (state, payload) => {
   console.log('Handling get queues from server succeded', payload)
-  return { ...state, queues: payload }
+  return { ...state, queues: payload.counties }
 }
 
 const handleGetQueuesFromServerFailed = (state, payload) => {

@@ -4,13 +4,20 @@ module.exports = function (Queue) {
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
 
   Queue.remoteMethod(
-    'status', {
+    'getStatus', {
       http: {path: '/:code/status', verb: 'get'},
       accepts: [
         {arg: 'code', type: 'string', required: true}
       ],
       returns: {arg: 'status', type: 'any'},
   })
+
+  Queue.remoteMethod(
+    'getAllQueuesWithStatus', {
+      http: {path: '/getAllQueuesWithStatus', verb: 'get'},
+      returns: {arg: 'counties', type: 'array'}
+    }
+  )
 
   Queue.remoteMethod(
     'createQueueAndPrompts', {
@@ -43,6 +50,22 @@ module.exports = function (Queue) {
       ],
       returns: {arg: 'files', type: 'any'},
   })
+
+  Queue.getAllQueuesWithStatus = () => {
+    console.log('Getting all queus with status')
+    return Queue.find({include: ['holidayList', 'schedule']})
+      .then(async function(queues) {
+        for(var i = 0; i < queues.length; i++) {
+          let queue = queues[i]
+          queue.status = await getStatus(queue)
+        }
+        return Promise.resolve(queues)
+      })
+      .catch(err => {
+        console.log('Failed to get all queues with status', err)
+        return Promise.reject(err)
+      })
+  } 
 
   Queue.optionalPrompts = (code) => {
     let where = {where: {county_code: code}}
@@ -95,7 +118,7 @@ module.exports = function (Queue) {
       .catch(err => err)
   }
 
-  Queue.status = (code) => {
+  Queue.getStatus = (code) => {
     console.log('Getting status of queue with code', code)
     return Queue.find({where: {county_code: code}})
       .then(async function(queues) {

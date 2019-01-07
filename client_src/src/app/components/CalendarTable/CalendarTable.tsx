@@ -142,16 +142,16 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     const { classes } = this.props;
     let statusStyle = "";
       switch (status) {
-        case "Open":
+        case "open":
           statusStyle = "#01d901"
           break;
-        case "Closed":
+        case "closed":
           statusStyle = "#d90101"
           break;
-        case "Holiday":
+        case "holiday":
           statusStyle = "#d90101"
           break;
-        case "Closing":
+        case "closing":
           statusStyle = "#FDDD08"
           break;
         default:
