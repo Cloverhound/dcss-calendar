@@ -6,8 +6,6 @@ const path = require('path'),
       UglifyJsPlugin = require('uglifyjs-webpack-plugin');
       ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
       AutoDllPlugin = require('autodll-webpack-plugin');
-      SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const smp = new SpeedMeasurePlugin();
 module.exports = {
   entry: {
     app: ['./src/app/index.tsx'],
