@@ -34,7 +34,8 @@ const styles = theme => createStyles({
   },
   formGroup: {
     display: 'flex',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    alignItems: 'flex-end',
     margin: theme.spacing.unit * 2
   },
   timeContainer: {
@@ -52,7 +53,8 @@ const styles = theme => createStyles({
     fontSize: theme.typography.fontSize,
     fontFamily: theme.typography.fontFamily,
     border: 'none',
-    borderBottom: '1px solid #8D8D8D'
+    borderBottom: '1px solid #8D8D8D',
+    marginRight: theme.spacing.unit,
   },
   calendar: {
     fontSize: theme.typography.fontSize,
@@ -130,6 +132,7 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
                 placeholder={"Start Time"}
                 value={startValue}
                 allowEmpty={false}
+                popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
               />
               <TimePicker
                 showSecond={false}
@@ -139,6 +142,7 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
                 placeholder={"End Time"}
                 value={endValue}
                 allowEmpty={false}
+                popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
               />
             </div>
           </FormGroup>

@@ -3528,10 +3528,10 @@ rc-animate@2.x:
     raf "^3.4.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-time-picker-ch@^3.6.3:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/rc-time-picker-ch/-/rc-time-picker-ch-3.6.3.tgz#99532f6b0084c3dc865228407654801976fd5588"
-  integrity sha512-m8SFh1/zm/3JXmy+TSH2Pilo4kJhLw4kQjlFyUwLRQI2HVAalaI+X0lq8indTWmqvkBFfAfEMmY236l167Nw/g==
+rc-time-picker-ch@^3.6.5:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/rc-time-picker-ch/-/rc-time-picker-ch-3.6.5.tgz#d18338fec64df04fb1ae4fb085066df79b1e0686"
+  integrity sha512-Em9O01pngm1iw3k5qaOfiLda+8EOyX+ZsxAzRG7igncXtz4zb/K3rhWvjf9y91piewg0MkMn7w61TCNiy41+Ww==
   dependencies:
     classnames "2.x"
     moment "2.x"
