@@ -140,8 +140,6 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
     
 
     let holidayComponents = holidays.map((holiday) => {
-      console.log("holiday", holiday);
-      
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
 
