@@ -123,8 +123,8 @@ module.exports = function (Queue) {
     return Queue.find({where: {county_code: code}})
       .then(async function(queues) {
           try {
-            let statuses = await getStatusesOfQueues(queues)
-            return Promise.resolve(statuses)
+            let status = await getStatus(queues[0])
+            return Promise.resolve(status)
           } catch(e) {
             console.log('Failed to get status', e)
             return Promise.reject(e)
@@ -192,16 +192,6 @@ let createPrompts = (obj) => {
   return results
 }
 
-var getStatusesOfQueues = async function(queues) {
-  console.log("Getting status of queues", queues)
-  let statuses = []
-  for(var i = 0; i < queues.length; i++) {
-    let queue = queues[i]
-    let status = await getStatus(queue)
-    statuses.push({queue: queue.name, status: status})
-  }
-  return statuses
-}
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
