@@ -42,6 +42,7 @@ export function* callCreateSchedule(action) {
     yield put({type: "SUBMIT_NEW_SCHEDULE_TO_SERVER_FAILED", payload: result.error})
   } else {
     yield put ({type: "SUBMIT_NEW_SCHEDULE_TO_SERVER_SUCCEEDED", payload: action.payload.id})
+    yield call([history, history.push], '/schedules')
   }
 }
 
@@ -54,6 +55,7 @@ export function* callUpdateSchedule(action) {
     yield put(submitUpdateScheduleToServerFailed(result.error))
   } else {
     yield put(submitUpdateScheduleToServerSucceeded(result))
+    yield call([history, history.push], '/schedules')
   }
 }
 

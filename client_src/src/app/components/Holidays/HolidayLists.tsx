@@ -20,6 +20,7 @@ interface IProps {
   getHolidayLists: any,
   deleteHolidayList: any,
   holidayListsReducer: any,
+  holidayListReducer: any,
   handleCloseMessage: any,
   handleDeleteHolidayListClicked:any,
   handleDeleteHolidayListCancel: any
@@ -29,8 +30,8 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
   createTableData = () => {
     console.log('Creating table data')
-    const {holidayLists} = this.props;
-    return holidayLists.map((holidayList, index) => {
+    const {holidayListsReducer} = this.props;
+    return holidayListsReducer.holidayLists.map((holidayList, index) => {
       return {id: holidayList.id, Name: holidayList.name}
     })
   }
@@ -57,9 +58,19 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     deleteHolidayList({id: holidayListsReducer.holidayListToDeleteID})
   }
 
+  showMessage = () => {
+    const {holidayListsReducer, holidayListReducer} = this.props
+    if(holidayListsReducer.message.content.length) {
+      return holidayListsReducer.message
+    } else if (holidayListReducer.message.content.length) {
+      return holidayListReducer.message
+    }
+  }
+
   render() {
-    const { classes, holidayListsReducer, handleDeleteHolidayListCancel } = this.props
-    const { message, loading } = holidayListsReducer
+    const { classes, holidayListsReducer, holidayListReducer, handleDeleteHolidayListCancel } = this.props
+    const { loading } = holidayListsReducer;
+    let message = this.showMessage()
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
     let table = <CalendarTable 
@@ -96,8 +107,8 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
 const mapStateToProps = state => {
   return {
-    holidayLists: state.holidayListsReducer.holidayLists,
-    holidayListsReducer: state.holidayListsReducer
+    holidayListsReducer: state.holidayListsReducer,
+    holidayListReducer: state.holidayListReducer,
   }
 }
 

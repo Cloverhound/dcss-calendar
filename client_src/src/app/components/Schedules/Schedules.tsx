@@ -11,6 +11,7 @@ interface IProps {
   history: any,
   submitDeleteScheduleToServer: any,
   schedulesReducer: any,
+  scheduleReducer: any,
   handleDeleteScheduleClicked: any,
   handleDeleteScheduleCancel: any,
   handleCloseMessage: any
@@ -19,8 +20,8 @@ interface IProps {
 class Schedules extends React.Component<IProps> {
 
   createTableData = () => {
-    const {schedules} = this.props;
-    return schedules.map((schedule, index) => {
+    const {schedulesReducer} = this.props;
+    return schedulesReducer.schedules.map((schedule, index) => {
       return {id: schedule.id, Name: schedule.name}
     })
   }
@@ -46,16 +47,26 @@ class Schedules extends React.Component<IProps> {
     handleCloseMessage()
   }
 
+  showMessage = () => {
+    const {schedulesReducer, scheduleReducer} = this.props
+    if(schedulesReducer.message.content.length) {
+      return schedulesReducer.message
+    } else if (scheduleReducer.message.content.length) {
+      return scheduleReducer.message
+    }
+  }
+
   render() {
-    const {schedulesReducer, handleDeleteScheduleCancel} = this.props
+    const {schedulesReducer, scheduleReducer, handleDeleteScheduleCancel} = this.props
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
+    let message = this.showMessage()
     return (
       <div>
         <CalendarSnackbar
           handleClose = {this.handleCloseMessage}
           hideDuration = {4000}
-          message = {schedulesReducer.message} 
+          message = {message} 
          />
         <DeleteAlert 
           entity={"Schedule"} 
@@ -80,7 +91,7 @@ class Schedules extends React.Component<IProps> {
 
 const mapStateToProps = state => {
   return {
-    schedules: state.schedulesReducer.schedules,
+    scheduleReducer: state.scheduleReducer,
     schedulesReducer: state.schedulesReducer
   }
 }

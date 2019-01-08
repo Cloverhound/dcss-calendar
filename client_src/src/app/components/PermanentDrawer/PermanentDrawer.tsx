@@ -126,7 +126,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <ListItemText primary="Schedules" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navLink} to="/Holiday_Lists">
+        <NavLink className={classes.navLink} to="/holiday_lists">
           <ListItem
             button
             selected={this.state.selectedIndex === 2}

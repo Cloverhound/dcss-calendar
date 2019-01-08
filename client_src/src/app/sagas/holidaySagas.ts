@@ -25,6 +25,7 @@ export function* callCreateHolidayList(action) {
     yield put(submitNewHolidayListToServerFailed(result.error))
   } else {
     yield put(submitNewHolidayListToServerSucceeded(result))
+    yield call([history, history.push], '/holiday_lists')
   }
 }
 
@@ -64,6 +65,7 @@ export function* callUpdateHolidayList(action) {
     yield put(submitUpdateHolidayListToServerFailed(result.error))
   } else {
     yield put(submitUpdateHolidayListToServerSucceeded(result))
+    yield call([history, history.push], '/holiday_lists')
   } 
 }
 
