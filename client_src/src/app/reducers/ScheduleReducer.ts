@@ -18,6 +18,25 @@ var emptySingleDateTimeRange = {
     end: ""
 }
 
+var initialEmptyRecurringTimeRange = {
+    index: 0,
+    start: "",
+    end: "",
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+    sun: false
+}
+
+var initialEmptySingleDateTimeRange = {
+    index: 0,
+    date: "",
+    start: "",
+    end: ""
+}
 
 var initialState = {
     name: "",
@@ -56,7 +75,7 @@ const ScheduleReducer = (state: any = initialState, action) => {
         case 'CHANGE_DATE_OF_SINGLE_DATE_TIME_RANGE':
             return changeDateOfSingleDateTimeRange(state, action.payload)
         case 'RESET_SCHEDULE':
-            return resetSchedule()
+            return resetSchedule(state)
         case 'SCHEDULE_LOADING':
             return handleScheduleLoading(state)
         case 'HANDLE_CLOSE_MESSAGE':
@@ -241,12 +260,15 @@ function changeDateOfSingleDateTimeRange(state, payload) {
     return {...state, singleDateTimRanges}
 }
 
-function resetSchedule() {
+function resetSchedule(state) {
     console.log('Resetting schedule')
-    return {...initialState}
+    return {...state,  name: "", 
+    recurringTimeRanges: [JSON.parse(JSON.stringify(emptyRecurringTimeRange))], 
+    singleDateTimeRanges: [JSON.parse(JSON.stringify(emptySingleDateTimeRange))], 
+    message: {type: "", content: ""},
+    loading: false}
 }
 
-  
 const updateIndices = (elements) => {
     console.log('Updating indices', elements)
     let ret = elements.map((element, i) => {

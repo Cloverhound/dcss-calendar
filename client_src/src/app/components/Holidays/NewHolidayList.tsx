@@ -171,7 +171,7 @@ class NewHolidayList extends React.Component<WithStyles<typeof styles> & IProps>
             </div>
             <div className={classes.submitCancelContainer}>
               <Button onClick={this.handleFormSubmit} variant="contained" color="primary" className={classes.button} disabled={loading}>
-                Submit
+                Save
               </Button>
               <Link to="/holiday_lists">
                 <Button variant="outlined" color="primary" className={classes.button}>
