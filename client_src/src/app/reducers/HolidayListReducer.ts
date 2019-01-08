@@ -1,3 +1,5 @@
+import "ie-array-find-polyfill";
+
 let initialState = {
   name: "",
   holidays: [{name: "", date: "", index: 0}],

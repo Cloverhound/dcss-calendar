@@ -17,6 +17,7 @@
     "@material-ui/icons": "^3.0.1",
     "@types/react-redux": "^6.0.9",
     "es6-promise": "^4.2.5",
+    "ie-array-find-polyfill": "^1.1.0",
     "isomorphic-fetch": "^2.2.1",
     "rc-time-picker-ch": "^3.6.5",
     "react": "^16.5.1",

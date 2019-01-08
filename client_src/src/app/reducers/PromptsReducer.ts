@@ -1,3 +1,5 @@
+import "ie-array-find-polyfill";
+
 let initialState = {
   targetFile: '',
   message: {type: "", content: ""},
