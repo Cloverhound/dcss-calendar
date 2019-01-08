@@ -29,28 +29,9 @@ module.exports = function(Schedule) {
       returns: {arg: 'status', type: 'string'},
     })
 
-  Schedule.createWithTimeRanges = function (scheduleParameter, cb) {
-    console.log('Creating Schedule With Time Ranges', scheduleParameter)
-    let recurringTimeRanges = scheduleParameter.recurringTimeRanges
-    let startTime;
-    let endTime;
-    let isBeforeBool = true;
-    for (let i = 0; i < recurringTimeRanges.length; i++) {
-      startTime = moment(recurringTimeRanges[i].start, 'HH:mm a')
-      endTime = moment(recurringTimeRanges[i].end, 'HH:mm a')
+    Schedule.createWithTimeRanges = function (scheduleParameter, cb) {
+      console.log('Creating Schedule With Time Ranges', scheduleParameter)
 
-      let isBefore = moment(startTime).isBefore(endTime)
-      console.log("isBefore", isBefore)
-
-      if (!isBefore) {
-        isBeforeBool = false
-        break
-      }
-    }
-
-    if (!isBeforeBool) {
-      cb("End time is before Start time")
-    } else {
       Schedule.create({
         name: scheduleParameter.name
       }, async function (schedErr, createdSchedule) {
@@ -76,7 +57,57 @@ module.exports = function(Schedule) {
         }
       })
     }
-  }
+
+  // Schedule.createWithTimeRanges = function (scheduleParameter, cb) {
+  //   console.log('Creating Schedule With Time Ranges', scheduleParameter)
+  //   let recurringTimeRanges = scheduleParameter.recurringTimeRanges
+  //   // let startTime;
+  //   // let endTime;
+  //   // let isBeforeBool = true;
+  //   // for (let i = 0; i < recurringTimeRanges.length; i++) {
+  //   //   startTime = moment(recurringTimeRanges[i].start, 'HH:mm a')
+  //   //   endTime = moment(recurringTimeRanges[i].end, 'HH:mm a')
+
+  //   //   let isBefore = moment(startTime).isBefore(endTime)
+  //   //   console.log("isBefore", isBefore)
+
+  //   //   if (!isBefore) {
+  //   //     isBeforeBool = false
+  //   //     break
+  //   //   }
+  //   // }
+
+  //   // if (!isBeforeBool) {
+  //   //   cb("End time is before Start time")
+  //   // } else {
+  //     Schedule.create({
+  //       name: scheduleParameter.name
+  //     }, async function (schedErr, createdSchedule) {
+
+  //       if (schedErr) {
+  //         console.log('Failed to create schedule', schedErr)
+  //         cb(schedErr)
+  //         return
+  //       }
+
+  //       console.log('Schedule created succesfully, creating time ranges')
+  //       let createTimeRangePromises = []
+  //       scheduleParameter.recurringTimeRanges.forEach((recurringTimeRangeParameter) => {
+  //         createTimeRangePromises.push(createRecurringTimeRange(createdSchedule, recurringTimeRangeParameter))
+  //       })
+  //       scheduleParameter.singleDateTimeRanges.forEach((singleDateTimeRangeParameter) => {
+  //         createTimeRangePromises.push(createSingleDateTimeRange(createdSchedule, singleDateTimeRangeParameter))
+  //       })
+
+  //       let result = await Promise.all(createTimeRangePromises)
+  //       if (result !== 'FAILED') {
+  //         cb(null, createdSchedule)
+  //       }
+  //     })
+  //   // }
+  // }
+
+  
 
 
     Schedule.updateWithTimeRanges = function(id, scheduleParameter, cb) {
