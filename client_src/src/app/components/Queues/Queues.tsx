@@ -69,7 +69,7 @@ class Queues extends React.Component<IProps> {
           handleClose = {this.handleCloseMessage}
           hideDuration = {4000}
           message = {message} 
-         />\
+         />
         <DeleteAlert 
           entity={"Queue"} 
           open={queuesReducer.queueToDeleteID} 
