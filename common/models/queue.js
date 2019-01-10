@@ -195,32 +195,35 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
+  let holidayList = await queue.holidayList.get()
+
+  if(holidayList) {
+    let holidays = await holidayList.holidays.find()
+  
+    for(var i = 0; i < holidays.length; i++) {
+      if(holidays[i].isToday()) {
+        return 'holiday'
+      }
+    }
+  }
 
   let schedule = await queue.schedule.get()
+  if(schedule) {
+    
+    let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+    let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
   
-  let holidayList = await queue.holidayList.get()
-  let holidays = await holidayList.holidays.find()
-
-  for(var i = 0; i < holidays.length; i++) {
-    if(holidays[i].isToday()) {
-      return 'holiday'
+    for(var i = 0; i < recurringTimeRanges.length; i++) {
+      if(recurringTimeRanges[i].isNow()) {
+        return 'open'
+      }
     }
-  }
-
-  let recurringTimeRanges = await schedule.recurringTimeRanges.find()
-  let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
-
-  for(var i = 0; i < recurringTimeRanges.length; i++) {
-    if(recurringTimeRanges[i].isNow()) {
-      return 'open'
+  
+    for(var i = 0; i < singleDateTimeRanges.length; i++) {
+      if(singleDateTimeRanges[i].isNow()) {
+        return 'open'
+      }
     }
-  }
-
-  for(var i = 0; i < singleDateTimeRanges.length; i++) {
-    if(singleDateTimeRanges[i].isNow()) {
-      return 'open'
-    }
-
   }
   return 'closed'
 }
