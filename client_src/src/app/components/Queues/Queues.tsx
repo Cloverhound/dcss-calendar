@@ -7,6 +7,7 @@ import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicke
 
 interface IProps {
   queuesReducer: any,
+  queueReducer: any,
   getQueuesFromServer: any,
   submitDeleteQueueToServer: any,
   handleDeleteQueueClicked: any,
@@ -61,11 +62,19 @@ class Queues extends React.Component<IProps> {
     handleCloseMessage()
   }
 
+  showMessage = () => {
+    const {queuesReducer, queueReducer} = this.props
+    if(queuesReducer.message.content.length) {
+      return queuesReducer.message
+    } else if (queueReducer.message.content.length) {
+      return queueReducer.message
+    }
+  }
+
   render() {
     let data = this.createTableData();
     let queuesReducer = this.props.queuesReducer
-    const { message } = queuesReducer;
-
+    let message = this.showMessage()
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
     return (
       <div>
@@ -97,7 +106,8 @@ class Queues extends React.Component<IProps> {
 
 const mapStateToProps = state => {
   return {
-    queuesReducer: state.queuesReducer
+    queuesReducer: state.queuesReducer,
+    queueReducer: state.queueReducer
   }
 }
 

@@ -61,7 +61,6 @@ class Schedules extends React.Component<IProps> {
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
     let message = this.showMessage()
-    console.log("schdules props", this.props)
     return (
       <div>
         <CalendarSnackbar
