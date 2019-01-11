@@ -4,7 +4,7 @@ import DeleteAlert from '../Modal/DeleteAlert'
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
 import { getSchedulesFromServer, submitDeleteScheduleToServer, handleDeleteScheduleClicked, handleDeleteScheduleCancel, handleCloseMessage } from '../../actions'
-
+import { withRouter } from "react-router";
 interface IProps {
   schedules: any,
   getSchedules: any,
@@ -57,10 +57,11 @@ class Schedules extends React.Component<IProps> {
   }
 
   render() {
-    const {schedulesReducer, scheduleReducer, handleDeleteScheduleCancel} = this.props
+    const {schedulesReducer, handleDeleteScheduleCancel} = this.props
     let data = this.createTableData()
     let columnNames = ['Name', 'Active', '']
     let message = this.showMessage()
+    console.log("schdules props", this.props)
     return (
       <div>
         <CalendarSnackbar
@@ -106,4 +107,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Schedules);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Schedules));

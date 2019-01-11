@@ -101,7 +101,11 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
       inputShow = <div className={classes.optionalContainer}>
                     <Typography className={classes.title} variant="body1">{language}</Typography>
                     <figure>
-                      <figcaption>{name}</figcaption>
+                      <figcaption>
+                        <Typography variant="body1" color="inherit">
+                          {name}
+                        </Typography>
+                      </figcaption>
                       <audio
                           controls
                           src={`/${file_path}`}>

@@ -68,7 +68,7 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, holidayListsReducer, holidayListReducer, handleDeleteHolidayListCancel } = this.props
+    const { classes, holidayListsReducer, handleDeleteHolidayListCancel } = this.props
     const { loading } = holidayListsReducer;
     let message = this.showMessage()
     let data = this.createTableData()

@@ -134,4 +134,5 @@ export const updateTargetFile = obj => ({type: "UPDATE_TARGET_FILE", payload: ob
 export const submitNewOfficePromptsToServer = obj => ({type: "SUBMIT_NEW_OFFICE_PROMPTS_TO_SERVER", payload: obj})
 export const submitClearPromptToServer = obj => ({type: "SUBMIT_CLEAR_PROMPT_TO_SERVER", payload: obj})
 export const submitDeletePromptRowsToServer = obj => ({type: "SUBMIT_DELETE_PROMPT_ROWS_TO_SERVER", payload: obj})
+export const resetPrompts = () => ({type: "RESET_PROMPTS"})
 

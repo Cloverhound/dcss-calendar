@@ -20,13 +20,16 @@ export function* callGetPrompt(action) {
 }
 
 export function* callGetPromptsWithQueueId(action) {
-  const result = yield call(getPromptsWithQueueId, action.payload)
+  const {history, id} = action.payload
+  
+  const result = yield call(getPromptsWithQueueId, id)
   if (result.error) {
     console.log("prompt error", result)
   } else {
     if(result.length){
       yield put({type:"UPDATE_PROMPTS", payload: result})
     }
+    yield call([history, history.push], `/prompts/${id}/edit`)
     console.log("callGetPromptsWithQueueId result", result)
   }
 }
