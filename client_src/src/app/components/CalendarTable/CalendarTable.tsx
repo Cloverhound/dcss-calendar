@@ -175,19 +175,14 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
   promptsEdit = (id) => {
     const { classes, history } = this.props;
-    console.log("this props tabvle", this.props);
-    
     return  <TableCell>
-              {/* <Link to={`/prompts/${id}/edit`}> */}
                 <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history})} variant="text" color="primary" aria-label="Edit" className={classes.button}>
                   Edit
                 </Button>
-              {/* </Link> */}
             </TableCell>
   }
 
   optionalPromptToggle = (id, bool) => {
-    // const {handleOptionalPromptsToggle} = this.props
     return  <TableCell>
               <Switch
                 checked={bool}
