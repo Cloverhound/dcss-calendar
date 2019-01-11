@@ -2,9 +2,8 @@ import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage} from '../../actions'
 import DeleteAlert from '../Modal/DeleteAlert'
-
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts} from '../../actions'
 
 interface IProps {
   queuesReducer: any,
@@ -12,10 +11,16 @@ interface IProps {
   submitDeleteQueueToServer: any,
   handleDeleteQueueClicked: any,
   handleDeleteQueueCancel: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  handleResetPrompts: any
 }
 
 class Queues extends React.Component<IProps> {
+
+  componentWillMount = () => {
+    const {handleResetPrompts} = this.props;
+    handleResetPrompts()
+  }
 
   createTableData = () => {
     const { queuesReducer } = this.props;
@@ -62,7 +67,6 @@ class Queues extends React.Component<IProps> {
     const { message } = queuesReducer;
 
     let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
-    console.log('Queue To Delete ID', queuesReducer.queueToDeleteID)
     return (
       <div>
         <CalendarSnackbar
@@ -103,7 +107,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
     handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
     handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
-    handleCloseMessage: () => (dispatch(handleCloseMessage()))
+    handleCloseMessage: () => (dispatch(handleCloseMessage())),
+    handleResetPrompts: () => (dispatch(resetPrompts()))
   }
 }
 

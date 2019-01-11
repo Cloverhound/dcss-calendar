@@ -4,7 +4,7 @@ let initialState = {
   prompts: [],
   optional_prompt_status: false,
   office_directions: [
-   [ {
+    [{
       id: undefined,
       index: 0,
       language: "English",
@@ -105,6 +105,9 @@ const promptsReducer = (state = initialState, action) => {
     case 'UPDATE_PROMPTS':
       return updatePrompts(state, action)
 
+    case 'RESET_PROMPTS':
+      return resetPrompts(state)
+
     default:
       return state
   }
@@ -181,5 +184,8 @@ const updatePrompts = (state, action) => {
       return {...state, office_directions: newArray}
   }
 
+  const resetPrompts = (state) => {
+    return {...state, office_directions: [state.office_directions_initial], optional_announcements_eng: state.optional_announcements_eng_initial, optional_announcements_span: state.optional_announcements_span_initial}
+  }
 
 export default promptsReducer;

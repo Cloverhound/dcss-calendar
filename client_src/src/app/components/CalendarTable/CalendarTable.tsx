@@ -16,9 +16,9 @@ import Button from '@material-ui/core/Button';
 import CalendarTableHead from '../CalendarTableHead/CalendarTableHead';
 import CalendarTableToolbar from '../CalendarTableToolbar/CalendarTableToolBar';
 
-import {submitOptionalPromptsToggle} from '../../actions'
+import {submitOptionalPromptsToggle, getPromptsWithQueueIdFromServer} from '../../actions'
 import { connect } from 'react-redux'
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, Link, withRouter } from 'react-router-dom';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -96,7 +96,9 @@ interface IPropsTable {
   addButtonText: string,
   orderBy: string,
   handleOptionalPromptsToggle: any,
-  submitOptionalPromptsToggle: any
+  submitOptionalPromptsToggle: any,
+  getPromptsWithQueueIdFromServer: any,
+  history: any
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -138,6 +140,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  handleGetPromptsWithQueueIdFromServer = (id) => {
+    const { getPromptsWithQueueIdFromServer } = this.props
+    getPromptsWithQueueIdFromServer(id)
+  }
+  
   statusColor = (status) => {
     const { classes } = this.props;
     let statusStyle = "";
@@ -167,13 +174,15 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 
   promptsEdit = (id) => {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
+    console.log("this props tabvle", this.props);
+    
     return  <TableCell>
-              <Link to={`/prompts/${id}/edit`}>
-                <Button  variant="text" color="primary" aria-label="Edit" className={classes.button}>
+              {/* <Link to={`/prompts/${id}/edit`}> */}
+                <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history})} variant="text" color="primary" aria-label="Edit" className={classes.button}>
                   Edit
                 </Button>
-              </Link>
+              {/* </Link> */}
             </TableCell>
   }
 
@@ -295,8 +304,9 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj))
+    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
+    getPromptsWithQueueIdFromServer: (obj) => dispatch(getPromptsWithQueueIdFromServer(obj))
   }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CalendarTable));
+export default withRouter(connect(null, mapDispatchToProps)(withStyles(styles)(CalendarTable)));
