@@ -78,11 +78,21 @@ module.exports = function (Queue) {
   }
 
   const findOptionalPrompts = (queue) => {
-    let where = {where: {queueId: queue[0].id, type: "optional announcements"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
+    let where = {where: {queueId: queue[0].id, type: "optional announcements"}, order: 'index ASC', fields: {name: false, index: false, language: true, type: false, file_path: true, queueId: false, id: false }}
     
     return new Promise(function(resolve, reject){
       queue[0].prompts.find(where)
-        .then(res => resolve(res))
+        .then(res => {
+          let newObj = res.reduce((acc, obj) => {
+            if (obj.language === "English") {
+              acc.push({english_file_name : obj.file_path})
+            } else if (obj.language === "Spanish") {
+              acc.push({spanish_file_name : obj.file_path})
+            }
+            return acc
+          },[])
+          return resolve(newObj)
+        })
         .catch(err => reject(err))
     })
     .then(res => res)
@@ -100,11 +110,29 @@ module.exports = function (Queue) {
   }
 
   const findDirectionPrompts = (queue) => {
-    let where = {where: {queueId: queue[0].id, type: "office directions"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
+    let where = {where: {queueId: queue[0].id, type: "office directions"}, order: 'index ASC', fields: {name: false, index: false, language: true, type: false, file_path: true, queueId: false, id: false }}
     
     return new Promise(function(resolve, reject){
       queue[0].prompts.find(where)
-        .then(res => resolve(res))
+        .then(res => {
+          let newObj = res.reduce((acc, obj) => {
+            if (obj.language === "English") {
+              if(!acc.english_file_name) {
+                acc.english_file_name = [obj.file_path]
+              } else {
+                acc.english_file_name.push(obj.file_path)
+              }
+            } else if (obj.language === "Spanish") {
+              if(!acc.spanish_file_name) {
+                acc.spanish_file_name = [obj.file_path]
+              } else {
+                acc.spanish_file_name.push(obj.file_path)
+              }
+            }
+            return acc
+          },{})
+          return resolve(newObj)
+        })
         .catch(err => reject(err))
     })
     .then(res => res)
