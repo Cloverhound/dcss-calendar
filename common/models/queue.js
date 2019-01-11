@@ -78,11 +78,21 @@ module.exports = function (Queue) {
   }
 
   const findOptionalPrompts = (queue) => {
-    let where = {where: {queueId: queue[0].id, type: "optional announcements"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
+    let where = {where: {queueId: queue[0].id, type: "optional announcements"}, order: 'index ASC', fields: {name: false, index: false, language: true, type: false, file_path: true, queueId: false, id: false }}
     
     return new Promise(function(resolve, reject){
       queue[0].prompts.find(where)
-        .then(res => resolve(res))
+        .then(res => {
+          let newObj = res.reduce((acc, obj) => {
+            if (obj.language === "English") {
+              acc.push({english_file_name : obj.file_path})
+            } else if (obj.language === "Spanish") {
+              acc.push({spanish_file_name : obj.file_path})
+            }
+            return acc
+          },[])
+          return resolve(newObj)
+        })
         .catch(err => reject(err))
     })
     .then(res => res)
@@ -100,11 +110,29 @@ module.exports = function (Queue) {
   }
 
   const findDirectionPrompts = (queue) => {
-    let where = {where: {queueId: queue[0].id, type: "office directions"}, order: 'index ASC', fields: {name: false, index: false, language: false, type: false, file_path: true, queueId: false, id: false }}
+    let where = {where: {queueId: queue[0].id, type: "office directions"}, order: 'index ASC', fields: {name: false, index: false, language: true, type: false, file_path: true, queueId: false, id: false }}
     
     return new Promise(function(resolve, reject){
       queue[0].prompts.find(where)
-        .then(res => resolve(res))
+        .then(res => {
+          let newObj = res.reduce((acc, obj) => {
+            if (obj.language === "English") {
+              if(!acc.english_file_name) {
+                acc.english_file_name = [obj.file_path]
+              } else {
+                acc.english_file_name.push(obj.file_path)
+              }
+            } else if (obj.language === "Spanish") {
+              if(!acc.spanish_file_name) {
+                acc.spanish_file_name = [obj.file_path]
+              } else {
+                acc.spanish_file_name.push(obj.file_path)
+              }
+            }
+            return acc
+          },{})
+          return resolve(newObj)
+        })
         .catch(err => reject(err))
     })
     .then(res => res)
@@ -195,32 +223,35 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
+  let holidayList = await queue.holidayList.get()
+
+  if(holidayList) {
+    let holidays = await holidayList.holidays.find()
+  
+    for(var i = 0; i < holidays.length; i++) {
+      if(holidays[i].isToday()) {
+        return 'holiday'
+      }
+    }
+  }
 
   let schedule = await queue.schedule.get()
+  if(schedule) {
+    
+    let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+    let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
   
-  let holidayList = await queue.holidayList.get()
-  let holidays = await holidayList.holidays.find()
-
-  for(var i = 0; i < holidays.length; i++) {
-    if(holidays[i].isToday()) {
-      return 'holiday'
+    for(var i = 0; i < recurringTimeRanges.length; i++) {
+      if(recurringTimeRanges[i].isNow()) {
+        return 'open'
+      }
     }
-  }
-
-  let recurringTimeRanges = await schedule.recurringTimeRanges.find()
-  let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
-
-  for(var i = 0; i < recurringTimeRanges.length; i++) {
-    if(recurringTimeRanges[i].isNow()) {
-      return 'open'
+  
+    for(var i = 0; i < singleDateTimeRanges.length; i++) {
+      if(singleDateTimeRanges[i].isNow()) {
+        return 'open'
+      }
     }
-  }
-
-  for(var i = 0; i < singleDateTimeRanges.length; i++) {
-    if(singleDateTimeRanges[i].isNow()) {
-      return 'open'
-    }
-
   }
   return 'closed'
 }

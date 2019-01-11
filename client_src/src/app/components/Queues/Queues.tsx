@@ -23,15 +23,15 @@ class Queues extends React.Component<IProps> {
     if(queuesReducer.queues.length == 0) {
       return []
     }
-
+    
     return queuesReducer.queues.map((queue) => {
       return { 
         'id': queue.id,
         'Status': queue.status,
         'Name': queue.name,
         'County Code': queue.county_code,
-        'Schedule Name': queue.schedule.name,
-        'Holiday Name': queue.holidayList.name,
+        'Schedule Name': queue.schedule? queue.schedule.name : "",
+        'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
         'Prompts': null,
         'Optional Prompts Toggle': queue.optional_prompt_enabled
       }
