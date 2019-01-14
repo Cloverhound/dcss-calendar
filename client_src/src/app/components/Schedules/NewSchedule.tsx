@@ -12,7 +12,7 @@ import {resetSchedule} from '../../actions'
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import {handleCloseMessage} from '../../actions/index'
 import Paper from '@material-ui/core/Paper';
-
+import { withRouter } from "react-router";
 
 const styles = theme => createStyles({
   root: {
@@ -34,7 +34,7 @@ interface IProps {
   resetSchedule: any,
   history: any,
   handleCloseMessage: any,
-  scheduleReducer: any
+  scheduleReducer: any,
 }
 
 class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
@@ -47,7 +47,8 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
   }
 
   componentWillMount () {
-    this.props.resetSchedule()
+    const { resetSchedule} = this.props;
+    resetSchedule()
   }
 
   handleCloseMessage = () => {
@@ -79,7 +80,6 @@ class NewSchedule extends React.Component<WithStyles<typeof styles> & IProps > {
         </AppBar>
         {this.state.value === 0 && <TabContainer><RegularScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}
         {this.state.value === 1 && <TabContainer><SpecialScheduleTab newOrUpdate={'new'} history={history}/></TabContainer>}  
-          {/* </div>  */}
       </div>
     )
   }
@@ -97,4 +97,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(NewSchedule))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(NewSchedule)))

@@ -83,14 +83,22 @@ module.exports = function (Queue) {
     return new Promise(function(resolve, reject){
       queue[0].prompts.find(where)
         .then(res => {
-          let newObj = res.reduce((acc, obj) => {
+          let newObj = res.reduce((acc, obj) =>{
             if (obj.language === "English") {
-              acc.push({english_file_name : obj.file_path})
+              if(!acc.english_file_name) {
+                acc.english_file_name = [obj.file_path]
+              } else {
+                acc.english_file_name.push(obj.file_path)
+              }
             } else if (obj.language === "Spanish") {
-              acc.push({spanish_file_name : obj.file_path})
+              if(!acc.spanish_file_name) {
+                acc.spanish_file_name = [obj.file_path]
+              } else {
+                acc.spanish_file_name.push(obj.file_path)
+              }
             }
             return acc
-          },[])
+          },{})
           return resolve(newObj)
         })
         .catch(err => reject(err))

@@ -9,7 +9,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import PermanentDrawer from './PermanentDrawer/PermanentDrawer'
 
 interface IProps {
-  routeComponent: any
 }
 class App extends React.Component<IProps>{
 
@@ -17,20 +16,14 @@ class App extends React.Component<IProps>{
     return (
       <div>
         <CssBaseline />
-        <PermanentDrawer>
-          <Router>
-            <this.props.routeComponent />
-          </Router>
-        </PermanentDrawer>
+        <Router>
+          <PermanentDrawer>
+            {/* <this.props.routeComponent /> */}
+          </PermanentDrawer>
+        </Router>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    routeComponent: state.routeComponent
-  }
-}
-
-export default connect(mapStateToProps, null)(App);
+export default App;

@@ -3,7 +3,7 @@ import CalendarTable from '../CalendarTable/CalendarTable'
 import DeleteAlert from '../Modal/DeleteAlert'
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
-import { getSchedulesFromServer, submitDeleteScheduleToServer, handleDeleteScheduleClicked, handleDeleteScheduleCancel, handleCloseMessage } from '../../actions'
+import { getSchedulesFromServer, submitDeleteScheduleToServer, handleDeleteScheduleClicked, handleDeleteScheduleCancel, handleCloseMessage, updateRoute } from '../../actions'
 import { withRouter } from "react-router";
 interface IProps {
   schedules: any,
@@ -14,10 +14,16 @@ interface IProps {
   scheduleReducer: any,
   handleDeleteScheduleClicked: any,
   handleDeleteScheduleCancel: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  handleUpdateRoute: any
 }
 
 class Schedules extends React.Component<IProps> {
+
+  componentWillMount = () => {
+    const { handleUpdateRoute} = this.props;
+    handleUpdateRoute({url: '/schedules'})
+  }
 
   createTableData = () => {
     const {schedulesReducer} = this.props;
@@ -102,7 +108,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   submitDeleteScheduleToServer: (obj) => dispatch(submitDeleteScheduleToServer(obj)),
   handleDeleteScheduleClicked: (obj) => dispatch(handleDeleteScheduleClicked(obj)),
   handleDeleteScheduleCancel: () => dispatch(handleDeleteScheduleCancel()),
-  handleCloseMessage: () => (dispatch(handleCloseMessage()))
+  handleCloseMessage: () => (dispatch(handleCloseMessage())),
+  handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
 })
 
 

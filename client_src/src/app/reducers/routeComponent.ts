@@ -1,9 +1,15 @@
-import Queues from '../components/Queues/Queues';
+const initialState = {
+  route: ''
+}
 
-const routeComponent = (state = Queues, action) => {
+const routeComponent = (state = initialState, action) => {
   switch (action.type) {
-    case 'CHANGE_ROUTE_COMPONENT':
-      return action.payload
+    case 'UPDATE_ROUTE':
+      let reg = /holiday_lists|schedules/
+      let found = action.payload.url.match(reg)
+      let name = ''
+      found ? name = `/${found[0]}` : name = '/'
+      return {...state, route: name}
     default:
       return state
   }

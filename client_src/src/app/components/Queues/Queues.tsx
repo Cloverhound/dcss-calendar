@@ -3,7 +3,7 @@ import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
 import DeleteAlert from '../Modal/DeleteAlert'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts} from '../../actions'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts, updateRoute} from '../../actions'
 
 interface IProps {
   queuesReducer: any,
@@ -13,14 +13,17 @@ interface IProps {
   handleDeleteQueueClicked: any,
   handleDeleteQueueCancel: any,
   handleCloseMessage: any,
-  handleResetPrompts: any
+  handleResetPrompts: any,
+  history: any,
+  handleUpdateRoute: any
 }
 
 class Queues extends React.Component<IProps> {
 
   componentWillMount = () => {
-    const {handleResetPrompts} = this.props;
+    const {handleResetPrompts, handleUpdateRoute} = this.props;
     handleResetPrompts()
+    handleUpdateRoute({url: '/'})
   }
 
   createTableData = () => {
@@ -118,7 +121,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
     handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
     handleCloseMessage: () => (dispatch(handleCloseMessage())),
-    handleResetPrompts: () => (dispatch(resetPrompts()))
+    handleResetPrompts: () => (dispatch(resetPrompts())),
+    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
   }
 }
 
