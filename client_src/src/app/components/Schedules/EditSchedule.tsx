@@ -25,7 +25,7 @@ interface IProps {
   match: any,
   resetSchedule: any,
   history: any,
-  getScheduleFromServer: any
+  getScheduleFromServer: any,
 }
 
 

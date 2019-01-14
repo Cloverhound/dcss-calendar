@@ -12,9 +12,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import createStyles from '@material-ui/core/styles/createStyles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { connect } from 'react-redux';
-import { sendRouteComponent } from '../../actions/index'
+import { updateRoute } from '../../actions/index'
 
 import Queues from '../Queues/Queues';
 import NewQueue from '../NewQueue/NewQueue';
@@ -30,8 +32,10 @@ import EditPrompts from '../Prompts/EditPrompts';
 import {
   BrowserRouter as Router,
   Route,
-  NavLink
+  NavLink,
+  Link
 } from 'react-router-dom';
+import { withRouter } from "react-router";
 
 const drawerWidth: number = 240;
 
@@ -87,7 +91,10 @@ interface IState {
 interface IProps {
   children: any,
   theme: any,
-  sendComponent: any
+  sendComponent: any,
+  location: any,
+  updateRoute: any,
+  routeComponent: any
 }
 
 class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps, IState> {
@@ -95,6 +102,11 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
     mobileOpen: false,
     selectedIndex: 0,
   };
+
+  componentWillMount = () => {
+    const {location: {pathname}, updateRoute} = this.props
+    updateRoute({url: pathname})
+  }
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
@@ -105,35 +117,25 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, routeComponent: {route} } = this.props;
     const drawer = (
       <div>
         <div className={classes.toolbar} />
         <Divider />
-        <NavLink className={classes.navLink} to="/">
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 0}
-            onClick={event => this.handleListItemClick(event, 0)}>
-            <ListItemText primary="Counties" />
-          </ListItem>
-        </NavLink>
-        <NavLink className={classes.navLink} to="/schedules">
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 1}
-            onClick={event => this.handleListItemClick(event, 1)}>
-            <ListItemText primary="Schedules" />
-          </ListItem>
-        </NavLink>
-        <NavLink className={classes.navLink} to="/holiday_lists">
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 2}
-            onClick={event => this.handleListItemClick(event, 2)}>
-            <ListItemText primary="Holidays" />
-          </ListItem>
-        </NavLink>
+        <MenuList>
+          // @ts-ignore:disable-next-line
+          <MenuItem component={Link} to="/" selected={route === '/'}>
+            Counties
+          </MenuItem>
+          // @ts-ignore:disable-next-line
+          <MenuItem component={Link} to="/schedules" selected={route === '/schedules'}>
+            Schedules
+          </MenuItem>
+          // @ts-ignore:disable-next-line
+          <MenuItem component={Link} to="/holiday_lists" selected={route === '/holiday_lists'}>
+            Holidays
+          </MenuItem>
+        </MenuList>
         <Divider />
         <List></List>
       </div>
@@ -204,9 +206,15 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    routeComponent: state.routeComponent
+  }
+}
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  sendComponent: (component) => dispatch(sendRouteComponent(component))
+  updateRoute: (obj) => dispatch(updateRoute(obj))
 })
 
-export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PermanentDrawer));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PermanentDrawer)));
 

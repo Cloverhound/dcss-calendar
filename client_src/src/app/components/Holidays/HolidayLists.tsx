@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import DeleteAlert from '../Modal/DeleteAlert'
 
 import CalendarTable from '../CalendarTable/CalendarTable'
-import { getHolidayListsFromServer, submitDeleteHolidayListToServer, handleCloseMessage, handleDeleteHolidayListClicked, handleDeleteHolidayListCancel } from '../../actions'
+import { getHolidayListsFromServer, submitDeleteHolidayListToServer, handleCloseMessage, handleDeleteHolidayListClicked, handleDeleteHolidayListCancel, updateRoute } from '../../actions'
 
 const styles = theme => createStyles({
   progress: {
@@ -23,10 +23,16 @@ interface IProps {
   holidayListReducer: any,
   handleCloseMessage: any,
   handleDeleteHolidayListClicked:any,
-  handleDeleteHolidayListCancel: any
+  handleDeleteHolidayListCancel: any,
+  handleUpdateRoute: any
 }
  
 class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
+
+  componentWillMount = () => {
+    const { handleUpdateRoute} = this.props;
+    handleUpdateRoute({url: '/holiday_lists'})
+  }
 
   createTableData = () => {
     console.log('Creating table data')
@@ -117,7 +123,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteHolidayList: (obj) => dispatch(submitDeleteHolidayListToServer(obj)),
   handleCloseMessage: () => (dispatch(handleCloseMessage())),
   handleDeleteHolidayListClicked: (obj) => (dispatch(handleDeleteHolidayListClicked(obj))),
-  handleDeleteHolidayListCancel: (obj) => (dispatch(handleDeleteHolidayListCancel(obj)))
+  handleDeleteHolidayListCancel: (obj) => (dispatch(handleDeleteHolidayListCancel(obj))),
+  handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
 })
 
 
