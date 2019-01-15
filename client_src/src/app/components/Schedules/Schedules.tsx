@@ -65,7 +65,7 @@ class Schedules extends React.Component<IProps> {
   render() {
     const {schedulesReducer, handleDeleteScheduleCancel} = this.props
     let data = this.createTableData()
-    let columnNames = ['Name', 'Active', '']
+    let columnNames = ['Name', '']
     let message = this.showMessage()
     return (
       <div>

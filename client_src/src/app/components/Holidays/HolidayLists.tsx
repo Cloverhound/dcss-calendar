@@ -66,6 +66,9 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
   showMessage = () => {
     const {holidayListsReducer, holidayListReducer} = this.props
+    console.log("holidayListsReducer", holidayListsReducer)
+    console.log("holidayListReducer", holidayListReducer);
+    
     if(holidayListsReducer.message.content.length) {
       return holidayListsReducer.message
     } else if (holidayListReducer.message.content.length) {

@@ -43,7 +43,7 @@ const holidayListReducer = (state = initialState, action) => {
 }
 
 const resetHolidayListState = () => {
-  return {...initialState, name: "", holidays: [{name: "", date: "", index: 0}]}
+  return {...initialState, name: "", holidays: [{name: "", date: "", index: 0}], message: {type: "", content: ""}}
 }
 
 const handleHolidayListLoading = (state) => {
@@ -60,7 +60,8 @@ const handleCloseMessage = (state) => {
 const handleGetHolidayListSucceeded = (state, payload) => {
   console.log('Handling get holiday list succeeded', payload) 
   payload.loading = false
-  return payload
+  payload.message = {type: "", content: ""}
+  return {...payload}
 }
 
 const handleGetHolidayListFailed = (state, payload) => {
