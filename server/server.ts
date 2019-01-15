@@ -6,7 +6,7 @@ var path = require('path')
 var app = module.exports = loopback();
 require('dotenv').config()
 var logger = require('./logger')
-
+var creds = require("../config")
 
 
 var bodyParser = require('body-parser');
@@ -38,8 +38,8 @@ const basicAuthParser = require('basic-auth')
 var basicAuth = function (req, res, next) {
   const user = basicAuthParser(req)
   const validUser = user &&
-                  user.name === 'user1' &&
-                  user.pass === 'Winter2019!'
+                  user.name === creds.userName &&
+                  user.pass === creds.password
 
   if (!validUser) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
