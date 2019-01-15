@@ -108,6 +108,11 @@ interface IProps {
 
 class EditPrompts extends React.Component<WithStyles<typeof styles> & IProps> {
 
+  componentWillMount = () => {
+    const {getPromptsWithQueueIdFromServer} = this.props
+    let queueId = JSON.parse(this.props.match.params.id)
+    getPromptsWithQueueIdFromServer({id: queueId})
+  }
 
   handleSubmitNewOfficePrompts = () => {
     const { submitNewOfficePromptsToServer } = this.props;

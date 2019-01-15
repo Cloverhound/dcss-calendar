@@ -140,9 +140,9 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  handleGetPromptsWithQueueIdFromServer = (id) => {
+  handleGetPromptsWithQueueIdFromServer = (obj) => {
     const { getPromptsWithQueueIdFromServer } = this.props
-    getPromptsWithQueueIdFromServer(id)
+    getPromptsWithQueueIdFromServer(obj)
   }
   
   statusColor = (status) => {
@@ -176,7 +176,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   promptsEdit = (id) => {
     const { classes, history } = this.props;
     return  <TableCell>
-                <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history})} variant="text" color="primary" aria-label="Edit" className={classes.button}>
+                <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history, nav: true})} variant="text" color="primary" aria-label="Edit" className={classes.button}>
                   Edit
                 </Button>
             </TableCell>

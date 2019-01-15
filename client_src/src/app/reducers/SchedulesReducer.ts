@@ -57,7 +57,7 @@ function handleGetSchedulesFromServerSucceeded(state, payload) {
 
 function handleGetSchedulesFromServerFailed(state, payload) {
   console.log('Handling getting schedules from server failed')
-  return state
+  return {...state}
 }
 
 function handleSubmitDeleteScheduleToServerSucceeded(state, payload) {

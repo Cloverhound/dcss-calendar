@@ -137,9 +137,10 @@ class EditHolidayList extends React.Component<WithStyles<typeof styles> & IProps
   render() {
     const { classes, holidayListReducer } = this.props;
     const { holidays, name, message, loading } = holidayListReducer;
-    
+    console.log("holidays", holidays)
 
-    let holidayComponents = holidays.map((holiday) => {
+    let holidayComponents = holidays.map((holiday, index) => {
+      console.log('holiday.index', holiday.index)
       return <HolidayRow name={holiday.name} date={holiday.date} index={holiday.index}/>
     })
 

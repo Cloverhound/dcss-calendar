@@ -50,6 +50,7 @@ export function* callGetHolidayList(action) {
   if (result.error) {
     yield put(getHolidayListFromServerFailed(result.error))
   } else {
+    console.log("result get holiday list", result)
     yield put(getHolidayListFromServerSucceeded(result))
   }
 }

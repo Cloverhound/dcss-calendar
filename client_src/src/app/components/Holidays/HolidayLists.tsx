@@ -66,6 +66,9 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
   showMessage = () => {
     const {holidayListsReducer, holidayListReducer} = this.props
+    console.log("holidayListsReducer", holidayListsReducer)
+    console.log("holidayListReducer", holidayListReducer);
+    
     if(holidayListsReducer.message.content.length) {
       return holidayListsReducer.message
     } else if (holidayListReducer.message.content.length) {
@@ -78,7 +81,7 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
     const { loading } = holidayListsReducer;
     let message = this.showMessage()
     let data = this.createTableData()
-    let columnNames = ['Name', 'Active', '']
+    let columnNames = ['Name', '']
     let table = <CalendarTable 
                     data={data} 
                     basePath={"holiday_lists"} 

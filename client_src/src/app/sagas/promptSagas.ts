@@ -20,16 +20,16 @@ export function* callGetPrompt(action) {
 }
 
 export function* callGetPromptsWithQueueId(action) {
-  const {history, id} = action.payload
-  
+  const {history, id, nav} = action.payload
   const result = yield call(getPromptsWithQueueId, id)
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    if(result.length){
-      yield put({type:"UPDATE_PROMPTS", payload: result})
+    yield put({type:"UPDATE_PROMPTS", payload: result})
+
+    if(nav){
+      yield call([history, history.push], `/prompts/${id}/edit`)
     }
-    yield call([history, history.push], `/prompts/${id}/edit`)
     console.log("callGetPromptsWithQueueId result", result)
   }
 }
@@ -40,7 +40,7 @@ export function* callUpdatePrompt(action) {
     yield put({type: "SUBMIT_UPDATE_PROMPT_TO_SERVER_FAILED", payload: result.error})
   } else {
     yield put({type: "SUBMIT_UPDATE_PROMPT_TO_SERVER_SUCCEEDED", payload: result.res})
-    yield call(callGetPromptsWithQueueId, {payload: result.res.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: {id:result.res.queueId}})
   }
 }
 
@@ -49,7 +49,7 @@ export function* callDeletePrompt(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: {id:result.res.queueId}})
     console.log("callDeletePrompt result", result)
   }
 }
@@ -59,7 +59,7 @@ export function* callCreatePrompts(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    yield call(callGetPromptsWithQueueId, {payload: result.status[0].queueId})
+  yield call(callGetPromptsWithQueueId, {payload: {id: result.status[0].queueId}})
     console.log("callCreatePrompts result", result)
   }
 }
@@ -70,7 +70,7 @@ export function* callClearPrompt(action) {
     console.log("prompt error", result)
     yield put({type: "SUBMIT_CLEAR_PROMPT_TO_SERVER_FAILED", payload: result.error})
   } else {
-    yield call(callGetPromptsWithQueueId, {payload: result.status.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: {id:result.status.queueId}})
     yield put({type: "SUBMIT_CLEAR_PROMPT_TO_SERVER_SUCCEEDED", payload: result.status.name})
     console.log("callClearPrompts result", result)
   }
@@ -81,7 +81,7 @@ export function* callDeletePromptRows(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-    yield call(callGetPromptsWithQueueId, {payload: action.payload.queueId})
+    yield call(callGetPromptsWithQueueId, {payload: {id:action.payload.queueId}})
     console.log("callCDeletePrompts result", result)
   }
 }

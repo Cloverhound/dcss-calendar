@@ -108,6 +108,7 @@ const handleScheduleLoading = (state) => {
 function handleGetScheduleSucceeded(payload) {
     console.log('Handling get schedule succeeded', payload)
     payload.loading = false
+    payload.message = {type: "", content: ""}
     if(!payload.recurringTimeRanges || payload.recurringTimeRanges.length == 0) {
         payload.recurringTimeRanges = [{...emptyRecurringTimeRange}]
     }
