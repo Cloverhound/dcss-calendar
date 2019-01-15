@@ -61,7 +61,11 @@ const handleGetHolidayListSucceeded = (state, payload) => {
   console.log('Handling get holiday list succeeded', payload) 
   payload.loading = false
   payload.message = {type: "", content: ""}
-  return {...payload}
+  payload.holidays.forEach((holiday, index) => {
+    holiday.index = index
+  })
+  console.log("get holiday list reducer payload", payload)
+  return {...state, ...payload}
 }
 
 const handleGetHolidayListFailed = (state, payload) => {
