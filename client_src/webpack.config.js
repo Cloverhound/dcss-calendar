@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 const path = require('path'),
       webpack = require('webpack'),
       HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,9 +7,10 @@ const path = require('path'),
       UglifyJsPlugin = require('uglifyjs-webpack-plugin');
       ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
       AutoDllPlugin = require('autodll-webpack-plugin');
+
 module.exports = {
   entry: {
-    app: ['./src/app/index.tsx'],
+    app: ["@babel/polyfill", './src/app/index.tsx'],
     vendor: ['react', 'react-dom'],
   },
   output: {

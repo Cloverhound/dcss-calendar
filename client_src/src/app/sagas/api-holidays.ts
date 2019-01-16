@@ -5,6 +5,8 @@ export async function getHolidayLists() {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
         },
       });
       let responseJson = await response.json()
@@ -38,6 +40,8 @@ export async function getHolidayLists() {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
         },
       });
       let responseJson = await response.json()

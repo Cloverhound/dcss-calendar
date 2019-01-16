@@ -59,7 +59,7 @@ export function* callCreatePrompts(action) {
   if (result.error) {
     console.log("prompt error", result)
   } else {
-  yield call(callGetPromptsWithQueueId, {payload: {id: result.status[0].queueId}})
+    yield put({type:"UPDATE_PROMPTS", payload: result.status})
     console.log("callCreatePrompts result", result)
   }
 }
