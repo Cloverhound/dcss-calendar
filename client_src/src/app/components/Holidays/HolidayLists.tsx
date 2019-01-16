@@ -66,9 +66,6 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
 
   showMessage = () => {
     const {holidayListsReducer, holidayListReducer} = this.props
-    console.log("holidayListsReducer", holidayListsReducer)
-    console.log("holidayListReducer", holidayListReducer);
-    
     if(holidayListsReducer.message.content.length) {
       return holidayListsReducer.message
     } else if (holidayListReducer.message.content.length) {
@@ -107,7 +104,6 @@ class HolidayLists extends React.Component<WithStyles<typeof styles> & IProps> {
           handleProceed={this.handleDeleteSHolidayList}
         />
         {loading ? <CircularProgress className={classes.progress} /> : table}
-        
       </div>
     )
   }

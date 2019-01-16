@@ -66,6 +66,7 @@ class EditSchedule extends React.Component<WithStyles<typeof styles> & IProps> {
               onChange={this.handleChange}
               indicatorColor="primary"
               textColor="primary"
+              centered
             >
               <Tab label="Regular" />
               <Tab label="Special" />
