@@ -38,6 +38,8 @@ export async function getQueue(id) {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
       },
     });
     
@@ -55,6 +57,8 @@ export async function getQueues() {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
       },
     });
     

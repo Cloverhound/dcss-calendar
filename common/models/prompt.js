@@ -56,11 +56,12 @@ module.exports = function (Prompt) {
 // Create Prompts
 let createPrompts = (Prompt) => {
   Prompt.createPrompts = (queueId) => {
-    let filter = {where: {queueId: queueId}, order: 'index DESC', limit: 1}
+    let filter = {where: {queueId: queueId, type: 'office directions'}, order: 'index DESC'}
     return Prompt.find(filter)
       .then(async function(res) {
-        let prompts = await makePrompts(Prompt, queueId, res[0].index)
-        return prompts
+        await makePrompts(Prompt, queueId, res[0].index)
+        return await Prompt.find({where: {queueId: queueId}})
+          .then(res => res)
       })
   }
 }

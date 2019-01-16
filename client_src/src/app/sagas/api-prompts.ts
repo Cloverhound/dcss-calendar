@@ -2,6 +2,10 @@ export async function getPrompts() {
   try {
     let response = await fetch('/api/Prompts', {
       method: 'GET',
+      headers: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+      }
     });
     let responseJson = await response.json()
     return responseJson
@@ -14,18 +18,26 @@ export async function getPrompt(payload) {
   try {
     let response = await fetch(`/api/Prompts/${payload.id}`, {
       method: 'GET',
+      headers: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+      }
     });
     let responseJson = await response.json()
     return responseJson
   } catch (error) {
     console.log(error)
   }
-
 }
+
 export async function getPromptsWithQueueId(payload) {
   try {
     let response = await fetch(`/api/Prompts?filter[where][queueId]=${payload}`, {
       method: 'GET',
+      headers: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+      }
     });
     let responseJson = await response.json()
     return responseJson
@@ -64,7 +76,11 @@ export async function deletePrompt(payload) {
 export async function createPrompts(payload) {
   try {
     let response = await fetch(`/api/Prompts/${payload.queueId}/createPrompts`, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+      }
     });
     let responseJson = await response.json()
     return responseJson
