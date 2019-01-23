@@ -1,5 +1,5 @@
-let userName = 'fake';
-let password = 'fake';
+let userName = 'test';
+let password = 'test';
 
 module.exports = {
   userName,
