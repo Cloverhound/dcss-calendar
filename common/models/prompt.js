@@ -126,7 +126,7 @@ function fileUpload(Prompt) {
   return Prompt.upload = (promptFile) => {
     
     let buffer = promptFile.files[0].buffer;
-    let fileName = promptFile.files[0].originalname;
+    let fileName = promptFile.files[0].originalname.replace(/ /g,"_")
     let path = Date.now() + "_" + fileName;
 
     return new Promise(function(resolve, reject){
