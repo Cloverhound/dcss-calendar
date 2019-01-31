@@ -11,7 +11,8 @@
       "type": "number"
     },
     "status": {
-      "type": "string"
+      "type": "string",
+      "default": "open"
     }
   },
   "validations": [],

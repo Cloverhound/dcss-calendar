@@ -28,6 +28,8 @@ import HolidayLists from '../Holidays/HolidayLists';
 import NewHolidayList from '../Holidays/NewHolidayList';
 import EditHolidayList from '../Holidays/EditHolidayList'
 import EditPrompts from '../Prompts/EditPrompts';
+import Lcsas from '../Lcsas/Lcsas';
+import NewLcsa from '../NewLcsa/NewLcsa';
 
 import {
   BrowserRouter as Router,
@@ -135,6 +137,10 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
           <MenuItem component={Link} to="/holiday_lists" selected={route === '/holiday_lists'}>
             Holidays
           </MenuItem>
+          // @ts-ignore:disable-next-line
+          <MenuItem component={Link} to="/lcsas" selected={route === '/lcsas'}>
+            Lcsas
+          </MenuItem>
         </MenuList>
         <Divider />
         <List></List>
@@ -199,6 +205,8 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/queues/:id/edit" component={EditQueue} />
             <Route exact path="/holiday_lists/new" component={NewHolidayList} />
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
+            <Route exact path="/lcsas" component={Lcsas} />
+            <Route exact path="/lcsas/new" component={NewLcsa} />
           </main>
         </div>
       </Router>

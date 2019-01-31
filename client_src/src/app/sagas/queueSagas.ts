@@ -50,8 +50,9 @@ export function* callCreateQueue(action) {
   if (result.error) {
     yield put(submitNewQueueToServerFailed(result.error))
   } else {
-    yield put(submitNewQueueToServerSucceeded(result))}
+    yield put(submitNewQueueToServerSucceeded(result))
     yield call([history, history.push], '/')
+  }
 }
 
 export function* callGetQueues() {
