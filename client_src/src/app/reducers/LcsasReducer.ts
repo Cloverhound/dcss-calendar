@@ -3,8 +3,7 @@ let initialState = {
   lcsa_id: null,
   message: {type: "", content: ""},
   loading: false,
-  // queueToDeleteID: null,
-  // message: {type: "", content: ""}
+  lcsaToDeleteId: null
 }
 
 const lcsasReducer = (state = initialState, action) => {
@@ -19,12 +18,16 @@ const lcsasReducer = (state = initialState, action) => {
       return submitNewLcsaToServerSucceeded(state)
     case 'SUBMIT_NEW_LCSA_TO_SERVER_FAILED':
       return submitNewLcsaToServerFailed(state, action.payload)
-    // case 'SUBMIT_DELETE_QUEUE_TO_SERVER':
-    //   return handleSubmitDeleteQueueToServer(state, action.payload)
-    // case 'SUBMIT_DELETE_QUEUE_TO_SERVER_SUCCEEDED':
-    //   return handleSubmitDeleteQueueToServerSucceeded(state, action.payload)
-    // case 'SUBMIT_DELETE_QUEUE_TO_SERVER_FAILED':
-    //   return handleSubmitDeleteQueueToServerFailed(state, action.payload)
+    case 'HANDLE_DELETE_LCSA_CLICKED':
+      return handleDeleteLcsaClicked(state, action.payload)
+    case 'HANDLE_DELETE_LCSA_CANCEL':
+      return handleDeleteLcsaCancel(state)
+    case 'SUBMIT_DELETE_LCSA_TO_SERVER':
+      return handleSubmitDeleteLcsaToServer(state, action.payload)
+    case 'SUBMIT_DELETE_LCSA_TO_SERVER_SUCCEEDED':
+      return handleSubmitDeleteLcsaToServerSucceeded(state, action.payload)
+    case 'SUBMIT_DELETE_LCSA_TO_SERVER_FAILED':
+      return handleSubmitDeleteLcsaToServerFailed(state, action.payload)
     // case 'HANDLE_DELETE_QUEUE_CLICKED':
     //   return handleDeleteQueueClicked(state, action.payload)
     // case 'HANDLE_DELETE_CANCEL':
@@ -63,6 +66,41 @@ const submitNewLcsaToServerSucceeded = (state) => {
 const submitNewLcsaToServerFailed = (state, payload) => {
   console.log('Handling new lcsa failed', payload)
   let message = {type: "error", content: "Failed to create: " + payload.error.message}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleDeleteLcsaClicked = (state, payload) => {
+  console.log('Handling delete lcsa clicked', payload)
+
+  let lcsaToDeleteId = payload.id
+  return {...state, lcsaToDeleteId}
+}
+
+const handleDeleteLcsaCancel = (state) => {
+  console.log('Handling cancel delete lcsa')
+
+  let lcsaToDeleteId = null
+  return {...state, lcsaToDeleteId}
+}
+
+const handleSubmitDeleteLcsaToServer = (state, payload) => {
+  console.log('Handling submit delete lcsa to server', payload)
+
+  let lcsaToDeleteId = null
+  return {...state, lcsaToDeleteId}
+}
+
+const handleSubmitDeleteLcsaToServerSucceeded = (state, payload) => {
+  console.log('Handling submit delete lcsa to server succeeded', payload)
+  let message = {type: "success", content: "Successfully deleted lcsa."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleSubmitDeleteLcsaToServerFailed = (state, payload) => {
+  console.log('Handling submit delete lcsa to server failed')
+  let message = {type: "error", content: "Failed to delete lcsa: " + payload.message}
   let loading = false
   return {...state, message, loading}
 }

@@ -3,15 +3,15 @@ import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
 import DeleteAlert from '../Modal/DeleteAlert'
-import { getLcsasFromServer, handleResetLcsa, handleCloseMessage, updateRoute } from '../../actions'
+import { getLcsasFromServer, handleResetLcsa, handleCloseMessage, updateRoute, handleDeleteLcsaClicked, handleDeleteLcsaCancel, submitDeleteLcsaToServer } from '../../actions'
 
 interface IProps {
   lcsasReducer: any,
   queueReducer: any,
   getLcsasFromServer: any,
-  submitDeleteQueueToServer: any,
-  handleDeleteQueueClicked: any,
-  handleDeleteQueueCancel: any,
+  submitDeleteLcsaToServer: any,
+  handleDeleteLcsaClicked: any,
+  handleDeleteLcsaCancel: any,
   handleCloseMessage: any,
   handleResetLcsa: any,
   history: any,
@@ -28,8 +28,7 @@ class Lcsas extends React.Component<IProps> {
 
   createTableData = () => {
     const { lcsasReducer } = this.props;
-    console.log("lcsasReducer", lcsasReducer);
-    
+
     if(lcsasReducer.lcsas.length == 0) {
       return []
     }
@@ -47,13 +46,13 @@ class Lcsas extends React.Component<IProps> {
     this.props.getLcsasFromServer()
   }
 
-  handleDeleteQueueClicked = (id) => {
-    // this.props.handleDeleteQueueClicked({id})
+  handleDeleteLcsaClicked = (id) => {
+    this.props.handleDeleteLcsaClicked({id})
   }
 
-  handleDeleteQueue = (id) => {
-    // console.log('Handling delete queue', this.props.lcsasReducer.queueToDeleteID)
-    // this.props.submitDeleteQueueToServer({id: this.props.lcsasReducer.queueToDeleteID})
+  handleDeleteLcsa = (id) => {
+    console.log('Handling delete lcsa', this.props.lcsasReducer.lcsaToDeleteId)
+    this.props.submitDeleteLcsaToServer({id: this.props.lcsasReducer.lcsaToDeleteId})
   }
 
   handleCloseMessage = () => {
@@ -70,7 +69,7 @@ class Lcsas extends React.Component<IProps> {
 
   render() {
     let data = this.createTableData();
-    // let lcsasReducer = this.props.lcsasReducer
+    let lcsasReducer = this.props.lcsasReducer
     let message = this.showMessage()
     let columnNames = ['Status', 'Lsca Id', 'Toggle', ''];
     return (
@@ -80,12 +79,12 @@ class Lcsas extends React.Component<IProps> {
           hideDuration = {4000}
           message = {message} 
          /> 
-        {/* <DeleteAlert 
-          entity={"Queue"} 
-          open={lcsasReducer.queueToDeleteID} 
-          handleCancel={this.props.handleDeleteQueueCancel} 
-          handleProceed={this.handleDeleteQueue}
-        /> */}
+        <DeleteAlert 
+          entity={"Lcsa"} 
+          open={lcsasReducer.lcsaToDeleteId} 
+          handleCancel={this.props.handleDeleteLcsaCancel} 
+          handleProceed={this.handleDeleteLcsa}
+        />
         <CalendarTable 
           data={data} 
           basePath={"lcsas"} 
@@ -94,7 +93,7 @@ class Lcsas extends React.Component<IProps> {
           columnNames={columnNames}
           title={"Lcsas"}
           addButtonText={"Add Lcsa"}
-          handleDelete={this.handleDeleteQueueClicked}
+          handleDelete={this.handleDeleteLcsaClicked}
         />
       </div>
     )
@@ -112,10 +111,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getLcsasFromServer: () => dispatch(getLcsasFromServer()),
     handleResetLcsa: () => (dispatch(handleResetLcsa())),
     handleCloseMessage: () => (dispatch(handleCloseMessage())),
-    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
-    // submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
-    // handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
-    // handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
+    handleDeleteLcsaClicked: (obj) => dispatch(handleDeleteLcsaClicked(obj)),
+    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj))),
+    handleDeleteLcsaCancel: () => dispatch(handleDeleteLcsaCancel()),
+    submitDeleteLcsaToServer: (obj) => dispatch(submitDeleteLcsaToServer(obj)),
   }
 }
 

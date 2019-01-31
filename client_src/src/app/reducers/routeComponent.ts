@@ -9,7 +9,6 @@ const routeComponent = (state = initialState, action) => {
       let found = action.payload.url.match(reg)
       let name = ''
       found ? name = `/${found[0]}` : name = '/'
-      console.log("found", found)
       return {...state, route: name}
     default:
       return state

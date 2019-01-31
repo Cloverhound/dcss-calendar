@@ -34,3 +34,20 @@ export async function createLcsa(payload) {
     return {error}
   }
 }
+
+export async function deleteLcsa(payload) {
+  console.log('Deleting lcsa -- ', payload)
+  try {
+    let response = await fetch(`/api/Lcsas/${payload}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    let responseJson = await response.json()
+    console.log('Response json', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
