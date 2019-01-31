@@ -1,0 +1,27 @@
+{
+  "name": "Lcsa",
+  "plural": "Lcsas",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "lcsa_id": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "queues": {
+      "type": "hasMany",
+      "model": "Queue",
+      "foreignKey": "lcsaId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
