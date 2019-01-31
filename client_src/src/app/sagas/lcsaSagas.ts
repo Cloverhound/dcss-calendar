@@ -1,14 +1,12 @@
 import { call, put } from 'redux-saga/effects'
-import { getLcsas, createLcsa } from './api-lcsas'
+import { getLcsas, createLcsa, } from './api-lcsas'
 
 export function* callGetLcsas(action) {
   // yield put(queueLoading())
   const result = yield call(getLcsas, action.payload)
-  console.log('result', result);
-  
+
   if (result.error) {
-    // yield put(getQueueFromServerFailed(result.error))
-    // yield put(getQueueFromServerFailed(result.error))
+    yield put({type: "GET_LCSAS_FROM_SERVER_FAILED", payload: result})
   } else {
     yield put({type: "GET_LCSAS_FROM_SERVER_SUCCEEDED", payload: result})
   }
@@ -22,9 +20,9 @@ export function* callCreateLcsa(action) {
   console.log('result', result);
   
   if (result.error) {
-    // yield put(submitNewQueueToServerFailed(result.error))
+    yield put({type: "SUBMIT_NEW_LCSA_TO_SERVER_FAILED", payload: result})
   } else {
-    // yield put(submitNewQueueToServerSucceeded(result))
+    yield put({type: "SUBMIT_NEW_LCSA_TO_SERVER_SUCCEEDED"})
     yield call([history, history.push], '/lcsas')
   }
 }

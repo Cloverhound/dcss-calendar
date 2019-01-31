@@ -3,7 +3,7 @@ import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import { connect } from 'react-redux'
 import DeleteAlert from '../Modal/DeleteAlert'
-import { getLcsasFromServer, handleResetLcsa } from '../../actions'
+import { getLcsasFromServer, handleResetLcsa, handleCloseMessage, updateRoute } from '../../actions'
 
 interface IProps {
   lcsasReducer: any,
@@ -18,12 +18,12 @@ interface IProps {
   handleUpdateRoute: any
 }
 
-class Queues extends React.Component<IProps> {
+class Lcsas extends React.Component<IProps> {
 
   componentWillMount = () => {
     const {handleResetLcsa, handleUpdateRoute} = this.props;
     handleResetLcsa()
-    // handleUpdateRoute({url: '/'})
+    handleUpdateRoute({url: '/lcsas'})
   }
 
   createTableData = () => {
@@ -62,27 +62,25 @@ class Queues extends React.Component<IProps> {
   }
 
   showMessage = () => {
-    // const {lcsasReducer, queueReducer} = this.props
-    // if(lcsasReducer.message.content.length) {
-    //   return lcsasReducer.message
-    // } else if (queueReducer.message.content.length) {
-    //   return queueReducer.message
-    // }
+    const {lcsasReducer, } = this.props
+    if(lcsasReducer.message.content.length) {
+      return lcsasReducer.message
+    }
   }
 
   render() {
     let data = this.createTableData();
     // let lcsasReducer = this.props.lcsasReducer
-    // let message = this.showMessage()
+    let message = this.showMessage()
     let columnNames = ['Status', 'Lsca Id', 'Toggle', ''];
     return (
       <div>
-        {/* <CalendarSnackbar
+        <CalendarSnackbar
           handleClose = {this.handleCloseMessage}
           hideDuration = {4000}
           message = {message} 
-         />
-        <DeleteAlert 
+         /> 
+        {/* <DeleteAlert 
           entity={"Queue"} 
           open={lcsasReducer.queueToDeleteID} 
           handleCancel={this.props.handleDeleteQueueCancel} 
@@ -105,8 +103,7 @@ class Queues extends React.Component<IProps> {
 
 const mapStateToProps = state => {
   return {
-    lcsasReducer: state.lcsasReducer,
-    // queueReducer: state.queueReducer
+    lcsasReducer: state.lcsasReducer
   }
 }
 
@@ -114,12 +111,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getLcsasFromServer: () => dispatch(getLcsasFromServer()),
     handleResetLcsa: () => (dispatch(handleResetLcsa())),
+    handleCloseMessage: () => (dispatch(handleCloseMessage())),
+    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
     // submitDeleteQueueToServer: (obj) => dispatch(submitDeleteQueueToServer(obj)),
     // handleDeleteQueueClicked: (obj) => dispatch(handleDeleteQueueClicked(obj)),
     // handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
-    // handleCloseMessage: () => (dispatch(handleCloseMessage())),
-    // handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Queues)
+export default connect(mapStateToProps, mapDispatchToProps)(Lcsas)

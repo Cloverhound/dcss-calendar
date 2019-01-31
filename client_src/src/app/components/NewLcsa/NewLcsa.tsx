@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { submitNewLcsaToServer, changeLcsa } from '../../actions/index'
+import { submitNewLcsaToServer, changeLcsa, handleCloseMessage } from '../../actions/index'
 
 import {
   Link
@@ -85,14 +85,7 @@ interface IProps {
   handleCloseMessage: any
 }
 
-class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
-
-  componentWillMount = () => {
-    // const { getSchedulesFromServer, getHolidayListsFromServer, resetQueueState } = this.props;
-    // getSchedulesFromServer();
-    // getHolidayListsFromServer();
-    // resetQueueState()
-  }
+class NewLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleSubmitNewLcsa = () => {
     const { submitNewLcsaToServer, lcsasReducer } = this.props;
@@ -105,32 +98,24 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleCloseMessage = () => {
-    // const { handleCloseMessage  } = this.props
-    // handleCloseMessage()
+    const { handleCloseMessage  } = this.props
+    handleCloseMessage()
   }
 
   render() {
     const { classes, lcsasReducer } = this.props
-    // const { classes, schedulesReducer, lcsasReducer, holidayListsReducer } = this.props;
-    // const { message, loading } = lcsasReducer;
-
-    // let scheduleMenuItems = schedulesReducer.schedules.map(schedule => {
-    //   return <MenuItem value={schedule.id}>{schedule.name}</MenuItem>
-    // })
-    // let holidayListMenuItems = holidayListsReducer.holidayLists.map(holiday => {
-    //   return <MenuItem value={holiday.id}>{holiday.name}</MenuItem>
-    // })
+    const { message, loading } = lcsasReducer;
 
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}> 
 
-            {/* <CalendarSnackbar
+            <CalendarSnackbar
                 handleClose = {this.handleCloseMessage}
                 hideDuration = {6000}
                 message = {message} 
-            /> */}
+            />
 
             <Typography className={classes.title} variant="title">New Lcsa</Typography>
              <TextField
@@ -142,7 +127,7 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               margin="normal"
             />
             <div className={classes.submitCancelContainer}>
-                {/* {loading ? <CircularProgress className={classes.progress} /> : null} */}
+                {loading ? <CircularProgress className={classes.progress} /> : null}
                 <Button onClick={this.handleSubmitNewLcsa} variant="contained" color="primary" className={classes.button}>
                   Save
                 </Button>
@@ -162,10 +147,6 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 const mapStateToProps = state => {
   return {
     lcsasReducer: state.lcsasReducer,
-    // lcsasReducer: state.lcsasReducer,
-    // schedulesReducer: state.schedulesReducer,
-    // queuesReducer: state.queuesReducer,
-    // holidayListsReducer: state.holidayListsReducer
   }
 }
 
@@ -173,11 +154,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     submitNewLcsaToServer: (obj) => (dispatch(submitNewLcsaToServer({...obj, history: ownProps.history}))),
     changeLcsa: (obj) => (dispatch(changeLcsa(obj))),
-    // getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
-    // getHolidayListsFromServer: () => (dispatch(getHolidayListsFromServer())),
-    // resetQueueState: ()=> (dispatch(resetQueueState())),
-    // handleCloseMessage: () => (dispatch(handleCloseMessage()))
+    handleCloseMessage: () => (dispatch(handleCloseMessage()))
   } 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewQueue));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewLcsa));
