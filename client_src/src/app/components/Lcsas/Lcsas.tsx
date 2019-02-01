@@ -34,10 +34,12 @@ class Lcsas extends React.Component<IProps> {
     }
     
     return lcsasReducer.lcsas.map((lcsa) => {
+      console.log("lcsa", lcsa)
       return {
         'id': lcsa.id,
-        'Lsca Id': lcsa.lcsa_id,
-        'Status': lcsa.status
+        'Status': lcsa.lcsa_enabled ? "closed" : "open" ,
+        'Lcsa Id': lcsa.lcsa_id,
+        'Toggle Closed': lcsa.lcsa_enabled
       }
     })
   }
@@ -71,7 +73,7 @@ class Lcsas extends React.Component<IProps> {
     let data = this.createTableData();
     let lcsasReducer = this.props.lcsasReducer
     let message = this.showMessage()
-    let columnNames = ['Status', 'Lsca Id', 'Toggle', ''];
+    let columnNames = ['Status', 'Lcsa Id', 'Toggle Closed', ''];
     return (
       <div>
         <CalendarSnackbar
@@ -89,9 +91,9 @@ class Lcsas extends React.Component<IProps> {
           data={data} 
           basePath={"lcsas"} 
           populateTable={this.getQueues} 
-          orderBy={"Name"} 
+          orderBy={"Lcsa Id"} 
           columnNames={columnNames}
-          title={"Lcsas"}
+          title={"Lcsa Ids"}
           addButtonText={"Add Lcsa"}
           handleDelete={this.handleDeleteLcsaClicked}
         />

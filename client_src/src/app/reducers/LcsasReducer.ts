@@ -28,14 +28,10 @@ const lcsasReducer = (state = initialState, action) => {
       return handleSubmitDeleteLcsaToServerSucceeded(state, action.payload)
     case 'SUBMIT_DELETE_LCSA_TO_SERVER_FAILED':
       return handleSubmitDeleteLcsaToServerFailed(state, action.payload)
-    // case 'HANDLE_DELETE_QUEUE_CLICKED':
-    //   return handleDeleteQueueClicked(state, action.payload)
-    // case 'HANDLE_DELETE_CANCEL':
-    //   return handleDeleteQueueCancel(state)
-    // case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_SUCCEEDED":
-    //   return handleSubmitOptionalPromptsToServerSucceeded(state, action.payload)
-    // case "SUBMIT_OPTIONAL_PROMPTS_TOGGLE_TO_SERVER_FAILED":
-    //   return handleSubmitOptionalPromptsToServerFailed(state, action.payload)
+    case "SUBMIT_LCSA_TOGGLE_TO_SERVER_SUCCEEDED":
+      return handleSubmitLcsaToggleToServerSucceeded(state, action.payload)
+    case "SUBMIT_LCSA_TOGGLE_TO_SERVER_FAILED":
+      return handleSubmitLcsaToggleToServerFailed(state, action.payload)
     case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
     case 'HANDLE_RESET_LCSA':
@@ -101,6 +97,20 @@ const handleSubmitDeleteLcsaToServerSucceeded = (state, payload) => {
 const handleSubmitDeleteLcsaToServerFailed = (state, payload) => {
   console.log('Handling submit delete lcsa to server failed')
   let message = {type: "error", content: "Failed to delete lcsa: " + payload.message}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleSubmitLcsaToggleToServerSucceeded = (state, payload) => {
+  console.log('Handling update Lcsa Toggle Succeeded', payload)
+  let message = {type: "success", content: "Successfully toggled lcsa."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleSubmitLcsaToggleToServerFailed = (state, payload) => {
+  console.log('Handling update Lcsa Toggle Failed', payload)
+  let message = {type: "error", content: "Failed to toggle lcsa."}
   let loading = false
   return {...state, message, loading}
 }

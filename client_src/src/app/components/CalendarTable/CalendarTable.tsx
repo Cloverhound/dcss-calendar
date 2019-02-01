@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import CalendarTableHead from '../CalendarTableHead/CalendarTableHead';
 import CalendarTableToolbar from '../CalendarTableToolbar/CalendarTableToolBar';
 
-import {submitOptionalPromptsToggle, getPromptsWithQueueIdFromServer} from '../../actions'
+import {submitOptionalPromptsToggle, getPromptsWithQueueIdFromServer, submitLcsaToggle} from '../../actions'
 import { connect } from 'react-redux'
 import { Redirect, Link, withRouter } from 'react-router-dom';
 
@@ -98,6 +98,7 @@ interface IPropsTable {
   handleOptionalPromptsToggle: any,
   submitOptionalPromptsToggle: any,
   getPromptsWithQueueIdFromServer: any,
+  submitLcsaToggle: any,
   history: any
 }
 
@@ -193,27 +194,55 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
+  lcsaToggle = (id, bool) => {
+    return  <TableCell>
+              <Switch
+                checked={bool}
+                onChange={() => this.handleLcsaToggle(id, bool)}
+                value={bool}
+                color="primary"
+              />
+            </TableCell>
+  }
+
   handleOptionalPromptsToggle = (id, bool) => {
     const { submitOptionalPromptsToggle } = this.props
     submitOptionalPromptsToggle({id, bool})
   } 
 
+  handleLcsaToggle = (id, bool) => {
+    const { submitLcsaToggle } = this.props
+    submitLcsaToggle({id, bool})
+  } 
+
   deleteTableCell = (id) => {
-    const { classes, handleDelete } = this.props;
-    return <TableCell>
-        <div className={classes.addButton}>
-          <Tooltip title="Edit">
-            <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
-    </TableCell>
+    const { classes, handleDelete, basePath } = this.props;
+    if(basePath === "lcsas") {
+      return <TableCell>
+          <div className={classes.addButton}>
+            <Tooltip title="Delete">
+              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+      </TableCell>
+    } else {
+      return <TableCell>
+          <div className={classes.addButton}>
+            <Tooltip title="Edit">
+              <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+      </TableCell>
+    }
   }
 
   render() {
@@ -245,6 +274,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
+                  console.log("row", row);
+                  
                   let tableCells: JSX.Element[] = []
                   for(var i = 0; i < columnNames.length; i++) {
                     let columnName = columnNames[i]
@@ -255,6 +286,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
                       tableCell = this.optionalPromptToggle(row.id, row["Optional Prompts Toggle"])
+                    } else if (columnName === 'Toggle Closed') {
+                      tableCell = this.lcsaToggle(row.id, row["Toggle Closed"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }
@@ -300,6 +333,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
+    submitLcsaToggle: (obj) => dispatch(submitLcsaToggle(obj)),
     getPromptsWithQueueIdFromServer: (obj) => dispatch(getPromptsWithQueueIdFromServer(obj))
   }
 }

@@ -139,7 +139,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
           </MenuItem>
           // @ts-ignore:disable-next-line
           <MenuItem component={Link} to="/lcsas" selected={route === '/lcsas'}>
-            Lcsas
+            Lcsa Ids
           </MenuItem>
         </MenuList>
         <Divider />

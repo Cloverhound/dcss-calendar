@@ -143,3 +143,4 @@ export const handleResetLcsa = () => ({type: "HANDLE_RESET_LCSA"});
 export const handleDeleteLcsaClicked = (obj) => ({type: "HANDLE_DELETE_LCSA_CLICKED", payload: obj});
 export const handleDeleteLcsaCancel = () =>  ({ type: "HANDLE_DELETE_LCSA_CANCEL"})
 export const submitDeleteLcsaToServer = (obj) => ({type: "SUBMIT_DELETE_LCSA_TO_SERVER", payload: obj});
+export const submitLcsaToggle = (obj) => ({type: "SUBMIT_LCSA_TOGGLE", payload: obj});

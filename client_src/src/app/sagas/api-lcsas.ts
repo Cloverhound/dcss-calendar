@@ -51,3 +51,21 @@ export async function deleteLcsa(payload) {
     return {error}
   }
 }
+
+export async function lcsaToggle(payload) {
+  console.log('lcsaToggle -- ', payload)
+  try {
+    let response = await fetch('/api/Lcsas/toggle', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    console.log('Response json lcsas toggle', responseJson)
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
