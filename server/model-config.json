@@ -62,5 +62,9 @@
   "SingleDateTimeRange": {
     "dataSource": "db",
     "public": true
+  },
+  "Lcsa": {
+    "dataSource": "db",
+    "public": true
   }
 }

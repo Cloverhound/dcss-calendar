@@ -9,7 +9,7 @@ module.exports = function (Queue) {
       accepts: [
         {arg: 'code', type: 'string', required: true}
       ],
-      returns: {arg: 'status', type: 'any'},
+      returns: {arg: 'county', type: 'object'},
   })
 
   Queue.remoteMethod(
@@ -57,7 +57,7 @@ module.exports = function (Queue) {
       .then(async function(queues) {
         for(var i = 0; i < queues.length; i++) {
           let queue = queues[i]
-          queue.status = await getStatus(queue)
+          queue.county_status = await getStatus(queue)
         }
         return Promise.resolve(queues)
       })
@@ -177,7 +177,7 @@ module.exports = function (Queue) {
       .then(async function(res) {
         console.log('Created Queue', res)
         let prompts = await createPrompts(res)
-        console.log('Created Promps', prompts)
+        console.log('Created Prompts', prompts)
         return prompts
       })
       .catch(err => {
@@ -228,9 +228,13 @@ let createPrompts = (obj) => {
   return results
 }
 
-
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
+  let lcsa = await queue.lcsa.get()
+  let lcsaStatus = 'open'
+  
+  !lcsa.lcsa_enabled ? lcsaStatus : lcsaStatus = 'closed'
+
   let holidayList = await queue.holidayList.get()
 
   if(holidayList) {
@@ -238,7 +242,7 @@ var getStatus = async function(queue) {
   
     for(var i = 0; i < holidays.length; i++) {
       if(holidays[i].isToday()) {
-        return 'holiday'
+        return {status: 'holiday', lcsa_status: lcsaStatus}
       }
     }
   }
@@ -251,17 +255,17 @@ var getStatus = async function(queue) {
   
     for(var i = 0; i < recurringTimeRanges.length; i++) {
       if(recurringTimeRanges[i].isNow()) {
-        return 'open'
+        return {status: 'open', lcsa_status: lcsaStatus}
       }
     }
   
     for(var i = 0; i < singleDateTimeRanges.length; i++) {
       if(singleDateTimeRanges[i].isNow()) {
-        return 'open'
+        return {status: 'open', lcsa_status: lcsaStatus}
       }
     }
   }
-  return 'closed'
+  return {status: 'closed', lcsa_status: lcsaStatus}
 }
 
 

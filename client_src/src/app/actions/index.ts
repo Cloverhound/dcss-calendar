@@ -42,9 +42,6 @@ export const resetSchedule                           = ()  => ({ type: "RESET_SC
 export const handleDeleteScheduleClicked            = obj => ({ type: "HANDLE_DELETE_SCHEDULE_CLICKED", payload: obj})
 export const handleDeleteScheduleCancel           = () => ({ type: "HANDLE_DELETE_SCHEDULE_CANCEL"})
 
-
-
-
 export const queueLoading                        = ()  => ({type: "QUEUE_LOADING"})
 
 export const getQueuesFromServer                 = ()  => ({ type: "GET_QUEUES_FROM_SERVER" });
@@ -79,8 +76,6 @@ export const submitOptionalPromptsToggleToServerFailed      = obj => ({type: "SU
 export const handleDeleteQueueClicked            = obj => ({ type: "HANDLE_DELETE_QUEUE_CLICKED", payload: obj})
 export const handleDeleteProceed                 = () =>  ({ type: "HANDLE_DELETE_PROCEED"})
 export const handleDeleteQueueCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
-
-
 
 
 export const resetHolidayListState                      = () => ({type: "RESET_HOLIDAY_LIST_STATE"}) 
@@ -134,3 +129,13 @@ export const submitClearPromptToServer = obj => ({type: "SUBMIT_CLEAR_PROMPT_TO_
 export const submitDeletePromptRowsToServer = obj => ({type: "SUBMIT_DELETE_PROMPT_ROWS_TO_SERVER", payload: obj})
 export const resetPrompts = () => ({type: "RESET_PROMPTS"})
 
+// LCSAS
+
+export const getLcsasFromServer = () => ({type: "GET_LCSAS_FROM_SERVER" });
+export const submitNewLcsaToServer = (obj) => ({type: "SUBMIT_NEW_LCSA_TO_SERVER", payload: obj });
+export const changeLcsa = (obj) => ({type: "CHANGE_LCSA", payload: obj });
+export const handleResetLcsa = () => ({type: "HANDLE_RESET_LCSA"});
+export const handleDeleteLcsaClicked = (obj) => ({type: "HANDLE_DELETE_LCSA_CLICKED", payload: obj});
+export const handleDeleteLcsaCancel = () =>  ({ type: "HANDLE_DELETE_LCSA_CANCEL"})
+export const submitDeleteLcsaToServer = (obj) => ({type: "SUBMIT_DELETE_LCSA_TO_SERVER", payload: obj});
+export const submitLcsaToggle = (obj) => ({type: "SUBMIT_LCSA_TOGGLE", payload: obj});
