@@ -45,8 +45,9 @@ const lcsasReducer = (state = initialState, action) => {
 
 const handleGetLcsasFromServerSucceeded = (state, payload) => {
   console.log('Handling get lcsas from server succeeded', payload)
+  let newPayload = payload.sort((a,b) => a.lcsa_enabled - b.lcsa_enabled)
   let loading = false
-  return { ...state, loading, lcsas: payload }
+  return { ...state, loading, lcsas: newPayload }
 }
 
 const handleGetLcsasFromServerFailed = (state, payload) => {

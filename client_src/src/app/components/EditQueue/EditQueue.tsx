@@ -13,7 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { getSchedulesFromServer, getHolidayListsFromServer, submitUpdateQueueToServer, getQueueFromServer, handleCloseMessage, changeQueue } from '../../actions/index'
+import { getSchedulesFromServer, getHolidayListsFromServer, submitUpdateQueueToServer, getQueueFromServer, getLcsasFromServer, handleCloseMessage, changeQueue } from '../../actions/index'
 
 import {
   Link
@@ -76,9 +76,11 @@ interface IProps {
   queuesReducer: any,
   schedulesReducer: any,
   holidayListsReducer: any,
+  lcsasReducer: any,
   getSchedulesFromServer: any,
   getHolidayListsFromServer: any,
-  getQueueFromServer,
+  getQueueFromServer: any,
+  getLcsasFromServer: any,
   submitUpdateQueueToServer: any,
   changeQueue,
   match: any,
@@ -89,9 +91,10 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   componentWillMount = () => {
     const { id } = this.props.match.params
-    const { getSchedulesFromServer, getHolidayListsFromServer, getQueueFromServer } = this.props;
+    const { getSchedulesFromServer, getHolidayListsFromServer, getQueueFromServer, getLcsasFromServer } = this.props;
     getSchedulesFromServer();
     getHolidayListsFromServer();
+    getLcsasFromServer();
     getQueueFromServer(id);
   }
 
@@ -112,7 +115,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   render() {
-    const { classes, schedulesReducer, queueReducer, holidayListsReducer } = this.props;
+    const { classes, schedulesReducer, queueReducer, holidayListsReducer, lcsasReducer } = this.props;
     const { message, loading } = queueReducer;
 
     let scheduleMenuItems = schedulesReducer.schedules.map(schedule => {
@@ -121,7 +124,9 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
     let holidayListMenuItems = holidayListsReducer.holidayLists.map(holiday => {
       return <MenuItem value={holiday.id}>{holiday.name}</MenuItem>
     })
-
+    let lcsaMenuItems = lcsasReducer.lcsas.map(lcsa => {
+      return <MenuItem value={lcsa.lcsa_id}>{lcsa.lcsa_id}</MenuItem>
+    })
     return (
       <div className={classes.root}>
         <div className={classes.paper}>
@@ -150,6 +155,18 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               onChange={this.handleChangeQueue}
               margin="normal"
             />
+            <FormControl className={classes.formControl}>
+              <Select
+                value={queueReducer.lcsaId}
+                onChange={this.handleChangeQueue}
+                name="lcsaId"
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                {lcsaMenuItems}
+              </Select>
+              <FormHelperText>Lcsa Id</FormHelperText>
+            </FormControl>
             <FormControl className={classes.formControl}>
               <Select
                 value={queueReducer.scheduleId}
@@ -199,13 +216,15 @@ const mapStateToProps = state => {
     queueReducer: state.queueReducer,
     schedulesReducer: state.schedulesReducer,
     queuesReducer: state.queuesReducer,
-    holidayListsReducer: state.holidayListsReducer
+    holidayListsReducer: state.holidayListsReducer,
+    lcsasReducer: state.lcsasReducer
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getSchedulesFromServer: () => (dispatch(getSchedulesFromServer())),
   getHolidayListsFromServer: () => dispatch(getHolidayListsFromServer()),
+  getLcsasFromServer: () => dispatch(getLcsasFromServer()),
   changeQueue: (obj) => (dispatch(changeQueue(obj))),
   submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer({...obj, history: ownProps.history}))),
   getQueueFromServer: (obj) => (dispatch(getQueueFromServer(obj))),

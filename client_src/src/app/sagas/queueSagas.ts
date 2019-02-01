@@ -19,6 +19,7 @@ export function* callGetQueue(action) {
   yield put(queueLoading())
 
   const result = yield call(getQueue, action.payload)
+  console.log("result", result)
   if (result.error) {
     yield put(getQueueFromServerFailed(result.error))
   } else {
@@ -30,8 +31,8 @@ export function* callUpdateQueue(action) {
   const { history } = action.payload
   yield put(queueLoading())
 
-  const { id, scheduleId, queueName, county_code, holidayListId } = action.payload
-  const result = yield call(updateQueue, { id: id, data: { name: queueName, county_code, scheduleId, holidayListId } })
+  const { id, scheduleId, queueName, county_code, holidayListId, lcsaId } = action.payload
+  const result = yield call(updateQueue, { id: id, data: { name: queueName, county_code, scheduleId, holidayListId, lcsaId } })
 
   if (result.error) {
     yield put(submitUpdateQueueToServerFailed(result.error))
