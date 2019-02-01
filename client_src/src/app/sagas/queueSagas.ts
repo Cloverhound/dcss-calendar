@@ -19,7 +19,7 @@ export function* callGetQueue(action) {
   yield put(queueLoading())
 
   const result = yield call(getQueue, action.payload)
-  console.log("result", result)
+
   if (result.error) {
     yield put(getQueueFromServerFailed(result.error))
   } else {
