@@ -119,7 +119,7 @@ class NewLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
 
             <Typography className={classes.title} variant="title">New Lcsa</Typography>
              <TextField
-              label="Lcsa Id"
+              label="Id"
               name="lcsa_id"
               className={classes.textField}
               value={lcsasReducer.lcsa_id}

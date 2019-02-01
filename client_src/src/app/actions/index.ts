@@ -42,9 +42,6 @@ export const resetSchedule                           = ()  => ({ type: "RESET_SC
 export const handleDeleteScheduleClicked            = obj => ({ type: "HANDLE_DELETE_SCHEDULE_CLICKED", payload: obj})
 export const handleDeleteScheduleCancel           = () => ({ type: "HANDLE_DELETE_SCHEDULE_CANCEL"})
 
-
-
-
 export const queueLoading                        = ()  => ({type: "QUEUE_LOADING"})
 
 export const getQueuesFromServer                 = ()  => ({ type: "GET_QUEUES_FROM_SERVER" });
@@ -79,8 +76,6 @@ export const submitOptionalPromptsToggleToServerFailed      = obj => ({type: "SU
 export const handleDeleteQueueClicked            = obj => ({ type: "HANDLE_DELETE_QUEUE_CLICKED", payload: obj})
 export const handleDeleteProceed                 = () =>  ({ type: "HANDLE_DELETE_PROCEED"})
 export const handleDeleteQueueCancel                  = () =>  ({ type: "HANDLE_DELETE_CANCEL"})
-
-
 
 
 export const resetHolidayListState                      = () => ({type: "RESET_HOLIDAY_LIST_STATE"}) 

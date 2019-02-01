@@ -274,8 +274,6 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  console.log("row", row);
-                  
                   let tableCells: JSX.Element[] = []
                   for(var i = 0; i < columnNames.length; i++) {
                     let columnName = columnNames[i]

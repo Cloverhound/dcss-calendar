@@ -8,10 +8,10 @@ let initialState = {
 
 const lcsasReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_LCSAS_FROM_SERVER_SUCCEEDED':
-      return handleGetLcsasFromServerSucceeded(state, action.payload)
     case 'CHANGE_LCSA':
       return changeLcsa(state, action.payload)
+    case 'GET_LCSAS_FROM_SERVER_SUCCEEDED':
+      return handleGetLcsasFromServerSucceeded(state, action.payload)
     case 'GET_LCSAS_FROM_SERVER_FAILED':
       return handleGetLcsasFromServerFailed(state, action.payload)
     case 'SUBMIT_NEW_LCSA_TO_SERVER_SUCCEEDED':
@@ -36,14 +36,17 @@ const lcsasReducer = (state = initialState, action) => {
       return handleCloseMessage(state)
     case 'HANDLE_RESET_LCSA':
       return handleResetLcsa(state)
+    case "LCSA_LOADING":
+      return handleLcsaLoading(state)
     default:
       return state
   }
 }
 
 const handleGetLcsasFromServerSucceeded = (state, payload) => {
-  console.log('Handling get queues from server succeeded', payload)
-  return { ...state, lcsas: payload }
+  console.log('Handling get lcsas from server succeeded', payload)
+  let loading = false
+  return { ...state, loading, lcsas: payload }
 }
 
 const handleGetLcsasFromServerFailed = (state, payload) => {
@@ -130,5 +133,10 @@ const handleResetLcsa = (state) => {
   return {...state, lcsa_id: null }
 }
 
+const handleLcsaLoading = (state) => {
+  console.log('Handle lcsa loading')
+  let loading = true
+  return {...state, loading}
+}
 
 export default lcsasReducer

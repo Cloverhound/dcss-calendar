@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects'
 import { getLcsas, createLcsa, deleteLcsa, lcsaToggle} from './api-lcsas'
 
 export function* callGetLcsas() {
-  // yield put(queueLoading())
+  yield put({type: "LCSA_LOADING"})
   const result = yield call(getLcsas)
 
   if (result.error) {
@@ -14,7 +14,7 @@ export function* callGetLcsas() {
 
 export function* callCreateLcsa(action) {
   const { lcsa_id, history } = action.payload
-  // yield put(queueLoading())
+  yield put({type: "LCSA_LOADING"})
 
   const result = yield call(createLcsa, { lcsa_id: lcsa_id })
   

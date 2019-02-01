@@ -177,7 +177,7 @@ module.exports = function (Queue) {
       .then(async function(res) {
         console.log('Created Queue', res)
         let prompts = await createPrompts(res)
-        console.log('Created Promps', prompts)
+        console.log('Created Prompts', prompts)
         return prompts
       })
       .catch(err => {

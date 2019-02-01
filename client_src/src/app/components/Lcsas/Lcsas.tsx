@@ -34,7 +34,6 @@ class Lcsas extends React.Component<IProps> {
     }
     
     return lcsasReducer.lcsas.map((lcsa) => {
-      console.log("lcsa", lcsa)
       return {
         'id': lcsa.id,
         'Status': lcsa.lcsa_enabled ? "closed" : "open" ,
@@ -70,8 +69,8 @@ class Lcsas extends React.Component<IProps> {
   }
 
   render() {
+    let {lcsasReducer} = this.props
     let data = this.createTableData();
-    let lcsasReducer = this.props.lcsasReducer
     let message = this.showMessage()
     let columnNames = ['Status', 'Lcsa Id', 'Toggle Closed', ''];
     return (
