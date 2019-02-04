@@ -27,6 +27,12 @@
       "type": "Boolean",
       "default": false
     },
+    "county_transfer_range": {
+      "type": "Number"
+    },
+    "county_desc": {
+      "type": "String"
+    },
     "scheduleId": {
       "type": "Number"
     },
