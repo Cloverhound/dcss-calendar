@@ -34,9 +34,11 @@ class Lcsas extends React.Component<IProps> {
     }
     
     return lcsasReducer.lcsas.map((lcsa) => {
+      console.log("lcsa", lcsa);
+      
       return {
         'id': lcsa.id,
-        'Status': lcsa.lcsa_enabled ? "closed" : "open" ,
+        'Status': lcsa.lcsa_enabled ? {status:"closed", message:"lcsa toggled closed"} : {status: "open", message: "lcsa toggled open"},
         'Lcsa Id': lcsa.lcsa_id,
         'Toggle Closed': lcsa.lcsa_enabled
       }
