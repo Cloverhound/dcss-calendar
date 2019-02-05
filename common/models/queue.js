@@ -51,6 +51,15 @@ module.exports = function (Queue) {
       returns: {arg: 'files', type: 'any'},
   })
 
+  Queue.remoteMethod(
+    'countyTransferRange', {
+      http: {path: '/:countyTransferRange/queue', verb: 'get'},
+      accepts: [
+        {arg: 'countyTransferRange', type: 'number', required: true}
+      ],
+      returns: {arg: 'queue', type: 'any'},
+  })
+
   Queue.getAllQueuesWithStatus = () => {
     console.log('Getting all queus with status')
     return Queue.find({include: ['holidayList', 'schedule']})
@@ -169,6 +178,14 @@ module.exports = function (Queue) {
           console.log('Failed to find queue to get status', err)
           return Promise.reject(err)
       })
+  }
+
+  Queue.countyTransferRange = (countyTransferRange) => {
+    console.log('countyTransferRange', countyTransferRange);
+    
+    return Queue.findOne({where: {county_transfer_range: countyTransferRange}})
+      .then(res => res)
+      .catch(err => err)
   }
 
   Queue.createQueueAndPrompts = async (body) => {
