@@ -148,8 +148,6 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
   
   statusColor = (status) => {
-    console.log("status", status);
-    
     const { classes } = this.props;
     let statusStyle = "";
       switch (status.status) {
