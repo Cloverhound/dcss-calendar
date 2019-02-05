@@ -10,13 +10,14 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import CalendarTableHead from '../CalendarTableHead/CalendarTableHead';
 import CalendarTableToolbar from '../CalendarTableToolbar/CalendarTableToolBar';
 
-import {submitOptionalPromptsToggle, getPromptsWithQueueIdFromServer} from '../../actions'
+import {submitOptionalPromptsToggle, getPromptsWithQueueIdFromServer, submitLcsaToggle} from '../../actions'
 import { connect } from 'react-redux'
 import { Redirect, Link, withRouter } from 'react-router-dom';
 
@@ -98,6 +99,7 @@ interface IPropsTable {
   handleOptionalPromptsToggle: any,
   submitOptionalPromptsToggle: any,
   getPromptsWithQueueIdFromServer: any,
+  submitLcsaToggle: any,
   history: any
 }
 
@@ -148,7 +150,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   statusColor = (status) => {
     const { classes } = this.props;
     let statusStyle = "";
-      switch (status) {
+      switch (status.status) {
         case "open":
           statusStyle = "#01d901"
           break;
@@ -166,10 +168,12 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
           break;
       }
       return <TableCell component="th" scope="row" padding="default">
-              <div className={classes.statusContainer}>
-                <div className={classes.statusColor}style={{ backgroundColor: statusStyle }}></div>
-                <div className={classes.statusText}>{status}</div>
-              </div>
+              <Tooltip title={status.message} placement="right">
+                <div className={classes.statusContainer}>
+                  <div className={classes.statusColor}style={{ backgroundColor: statusStyle }}></div>
+                  <div className={classes.statusText}>{status.status}</div>
+                </div>
+              </Tooltip>
             </TableCell>
   }
 
@@ -193,27 +197,55 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
+  lcsaToggle = (id, bool) => {
+    return  <TableCell>
+              <Switch
+                checked={bool}
+                onChange={() => this.handleLcsaToggle(id, bool)}
+                value={bool}
+                color="primary"
+              />
+            </TableCell>
+  }
+
   handleOptionalPromptsToggle = (id, bool) => {
     const { submitOptionalPromptsToggle } = this.props
     submitOptionalPromptsToggle({id, bool})
   } 
 
+  handleLcsaToggle = (id, bool) => {
+    const { submitLcsaToggle } = this.props
+    submitLcsaToggle({id, bool})
+  } 
+
   deleteTableCell = (id) => {
-    const { classes, handleDelete } = this.props;
-    return <TableCell>
-        <div className={classes.addButton}>
-          <Tooltip title="Edit">
-            <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
-    </TableCell>
+    const { classes, handleDelete, basePath } = this.props;
+    if(basePath === "lcsas") {
+      return <TableCell>
+          <div className={classes.addButton}>
+            <Tooltip title="Delete">
+              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+      </TableCell>
+    } else {
+      return <TableCell>
+          <div className={classes.addButton}>
+            <Tooltip title="Edit">
+              <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+      </TableCell>
+    }
   }
 
   render() {
@@ -255,6 +287,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
                       tableCell = this.optionalPromptToggle(row.id, row["Optional Prompts Toggle"])
+                    } else if (columnName === 'Toggle Closed') {
+                      tableCell = this.lcsaToggle(row.id, row["Toggle Closed"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }
@@ -300,6 +334,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
+    submitLcsaToggle: (obj) => dispatch(submitLcsaToggle(obj)),
     getPromptsWithQueueIdFromServer: (obj) => dispatch(getPromptsWithQueueIdFromServer(obj))
   }
 }

@@ -34,11 +34,26 @@ class Queues extends React.Component<IProps> {
     }
     
     return queuesReducer.queues.map((queue) => {
+      let status = queue.county_status.status
+      let message = ""
+      if(queue.county_status.lcsa_status === 'closed') {
+        status = "closed"
+        message = "lcsa toggled closed"
+      } else if(queue.county_status.lcsa_status === 'open') {
+        if(queue.county_status.status === "open") {
+          message = 'scheduled open'
+        } else if (queue.county_status.status === "closed") {
+          message = 'scheduled closed'
+        } else if (queue.county_status.status === "holiday") {
+          message = 'holiday closed'
+        }
+      }
       return { 
         'id': queue.id,
-        'Status': queue.status,
+        'Status': {status, message},
         'Name': queue.name,
         'County Code': queue.county_code,
+        'Lcsa Id': queue.lcsaId,
         'Schedule Name': queue.schedule? queue.schedule.name : "",
         'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
         'Prompts': null,
@@ -78,7 +93,7 @@ class Queues extends React.Component<IProps> {
     let data = this.createTableData();
     let queuesReducer = this.props.queuesReducer
     let message = this.showMessage()
-    let columnNames = ['Status', 'Name', 'County Code', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Id', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
     return (
       <div>
         <CalendarSnackbar
