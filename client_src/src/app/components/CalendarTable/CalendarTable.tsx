@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
@@ -147,9 +148,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
   
   statusColor = (status) => {
+    console.log("status", status);
+    
     const { classes } = this.props;
     let statusStyle = "";
-      switch (status) {
+      switch (status.status) {
         case "open":
           statusStyle = "#01d901"
           break;
@@ -167,10 +170,12 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
           break;
       }
       return <TableCell component="th" scope="row" padding="default">
-              <div className={classes.statusContainer}>
-                <div className={classes.statusColor}style={{ backgroundColor: statusStyle }}></div>
-                <div className={classes.statusText}>{status}</div>
-              </div>
+              <Tooltip title={status.message} placement="right">
+                <div className={classes.statusContainer}>
+                  <div className={classes.statusColor}style={{ backgroundColor: statusStyle }}></div>
+                  <div className={classes.statusText}>{status.status}</div>
+                </div>
+              </Tooltip>
             </TableCell>
   }
 

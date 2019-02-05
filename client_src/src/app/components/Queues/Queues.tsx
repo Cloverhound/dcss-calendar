@@ -34,9 +34,23 @@ class Queues extends React.Component<IProps> {
     }
     
     return queuesReducer.queues.map((queue) => {
+      let status = queue.county_status.status
+      let message = ""
+      if(queue.county_status.lcsa_status === 'closed') {
+        status = "closed"
+        message = "lcsa toggled closed"
+      } else if(queue.county_status.lcsa_status === 'open') {
+        if(queue.county_status.status === "open") {
+          message = 'scheduled open'
+        } else if (queue.county_status.status === "closed") {
+          message = 'scheduled closed'
+        } else if (queue.county_status.status === "holiday") {
+          message = 'holiday closed'
+        }
+      }
       return { 
         'id': queue.id,
-        'Status': queue.county_status.status,
+        'Status': {status, message},
         'Name': queue.name,
         'County Code': queue.county_code,
         'Lcsa Id': queue.lcsaId,
