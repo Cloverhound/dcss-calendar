@@ -38,10 +38,18 @@
     },
     "holidayListId": {
       "type": "Number"
+    },
+    "lcsaId": {
+      "type": "Number"
     }
   },
   "validations": [],
   "relations": {
+    "lcsa": {
+      "type": "belongsTo",
+      "model": "Lcsa",
+      "foreignKey": ""
+    },
     "schedule": {
       "type": "belongsTo",
       "model": "Schedule",
