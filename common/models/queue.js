@@ -247,10 +247,12 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
-  let lcsa = await queue.lcsa.get()
-  let lcsaStatus = 'open'
   
-  !lcsa.lcsa_enabled ? lcsaStatus : lcsaStatus = 'closed'
+  let lcsa = await queue.lcsa.get()
+  let lcsaStatus = 'unassigned' 
+  if(lcsa) {
+    lcsa.lcsa_enabled ? lcsaStatus = 'closed': lcsaStatus = 'open'
+  } 
 
   let holidayList = await queue.holidayList.get()
 
