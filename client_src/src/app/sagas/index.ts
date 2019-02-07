@@ -3,7 +3,7 @@ import { callCreateSchedule, callGetSchedules, callUpdateSchedule, callDeleteSch
 import { callCreateQueue, callGetQueues, callUpdateQueue, callDeleteQueue, callGetQueue, callOptionalPromptsToggle  } from './queueSagas'
 import { callCreateHolidayList, callGetHolidayLists, callGetHolidayList, callUpdateHolidayList, callDeleteHolidayList } from './holidaySagas'
 import { callGetPrompts, callGetPrompt, callGetPromptsWithQueueId, callUpdatePrompt, callDeletePrompt, callCreatePrompts, callClearPrompt, callDeletePromptRows } from './promptSagas';
-import { callGetLcsas, callCreateLcsa, callDeleteLcsa, callLcsaToggle } from './lcsaSagas'
+import { callGetLcsas, callGetLcsa, callCreateLcsa, callUpdateLcsa, callDeleteLcsa, callLcsaToggle } from './lcsaSagas'
 
 export default function* root() {
   yield all([
@@ -39,7 +39,9 @@ export default function* root() {
 
 
     yield takeLatest('GET_LCSAS_FROM_SERVER', callGetLcsas),
+    yield takeLatest('GET_LCSA_FROM_SERVER', callGetLcsa),
     yield takeLatest('SUBMIT_NEW_LCSA_TO_SERVER', callCreateLcsa),
+    yield takeLatest('SUBMIT_UPDATE_LCSA_TO_SERVER', callUpdateLcsa),
     yield takeLatest('SUBMIT_DELETE_LCSA_TO_SERVER', callDeleteLcsa),
     yield takeLatest('SUBMIT_LCSA_TOGGLE', callLcsaToggle),
   ])

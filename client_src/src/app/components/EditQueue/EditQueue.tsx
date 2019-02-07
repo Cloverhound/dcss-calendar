@@ -100,7 +100,6 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
 
   handleSubmitUpdateQueue = () => {
     const { submitUpdateQueueToServer, queueReducer } = this.props;
-    let id = this.props.match.params
     submitUpdateQueueToServer(queueReducer)
   }
 

@@ -30,6 +30,7 @@ import EditHolidayList from '../Holidays/EditHolidayList'
 import EditPrompts from '../Prompts/EditPrompts';
 import Lcsas from '../Lcsas/Lcsas';
 import NewLcsa from '../NewLcsa/NewLcsa';
+import EditLcsa from '../EditLcsa/EditLcsa';
 
 import {
   BrowserRouter as Router,
@@ -207,6 +208,7 @@ class PermanentDrawer extends React.Component<WithStyles<typeof styles> & IProps
             <Route exact path="/holiday_lists/:id/edit" component={EditHolidayList} />
             <Route exact path="/lcsas" component={Lcsas} />
             <Route exact path="/lcsas/new" component={NewLcsa} />
+            <Route exact path="/lcsas/:id/edit" component={EditLcsa} />
           </main>
         </div>
       </Router>
