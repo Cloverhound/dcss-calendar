@@ -19,7 +19,28 @@ export async function getLcsas() {
   }
 }
 
+export async function getLcsa(id) {
+  console.log('Getting lcsa -- ', id)
+  try {
+    let response = await fetch(`/api/Lcsas/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+      },
+    });
+    
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
+
 export async function createLcsa(payload) {
+  console.log('payload', payload);
+  
   try {
     let response = await fetch('/api/Lcsas', {
       method: 'POST',
@@ -33,6 +54,23 @@ export async function createLcsa(payload) {
   } catch (error) {
     return {error}
   }
+}
+
+export async function updateLcsa(payload) {
+console.log('updating lcsa', payload)
+try {
+  let response = await fetch(`/api/Lcsas/${payload.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(payload.data)
+  });
+  let responseJson = await response.json()
+  return responseJson
+} catch (error) {
+  return {error}
+}
 }
 
 export async function deleteLcsa(payload) {

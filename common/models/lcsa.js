@@ -12,7 +12,6 @@ module.exports = function(Lcsa) {
 
   Lcsa.toggle = (body) => {
     let where = {id: body.id}
-    console.log('where', where);
     
     return Lcsa.upsertWithWhere(where, {lcsa_enabled: !body.bool})
       .then(res => res)

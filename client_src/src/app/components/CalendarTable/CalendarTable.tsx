@@ -73,7 +73,7 @@ const styles = theme => createStyles({
     paddingLeft: "5px"
   },
   button: {
-    margin: theme.spacing.unit,
+    // margin: theme.spacing.unit,
   }
 });
 
@@ -100,7 +100,8 @@ interface IPropsTable {
   submitOptionalPromptsToggle: any,
   getPromptsWithQueueIdFromServer: any,
   submitLcsaToggle: any,
-  history: any
+  history: any,
+  handleToggle:any,
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -179,8 +180,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
   promptsEdit = (id) => {
     const { classes, history } = this.props;
-    return  <TableCell>
-                <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history, nav: true})} variant="text" color="primary" aria-label="Edit" className={classes.button}>
+    return  <TableCell padding="default">
+                <Button onClick={() => this.handleGetPromptsWithQueueIdFromServer({id, history, nav: true})} variant="outlined" color="primary" aria-label="Edit" className={classes.button}>
                   Edit
                 </Button>
             </TableCell>
@@ -198,10 +199,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
   }
 
   lcsaToggle = (id, bool) => {
+    const {handleToggle} = this.props;
     return  <TableCell>
               <Switch
                 checked={bool}
-                onChange={() => this.handleLcsaToggle(id, bool)}
+                onChange={() => handleToggle(id, bool)}
                 value={bool}
                 color="primary"
               />
@@ -213,43 +215,26 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
     submitOptionalPromptsToggle({id, bool})
   } 
 
-  handleLcsaToggle = (id, bool) => {
-    const { submitLcsaToggle } = this.props
-    submitLcsaToggle({id, bool})
-  } 
-
   deleteTableCell = (id) => {
-    const { classes, handleDelete, basePath } = this.props;
-    if(basePath === "lcsas") {
-      return <TableCell>
-          <div className={classes.addButton}>
-            <Tooltip title="Delete">
-              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-      </TableCell>
-    } else {
-      return <TableCell>
-          <div className={classes.addButton}>
-            <Tooltip title="Edit">
-              <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-      </TableCell>
-    }
+    const { classes, handleDelete } = this.props;
+    return <TableCell>
+        <div className={classes.addButton}>
+          <Tooltip title="Edit">
+            <IconButton onClick={() => this.handleEdit(id)} aria-label="Edit">
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton onClick={event => handleDelete(id)} aria-label={"Delete"}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+    </TableCell>
   }
 
   render() {
-    const { classes, data, columnNames, basePath, title, addButtonText, handleDelete } = this.props;
+    const { classes, data, columnNames, basePath, title, addButtonText } = this.props;
     const { order, orderBy, selected, rowsPerPage, page, toEdit, id } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
   
@@ -287,8 +272,8 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
                       tableCell = this.optionalPromptToggle(row.id, row["Optional Prompts Toggle"])
-                    } else if (columnName === 'Toggle Closed') {
-                      tableCell = this.lcsaToggle(row.id, row["Toggle Closed"])
+                    } else if (columnName === 'BCP Active') {
+                      tableCell = this.lcsaToggle(row.id, row["BCP Active"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }

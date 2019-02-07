@@ -1,9 +1,11 @@
 let initialState = {
   lcsas: [],
-  lcsa_id: null,
+  lcsa_name: '',
+  lcsa_id: 0,
   message: {type: "", content: ""},
   loading: false,
-  lcsaToDeleteId: null
+  lcsaToDeleteId: null,
+  lcsaToggleBcpActiveObj: {id: null, bool: null}
 }
 
 const lcsasReducer = (state = initialState, action) => {
@@ -14,10 +16,22 @@ const lcsasReducer = (state = initialState, action) => {
       return handleGetLcsasFromServerSucceeded(state, action.payload)
     case 'GET_LCSAS_FROM_SERVER_FAILED':
       return handleGetLcsasFromServerFailed(state, action.payload)
+    case 'GET_LCSA_FROM_SERVER_SUCCEEDED':
+      return handleGetLcsaFromServerSucceeded(state, action.payload)
+    case 'GET_LCSA_FROM_SERVER_FAILED':
+      return handleGetLcsaFromServerFailed(state, action.payload)
     case 'SUBMIT_NEW_LCSA_TO_SERVER_SUCCEEDED':
       return submitNewLcsaToServerSucceeded(state)
     case 'SUBMIT_NEW_LCSA_TO_SERVER_FAILED':
       return submitNewLcsaToServerFailed(state, action.payload)
+    case 'SUBMIT_UPDATE_LCSA_TO_SERVER_SUCCEEDED':
+      return submitUpdateLcsaToServerSucceeded(state)
+    case 'SUBMIT_UPDATE_LCSA_TO_SERVER_FAILED':
+      return submitUpdateLcsaToServerFailed(state, action.payload)
+    case 'HANDLE_TOGGLE_LCSA_BCP_ACTIVE_CLICKED':
+      return handleToggleLcsaBcpActiveClicked(state, action.payload)
+    case 'HANDLE_TOGGLE_LCSA_BCP_ACTIVE_CANCEL':
+      return handleToggleLcsaBcpActiveCancel(state)
     case 'HANDLE_DELETE_LCSA_CLICKED':
       return handleDeleteLcsaClicked(state, action.payload)
     case 'HANDLE_DELETE_LCSA_CANCEL':
@@ -55,6 +69,20 @@ const handleGetLcsasFromServerFailed = (state, payload) => {
   let message = {type: "error", content: "Failed to get lcsas from server: " + payload.message }
   return { ...state, message}
 }
+const handleGetLcsaFromServerSucceeded = (state, payload) => {
+  console.log('Handling get lcsa from server succeeded', payload)
+  let id = payload.id
+  let lcsa_id = payload.lcsa_id
+  let lcsa_name = payload.lcsa_name
+  let loading = false
+  return { ...state, loading, id, lcsa_id, lcsa_name }
+}
+
+const handleGetLcsaFromServerFailed = (state, payload) => {
+  console.log('Handling Get Lcsas From Server failed', payload)
+  let message = {type: "error", content: "Failed to get lcsas from server: " + payload.message }
+  return { ...state, message}
+}
 
 const submitNewLcsaToServerSucceeded = (state) => {
   console.log('Handling new lcsa succeeded')
@@ -68,6 +96,34 @@ const submitNewLcsaToServerFailed = (state, payload) => {
   let message = {type: "error", content: "Failed to create: " + payload.error.message}
   let loading = false
   return {...state, message, loading}
+}
+
+const submitUpdateLcsaToServerSucceeded = (state) => {
+  console.log('Handling update lcsa succeeded')
+  let message = {type: "success", content: "Successfully updated lcsa."}
+  let loading = false
+  return {...state, loading, message}
+}
+
+const submitUpdateLcsaToServerFailed = (state, payload) => {
+  console.log('Handling update lcsa failed', payload)
+  let message = {type: "error", content: "Failed to update: " + payload.error.message}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleToggleLcsaBcpActiveClicked = (state, payload) => {
+  console.log('Handling lsca toggle bcp active clicked', payload)
+
+  let lcsaToggleBcpActiveObj = {id: payload.id, bool: payload.bool}
+  return {...state, lcsaToggleBcpActiveObj}
+}
+
+const handleToggleLcsaBcpActiveCancel = (state) => {
+  console.log('Handling cancel lsca toggle bcp active')
+
+  let lcsaToggleBcpActiveObj = {id: null, bool: null}
+  return {...state, lcsaToggleBcpActiveObj}
 }
 
 const handleDeleteLcsaClicked = (state, payload) => {
@@ -107,9 +163,10 @@ const handleSubmitDeleteLcsaToServerFailed = (state, payload) => {
 
 const handleSubmitLcsaToggleToServerSucceeded = (state, payload) => {
   console.log('Handling update Lcsa Toggle Succeeded', payload)
-  let message = {type: "success", content: "Successfully toggled lcsa."}
+  // let message = {type: "success", content: "Successfully toggled lcsa."}
+  let lcsaToggleBcpActiveObj = {id: null, bool: null}
   let loading = false
-  return {...state, message, loading}
+  return {...state, loading, lcsaToggleBcpActiveObj}
 }
 
 const handleSubmitLcsaToggleToServerFailed = (state, payload) => {
@@ -131,7 +188,7 @@ const handleCloseMessage = (state) => {
 
 const handleResetLcsa = (state) => {
   console.log('Resetting Lcsa')
-  return {...state, lcsa_id: null }
+  return {...state, lcsa_id: 0, lcsa_name: '' }
 }
 
 const handleLcsaLoading = (state) => {

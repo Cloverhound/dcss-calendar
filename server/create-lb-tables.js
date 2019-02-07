@@ -2,7 +2,7 @@ var server = require('./server.ts');
 var ds = server.dataSources.db;
 
 // var lbTables = ['AccessToken', 'ACL', 'RoleMapping', 'Role', 'Queue', 'Schedule', 'Holiday', 'HolidayList', 'Prompt', 'SingleDateTimeRange', 'RecurringTimeRange'];
-var lbTables = ['Queue'];
+var lbTables = ['Lcsa'];
 
 
 // ds.automigrate(lbTables, function(er) {

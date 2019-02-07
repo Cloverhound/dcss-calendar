@@ -132,9 +132,13 @@ export const resetPrompts = () => ({type: "RESET_PROMPTS"})
 // LCSAS
 
 export const getLcsasFromServer = () => ({type: "GET_LCSAS_FROM_SERVER" });
+export const getLcsaFromServer = (obj) => ({type: "GET_LCSA_FROM_SERVER", payload: obj });
 export const submitNewLcsaToServer = (obj) => ({type: "SUBMIT_NEW_LCSA_TO_SERVER", payload: obj });
+export const submitUpdateLcsaToServer = (obj) => ({type: "SUBMIT_UPDATE_LCSA_TO_SERVER", payload: obj });
 export const changeLcsa = (obj) => ({type: "CHANGE_LCSA", payload: obj });
 export const handleResetLcsa = () => ({type: "HANDLE_RESET_LCSA"});
+export const handleToggleLcsaBcpActiveClicked = (obj) => ({type: "HANDLE_TOGGLE_LCSA_BCP_ACTIVE_CLICKED", payload: obj});
+export const handleToggleLcsaBcpActiveCancel = (obj) => ({type: "HANDLE_TOGGLE_LCSA_BCP_ACTIVE_CANCEL"});
 export const handleDeleteLcsaClicked = (obj) => ({type: "HANDLE_DELETE_LCSA_CLICKED", payload: obj});
 export const handleDeleteLcsaCancel = () =>  ({ type: "HANDLE_DELETE_LCSA_CANCEL"})
 export const submitDeleteLcsaToServer = (obj) => ({type: "SUBMIT_DELETE_LCSA_TO_SERVER", payload: obj});

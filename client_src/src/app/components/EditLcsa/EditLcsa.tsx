@@ -14,11 +14,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { submitNewLcsaToServer, changeLcsa, handleCloseMessage } from '../../actions/index'
+import { getLcsaFromServer, submitUpdateLcsaToServer, changeLcsa, handleCloseMessage } from '../../actions/index'
 
 import {
   Link
 } from 'react-router-dom';
+import { json } from 'body-parser';
 
 const styles = theme => createStyles({
   root: {
@@ -74,7 +75,7 @@ const styles = theme => createStyles({
 
 interface IProps {
   schedulesReducer: any,
-  submitNewLcsaToServer: any,
+  submitUpdateLcsaToServer: any,
   getSchedulesFromServer: any,
   changeLcsa: any,
   lcsasReducer: any,
@@ -82,14 +83,21 @@ interface IProps {
   getHolidayListsFromServer: any,
   holidayListsReducer: any,
   resetQueueState: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  match: any,
+  getLcsaFromServer: any
 }
 
-class NewLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
+class EditLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
 
-  handleSubmitNewLcsa = () => {
-    const { submitNewLcsaToServer, lcsasReducer } = this.props;
-    submitNewLcsaToServer(lcsasReducer)
+  componentWillMount = () => {
+    const { id } = this.props.match.params
+    const {getLcsaFromServer}  = this.props
+    getLcsaFromServer({id: JSON.parse(id)});
+  }
+  handleSubmitUpdateLcsa = () => {
+    const { submitUpdateLcsaToServer, lcsasReducer } = this.props;
+    submitUpdateLcsaToServer(lcsasReducer)
   }
 
   handleChangeLcsa = event => {
@@ -110,16 +118,14 @@ class NewLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}> 
-
+          <Typography className={classes.title} variant="title">Edit Lcsa</Typography>
             <CalendarSnackbar
                 handleClose = {this.handleCloseMessage}
                 hideDuration = {6000}
                 message = {message} 
             />
-
-            <Typography className={classes.title} variant="title">New Lcsa</Typography>
             <TextField
-              label="Name"
+              label="Lcsa Name"
               name="lcsa_name"
               className={classes.textField}
               value={lcsasReducer.lcsa_name}
@@ -136,7 +142,7 @@ class NewLcsa extends React.Component<WithStyles<typeof styles> & IProps> {
             />
             <div className={classes.submitCancelContainer}>
                 {loading ? <CircularProgress className={classes.progress} /> : null}
-                <Button onClick={this.handleSubmitNewLcsa} variant="contained" color="primary" className={classes.button}>
+                <Button onClick={this.handleSubmitUpdateLcsa} variant="contained" color="primary" className={classes.button}>
                   Save
                 </Button>
               <Link to="/lcsas">
@@ -160,10 +166,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    submitNewLcsaToServer: (obj) => (dispatch(submitNewLcsaToServer({...obj, history: ownProps.history}))),
+    getLcsaFromServer: (obj) => (dispatch(getLcsaFromServer({...obj, history: ownProps.history}))),
+    submitUpdateLcsaToServer: (obj) => (dispatch(submitUpdateLcsaToServer({...obj, history: ownProps.history}))),
     changeLcsa: (obj) => (dispatch(changeLcsa(obj))),
     handleCloseMessage: () => (dispatch(handleCloseMessage()))
   } 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewLcsa));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditLcsa));
