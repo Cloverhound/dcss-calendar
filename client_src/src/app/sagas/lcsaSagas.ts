@@ -13,8 +13,6 @@ export function* callGetLcsas() {
 }
 
 export function* callGetLcsa(action) {
-  console.log('action', action);
-  
   yield put({type: "LCSA_LOADING"})
   const result = yield call(getLcsa, action.payload.id)
 
