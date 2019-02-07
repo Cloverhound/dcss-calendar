@@ -39,7 +39,7 @@ export async function getLcsa(id) {
 }
 
 export async function createLcsa(payload) {
-  console.log('payload', payload);
+  console.log('Creating Lcsa -- ', payload);
   
   try {
     let response = await fetch('/api/Lcsas', {
