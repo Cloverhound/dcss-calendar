@@ -2,10 +2,6 @@ import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -74,15 +70,9 @@ const styles = theme => createStyles({
 });
 
 interface IProps {
-  schedulesReducer: any,
   submitUpdateLcsaToServer: any,
-  getSchedulesFromServer: any,
   changeLcsa: any,
   lcsasReducer: any,
-  queuesReducer: any,
-  getHolidayListsFromServer: any,
-  holidayListsReducer: any,
-  resetQueueState: any,
   handleCloseMessage: any,
   match: any,
   getLcsaFromServer: any
