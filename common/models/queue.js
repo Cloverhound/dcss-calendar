@@ -247,10 +247,18 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
-  let lcsa = await queue.lcsa.get()
-  let lcsaStatus = 'open'
   
-  !lcsa.lcsa_enabled ? lcsaStatus : lcsaStatus = 'closed'
+  let lcsa = await queue.lcsa.get()
+
+  let lcsa_name = 'unassigned'
+  let lcsa_id = 'unassigned'
+  let lcsa_status = 'unassigned'
+
+  if(lcsa) {
+    lcsa_name = lcsa.lcsa_name
+    lcsa_id = lcsa.lcsa_id
+    lcsa.lcsa_enabled ? lcsa_status = 'closed': lcsa_status = 'open'
+  } 
 
   let holidayList = await queue.holidayList.get()
 
@@ -259,7 +267,7 @@ var getStatus = async function(queue) {
   
     for(var i = 0; i < holidays.length; i++) {
       if(holidays[i].isToday()) {
-        return {status: 'holiday', lcsa_status: lcsaStatus}
+        return {status: 'holiday', lcsa_name, lcsa_id, lcsa_status}
       }
     }
   }
@@ -272,17 +280,17 @@ var getStatus = async function(queue) {
   
     for(var i = 0; i < recurringTimeRanges.length; i++) {
       if(recurringTimeRanges[i].isNow()) {
-        return {status: 'open', lcsa_status: lcsaStatus}
+        return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
       }
     }
   
     for(var i = 0; i < singleDateTimeRanges.length; i++) {
       if(singleDateTimeRanges[i].isNow()) {
-        return {status: 'open', lcsa_status: lcsaStatus}
+        return {status: 'open', lcsa_status}
       }
     }
   }
-  return {status: 'closed', lcsa_status: lcsaStatus}
+  return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
 }
 
 
