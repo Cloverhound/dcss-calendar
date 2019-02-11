@@ -124,7 +124,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       return <MenuItem value={holiday.id}>{holiday.name}</MenuItem>
     })
     let lcsaMenuItems = lcsasReducer.lcsas.map(lcsa => {
-      return <MenuItem value={lcsa.lcsa_id}>{lcsa.lcsa_id}</MenuItem>
+      return <MenuItem value={lcsa.id}>{lcsa.lcsa_name}</MenuItem>
     })
     return (
       <div className={classes.root}>
@@ -164,7 +164,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               >
                 {lcsaMenuItems}
               </Select>
-              <FormHelperText>Lcsa Id</FormHelperText>
+              <FormHelperText>Lcsa Name</FormHelperText>
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select

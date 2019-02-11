@@ -62,7 +62,7 @@ module.exports = function (Queue) {
 
   Queue.getAllQueuesWithStatus = () => {
     console.log('Getting all queus with status')
-    return Queue.find({include: ['holidayList', 'schedule']})
+    return Queue.find({include: ['holidayList', 'schedule', 'lcsa']})
       .then(async function(queues) {
         for(var i = 0; i < queues.length; i++) {
           let queue = queues[i]

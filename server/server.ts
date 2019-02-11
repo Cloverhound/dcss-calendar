@@ -37,9 +37,27 @@ const basicAuthParser = require('basic-auth')
 
 var basicAuth = function (req, res, next) {
   const user = basicAuthParser(req)
-  const validUser = user &&
-                  user.name === creds.userName &&
-                  user.pass === creds.password
+  const validUser = (user &&
+                  user.name === creds.userName1 &&
+                  user.pass === creds.password1)||
+				  (user &&
+                  user.name === creds.userName2 &&
+                  user.pass === creds.password2)||
+				  (user &&
+                  user.name === creds.userName3 &&
+                  user.pass === creds.password3)||
+				  (user &&
+                  user.name === creds.userName4 &&
+                  user.pass === creds.password4)||
+				  (user &&
+                  user.name === creds.userName5 &&
+                  user.pass === creds.password5)||
+				  (user &&
+                  user.name === creds.userName6 &&
+                  user.pass === creds.password6)||
+				  (user &&
+                  user.name === creds.userName7 &&
+                  user.pass === creds.password7)
 
   if (!validUser) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required')

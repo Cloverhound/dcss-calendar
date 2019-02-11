@@ -48,7 +48,7 @@ class Queues extends React.Component<IProps> {
         'Status': {status, message},
         'Name': queue.name,
         'County Code': queue.county_code,
-        'Lcsa Id': queue.lcsaId,
+        'Lcsa Name': queue.lcsa.lcsa_name,
         'Schedule Name': queue.schedule? queue.schedule.name : "",
         'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
         'Prompts': null,
@@ -88,7 +88,7 @@ class Queues extends React.Component<IProps> {
     let data = this.createTableData();
     let queuesReducer = this.props.queuesReducer
     let message = this.showMessage()
-    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Id', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
     return (
       <div>
         <CalendarSnackbar
