@@ -85,8 +85,6 @@ class Queues extends React.Component<IProps> {
 
   handleToggleForceClosedClicked = (id, name, bool) => {
     const {handleToggleForceClosedClicked} = this.props
-    console.log("name", name);
-    
     console.log("handle forced closed clicked");
     handleToggleForceClosedClicked({id, name, bool})
   }
