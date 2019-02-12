@@ -1,10 +1,10 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
-import { connect } from 'react-redux'
 import DeleteAlert from '../Modal/DeleteAlert'
 import ToggleAlert from '../Modal/ToggleAlert'
 import { getLcsasFromServer, handleResetLcsa, handleCloseMessage, updateRoute, handleDeleteLcsaClicked, handleToggleLcsaBcpActiveClicked, handleToggleLcsaBcpActiveCancel, submitLcsaToggle, handleDeleteLcsaCancel, submitDeleteLcsaToServer } from '../../actions'
+import { connect } from 'react-redux'
 
 interface IProps {
   lcsasReducer: any,
@@ -56,8 +56,8 @@ class Lcsas extends React.Component<IProps> {
     this.props.handleDeleteLcsaClicked({id})
   }
 
-  handleToggleLcsaBcpActiveClicked = (id, bool) => {
-    this.props.handleToggleLcsaBcpActiveClicked({id, bool})
+  handleToggleLcsaBcpActiveClicked = (id, name, bool) => {
+    this.props.handleToggleLcsaBcpActiveClicked({id, name, bool})
   }
 
   handleLcsaToggle = () => {
@@ -84,7 +84,7 @@ class Lcsas extends React.Component<IProps> {
   }
 
   render() {
-    let {lcsasReducer} = this.props
+    let {lcsasReducer, handleToggleLcsaBcpActiveCancel} = this.props
     let data = this.createTableData();
     let message = this.showMessage()
     let columnNames = ['Status', 'Lcsa Name', 'Lcsa Id', 'BCP Active', ''];
@@ -102,9 +102,10 @@ class Lcsas extends React.Component<IProps> {
           handleProceed={this.handleDeleteLcsa}
         />
         <ToggleAlert 
-          entity={`Lcsa Id ${lcsasReducer.lcsaToggleBcpActiveObj.id}`} 
+          displayText={"Toggle BCP Active for "}
+          entity={`Lcsa ${lcsasReducer.lcsaToggleBcpActiveObj.name}`} 
           open={lcsasReducer.lcsaToggleBcpActiveObj.id} 
-          handleCancel={this.props.handleToggleLcsaBcpActiveCancel} 
+          handleCancel={handleToggleLcsaBcpActiveCancel} 
           handleProceed={this.handleLcsaToggle}
         />
         <CalendarTable 
@@ -135,7 +136,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleResetLcsa: () => (dispatch(handleResetLcsa())),
     handleCloseMessage: () => (dispatch(handleCloseMessage())),
     handleToggleLcsaBcpActiveClicked: (obj) => dispatch(handleToggleLcsaBcpActiveClicked(obj)),
-    handleToggleLcsaBcpActiveCancel: (obj) => dispatch(handleToggleLcsaBcpActiveCancel(obj)),
+    handleToggleLcsaBcpActiveCancel: () => dispatch(handleToggleLcsaBcpActiveCancel()),
     submitLcsaToggle: (obj) => dispatch(submitLcsaToggle(obj)),
     handleDeleteLcsaClicked: (obj) => dispatch(handleDeleteLcsaClicked(obj)),
     handleUpdateRoute: (obj) => (dispatch(updateRoute(obj))),

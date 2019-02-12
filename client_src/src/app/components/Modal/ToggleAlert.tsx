@@ -10,7 +10,8 @@ interface IProps {
     open: boolean,
     handleCancel: any,
     handleProceed: any,
-    entity: string
+    entity: string,
+    displayText: string
 }
 
 class ToggleAlert extends React.Component<IProps> {
@@ -24,12 +25,7 @@ class ToggleAlert extends React.Component<IProps> {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Are you sure you'd like to toggle BCP Active for " + this.props.entity + "?"}</DialogTitle>
-          {/* <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              This operation cannot be undone.
-            </DialogContentText>
-          </DialogContent> */}
+          <DialogTitle id="alert-dialog-title">{this.props.displayText + this.props.entity + "?"}</DialogTitle>
           <DialogActions>
             <Button onClick={this.props.handleCancel} color="primary">
               Cancel

@@ -1,7 +1,9 @@
 let initialState = {
   queues: [],
   queueToDeleteID: null,
-  message: {type: "", content: ""}
+  message: {type: "", content: ""},
+  queueToggleForceClosedObj: {id: null, name: null, bool: null},
+  queueToggleOptionalPromptsObj: {id: null, name: null, bool: null}
 }
 
 const queuesReducer = (state = initialState, action) => {
@@ -26,6 +28,18 @@ const queuesReducer = (state = initialState, action) => {
       return handleSubmitOptionalPromptsToServerFailed(state, action.payload)
     case 'HANDLE_CLOSE_MESSAGE':
       return handleCloseMessage(state)
+    case 'HANDLE_TOGGLE_FORCE_CLOSED_CLICKED':
+      return handleToggleForceClosedClicked(state, action.payload)
+    case 'HANDLE_TOGGLE_QUEUE_FORCE_CLOSED_CANCEL':
+      return handleToggleQueueForceClosedCancel(state)
+    case "SUBMIT_QUEUE_FORCE_CLOSE_TOGGLE_TO_SERVER_SUCCEEDED":
+      return handleSubmitQueueForceCloseToggleToServerSucceeded(state, action.payload)
+    case "SUBMIT_QUEUE_FORCE_CLOSE_TOGGLE_TO_SERVER_FAILED":
+      return handleSubmitQueueForceCloseToggleToServerFailed(state, action.payload)
+    case 'HANDLE_TOGGLE_OPTIONAL_PROMPTS_CLICKED':
+      return handleToggleOptionalPromptsClicked(state, action.payload)
+    case 'HANDLE_TOGGLE_OPTIONAL_PROMPTS_CANCEL':
+      return handleToggleOptionalPromptsCancel(state)
     default:
       return state
   }
@@ -80,8 +94,9 @@ const handleGetQueuesFromServerFailed = (state, payload) => {
 const handleSubmitOptionalPromptsToServerSucceeded = (state, payload) => {
   console.log('Handling update Optional Prompts Toggle Succeeded', payload)
   let message = {type: "success", content: "Successfully toggled optional prompts."}
+  let queueToggleOptionalPromptsObj = {id: null, name: null, bool: null}
   let loading = false
-  return {...state, message, loading}
+  return {...state, queueToggleOptionalPromptsObj, loading}
 }
 
 const handleSubmitOptionalPromptsToServerFailed = (state, payload) => {
@@ -94,6 +109,48 @@ const handleSubmitOptionalPromptsToServerFailed = (state, payload) => {
 const handleCloseMessage = (state) => {
   let message = {type: "", content: ""} 
   return {...state, message}
+}
+
+const handleToggleForceClosedClicked = (state, payload) => {
+  console.log('Handling queue toggle force closed clicked', payload)
+
+  let queueToggleForceClosedObj = {id: payload.id, name: payload.name, bool: payload.bool}
+  return {...state, queueToggleForceClosedObj}
+}
+
+const handleToggleQueueForceClosedCancel = (state) => {
+  console.log('Handling cancel lsca toggle bcp active cancel')
+
+  let queueToggleForceClosedObj = {id: null, name: null, bool: null}
+  return {...state, queueToggleForceClosedObj}
+}
+
+const handleSubmitQueueForceCloseToggleToServerSucceeded = (state, payload) => {
+  console.log('Handling update Queue force close Toggle Succeeded', payload)
+  let queueToggleForceClosedObj = {id: null, name: null, bool: null}
+  let loading = false
+  return {...state, loading, queueToggleForceClosedObj}
+}
+
+const handleSubmitQueueForceCloseToggleToServerFailed = (state, payload) => {
+  console.log('Handling update Queue Force Close Toggle Failed', payload)
+  let message = {type: "error", content: "Failed to toggle queue."}
+  let loading = false
+  return {...state, message, loading}
+}
+
+const handleToggleOptionalPromptsClicked = (state, payload) => {
+  console.log('Handling queue toggle optional prompts clicked', payload)
+
+  let queueToggleOptionalPromptsObj = {id: payload.id, name: payload.name, bool: payload.bool}
+  return {...state, queueToggleOptionalPromptsObj}
+}
+
+const handleToggleOptionalPromptsCancel = (state) => {
+  console.log('Handling optional prompts toggle cancel')
+
+  let queueToggleOptionalPromptsObj = {id: null, name: null, bool: null}
+  return {...state, queueToggleOptionalPromptsObj}
 }
 
 export default queuesReducer

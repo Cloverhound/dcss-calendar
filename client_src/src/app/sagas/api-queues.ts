@@ -103,3 +103,21 @@ export async function optionalPromptToggle(payload) {
     return {error}
   }
 }
+
+export async function queueForceCloseToggle(payload) {
+  console.log('queueForceCloseToggle -- ', payload)
+  try {
+    let response = await fetch('/api/Queues/forceCloseToggle', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    let responseJson = await response.json()
+    return responseJson
+  } catch (error) {
+    return {error}
+  }
+}
+
