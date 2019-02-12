@@ -60,7 +60,7 @@ class Queues extends React.Component<IProps> {
         'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
         'Prompts': null,
         'Optional Prompts Toggle': queue.optional_prompt_enabled,
-        'Force Closed': queue.force_closed
+        'Force Closed / Flush Q': queue.force_closed
       }
     })
   }
@@ -122,7 +122,7 @@ class Queues extends React.Component<IProps> {
     const { queuesReducer, handleToggleQueueForceClosedCancel, handleToggleOptionalPromptsCancel} = this.props
     let data = this.createTableData();
     let message = this.showMessage()
-    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', 'Force Closed', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', 'Force Closed / Flush Q', ''];
     return (
       <div>
         <CalendarSnackbar

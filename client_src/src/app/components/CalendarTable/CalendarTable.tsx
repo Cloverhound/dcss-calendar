@@ -283,7 +283,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                       tableCell = this.optionalPromptToggle(row.id, row["Name"], row["Optional Prompts Toggle"])
                     } else if (columnName === 'BCP Active') {
                       tableCell = this.lcsaToggle(row.id, row["Lcsa Name"], row["BCP Active"])
-                    } else if (columnName === 'Force Closed') {
+                    } else if (columnName === 'Force Closed / Flush Q') {
                       tableCell = this.forceClosedToggle(row.id, row["Name"], row["Force Closed"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)

@@ -67,6 +67,15 @@ module.exports = function (Queue) {
       returns: {arg: 'status', type: 'any'},
   })
 
+  Queue.remoteMethod(
+    'getQueueWithCountyCode', {
+      http: {path: '/:code/getQueueWithCountyCode', verb: 'get'},
+      accepts: [
+        {arg: 'code', type: 'string', required: true}
+      ],
+      returns: {arg: 'queue', type: 'any'},
+  })
+
   Queue.getAllQueuesWithStatus = () => {
     console.log('Getting all queus with status')
     return Queue.find({include: ['holidayList', 'schedule', 'lcsa']})
@@ -214,6 +223,14 @@ module.exports = function (Queue) {
     console.log('Toggling queue force close');
     let where = {id: body.id}
     return Queue.upsertWithWhere(where, {force_closed: !body.bool})
+      .then(res => res)
+      .catch(err => err)
+  }
+
+  Queue.getQueueWithCountyCode = (code) => {
+    let where = {where: {county_code: code}}
+
+    return Queue.find(where)
       .then(res => res)
       .catch(err => err)
   }
