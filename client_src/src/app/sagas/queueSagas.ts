@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { getQueues, getQueue, createQueue, updateQueue, deleteQueue, optionalPromptToggle } from './api-queues'
+import { getQueues, getQueue, createQueue, updateQueue, deleteQueue, optionalPromptToggle, queueForceCloseToggle } from './api-queues'
 import { getQueueFromServerSucceeded, 
          getQueueFromServerFailed, 
          queueLoading, 
@@ -86,3 +86,16 @@ export function* callOptionalPromptsToggle(action) {
     yield put(submitOptionalPromptsToggleToServerSucceeded(result))
   }
 }
+
+export function* callQueueForceCloseToggle(action) {
+  const result = yield call(queueForceCloseToggle, action.payload);
+  console.log('result', result);
+  
+  if (result.error) {
+    yield put({type: "SUBMIT_QUEUE_FORCE_CLOSE_TOGGLE_TO_SERVER_FAILED", payload: result.error})
+  } else {
+    yield call(callGetQueues)
+    yield put({type: "SUBMIT_QUEUE_FORCE_CLOSE_TOGGLE_TO_SERVER_SUCCEEDED", payload: result})
+  }
+}
+

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
-import { connect } from 'react-redux'
 import DeleteAlert from '../Modal/DeleteAlert'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts, updateRoute} from '../../actions'
+import ToggleAlert from '../Modal/ToggleAlert'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts, updateRoute, handleToggleForceClosedClicked, handleToggleQueueForceClosedCancel, submitQueueForceCloseToggle, handleToggleOptionalPromptsClicked, handleToggleOptionalPromptsCancel, submitOptionalPromptsToggle} from '../../actions'
+import { connect } from 'react-redux'
 
 interface IProps {
   queuesReducer: any,
@@ -15,7 +16,13 @@ interface IProps {
   handleCloseMessage: any,
   handleResetPrompts: any,
   history: any,
-  handleUpdateRoute: any
+  handleUpdateRoute: any,
+  handleToggleForceClosedClicked: any,
+  handleToggleQueueForceClosedCancel: any,
+  submitQueueForceCloseToggle: any,
+  handleToggleOptionalPromptsClicked: any,
+  handleToggleOptionalPromptsCancel: any,
+  submitOptionalPromptsToggle: any
 }
 
 class Queues extends React.Component<IProps> {
@@ -52,7 +59,8 @@ class Queues extends React.Component<IProps> {
         'Schedule Name': queue.schedule? queue.schedule.name : "",
         'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
         'Prompts': null,
-        'Optional Prompts Toggle': queue.optional_prompt_enabled
+        'Optional Prompts Toggle': queue.optional_prompt_enabled,
+        'Force Closed': queue.force_closed
       }
     })
   }
@@ -75,6 +83,34 @@ class Queues extends React.Component<IProps> {
     handleCloseMessage()
   }
 
+  handleToggleForceClosedClicked = (id, name, bool) => {
+    const {handleToggleForceClosedClicked} = this.props
+    console.log("name", name);
+    
+    console.log("handle forced closed clicked");
+    handleToggleForceClosedClicked({id, name, bool})
+  }
+  
+  handleQueueForceCloseToggle = () => {
+    const { submitQueueForceCloseToggle, queuesReducer } = this.props
+    console.log('queue toggle force close bool', queuesReducer.queueToggleForceClosedObj.bool)
+    submitQueueForceCloseToggle({id: queuesReducer.queueToggleForceClosedObj.id, bool: queuesReducer.queueToggleForceClosedObj.bool})
+  } 
+  
+  handleOptionalPromptsToggleClicked = (id, name, bool) => {
+    const {handleToggleOptionalPromptsClicked} = this.props
+    console.log("handle toggle optional prompts clicked");
+    handleToggleOptionalPromptsClicked({id, name, bool})
+  }
+
+  handleOptionalPromptsToggle = () => {
+    const { submitOptionalPromptsToggle, queuesReducer } = this.props
+    console.log("handleOptionalPromptsToggle clicked");
+    
+    submitOptionalPromptsToggle({id: queuesReducer.queueToggleOptionalPromptsObj.id, bool: queuesReducer.queueToggleOptionalPromptsObj.bool})
+  } 
+
+
   showMessage = () => {
     const {queuesReducer, queueReducer} = this.props
     if(queuesReducer.message.content.length) {
@@ -85,10 +121,10 @@ class Queues extends React.Component<IProps> {
   }
 
   render() {
+    const { queuesReducer, handleToggleQueueForceClosedCancel, handleToggleOptionalPromptsCancel} = this.props
     let data = this.createTableData();
-    let queuesReducer = this.props.queuesReducer
     let message = this.showMessage()
-    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', 'Force Closed', ''];
     return (
       <div>
         <CalendarSnackbar
@@ -102,6 +138,20 @@ class Queues extends React.Component<IProps> {
           handleCancel={this.props.handleDeleteQueueCancel} 
           handleProceed={this.handleDeleteQueue}
         />
+        <ToggleAlert 
+          displayText={"Toggle Force Close for "}
+          entity={`${queuesReducer.queueToggleForceClosedObj.name}`} 
+          open={queuesReducer.queueToggleForceClosedObj.id} 
+          handleCancel={handleToggleQueueForceClosedCancel} 
+          handleProceed={this.handleQueueForceCloseToggle}
+        />
+        <ToggleAlert 
+          displayText={"Toggle Optional Prompts for "}
+          entity={`${queuesReducer.queueToggleOptionalPromptsObj.name}`} 
+          open={queuesReducer.queueToggleOptionalPromptsObj.id} 
+          handleCancel={handleToggleOptionalPromptsCancel} 
+          handleProceed={this.handleOptionalPromptsToggle}
+        />
         <CalendarTable 
           data={data} 
           basePath={"queues"} 
@@ -111,6 +161,8 @@ class Queues extends React.Component<IProps> {
           title={"Counties"}
           addButtonText={"Add Queue"}
           handleDelete={this.handleDeleteQueueClicked}
+          handleToggle={this.handleToggleForceClosedClicked}
+          handleOptionalToggle={this.handleOptionalPromptsToggleClicked}
         />
       </div>
     )
@@ -132,7 +184,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
     handleCloseMessage: () => (dispatch(handleCloseMessage())),
     handleResetPrompts: () => (dispatch(resetPrompts())),
-    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj)))
+    handleUpdateRoute: (obj) => (dispatch(updateRoute(obj))),
+    handleToggleForceClosedClicked: (obj) => (dispatch(handleToggleForceClosedClicked(obj))),
+    handleToggleQueueForceClosedCancel: () => (dispatch(handleToggleQueueForceClosedCancel())),
+    submitQueueForceCloseToggle: (obj) => (dispatch(submitQueueForceCloseToggle(obj))),
+    handleToggleOptionalPromptsClicked: (obj) => (dispatch(handleToggleOptionalPromptsClicked(obj))),
+    handleToggleOptionalPromptsCancel: () => (dispatch(handleToggleOptionalPromptsCancel())),
+    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
   }
 }
 

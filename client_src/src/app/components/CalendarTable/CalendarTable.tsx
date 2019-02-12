@@ -102,6 +102,7 @@ interface IPropsTable {
   submitLcsaToggle: any,
   history: any,
   handleToggle:any,
+  handleOptionalToggle: any
 }
 
 class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTable, IStateTable> {
@@ -187,33 +188,41 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
             </TableCell>
   }
 
-  optionalPromptToggle = (id, bool) => {
+  optionalPromptToggle = (id, name, bool) => {
+    const {handleOptionalToggle} = this.props;
     return  <TableCell>
               <Switch
                 checked={bool}
-                onChange={() => this.handleOptionalPromptsToggle(id, bool)}
+                onChange={() => handleOptionalToggle(id, name, bool)}
                 value={bool}
                 color="primary"
               />
             </TableCell>
   }
 
-  lcsaToggle = (id, bool) => {
+  lcsaToggle = (id, name, bool) => {
     const {handleToggle} = this.props;
     return  <TableCell>
               <Switch
                 checked={bool}
-                onChange={() => handleToggle(id, bool)}
+                onChange={() => handleToggle(id, name, bool)}
                 value={bool}
                 color="primary"
               />
             </TableCell>
   }
 
-  handleOptionalPromptsToggle = (id, bool) => {
-    const { submitOptionalPromptsToggle } = this.props
-    submitOptionalPromptsToggle({id, bool})
-  } 
+  forceClosedToggle = (id, name, bool) => {
+    const {handleToggle} = this.props;
+    return  <TableCell>
+              <Switch
+                checked={bool}
+                onChange={() => handleToggle(id, name, bool)}
+                value={bool}
+                color="primary"
+              />
+            </TableCell>
+  }
 
   deleteTableCell = (id) => {
     const { classes, handleDelete } = this.props;
@@ -271,9 +280,11 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     } else if (columnName === 'Prompts') {
                       tableCell = this.promptsEdit(row.id)
                     } else if (columnName === 'Optional Prompts Toggle') {
-                      tableCell = this.optionalPromptToggle(row.id, row["Optional Prompts Toggle"])
+                      tableCell = this.optionalPromptToggle(row.id, row["Name"], row["Optional Prompts Toggle"])
                     } else if (columnName === 'BCP Active') {
-                      tableCell = this.lcsaToggle(row.id, row["BCP Active"])
+                      tableCell = this.lcsaToggle(row.id, row["Lcsa Name"], row["BCP Active"])
+                    } else if (columnName === 'Force Closed') {
+                      tableCell = this.forceClosedToggle(row.id, row["Name"], row["Force Closed"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }
@@ -318,7 +329,6 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    submitOptionalPromptsToggle: (obj) => dispatch(submitOptionalPromptsToggle(obj)),
     submitLcsaToggle: (obj) => dispatch(submitLcsaToggle(obj)),
     getPromptsWithQueueIdFromServer: (obj) => dispatch(getPromptsWithQueueIdFromServer(obj))
   }

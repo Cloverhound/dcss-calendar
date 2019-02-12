@@ -5,7 +5,7 @@ let initialState = {
   message: {type: "", content: ""},
   loading: false,
   lcsaToDeleteId: null,
-  lcsaToggleBcpActiveObj: {id: null, bool: null}
+  lcsaToggleBcpActiveObj: {id: null, name: null, bool: null}
 }
 
 const lcsasReducer = (state = initialState, action) => {
@@ -115,14 +115,14 @@ const submitUpdateLcsaToServerFailed = (state, payload) => {
 const handleToggleLcsaBcpActiveClicked = (state, payload) => {
   console.log('Handling lsca toggle bcp active clicked', payload)
 
-  let lcsaToggleBcpActiveObj = {id: payload.id, bool: payload.bool}
+  let lcsaToggleBcpActiveObj = {id: payload.id, name: payload.name, bool: payload.bool}
   return {...state, lcsaToggleBcpActiveObj}
 }
 
 const handleToggleLcsaBcpActiveCancel = (state) => {
   console.log('Handling cancel lsca toggle bcp active')
 
-  let lcsaToggleBcpActiveObj = {id: null, bool: null}
+  let lcsaToggleBcpActiveObj = {id: null, name:null, bool: null}
   return {...state, lcsaToggleBcpActiveObj}
 }
 
@@ -164,7 +164,7 @@ const handleSubmitDeleteLcsaToServerFailed = (state, payload) => {
 const handleSubmitLcsaToggleToServerSucceeded = (state, payload) => {
   console.log('Handling update Lcsa Toggle Succeeded', payload)
   // let message = {type: "success", content: "Successfully toggled lcsa."}
-  let lcsaToggleBcpActiveObj = {id: null, bool: null}
+  let lcsaToggleBcpActiveObj = {id: null, name: null, bool: null}
   let loading = false
   return {...state, loading, lcsaToggleBcpActiveObj}
 }

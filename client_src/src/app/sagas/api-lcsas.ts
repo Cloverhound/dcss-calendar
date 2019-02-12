@@ -1,5 +1,3 @@
-getLcsas
-
 export async function getLcsas() {
   console.log('Getting lcsas')
   try {

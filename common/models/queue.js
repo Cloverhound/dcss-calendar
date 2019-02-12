@@ -60,6 +60,13 @@ module.exports = function (Queue) {
       returns: {arg: 'queue', type: 'any'},
   })
 
+  Queue.remoteMethod(
+    'forceCloseToggle', {
+      http: {path: '/forceCloseToggle', verb: 'put'},
+      accepts: {arg: 'queue', type: 'any', http: {source: 'body'}},
+      returns: {arg: 'status', type: 'any'},
+  })
+
   Queue.getAllQueuesWithStatus = () => {
     console.log('Getting all queus with status')
     return Queue.find({include: ['holidayList', 'schedule', 'lcsa']})
@@ -202,6 +209,14 @@ module.exports = function (Queue) {
         return Promise.reject(err)
       })
   }
+
+  Queue.forceCloseToggle = (body) => {
+    console.log('Toggling queue force close');
+    let where = {id: body.id}
+    return Queue.upsertWithWhere(where, {force_closed: !body.bool})
+      .then(res => res)
+      .catch(err => err)
+  }
 }
 
 let createPrompts = (obj) => {
@@ -247,7 +262,7 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   console.log("Getting status of queue", queue)
-  
+  let forceClosed = queue.force_closed
   let lcsa = await queue.lcsa.get()
 
   let lcsa_name = 'unassigned'
@@ -260,37 +275,41 @@ var getStatus = async function(queue) {
     lcsa.lcsa_enabled ? lcsa_status = 'closed': lcsa_status = 'open'
   } 
 
-  let holidayList = await queue.holidayList.get()
-
-  if(holidayList) {
-    let holidays = await holidayList.holidays.find()
+  if(forceClosed) {
+    return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+  } else {
+    let holidayList = await queue.holidayList.get()
   
-    for(var i = 0; i < holidays.length; i++) {
-      if(holidays[i].isToday()) {
-        return {status: 'holiday', lcsa_name, lcsa_id, lcsa_status}
-      }
-    }
-  }
-
-  let schedule = await queue.schedule.get()
-  if(schedule) {
+    if(holidayList) {
+      let holidays = await holidayList.holidays.find()
     
-    let recurringTimeRanges = await schedule.recurringTimeRanges.find()
-    let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
-  
-    for(var i = 0; i < recurringTimeRanges.length; i++) {
-      if(recurringTimeRanges[i].isNow()) {
-        return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
+      for(var i = 0; i < holidays.length; i++) {
+        if(holidays[i].isToday()) {
+          return {status: 'holiday', lcsa_name, lcsa_id, lcsa_status}
+        }
       }
     }
   
-    for(var i = 0; i < singleDateTimeRanges.length; i++) {
-      if(singleDateTimeRanges[i].isNow()) {
-        return {status: 'open', lcsa_status}
+    let schedule = await queue.schedule.get()
+    if(schedule) {
+      
+      let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+      let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
+    
+      for(var i = 0; i < recurringTimeRanges.length; i++) {
+        if(recurringTimeRanges[i].isNow()) {
+          return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
+        }
+      }
+    
+      for(var i = 0; i < singleDateTimeRanges.length; i++) {
+        if(singleDateTimeRanges[i].isNow()) {
+          return {status: 'open', lcsa_status}
+        }
       }
     }
+    return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
   }
-  return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
 }
 
 
