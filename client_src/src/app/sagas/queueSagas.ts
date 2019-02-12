@@ -89,8 +89,6 @@ export function* callOptionalPromptsToggle(action) {
 
 export function* callQueueForceCloseToggle(action) {
   const result = yield call(queueForceCloseToggle, action.payload);
-  console.log('result', result);
-  
   if (result.error) {
     yield put({type: "SUBMIT_QUEUE_FORCE_CLOSE_TOGGLE_TO_SERVER_FAILED", payload: result.error})
   } else {
