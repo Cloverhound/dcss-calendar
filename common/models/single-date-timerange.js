@@ -9,6 +9,10 @@ module.exports = function(SingleDateTimeRange) {
 
         let currentTime = moment().tz(process.env.TIME_ZONE)
 
+        if(currentTime.isSame(this.date, 'day') && this.closed_all_day === true){
+            return false
+        }
+
         if(!currentTime.isSame(this.date, 'day')) {
             return false
         }

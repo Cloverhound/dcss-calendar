@@ -15,7 +15,8 @@ var emptySingleDateTimeRange = {
     index: 0,
     date: "",
     start: "",
-    end: ""
+    end: "",
+    closed_all_day: false
 }
 
 var initialEmptyRecurringTimeRange = {
@@ -74,6 +75,8 @@ const ScheduleReducer = (state: any = initialState, action) => {
             return changeEndOfSingleDateTimeRange(state, action.payload)
         case 'CHANGE_DATE_OF_SINGLE_DATE_TIME_RANGE':
             return changeDateOfSingleDateTimeRange(state, action.payload)
+        case 'CHANGE_CHECKBOX_OF_SINGLE_DATE_TIME_RANGE':
+            return changeCheckboxOfSingleDateTimeRange(state, action.payload)
         case 'RESET_SCHEDULE':
             return resetSchedule(state)
         case 'SCHEDULE_LOADING':
@@ -253,12 +256,26 @@ function changeEndOfSingleDateTimeRange(state, payload) {
 
 function changeDateOfSingleDateTimeRange(state, payload) {
     console.log('Changing date of single date time range', state, payload)
-    let singleDateTimRanges = [...state.singleDateTimeRanges]
-    let singleDateTimeRange = singleDateTimRanges[payload.index]
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    let singleDateTimeRange = singleDateTimeRanges[payload.index]
     if(!singleDateTimeRange) {console.log('No single date time range with index found!'); return;}
     singleDateTimeRange.date = payload.date
   
-    return {...state, singleDateTimRanges}
+    return {...state, singleDateTimeRanges}
+}
+
+function changeCheckboxOfSingleDateTimeRange(state, payload) {
+    console.log('Changing checkbox of single date time range', state, payload)
+    let singleDateTimeRanges = [...state.singleDateTimeRanges]
+    let singleDateTimeRange = singleDateTimeRanges[payload.index]
+    if(!singleDateTimeRange) {console.log('No single date time range with index found!'); return;}
+    if (!JSON.parse(payload.value)) {
+        singleDateTimeRange.start = ''
+        singleDateTimeRange.end = ''
+    } 
+    singleDateTimeRange.closed_all_day = !JSON.parse(payload.value)
+    
+    return {...state, singleDateTimeRanges}
 }
 
 function resetSchedule(state) {

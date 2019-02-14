@@ -284,7 +284,7 @@ class CalendarTable extends React.Component<WithStyles<typeof styles> & IPropsTa
                     } else if (columnName === 'BCP Active') {
                       tableCell = this.lcsaToggle(row.id, row["Lcsa Name"], row["BCP Active"])
                     } else if (columnName === 'Force Closed / Flush Q') {
-                      tableCell = this.forceClosedToggle(row.id, row["Name"], row["Force Closed"])
+                      tableCell = this.forceClosedToggle(row.id, row["Name"], row["Force Closed / Flush Q"])
                     } else if (columnName === '') {
                       tableCell = this.deleteTableCell(row.id)
                     }

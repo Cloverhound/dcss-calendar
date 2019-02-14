@@ -12,12 +12,14 @@
       "required": true
     },
     "start": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "end": {
-      "type": "string",
-      "required": true
+      "type": "string"
+    },
+    "closed_all_day" : {
+      "type": "boolean",
+      "default": false
     },
     "scheduleId": {
       "type": "number",

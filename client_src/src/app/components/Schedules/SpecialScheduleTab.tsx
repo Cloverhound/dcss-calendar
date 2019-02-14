@@ -100,6 +100,7 @@ class RegularScheduleTab extends React.Component<WithStyles<typeof styles> & IPr
           start={timeRange.start}
           end={timeRange.end}
           date={timeRange.date}
+          closed_all_day={timeRange.closed_all_day}
         />
       })
     }

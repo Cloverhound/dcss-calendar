@@ -8,6 +8,7 @@ export const addRecurringTimeRange                   = ()  => ({ type: "ADD_RECU
 export const changeStartOfSingleDateTimeRange        = obj => ({ type: "CHANGE_START_OF_SINGLE_DATE_TIME_RANGE", payload: obj})
 export const changeEndOfSingleDateTimeRange          = obj => ({ type: "CHANGE_END_OF_SINGLE_DATE_TIME_RANGE", payload: obj})
 export const changeDateOfSingleDateTimeRange         = obj => ({ type: "CHANGE_DATE_OF_SINGLE_DATE_TIME_RANGE", payload: obj })
+export const changeCheckboxSingleDateTimeRange       = obj => ({ type: "CHANGE_CHECKBOX_OF_SINGLE_DATE_TIME_RANGE", payload: obj })
 export const deleteSingleDateTimeRange               = obj => ({ type: "DELETE_SINGLE_DATE_TIME_RANGE", payload: obj})
 export const addSingleDateTimeRange                  = ()  => ({ type: "ADD_SINGLE_DATE_TIME_RANGE" })
 

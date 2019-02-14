@@ -9,8 +9,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TimePicker from 'rc-time-picker-ch';
 import DatePicker from "react-datepicker";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 import { connect } from 'react-redux';
-import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStartOfSingleDateTimeRange, changeEndOfSingleDateTimeRange } from '../../actions/index';
+import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStartOfSingleDateTimeRange, changeEndOfSingleDateTimeRange, changeCheckboxSingleDateTimeRange } from '../../actions/index';
 
 var moment = require('moment-timezone');
 
@@ -34,13 +38,10 @@ const styles = theme => createStyles({
   },
   formGroup: {
     display: 'flex',
-    // justifyContent: 'center',
-    alignItems: 'flex-end',
     margin: theme.spacing.unit * 2
   },
   timeContainer: {
     display: 'flex',
-    justifyContent: 'center',
     marginTop: '10px'
   },
   date: {
@@ -55,10 +56,15 @@ const styles = theme => createStyles({
     border: 'none',
     borderBottom: '1px solid #8D8D8D',
     marginRight: theme.spacing.unit,
+    marginTop: '21px'
   },
   calendar: {
     fontSize: theme.typography.fontSize,
     fontFamily: theme.typography.fontFamily
+  },
+  timeWrapper: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 });
 
@@ -67,10 +73,12 @@ interface IProps {
   changeStartOfSingleDateTimeRange: any,
   changeEndOfSingleDateTimeRange: any,
   changeDateOfSingleDateTimeRange: any,
+  changeCheckboxSingleDateTimeRange: any,
   start: string,
   end: string,
   date: string,
-  index: number
+  index: number,
+  closed_all_day: boolean
 }
 
 class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IProps> {
@@ -90,6 +98,13 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
     changeDateOfSingleDateTimeRange({ index, date: value})
   };
 
+  handleCheckboxChange = (event) => {
+    console.log("value", event)
+    console.log("event.target.value", event.target.value)
+    const { changeCheckboxSingleDateTimeRange, index } = this.props
+    changeCheckboxSingleDateTimeRange({index, value: event.target.value})
+  }
+
   handleDelete = (event) => {
     const { deleteSingleDateTimeRange, index } = this.props
     event.preventDefault()
@@ -97,13 +112,13 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, closed_all_day } = this.props
 
     let dateComponent = <DatePicker
+      className={classes.dateInput}
       selected={this.props.date}
       placeholderText="mm / dd / yyyy"
       onChange={this.handleDateChange}
-      className={classes.dateInput}
       calendarClassName={classes.calendar}
     />
 
@@ -123,26 +138,45 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
           <FormGroup row
             className={classes.formGroup}>
             {dateComponent}
-            <div className={classes.timeContainer}>
-              <TimePicker
-                showSecond={false}
-                onChange={this.handleStartTimeChange}
-                format={format}
-                use12Hours
-                placeholder={"Start Time"}
-                value={startValue}
-                allowEmpty={false}
-                popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
-              />
-              <TimePicker
-                showSecond={false}
-                onChange={this.handleEndTimeChange}
-                format={format}
-                use12Hours
-                placeholder={"End Time"}
-                value={endValue}
-                allowEmpty={false}
-                popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
+            <div className={classes.timeWrapper}>
+              <div className={classes.timeContainer}>
+                <TimePicker
+                  showSecond={false}
+                  onChange={this.handleStartTimeChange}
+                  format={format}
+                  use12Hours
+                  placeholder={"Start Time"}
+                  value={startValue}
+                  allowEmpty={false}
+                  popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
+                  disabled={closed_all_day}
+                />
+                <TimePicker
+                  showSecond={false}
+                  onChange={this.handleEndTimeChange}
+                  format={format}
+                  use12Hours
+                  placeholder={"End Time"}
+                  value={endValue}
+                  allowEmpty={false}
+                  popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
+                  disabled={closed_all_day}
+                />
+              </div>
+              <FormControlLabel
+                control={
+                // <Checkbox
+                //   checked={closed_all_day}
+                //   onChange={this.handleCheckboxChange}
+                //   value={closed_all_day}
+                // />
+                <Switch
+                  checked={closed_all_day}
+                  onChange={this.handleCheckboxChange}
+                  value={closed_all_day}
+                />
+                }
+                label="Closed all day"
               />
             </div>
           </FormGroup>
@@ -164,7 +198,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteSingleDateTimeRange: (obj) => dispatch(deleteSingleDateTimeRange(obj)),
   changeStartOfSingleDateTimeRange: (obj) => dispatch(changeStartOfSingleDateTimeRange(obj)),
   changeEndOfSingleDateTimeRange: (obj) => dispatch(changeEndOfSingleDateTimeRange(obj)),
-  changeDateOfSingleDateTimeRange: (obj) => dispatch(changeDateOfSingleDateTimeRange(obj))
+  changeDateOfSingleDateTimeRange: (obj) => dispatch(changeDateOfSingleDateTimeRange(obj)),
+  changeCheckboxSingleDateTimeRange: (obj) => dispatch(changeCheckboxSingleDateTimeRange(obj))
 })
 
 

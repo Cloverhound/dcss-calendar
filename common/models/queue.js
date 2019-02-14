@@ -278,7 +278,7 @@ let createPrompts = (obj) => {
 }
 
 var getStatus = async function(queue) {
-  console.log("Getting status of queue", queue)
+  console.log("Getting status of queue _____________", queue)
   let forceClosed = queue.force_closed
   let lcsa = await queue.lcsa.get()
 
@@ -318,8 +318,10 @@ var getStatus = async function(queue) {
           return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
         }
       }
-    
+      console.log('singleDateTimeRanges', singleDateTimeRanges);
+      
       for(var i = 0; i < singleDateTimeRanges.length; i++) {
+        console.log("🚀singleDateTimeRanges[i].isNow() ________________",singleDateTimeRanges[i].isNow())
         if(singleDateTimeRanges[i].isNow()) {
           return {status: 'open', lcsa_status}
         }
