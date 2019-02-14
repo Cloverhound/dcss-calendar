@@ -111,15 +111,25 @@ module.exports = function (Queue) {
           let newObj = res.reduce((acc, obj) =>{
             if (obj.language === "English") {
               if(!acc.english_file_name) {
-                acc.english_file_name = [obj.file_path]
+                acc.english_file_name = []
+                if(obj.file_path != null) {
+                  acc.english_file_name.push(obj.file_path)
+                }
               } else {
-                acc.english_file_name.push(obj.file_path)
+                if(obj.file_path != null) {
+                  acc.english_file_name.push(obj.file_path)
+                }
               }
             } else if (obj.language === "Spanish") {
               if(!acc.spanish_file_name) {
-                acc.spanish_file_name = [obj.file_path]
+                acc.spanish_file_name = []
+                if(obj.file_path != null) {
+                  acc.spanish_file_name.push(obj.file_path)
+                }
               } else {
-                acc.spanish_file_name.push(obj.file_path)
+                if(obj.file_path != null) {
+                  acc.spanish_file_name.push(obj.file_path)
+                }
               }
             }
             return acc
@@ -151,15 +161,25 @@ module.exports = function (Queue) {
           let newObj = res.reduce((acc, obj) => {
             if (obj.language === "English") {
               if(!acc.english_file_name) {
-                acc.english_file_name = [obj.file_path]
+                acc.english_file_name = []
+                if(obj.file_path != null) {
+                  acc.english_file_name.push(obj.file_path)
+                }
               } else {
-                acc.english_file_name.push(obj.file_path)
+                if(obj.file_path != null) {
+                  acc.english_file_name.push(obj.file_path)
+                }
               }
             } else if (obj.language === "Spanish") {
               if(!acc.spanish_file_name) {
-                acc.spanish_file_name = [obj.file_path]
+                acc.spanish_file_name = []
+                if(obj.file_path != null) {
+                  acc.spanish_file_name.push(obj.file_path)
+                }
               } else {
-                acc.spanish_file_name.push(obj.file_path)
+                if(obj.file_path != null) {
+                  acc.spanish_file_name.push(obj.file_path)
+                }
               }
             }
             return acc
@@ -321,7 +341,6 @@ var getStatus = async function(queue) {
       console.log('singleDateTimeRanges', singleDateTimeRanges);
       
       for(var i = 0; i < singleDateTimeRanges.length; i++) {
-        console.log("🚀singleDateTimeRanges[i].isNow() ________________",singleDateTimeRanges[i].isNow())
         if(singleDateTimeRanges[i].isNow()) {
           return {status: 'open', lcsa_status}
         }
