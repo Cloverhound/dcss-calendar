@@ -10,8 +10,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TimePicker from 'rc-time-picker-ch';
 import DatePicker from "react-datepicker";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
 import { connect } from 'react-redux';
 import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStartOfSingleDateTimeRange, changeEndOfSingleDateTimeRange, changeCheckboxSingleDateTimeRange } from '../../actions/index';
@@ -99,8 +97,6 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
   };
 
   handleCheckboxChange = (event) => {
-    console.log("value", event)
-    console.log("event.target.value", event.target.value)
     const { changeCheckboxSingleDateTimeRange, index } = this.props
     changeCheckboxSingleDateTimeRange({index, value: event.target.value})
   }
@@ -165,11 +161,6 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
               </div>
               <FormControlLabel
                 control={
-                // <Checkbox
-                //   checked={closed_all_day}
-                //   onChange={this.handleCheckboxChange}
-                //   value={closed_all_day}
-                // />
                 <Switch
                   checked={closed_all_day}
                   onChange={this.handleCheckboxChange}
