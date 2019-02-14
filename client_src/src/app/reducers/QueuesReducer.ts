@@ -94,9 +94,8 @@ const handleGetQueuesFromServerFailed = (state, payload) => {
 const handleSubmitOptionalPromptsToServerSucceeded = (state, payload) => {
   console.log('Handling update Optional Prompts Toggle Succeeded', payload)
   let message = {type: "success", content: "Successfully toggled optional prompts."}
-  let queueToggleOptionalPromptsObj = {id: null, name: null, bool: null}
   let loading = false
-  return {...state, queueToggleOptionalPromptsObj, loading}
+  return {...state, queueToggleOptionalPromptsObj: {...state.queueToggleOptionalPromptsObj, id: null, bool: null}, loading}
 }
 
 const handleSubmitOptionalPromptsToServerFailed = (state, payload) => {
@@ -121,15 +120,13 @@ const handleToggleForceClosedClicked = (state, payload) => {
 const handleToggleQueueForceClosedCancel = (state) => {
   console.log('Handling cancel lsca toggle bcp active cancel')
 
-  let queueToggleForceClosedObj = {id: null, name: null, bool: null}
-  return {...state, queueToggleForceClosedObj}
+  return {...state, queueToggleForceClosedObj: {...state.queueToggleForceClosedObj, id: null, bool: null}}
 }
 
 const handleSubmitQueueForceCloseToggleToServerSucceeded = (state, payload) => {
   console.log('Handling update Queue force close Toggle Succeeded', payload)
-  let queueToggleForceClosedObj = {id: null, name: null, bool: null}
   let loading = false
-  return {...state, loading, queueToggleForceClosedObj}
+  return {...state, loading, queueToggleForceClosedObj: {...state.queueToggleForceClosedObj, id: null, bool: null}}
 }
 
 const handleSubmitQueueForceCloseToggleToServerFailed = (state, payload) => {
@@ -149,8 +146,7 @@ const handleToggleOptionalPromptsClicked = (state, payload) => {
 const handleToggleOptionalPromptsCancel = (state) => {
   console.log('Handling optional prompts toggle cancel')
 
-  let queueToggleOptionalPromptsObj = {id: null, name: null, bool: null}
-  return {...state, queueToggleOptionalPromptsObj}
+  return {...state, queueToggleOptionalPromptsObj: {...state.queueToggleOptionalPromptsObj, id: null, bool: null}}
 }
 
 export default queuesReducer
