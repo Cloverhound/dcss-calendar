@@ -331,18 +331,20 @@ var getStatus = async function(queue) {
     if(schedule) {
       
       let recurringTimeRanges = await schedule.recurringTimeRanges.find()
+
       let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
-    
-      for(var i = 0; i < recurringTimeRanges.length; i++) {
-        if(recurringTimeRanges[i].isNow()) {
+   
+      for(var i = 0; i < singleDateTimeRanges.length; i++) {
+        if(singleDateTimeRanges[i].isClosedAllDay()) {
+          return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+        } else if (singleDateTimeRanges[i].isNow()) {
           return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
         }
       }
-      console.log('singleDateTimeRanges', singleDateTimeRanges);
-      
-      for(var i = 0; i < singleDateTimeRanges.length; i++) {
-        if(singleDateTimeRanges[i].isNow()) {
-          return {status: 'open', lcsa_status}
+
+      for(var i = 0; i < recurringTimeRanges.length; i++) {
+        if(recurringTimeRanges[i].isNow()) {
+          return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
         }
       }
     }

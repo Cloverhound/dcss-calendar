@@ -9,10 +9,6 @@ module.exports = function(SingleDateTimeRange) {
 
         let currentTime = moment().tz(process.env.TIME_ZONE)
 
-        if(currentTime.isSame(this.date, 'day') && this.closed_all_day === true){
-            return false
-        }
-
         if(!currentTime.isSame(this.date, 'day')) {
             return false
         }
@@ -20,10 +16,7 @@ module.exports = function(SingleDateTimeRange) {
         let start = moment(this.start, 'h:mm a').tz(process.env.TIME_ZONE)
         let end = moment(this.end, 'h:mm a').tz(process.env.TIME_ZONE)
 
-        console.log('single start', start)
-        console.log('single end', end)
         let isBetween = currentTime.isBetween(start, end)
-        console.log('isBetween', isBetween)
 
         if ( isBetween && end.diff(currentTime, 'hours') <= 1) {
             return 'Closing'
@@ -35,6 +28,17 @@ module.exports = function(SingleDateTimeRange) {
 
         return false  
         
+    }
+
+    SingleDateTimeRange.prototype.isClosedAllDay = function() {        
+        console.log('Checking if single date time range is closed all day', this)
+
+        let currentTime = moment().tz(process.env.TIME_ZONE)
+        
+        if(currentTime.isSame(this.date, 'day') && this.closed_all_day === true){
+            return true
+        }
+        return false
     }
 }
 

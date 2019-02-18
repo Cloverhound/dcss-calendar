@@ -1,7 +1,7 @@
 let initialState = {
   lcsas: [],
   lcsa_name: '',
-  lcsa_id: 0,
+  lcsa_id: '',
   message: {type: "", content: ""},
   loading: false,
   lcsaToDeleteId: null,
@@ -185,7 +185,7 @@ const handleCloseMessage = (state) => {
 
 const handleResetLcsa = (state) => {
   console.log('Resetting Lcsa')
-  return {...state, lcsa_id: 0, lcsa_name: '' }
+  return {...state, lcsa_id: '', lcsa_name: '' }
 }
 
 const handleLcsaLoading = (state) => {
