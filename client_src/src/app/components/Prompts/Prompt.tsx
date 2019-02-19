@@ -4,7 +4,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Save from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -13,6 +13,7 @@ import { submitUpdatePromptToServer, updateTargetFile, submitDeletePromptToServe
 import {
   Link
 } from 'react-router-dom';
+import { any } from 'prop-types';
 
 const styles = theme => createStyles({
   title: {
@@ -49,10 +50,21 @@ interface IProps {
   index: any
 }
 
-class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
-  state = {
-    isIE11: false
-  }
+interface IState {
+  myRef: any,
+  isIE: any
+}
+
+class Prompt extends React.Component<WithStyles<typeof styles> & IProps, IState> {
+
+  constructor(props) {
+   super(props)
+    this.state = {
+      isIE: false,
+      myRef: React.createRef()
+    }
+ }
+
   
   componentWillMount = () => {
     this.isIE11()
@@ -62,9 +74,10 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     var ua = window.navigator.userAgent; //Check the userAgent property of the window.navigator object
     var msie = ua.indexOf('MSIE '); // IE 10 or older
     var trident = ua.indexOf('Trident/'); //IE 11
-
+    console.log("msie", msie)
+    console.log("trident", trident)
     if (msie > 0 || trident > 0){
-      this.setState({isIE11: true})
+      this.setState({isIE: true})
     }
   }
 
@@ -99,12 +112,15 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     const { classes, language, name, file_path } = this.props;
     console.log(file_path);
     
-    // let blobObject = new Blob([`/${file_path}`])
-    // window.navigator.msSaveBlob(blobObject, `${name}.wav`)
-    var blobObject = new Blob(["I scream. You scream. We all scream for ice cream."]);
+    let blobObject = new Blob([`/${file_path}`])
+    window.navigator.msSaveBlob(blobObject, `${name}`)
+    // var blobObject = new Blob(["I scream. You scream. We all scream for ice cream."]);
 
-    window.navigator.msSaveBlob(blobObject, 'msSaveBlob_testFile.txt');
+    // window.navigator.msSaveBlob(blobObject, 'msSaveBlob_testFile.txt');
+    // const fileReader = new FileReader
+    //fileReader.readAsArrayBuffer(`/${file_path}`)
   }
+
 
   render() {
     const { classes, language, name, file_path } = this.props;
@@ -126,31 +142,24 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                     </Tooltip>
                   </div>
     } else {
-      if(!this.state.isIE11) {
+      if(this.state.isIE) {
         inputShow = <div className={classes.optionalContainer}>
-                    <Typography className={classes.title} variant="body1">{language}</Typography>
-                    {/* <figure>
-                      <figcaption>
-                        <Typography variant="body1" color="inherit">
-                          {name}
-                        </Typography>
-                      </figcaption>
-                      <audio
-                          controls
-                          src={`/${file_path}`}>
-                              Your browser does not support the
-                              <code>audio</code> element.
-                      </audio>
-                    </figure> */}
-                    <IconButton onClick={() => this.handleBlob()}>
-                      <ClearIcon />
-                    </IconButton>
-                    <Tooltip title="Remove">
-                      <IconButton onClick={(e) => this.handleSubmitClear(e)}>
-                        <ClearIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
+                      <Typography className={classes.title} variant="body1">{language}</Typography>
+                      <div>
+                        <a ref={this.state.myRef} href={`/${file_path}`} onClick={() => this.state.myRef.current.get(0).show().focus().click().hide()}>
+                          <Tooltip title="Download">
+                            <IconButton>
+                              <Save color="action"/>
+                            </IconButton>
+                          </Tooltip>
+                        </a>
+                        <Tooltip title="Remove">
+                          <IconButton onClick={(e) => this.handleSubmitClear(e)}>
+                            <ClearIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </div>
       } else {
       inputShow = <div className={classes.optionalContainer}>
                     <Typography className={classes.title} variant="body1">{language}</Typography>
