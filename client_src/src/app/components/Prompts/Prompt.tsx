@@ -108,26 +108,12 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps, IState>
     submitClearPromptToServer({id})
   }
 
-  handleBlob = () => {
-    const { classes, language, name, file_path } = this.props;
-    console.log(file_path);
-    
-    let blobObject = new Blob([`/${file_path}`])
-    window.navigator.msSaveBlob(blobObject, `${name}`)
-    // var blobObject = new Blob(["I scream. You scream. We all scream for ice cream."]);
-
-    // window.navigator.msSaveBlob(blobObject, 'msSaveBlob_testFile.txt');
-    // const fileReader = new FileReader
-    //fileReader.readAsArrayBuffer(`/${file_path}`)
-  }
-
-
   render() {
     const { classes, language, name, file_path } = this.props;
     let inputShow;
     if(!file_path) {
       inputShow = <div className={classes.optionalContainer}>
-                    <Typography className={classes.title} variant="body1">{language}</Typography>
+                    <Typography className={classes.title} variant="body2">{language}</Typography>
                     <input
                       ref={'optional-message-span'}
                       type='file'
@@ -144,7 +130,8 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps, IState>
     } else {
       if(this.state.isIE) {
         inputShow = <div className={classes.optionalContainer}>
-                      <Typography className={classes.title} variant="body1">{language}</Typography>
+                      <Typography className={classes.title} variant="body2">{language}</Typography>
+                      <Typography className={classes.title} variant="body1" color="textPrimary">{file_path}</Typography>
                       <div>
                         <a ref={this.state.myRef} href={`/${file_path}`} onClick={() => this.state.myRef.current.get(0).show().focus().click().hide()}>
                           <Tooltip title="Download">
@@ -162,7 +149,7 @@ class Prompt extends React.Component<WithStyles<typeof styles> & IProps, IState>
                     </div>
       } else {
       inputShow = <div className={classes.optionalContainer}>
-                    <Typography className={classes.title} variant="body1">{language}</Typography>
+                    <Typography className={classes.title} variant="body2">{language}</Typography>
                     <figure>
                       <figcaption>
                         <Typography variant="body1" color="inherit">
