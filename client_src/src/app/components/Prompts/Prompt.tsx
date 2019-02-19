@@ -50,6 +50,23 @@ interface IProps {
 }
 
 class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
+  state = {
+    isIE11: false
+  }
+  
+  componentWillMount = () => {
+    this.isIE11()
+  }
+
+  isIE11() {
+    var ua = window.navigator.userAgent; //Check the userAgent property of the window.navigator object
+    var msie = ua.indexOf('MSIE '); // IE 10 or older
+    var trident = ua.indexOf('Trident/'); //IE 11
+
+    if (msie > 0 || trident > 0){
+      this.setState({isIE11: true})
+    }
+  }
 
   handleInputChange = (e) => {
     const { updateTargetFile } = this.props
@@ -66,16 +83,27 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
     submitUpdatePromptToServer(formData) 
   }
 
-  handleDelete(e) {
+  handleDelete = (e) => {
     e.preventDefault()
     const { submitDeletePromptToServer, id } = this.props
     submitDeletePromptToServer({id})
   }
 
-  handleSubmitClear(e) {
+  handleSubmitClear = (e) => {
     e.preventDefault()
     const { submitClearPromptToServer, id } = this.props
     submitClearPromptToServer({id})
+  }
+
+  handleBlob = () => {
+    const { classes, language, name, file_path } = this.props;
+    console.log(file_path);
+    
+    // let blobObject = new Blob([`/${file_path}`])
+    // window.navigator.msSaveBlob(blobObject, `${name}.wav`)
+    var blobObject = new Blob(["I scream. You scream. We all scream for ice cream."]);
+
+    window.navigator.msSaveBlob(blobObject, 'msSaveBlob_testFile.txt');
   }
 
   render() {
@@ -98,6 +126,32 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                     </Tooltip>
                   </div>
     } else {
+      if(!this.state.isIE11) {
+        inputShow = <div className={classes.optionalContainer}>
+                    <Typography className={classes.title} variant="body1">{language}</Typography>
+                    {/* <figure>
+                      <figcaption>
+                        <Typography variant="body1" color="inherit">
+                          {name}
+                        </Typography>
+                      </figcaption>
+                      <audio
+                          controls
+                          src={`/${file_path}`}>
+                              Your browser does not support the
+                              <code>audio</code> element.
+                      </audio>
+                    </figure> */}
+                    <IconButton onClick={() => this.handleBlob()}>
+                      <ClearIcon />
+                    </IconButton>
+                    <Tooltip title="Remove">
+                      <IconButton onClick={(e) => this.handleSubmitClear(e)}>
+                        <ClearIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+      } else {
       inputShow = <div className={classes.optionalContainer}>
                     <Typography className={classes.title} variant="body1">{language}</Typography>
                     <figure>
@@ -119,6 +173,7 @@ class Prompt extends React.PureComponent<WithStyles<typeof styles> & IProps> {
                       </IconButton>
                     </Tooltip>
                   </div>
+      }
     }
    
     return (
