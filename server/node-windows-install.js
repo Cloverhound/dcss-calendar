@@ -27,7 +27,7 @@ var svc = new Service({
   },
   {
     name: "TIME_ZONE",
-    value: "America/Denver"
+    value: "America/Los_Angeles"
   },
   {
     name: "DB",
