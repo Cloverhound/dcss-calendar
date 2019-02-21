@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TimePicker from 'rc-time-picker-ch';
+import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -41,7 +42,7 @@ const styles = theme => createStyles({
     justifyContent: 'center',
     marginLeft: '10px',
   },
-  timeContainer: {
+  timeWrapper: {
     display: 'flex',
     justifyContent: 'center',
     padding: "0 0 25px 0"
@@ -49,6 +50,11 @@ const styles = theme => createStyles({
   formControl: {
     margin: theme.spacing.unit,
   },
+  timeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing.unit,
+  }
 });
 
 interface IProps {
@@ -126,29 +132,38 @@ class RecurringTimeRange extends React.Component<WithStyles<typeof styles> & IPr
             className={classes.formGroup}>
             {checkBoxes}
           </FormGroup>
-          <div className={classes.timeContainer}>
-            <TimePicker
-              showSecond={false}
-              onChange={this.handleStartTimeChange}
-              format={format}
-              use12Hours
-              placeholder={"Start Time"}
-              value={startValue}
-              allowEmpty={false}
-              popupStyle={{fontFamily: '"Roboto"'}}
-            />
-            <TimePicker
-              showSecond={false}
-              onChange={this.handleEndTimeChange}
-              format={format}
-              use12Hours
-              placeholder={"End Time"}
-              value={endValue}
-              allowEmpty={false}
-              popupStyle={{fontFamily: '"Roboto"'}}
-            />
+          <div className={classes.timeWrapper}>
+            <div className={classes.timeContainer}>
+              <Typography variant="body1" color="textSecondary" >
+                Start Time
+              </Typography>
+              <TimePicker
+                showSecond={false}
+                onChange={this.handleStartTimeChange}
+                format={format}
+                use12Hours
+                placeholder={"00:00"}
+                value={startValue}
+                allowEmpty={false}
+                popupStyle={{fontFamily: '"Roboto"'}}
+              />
+            </div>
+            <div className={classes.timeContainer}>
+              <Typography variant="body1" color="textSecondary">
+                End Time
+              </Typography>
+              <TimePicker
+                showSecond={false}
+                onChange={this.handleEndTimeChange}
+                format={format}
+                use12Hours
+                placeholder={"00:00"}
+                value={endValue}
+                allowEmpty={false}
+                popupStyle={{fontFamily: '"Roboto"'}}
+              />
+            </div>
           </div>
-
         </Paper>
         <div className={classes.addButton}>
           <Tooltip title="Delete">
