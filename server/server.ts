@@ -76,6 +76,7 @@ app.start = function() {
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
     console.log('🔥🔥process.env.TIME_ZONE', process.env.TIME_ZONE);
+    console.log('moment time', moment().tz(process.env.TIME_ZONE));
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);

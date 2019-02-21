@@ -11,6 +11,7 @@ import TimePicker from 'rc-time-picker-ch';
 import DatePicker from "react-datepicker";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStartOfSingleDateTimeRange, changeEndOfSingleDateTimeRange, changeCheckboxSingleDateTimeRange } from '../../actions/index';
 
@@ -38,10 +39,10 @@ const styles = theme => createStyles({
     display: 'flex',
     margin: theme.spacing.unit * 2
   },
-  timeContainer: {
-    display: 'flex',
-    marginTop: '10px'
-  },
+  // timeContainer: {
+  //   display: 'flex',
+  //   marginTop: '10px'
+  // },
   date: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -53,8 +54,8 @@ const styles = theme => createStyles({
     fontFamily: theme.typography.fontFamily,
     border: 'none',
     borderBottom: '1px solid #8D8D8D',
-    marginRight: theme.spacing.unit,
-    marginTop: '21px'
+    margin: theme.spacing.unit,
+    // marginTop: '21px'
   },
   calendar: {
     fontSize: theme.typography.fontSize,
@@ -62,7 +63,12 @@ const styles = theme => createStyles({
   },
   timeWrapper: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'row'
+  },
+  timeContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing.unit,
   }
 });
 
@@ -93,6 +99,7 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
 
   handleDateChange = (value) =>  {
     const { changeDateOfSingleDateTimeRange, index } = this.props
+    console.log("date single date time range", value)
     changeDateOfSingleDateTimeRange({ index, date: value})
   };
 
@@ -136,23 +143,31 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
             {dateComponent}
             <div className={classes.timeWrapper}>
               <div className={classes.timeContainer}>
+                <Typography variant="body1" color="textSecondary" >
+                  Start Time
+                </Typography>
                 <TimePicker
                   showSecond={false}
                   onChange={this.handleStartTimeChange}
                   format={format}
                   use12Hours
-                  placeholder={"Start Time"}
+                  placeholder={"00:00"}
                   value={startValue}
                   allowEmpty={false}
                   popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}
                   disabled={closed_all_day}
                 />
+              </div>
+              <div className={classes.timeContainer}>
+                <Typography variant="body1" color="textSecondary" >
+                  End Time
+                </Typography>
                 <TimePicker
                   showSecond={false}
                   onChange={this.handleEndTimeChange}
                   format={format}
                   use12Hours
-                  placeholder={"End Time"}
+                  placeholder={"00:00"}
                   value={endValue}
                   allowEmpty={false}
                   popupStyle={{fontFamily: '"Roboto"', fontSize: '14px'}}

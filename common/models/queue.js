@@ -335,6 +335,8 @@ var getStatus = async function(queue) {
       let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
    
       for(var i = 0; i < singleDateTimeRanges.length; i++) {
+        console.log('singleDateTimeRanges[i].isClosedAllDay()', singleDateTimeRanges[i].isClosedAllDay());
+        
         if(singleDateTimeRanges[i].isClosedAllDay()) {
           return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
         } else if (singleDateTimeRanges[i].isNow()) {

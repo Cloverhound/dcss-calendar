@@ -33,9 +33,9 @@ module.exports = function(SingleDateTimeRange) {
     SingleDateTimeRange.prototype.isClosedAllDay = function() {        
         console.log('Checking if single date time range is closed all day', this)
 
-        let currentTime = moment().tz(process.env.TIME_ZONE)
+        let currentTime = moment().tz(process.env.TIME_ZONE).format("YYYY-MM-DD");
         
-        if(currentTime.isSame(this.date, 'day') && this.closed_all_day === true){
+        if(moment(currentTime).isSame(moment(this.date).format("YYYY-MM-DD"), 'day') && this.closed_all_day === true){
             return true
         }
         return false
