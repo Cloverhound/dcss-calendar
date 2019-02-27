@@ -8,20 +8,20 @@ module.exports = function(RecurringTimeRange) {
     
     let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     let currentTime = moment().tz(process.env.TIME_ZONE)
-    console.log('CurrentTime', currentTime)
+
     let currentDay = days[currentTime.format('d')]
     
     if(!this[currentDay]) {
         return false
     }
 
-    let start = moment(this.start, 'h:mm a').tz(process.env.TIME_ZONE)
-    let end = moment(this.end, 'h:mm a').tz(process.env.TIME_ZONE)
+    let start = moment(this.start, 'h:mm a').tz(process.env.TIME_ZONE, true)
+    let end = moment(this.end, 'h:mm a').tz(process.env.TIME_ZONE, true)
+    console.log('recurring start, end', start.format("YYYY-MM-DD h:mm a"), end.format("YYYY-MM-DD h:mm a"));
+    
 
-    console.log('start', start)
-    console.log('end', end)
     let isBetween = currentTime.isBetween(start, end)
-    console.log('isBetween', isBetween)
+    console.log('recurring isBetween', isBetween)
     
     return isBetween
 }
@@ -36,10 +36,9 @@ module.exports = function(RecurringTimeRange) {
         return false
     }
 
-    let start = moment.tz(this.start, 'HH:mm', process.env.TIME_ZONE)
-    let end = moment.tz(this.end, 'HH:mm', process.env.TIME_ZONE)
+    let start = moment.tz(this.start, 'HH:mm', process.env.TIME_ZONE, true)
+    let end = moment.tz(this.end, 'HH:mm', process.env.TIME_ZONE, true)
     
     return currentTime.isBetween(start, end) && end.diff(currentTime, 'hours') <= 1
   }
-  
 }

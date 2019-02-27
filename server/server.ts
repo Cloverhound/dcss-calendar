@@ -22,10 +22,10 @@ var httpLogger = function(req, res, next) {
   const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
   logger.info('Http ' + req.method + ' Request by ' + login + ' to ' + req.url)
 
-  let body = JSON.stringify(req.body, null, 2)
+  let body = JSON.stringify(req.body, null, 0)
   if(Object.keys(body).length > 0 ) {
     if(body != '{}') {
-      console.log('http body', body);
+      logger.info("body: " + body);
     }
   }
   
@@ -63,7 +63,9 @@ var basicAuth = function (req, res, next) {
   if (!validUser) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
     return res.sendStatus(401)
-  }
+  } 
+  
+
 
   next()
 }
