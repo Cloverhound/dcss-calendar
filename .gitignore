@@ -24,3 +24,4 @@ package-lock.json
 .env
 client_src/dist
 /server/storage
+logs
