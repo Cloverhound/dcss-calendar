@@ -37,6 +37,14 @@ var svc = new Service({
     name: "FILE_STORAGE_PATH",
     value: 'C:\\DCSS\\dcss-calendar\\server\\storage\\'
   },
+  {
+    name: "LOGS_STORAGE_PATH",
+    value: 'C:\\DCSS\\dcss-calendar-022719\\logs\\'
+  },
+  {
+    name: "PORT",
+    value: '80'
+  },
   ]
  });
 

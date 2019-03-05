@@ -8,7 +8,7 @@ var transport = new (transports.DailyRotateFile)({
   zippedArchive: true,
   maxSize: '20m',
   maxFiles: '60d',
-  dirname: './logs',
+  dirname: process.env.LOGS_STORAGE_PATH,
   json: true
 });
 

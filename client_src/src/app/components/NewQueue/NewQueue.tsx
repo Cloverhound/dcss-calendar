@@ -152,6 +152,7 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               value={queueReducer.county_code}
               onChange={this.handleChangeQueue}
               margin="normal"
+              disabled={true}
             />
             <FormControl className={classes.formControl}>
               <Select
