@@ -35,7 +35,7 @@ var svc = new Service({
   },
   {
     name: "FILE_STORAGE_PATH",
-    value: 'C:\\DCSS\\dcss-calendar\\server\\storage\\'
+    value: 'C:\\DCSS\\dcss-calendar\\storage\\'
   },
   {
     name: "LOGS_STORAGE_PATH",
