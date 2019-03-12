@@ -4,8 +4,13 @@ var moment = require('moment-timezone')
 module.exports = function(RecurringTimeRange) {
 
   RecurringTimeRange.prototype.isNow = function() {
+
+    var getNamespace = require('continuation-local-storage').getNamespace;
+    var myRequest = getNamespace('my request');
+    console.log('myRequest recurring', myRequest);
+
     console.log('Checking if recurring time range is now', this)
-    
+
     let days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     let currentTime = moment().tz(process.env.TIME_ZONE)
 

@@ -6,6 +6,7 @@ var path = require('path')
 var app = module.exports = loopback();
 require('dotenv').config()
 var logger = require('./logger')
+
 var creds = require("../config")
 var moment = require('moment-timezone')
 
@@ -13,14 +14,34 @@ var moment = require('moment-timezone')
 var bodyParser = require('body-parser');
 var multer = require('multer');
 
+var uuid = require('node-uuid');
+var cls = require('continuation-local-storage');
+var createNamespace = cls.createNamespace;
+var myRequest = createNamespace('my request');
+
+app.use(function(req, res, next) {
+  
+  myRequest.run(function() {
+    myRequest.set('reqId', uuid.v1());
+    console.log('✅SETTING UUID');
+      next();
+  });
+});
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }))
 app.use(multer().any());
 app.use(bodyParser.json())
+
 var httpLogger = function(req, res, next) {
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
   const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
-  logger.info('Http ' + req.method + ' Request by ' + login + ' to ' + req.url)
+
+  var getNamespace = require('continuation-local-storage').getNamespace;
+  var myRequest = getNamespace('my request');
+  console.log('myRequest SERVER', myRequest.active);
+
+  logger.info({method: req.method, login: login, url: req.url})
 
   let body = JSON.stringify(req.body, null, 0)
   if(Object.keys(body).length > 0 ) {
@@ -28,7 +49,6 @@ var httpLogger = function(req, res, next) {
       logger.info("body: " + body);
     }
   }
-  
   next(); 
 }
 app.use(httpLogger);
