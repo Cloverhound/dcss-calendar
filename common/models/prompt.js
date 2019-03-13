@@ -1,5 +1,6 @@
 'use strict';
 var fs = require("fs")
+var logger = require('../../server/logger')
 
 module.exports = function (Prompt) {
   Prompt.remoteMethod(
@@ -55,6 +56,7 @@ module.exports = function (Prompt) {
 
 // Create Prompts
 let createPrompts = (Prompt) => {
+
   Prompt.createPrompts = (queueId) => {
     let filter = {where: {queueId: queueId, type: 'office directions'}, order: 'index DESC'}
     return Prompt.find(filter)
@@ -85,8 +87,14 @@ let makePrompts = (Prompt, queueId, index) => {
   let actions = promptsArray.map(prompt => {
     return new Promise(function(resolve, reject) {
       Prompt.create(prompt)
-        .then(res => resolve(res))
-        .catch(err => reject(err))
+        .then(res => {
+          logger.info("Creating prompts successful")
+          return resolve(res)
+        })
+        .catch(err => {
+          logger.info("Creating prompts failed")
+          return reject(err)
+        })
     })
   })
   return Promise.all(actions) 
@@ -94,6 +102,7 @@ let makePrompts = (Prompt, queueId, index) => {
 
 // Delete Prompt
 function deletePrompt(Prompt) {
+  logger.info("Deleting prompt")
   Prompt.deleteFile = function (id, cb) {
     let res;
     Prompt.findById(id, function(err, instance){
@@ -101,8 +110,10 @@ function deletePrompt(Prompt) {
       if(!err){
         Prompt.destroyById(id, function(err){
           if (err) {
+            logger.info("Deleting prompt Failed")
             res = err;
           } else {
+            logger.info("Deleting prompt succesful")
            res = deleteFile(instance.file_path)
           }
         })
@@ -117,12 +128,13 @@ function deletePrompt(Prompt) {
 function deleteFile(file_path) {
   fs.unlink(`${process.env.FILE_STORAGE_PATH}${file_path}`, (err) => {
     if (err) throw err;
-    console.log(`${file_path} was deleted`);
+    logger.info(`${file_path} was deleted`);
   });
 }
 
 // Upload Prompt
 function fileUpload(Prompt) {
+  logger.info("Uploading prompt")
   return Prompt.upload = (promptFile) => {
     
     let buffer = promptFile.files[0].buffer;
@@ -137,8 +149,14 @@ function fileUpload(Prompt) {
       })
 
     })
-    .then(res => res)
-    .catch(err => err)
+    .then(res => {
+      logger.info("Prompt file upload successful")  
+      return res
+    })
+    .catch(err => {
+      logger.info("Prompt file upload failed")  
+      return err
+    })
   }
 }
 
@@ -157,11 +175,19 @@ const updatePrompt = (Prompt, path, fileName, body) => {
 
 // Clear Prompt
 const clearPrompt = (Prompt) => {
+  logger.info('Clearing Prompt');
+  
   Prompt.clearPrompt = (id) => {
   return new Promise(function(resolve, reject){
     Prompt.findById(id)
-    .then(res => resolve(resetPrompt(Prompt, res)))
-    .then(err => reject(err))
+    .then(res => {
+      logger.info('Clearing Prompt Successful', {id: id})
+      return resolve(resetPrompt(Prompt, res))
+    })
+    .then(err => {
+      logger.info('Clearing Prompt Failed', {id: id});
+      return reject(err)
+    })
   })
   .then(res => res)
   .then(err => err)
@@ -170,39 +196,61 @@ const clearPrompt = (Prompt) => {
 
 const resetPrompt = (Prompt, obj) => {
   let where = {id: obj.id}
+  logger.info('Resetting prompt', where);
+  
   let data = {
       name: null,
       file_path: null
   }
   return new Promise(function(resolve, reject){
     Prompt.upsertWithWhere(where, data)
-      .then(res => resolve(deleteFileFromLocal(obj)))
-      .catch(err => reject(err))
+      .then(res => {
+        logger.info('Resetting prompt Successful ', where);
+        return resolve(deleteFileFromLocal(obj))
+      })
+      .catch(err => {
+        logger.info('Resetting prompt Failed ', where);
+        return reject(err)
+      })
   })
   .then(res => res)
   .catch(err => err)
 }
 
 const deleteFileFromLocal = (obj) => {
+  logger.info("Deleting audio file from local storage path", {path: obj.file_path});
   return new Promise(function(resolve, reject){
    fs.unlink(`${process.env.FILE_STORAGE_PATH}${obj.file_path}`, (err) => {
       if (err) throw reject(err);
     return resolve({queueId: obj.queueId, name: `${obj.name}`})
     });
   })
-  .then(res => res)
-  .catch(err => err)
+  .then(res => {
+    logger.info("Deleting audio file from local storage path Successful", {path: obj.file_path});
+    return res
+  })
+  .catch(err => {
+    logger.info("Deleting audio file from local storage path Failed", {path: obj.file_path});
+    return err
+  })
 }
 
 // Delete Prompt Rows
 const deletePromptRows = (Prompt) => {
+  logger.info('Deleting Prompt Row');
   Prompt.deletePromptRows = (body) => {
     let keys = Object.keys(body)
     let deleted = keys.map(key => {
       return new Promise(function(resolve, reject){
         Prompt.destroyById(body[key])
-          .then(res => resolve(res))
-          .catch(err => reject(err))
+          .then(res => {
+            logger.info('Deleting Prompt Row Successful', {id: body[key]});
+            return resolve(res)
+          })
+          .catch(err => {
+            logger.info('Deleting Prompt Row Failed', {id: body[key]});
+            return reject(err)
+          })
       })
     })
     return Promise.all(deleted)
