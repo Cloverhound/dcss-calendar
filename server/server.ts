@@ -9,9 +9,15 @@ var logger = require('./logger')
 var creds = require("../config")
 var moment = require('moment-timezone')
 
-
 var bodyParser = require('body-parser');
 var multer = require('multer');
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log(`Unhandled Rejection at: ${p} reason: ${reason}`);
+  console.error(`Unhandled Rejection at: ${p} reason: ${reason}`);
+  logger.info(`Unhandled Rejection at: ${p} reason: ${reason}`);
+  // Application specific logging, throwing an error, or other logic here
+});
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }))
@@ -32,7 +38,7 @@ var httpLogger = function(req, res, next) {
   next(); 
 }
 app.use(httpLogger);
-app.use(loopback.static(path.resolve(__dirname, './storage'))); 
+app.use(loopback.static(path.resolve(process.env.FILE_STORAGE_PATH))); 
 
 const basicAuthParser = require('basic-auth')
 
@@ -77,6 +83,7 @@ app.start = function() {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
+    console.log('process.version', process.version);
     console.log('🔥🔥process.env.TIME_ZONE', process.env.TIME_ZONE);
     console.log('moment time', moment().tz(process.env.TIME_ZONE));
     if (app.get('loopback-component-explorer')) {
