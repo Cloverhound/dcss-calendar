@@ -23,7 +23,6 @@ app.use(function(req, res, next) {
   
   myRequest.run(function() {
     myRequest.set('reqId', uuid.v1());
-    console.log('✅SETTING UUID');
       next();
   });
 });
@@ -39,7 +38,8 @@ var httpLogger = function(req, res, next) {
 
   var getNamespace = require('continuation-local-storage').getNamespace;
   var myRequest = getNamespace('my request');
-  console.log('myRequest SERVER', myRequest.active);
+  console.log('myRequest SERVER', myRequest);
+  
 
   logger.info({method: req.method, login: login, url: req.url})
 

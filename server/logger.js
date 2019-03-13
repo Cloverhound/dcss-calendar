@@ -1,5 +1,5 @@
 const { winston, createLogger, format, transports   } = require('winston');
-const { combine, timestamp, label, printf, prettyPrint, align, padLevels, json} = format;
+const { combine, timestamp, label, printf, prettyPrint, align, padLevels, json, simple} = format;
 require('winston-daily-rotate-file');
 var getNamespace = require('continuation-local-storage').getNamespace;
 
@@ -16,10 +16,7 @@ var transport = new (transports.DailyRotateFile)({
 const winstonLogger = createLogger({
     format: combine(
       timestamp(),
-      // prettyPrint(),
-      // align(),
-      json(),
-      // padLevels()
+      simple()
     ),
     transports: [
       transport

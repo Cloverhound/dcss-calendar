@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (Queue) {
+module.exports = function (Queue) {  
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
 
   Queue.remoteMethod(
@@ -240,6 +240,14 @@ module.exports = function (Queue) {
   }
 
   Queue.forceCloseToggle = (body) => {
+
+    var getNamespace = require('continuation-local-storage').getNamespace;
+    var myRequest = getNamespace('my request');
+    console.log('myRequest FORCE CLOSE TOGGLE', myRequest.active);
+    console.log('🤦🏼‍♂️HITTING QUEUE');
+    var getNamespace = require('continuation-local-storage').getNamespace;
+
+
     console.log('Toggling queue force close');
     let where = {id: body.id}
     return Queue.upsertWithWhere(where, {force_closed: !body.bool})
