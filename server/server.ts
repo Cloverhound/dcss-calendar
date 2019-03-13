@@ -31,7 +31,7 @@ var httpLogger = function(req, res, next) {
   next(); 
 }
 app.use(httpLogger);
-app.use(loopback.static(path.resolve(__dirname, './storage'))); 
+app.use(loopback.static(path.resolve(process.env.FILE_STORAGE_PATH))); 
 
 const basicAuthParser = require('basic-auth')
 
