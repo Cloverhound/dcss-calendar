@@ -23,6 +23,11 @@
     "helmet#noSniff": {},
     "helmet#noCache": {
       "enabled": false
+    },
+    "loopback-context#per-request": {
+      "params": {
+        "enableHttpContext": true
+      }
     }
   },
   "session": {},
