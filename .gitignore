@@ -25,3 +25,4 @@ package-lock.json
 client_src/dist
 /server/storage
 logs
+/server/private/local
