@@ -1,5 +1,5 @@
 'use strict';
-
+require('cls-hooked');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path')
@@ -15,16 +15,14 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 
 var uuid = require('node-uuid');
-var cls = require('continuation-local-storage');
-var createNamespace = cls.createNamespace;
-var myRequest = createNamespace('my request');
+var LoopBackContext = require('loopback-context');
 
 app.use(function(req, res, next) {
+  var ctx = LoopBackContext.getCurrentContext();
+  console.log('ctx', ctx);
   
-  myRequest.run(function() {
-    myRequest.set('reqId', uuid.v1());
-      next();
-  });
+  ctx.set('reqId', uuid.v1());
+  next();
 });
 
 app.use(bodyParser.json({limit: '50mb'}));
@@ -35,11 +33,6 @@ app.use(bodyParser.json())
 var httpLogger = function(req, res, next) {
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
   const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
-
-  var getNamespace = require('continuation-local-storage').getNamespace;
-  var myRequest = getNamespace('my request');
-  console.log('myRequest SERVER', myRequest);
-  
 
   logger.info({method: req.method, login: login, url: req.url})
 
@@ -85,8 +78,6 @@ var basicAuth = function (req, res, next) {
     return res.sendStatus(401)
   } 
   
-
-
   next()
 }
 

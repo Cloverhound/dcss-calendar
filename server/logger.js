@@ -1,16 +1,15 @@
 const { winston, createLogger, format, transports   } = require('winston');
 const { combine, timestamp, label, printf, prettyPrint, align, padLevels, json, simple} = format;
 require('winston-daily-rotate-file');
-var getNamespace = require('continuation-local-storage').getNamespace;
+var LoopBackContext = require('loopback-context');
 
 var transport = new (transports.DailyRotateFile)({
   filename: 'Calendar-%DATE%.log',
   datePattern: 'YYYY-MM-DD-HH',
-  zippedArchive: true,
+  zippedArchive: false,
   maxSize: '20m',
   maxFiles: '60d',
   dirname: process.env.LOGS_STORAGE_PATH,
-  // json: true
 });
 
 const winstonLogger = createLogger({
@@ -23,16 +22,12 @@ const winstonLogger = createLogger({
     ]
   })
 
-  
-
-  // Wrap Winston logger to print reqId in each log
 var formatMessage = function(req) {
-  var myRequest = getNamespace('my request');
-  console.log('myRequest LOGGER', myRequest.active);
+  var ctx = LoopBackContext.getCurrentContext();
+  ctx.get('reqId');
   
   req = 'Http ' + req.method + ' Request by ' + req.login + ' to ' + req.url + " " + "with "
-  // req = {"method": req.method, "user": req.user}
-  let newMessage = myRequest && myRequest.get('reqId') ? req + "reqId: " + myRequest.get('reqId') : req;
+  let newMessage = ctx && ctx.get('reqId') ? req + "reqId: " + ctx.get('reqId') : req;
   return newMessage;
 };
 
