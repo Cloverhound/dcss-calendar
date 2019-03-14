@@ -1,4 +1,5 @@
 'use strict';
+var logger = require('../../server/logger')
 
 module.exports = function (Queue) {  
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
@@ -77,7 +78,8 @@ module.exports = function (Queue) {
   })
 
   Queue.getAllQueuesWithStatus = () => {
-    console.log('Getting all queus with status')
+    logger.info('Getting all queues with status')
+    console.log('Getting all queues with status')
     return Queue.find({include: ['holidayList', 'schedule', 'lcsa']})
       .then(async function(queues) {
         for(var i = 0; i < queues.length; i++) {
@@ -87,7 +89,7 @@ module.exports = function (Queue) {
         return Promise.resolve(queues)
       })
       .catch(err => {
-        console.log('Failed to get all queues with status', err)
+        logger.info('Failed to get all queues with status', err)
         return Promise.reject(err)
       })
   } 
@@ -138,8 +140,14 @@ module.exports = function (Queue) {
         })
         .catch(err => reject(err))
     })
-    .then(res => res)
-    .catch(err => err)
+    .then(res => {
+      logger.info("findOptionalPrompts successful")
+      return res
+    })
+    .catch(err => {
+      logger.info("findOptionalPrompts failed")
+      return err
+    })
   }
 
   Queue.directionPrompts = (code) => {
@@ -188,8 +196,14 @@ module.exports = function (Queue) {
         })
         .catch(err => reject(err))
     })
-    .then(res => res)
-    .catch(err => err)
+    .then(res => {
+      logger.info("Find direction prompt successful")
+      return res
+    })
+    .catch(err => {
+      logger.info("Find direction prompt failed")
+      return err
+    })
   }
 
   Queue.optionalPromptToggle = (body) => {
@@ -200,24 +214,24 @@ module.exports = function (Queue) {
   }
 
   Queue.getStatus = (code) => {
-    console.log('Getting status of queue with code', code)
+    logger.info('Getting status of queue with code', code)
     return Queue.find({where: {county_code: code}})
       .then(async function(queues) {
           try {
             let status = await getStatus(queues[0])
             return Promise.resolve(status)
           } catch(e) {
-            console.log('Failed to get status', e)
+            logger.info('Failed to get status', e)
             return Promise.reject(e)
           }
       }).catch(function(err) {
-          console.log('Failed to find queue to get status', err)
+          logger.info('Failed to find queue to get status', err)
           return Promise.reject(err)
       })
   }
 
   Queue.countyTransferRange = (countyTransferRange) => {
-    console.log('countyTransferRange', countyTransferRange);
+    logger.info('countyTransferRange', countyTransferRange);
     
     return Queue.findOne({where: {county_transfer_range: countyTransferRange}})
       .then(res => res)
@@ -225,30 +239,22 @@ module.exports = function (Queue) {
   }
 
   Queue.createQueueAndPrompts = async (body) => {
-    console.log('Creating queue and prompts')
+    logger.info('Creating queue and prompts')
     return Queue.create(body)
       .then(async function(res) {
-        console.log('Created Queue', res)
+        logger.info('Created Queue', res)
         let prompts = await createPrompts(res)
-        console.log('Created Prompts', prompts)
+        logger.info('Created Prompts', prompts)
         return prompts
       })
       .catch(err => {
-        console.log('Error in creating Queue', err)
+        logger.info('Error in creating Queue', err)
         return Promise.reject(err)
       })
   }
 
   Queue.forceCloseToggle = (body) => {
-
-    var getNamespace = require('continuation-local-storage').getNamespace;
-    var myRequest = getNamespace('my request');
-    console.log('myRequest FORCE CLOSE TOGGLE', myRequest.active);
-    console.log('🤦🏼‍♂️HITTING QUEUE');
-    var getNamespace = require('continuation-local-storage').getNamespace;
-
-
-    console.log('Toggling queue force close');
+    logger.info('Toggling queue force close');
     let where = {id: body.id}
     return Queue.upsertWithWhere(where, {force_closed: !body.bool})
       .then(res => res)
@@ -259,13 +265,16 @@ module.exports = function (Queue) {
     let where = {where: {county_code: code}}
 
     return Queue.find(where)
-      .then(res => res)
+      .then(res => {
+        logger.info("Get")
+        return res
+      })
       .catch(err => err)
   }
 }
 
 let createPrompts = (obj) => {
-  console.log('Creating prompts')
+  logger.info('Creating prompts')
   let promptsArray = [
     {
       index: 0,
@@ -306,7 +315,7 @@ let createPrompts = (obj) => {
 }
 
 var getStatus = async function(queue) {
-  console.log("Getting status of queue _____________", queue)
+  logger.info("Getting status of queue ", queue)
   let forceClosed = queue.force_closed
   let lcsa = await queue.lcsa.get()
 
@@ -343,8 +352,6 @@ var getStatus = async function(queue) {
       let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
    
       for(var i = 0; i < singleDateTimeRanges.length; i++) {
-        console.log('singleDateTimeRanges[i].isClosedAllDay()', singleDateTimeRanges[i].isClosedAllDay());
-        
         if(singleDateTimeRanges[i].isClosedAllDay()) {
           return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
         } else if (singleDateTimeRanges[i].isNow()) {

@@ -13,9 +13,18 @@ var svc = new Service({
   name:'DCSS Calendar',
   description: 'Runs DCSS calendar.',
   script: 'C:\\DCSS\\dcss-calendar\\server\\server.ts',
-  env: [{
+  env: [
+  {
     name: "DB_HOST",
-    value: "DCS02GAD001"
+    value: "sqllistener01.cc.nwncloud.com"
+  },
+  {
+    name: "DB_PORT",
+    value: "1433"
+  },
+  {
+    name: "DB",
+    value: "dcss_calendar"
   },
   {
     name: "DB_PASS",
@@ -26,12 +35,12 @@ var svc = new Service({
     value: "dcss_local_user"
   },
   {
-    name: "TIME_ZONE",
-    value: "America/Los_Angeles"
+    name: "DB_MULTI_SUB_FAILOVER",
+    value: "true"
   },
   {
-    name: "DB",
-    value: "dcss_calendar"
+    name: "TIME_ZONE",
+    value: "America/Los_Angeles"
   },
   {
     name: "FILE_STORAGE_PATH",

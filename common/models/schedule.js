@@ -2,6 +2,8 @@
 
 var extend = require('extend')
 var moment = require('moment')
+var logger = require('../../server/logger')
+
 module.exports = function(Schedule) {
   Schedule.validatesUniquenessOf('name', {message: 'Name already exists'});
 

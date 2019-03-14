@@ -1,18 +1,19 @@
 'use strict'
 
 var moment = require('moment-timezone')
+var logger = require('../../server/logger')
 
 module.exports = function(SingleDateTimeRange) {
 
     SingleDateTimeRange.prototype.isNow = function() {        
-        console.log('Checking if single date time range is now', this)
+        logger.info('Checking if single date time range is now', this)
 
         let currentTime = moment().tz(process.env.TIME_ZONE)
         let currentDateFormatted = moment(moment().tz(process.env.TIME_ZONE).format("YYYY-MM-DD"))
         let inputDateFormatted = moment(this.date).format("YYYY-MM-DD")
 
         if(!currentDateFormatted.isSame(inputDateFormatted, 'day')) {
-            console.log('Single date is NOT the same day', "currentTime: ", currentTime, "this.date: ", moment(this.date) );
+            logger.info('Single date is NOT the same day', "currentTime: ", currentTime, "this.date: ", moment(this.date) );
             return false
         }
 
@@ -33,7 +34,7 @@ module.exports = function(SingleDateTimeRange) {
     }
 
     SingleDateTimeRange.prototype.isClosedAllDay = function() {        
-        console.log('Checking if single date time range is closed all day', this)
+        logger.info('Checking if single date time range is closed all day', this)
 
         let currentTime = moment().tz(process.env.TIME_ZONE).format("YYYY-MM-DD");
         

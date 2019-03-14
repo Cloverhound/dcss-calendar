@@ -1,7 +1,7 @@
 {
   "db": {
     "host": "${DB_HOST}",
-    "port": 1433,
+    "port": "${DB_PORT}",
     "url": "",
     "database": "${DB}",
     "password": "${DB_PASS}",
@@ -10,6 +10,7 @@
     "connector": "mssql",
     "options": {
       "encrypt": true
-    }
+    },
+    "multiSubnetFailover": "${DB_MULTI_SUB_FAILOVER}"
   }
 }

@@ -1,7 +1,8 @@
 const { winston, createLogger, format, transports   } = require('winston');
-const { combine, timestamp, label, printf, prettyPrint, align, padLevels, json, simple} = format;
+const { combine, timestamp, label, printf, prettyPrint, simple } = format;
 require('winston-daily-rotate-file');
 var LoopBackContext = require('loopback-context');
+var moment = require('moment-timezone')
 
 var transport = new (transports.DailyRotateFile)({
   filename: 'Calendar-%DATE%.log',
@@ -14,7 +15,7 @@ var transport = new (transports.DailyRotateFile)({
 
 const winstonLogger = createLogger({
     format: combine(
-      timestamp(),
+      // timestamp(),
       simple()
     ),
     transports: [
@@ -23,11 +24,9 @@ const winstonLogger = createLogger({
   })
 
 var formatMessage = function(req) {
+  let currentTime = moment().tz(process.env.TIME_ZONE).format("YYYY-MM-DD h:mm:ss a")
   var ctx = LoopBackContext.getCurrentContext();
-  ctx.get('reqId');
-  
-  req = 'Http ' + req.method + ' Request by ' + req.login + ' to ' + req.url + " " + "with "
-  let newMessage = ctx && ctx.get('reqId') ? req + "reqId: " + ctx.get('reqId') : req;
+  let newMessage = ctx && ctx.get('reqId') ? ctx.get('reqId') + " -- " + currentTime + " -- " + req : req;
   return newMessage;
 };
 
