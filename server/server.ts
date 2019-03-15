@@ -1,11 +1,12 @@
 'use strict';
-
+require('cls-hooked');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path')
 var app = module.exports = loopback();
 require('dotenv').config()
 var logger = require('./logger')
+
 var creds = require("../config")
 var moment = require('moment-timezone')
 
@@ -16,11 +17,14 @@ var http = require('http');
 var https = require('https');
 
 var sslConfig = require('./ssl-config');
+var uuid = require('node-uuid');
+var LoopBackContext = require('loopback-context');
 
-var options = {
-  key: sslConfig.privateKey,
-  cert: sslConfig.certificate
-};
+app.use(function(req, res, next) {
+  var ctx = LoopBackContext.getCurrentContext();
+  ctx.set('reqId', uuid.v1());
+  next();
+})
 
 process.on('unhandledRejection', (reason, p) => {
   console.log(`Unhandled Rejection at: ${p} reason: ${reason}`);
@@ -33,9 +37,11 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }))
 app.use(multer().any());
 app.use(bodyParser.json())
+
 var httpLogger = function(req, res, next) {
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
   const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
+  
   logger.info('Http ' + req.method + ' Request by ' + login + ' to ' + req.url)
 
   let body = JSON.stringify(req.body, null, 0)
@@ -44,7 +50,6 @@ var httpLogger = function(req, res, next) {
       logger.info("body: " + body);
     }
   }
-  
   next(); 
 }
 app.use(httpLogger);
@@ -80,6 +85,7 @@ var basicAuth = function (req, res, next) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
     return res.sendStatus(401)
   } 
+  
   next()
 }
 
