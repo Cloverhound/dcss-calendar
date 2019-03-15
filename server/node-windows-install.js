@@ -51,8 +51,12 @@ var svc = new Service({
     value: 'C:\\DCSS\\dcss-calendar-022719\\logs\\'
   },
   {
-    name: "PORT",
+    name: "HTTP_PORT",
     value: '80'
+  },
+  {
+    name: "HTTPS_PORT",
+    value: '443'
   },
   ]
  });
