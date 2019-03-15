@@ -95,9 +95,10 @@ app.start = function() {
     
   var httpServer = http.createServer(app);
   var httpsServer = https.createServer(httpsOptions, app);
-
-  httpServer.listen(8080);
-  httpsServer.listen(8443);
+  let httpPort = process.env.HTTP_PORT || 80
+  let httpsPort = process.env.HTTPS_PORT || 443
+  httpServer.listen(httpPort);
+  httpsServer.listen(httpsPort);
 
   app.emit('started', );
   console.log('LoopBack server listening @ %s%s', host, '/');
@@ -107,26 +108,6 @@ app.start = function() {
     console.log('Browse your REST API at %s%s', host, explorerPath);
   }
 };
-
-// app.start = function(httpOnly) {
-//   // start the web server
-//   return app.listen(function() {
-//     app.emit('started');
-//     // var baseUrl = app.get('url').replace(/\/$/, '');
-//     // console.log('Web server listening at: %s', baseUrl);
-//     // console.log('process.version', process.version);
-//     // console.log('🔥🔥process.env.TIME_ZONE', process.env.TIME_ZONE);
-//     // console.log('moment time', moment().tz(process.env.TIME_ZONE));
-//     var baseUrl = (httpOnly? 'http://' : 'https://') + app.get('host') + ':' + app.get('port');
-//     app.emit('started', baseUrl);
-//     console.log('LoopBack server listening @ %s%s', baseUrl, '/');
-
-//     if (app.get('loopback-component-explorer')) {
-//       var explorerPath = app.get('loopback-component-explorer').mountPath;
-//       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
-//     }
-//   });
-// };
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
