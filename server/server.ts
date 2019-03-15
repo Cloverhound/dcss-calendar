@@ -101,11 +101,13 @@ app.start = function() {
   httpsServer.listen(httpsPort);
 
   app.emit('started', );
-  console.log('LoopBack server listening @ %s%s', host, '/');
+  console.log('LoopBack server listening @', `https://${host}:${httpsPort}/`);
+  console.log('LoopBack server listening @', `http://${host}:${httpPort}/`);
 
   if (app.get('loopback-component-explorer')) {
     var explorerPath = app.get('loopback-component-explorer').mountPath;
-    console.log('Browse your REST API at %s%s', host, explorerPath);
+    console.log('Browse your REST API at %s%s', `https://${host}:${httpsPort}`, explorerPath);
+    console.log('Browse your REST API at %s%s', `http://${host}:${httpPort}`, explorerPath);
   }
 };
 
