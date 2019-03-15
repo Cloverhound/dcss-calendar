@@ -1,7 +1,7 @@
 'use strict';
 var logger = require('../../server/logger')
 
-module.exports = function (Queue) {
+module.exports = function (Queue) {  
   Queue.validatesUniquenessOf('name', {message: 'Name already exists'});
 
   Queue.remoteMethod(
@@ -78,7 +78,8 @@ module.exports = function (Queue) {
   })
 
   Queue.getAllQueuesWithStatus = () => {
-    logger.info('Getting all queus with status')
+    logger.info('Getting all queues with status')
+    console.log('Getting all queues with status')
     return Queue.find({include: ['holidayList', 'schedule', 'lcsa']})
       .then(async function(queues) {
         for(var i = 0; i < queues.length; i++) {
@@ -314,7 +315,7 @@ let createPrompts = (obj) => {
 }
 
 var getStatus = async function(queue) {
-  logger.info("Getting status of queue _____________", queue)
+  logger.info("Getting status of queue ", queue)
   let forceClosed = queue.force_closed
   let lcsa = await queue.lcsa.get()
 
@@ -351,8 +352,6 @@ var getStatus = async function(queue) {
       let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
    
       for(var i = 0; i < singleDateTimeRanges.length; i++) {
-        logger.info('singleDateTimeRanges[i].isClosedAllDay()', singleDateTimeRanges[i].isClosedAllDay());
-        
         if(singleDateTimeRanges[i].isClosedAllDay()) {
           return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
         } else if (singleDateTimeRanges[i].isNow()) {

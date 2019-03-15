@@ -48,10 +48,38 @@ module.exports = function (Prompt) {
     }
   )
   createPrompts(Prompt)
-  deletePrompt(Prompt)
   fileUpload(Prompt)
   clearPrompt(Prompt)
   deletePromptRows(Prompt)
+
+  // Delete Prompt
+  Prompt.deleteFile = function (id, cb) {
+    let res;
+    Prompt.findById(id, function(err, instance){
+      res = instance;
+      if(!err){
+        Prompt.destroyById(id, function(err){
+          if (err) {
+            logger.info("Deleting prompt Failed")
+            res = err;
+          } else {
+            logger.info("Deleting prompt successful")
+           res = deleteFile(instance.file_path)
+          }
+        })
+      } else {
+        res = err;
+      }
+      cb(null, res)
+    })
+  }
+
+  function deleteFile(file_path) {
+    fs.unlink(`${process.env.FILE_STORAGE_PATH}${file_path}`, (err) => {
+      if (err) throw err;
+      logger.info(`${file_path} was deleted`);
+    });
+  }
 };
 
 // Create Prompts
@@ -100,37 +128,7 @@ let makePrompts = (Prompt, queueId, index) => {
   return Promise.all(actions) 
 }
 
-// Delete Prompt
-function deletePrompt(Prompt) {
-  logger.info("Deleting prompt")
-  Prompt.deleteFile = function (id, cb) {
-    let res;
-    Prompt.findById(id, function(err, instance){
-      res = instance;
-      if(!err){
-        Prompt.destroyById(id, function(err){
-          if (err) {
-            logger.info("Deleting prompt Failed")
-            res = err;
-          } else {
-            logger.info("Deleting prompt succesful")
-           res = deleteFile(instance.file_path)
-          }
-        })
-      } else {
-        res = err;
-      }
-      cb(null, res)
-    })
-  }
-}
 
-function deleteFile(file_path) {
-  fs.unlink(`${process.env.FILE_STORAGE_PATH}${file_path}`, (err) => {
-    if (err) throw err;
-    logger.info(`${file_path} was deleted`);
-  });
-}
 
 // Upload Prompt
 function fileUpload(Prompt) {
@@ -184,13 +182,13 @@ const clearPrompt = (Prompt) => {
       logger.info('Clearing Prompt Successful', {id: id})
       return resolve(resetPrompt(Prompt, res))
     })
-    .then(err => {
+    .catch(err => {
       logger.info('Clearing Prompt Failed', {id: id});
       return reject(err)
     })
   })
   .then(res => res)
-  .then(err => err)
+  .catch(err => err)
   }
 }
 
