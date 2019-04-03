@@ -9,8 +9,8 @@
     "user": "${DB_USER}",
     "connector": "mssql",
     "options": {
-      "encrypt": true
-    },
-    "multiSubnetFailover": "${DB_MULTI_SUB_FAILOVER}"
+      "encrypt": true,
+      "multiSubnetFailover": "${DB_MULTI_SUB_FAILOVER}"
+    }
   }
 }
