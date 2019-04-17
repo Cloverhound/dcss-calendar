@@ -349,18 +349,13 @@ var getStatus = async function(queue) {
     if(schedule) {
       let recurringTimeRanges = await schedule.recurringTimeRanges.find()
       let singleDateTimeRanges = await schedule.singleDateTimeRanges.find()
-   
-      for(var i = 0; i < singleDateTimeRanges.length; i++) {
-        let singleDateTimeRange = singleDateTimeRanges[i]
-        if(singleDateTimeRange.isToday() && singleDateTimeRange.closed_all_day){
-          return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
-        } else if(singleDateTimeRange.isToday() && singleDateTimeRange.isNow()) {
-          return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
-        } else if(singleDateTimeRange.isToday()) {
-          return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
-        }
-      }
 
+      let singleDateTimeRangesTodayArray = singleDateTimeRangesAreToday(singleDateTimeRanges)
+
+      if(singleDateTimeRangesTodayArray.length) {
+        return checkSingleDateTimeRanges(singleDateTimeRangesTodayArray, lcsa_name, lcsa_id, lcsa_status)
+      }
+     
       for(var i = 0; i < recurringTimeRanges.length; i++) {
         if(recurringTimeRanges[i].isNow()) {
           return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
@@ -371,5 +366,27 @@ var getStatus = async function(queue) {
   }
 }
 
+const singleDateTimeRangesAreToday = (singleDateTimeRanges) => {
+  let isToday = []
+  for(let i = 0; i < singleDateTimeRanges.length; i++) {
+    let singleDateTimeRange = singleDateTimeRanges[i]
+    if(singleDateTimeRange.isToday() && singleDateTimeRange.isClosedAllDay()) {
+      return [singleDateTimeRange]
+    } else if (singleDateTimeRange.isToday()) {
+      isToday.push(singleDateTimeRange)
+    }
+  }
+  return isToday
+}
 
-
+const checkSingleDateTimeRanges = (singleDateTimeRanges, lcsa_name, lcsa_id, lcsa_status) => {
+  for(var i = 0; i < singleDateTimeRanges.length; i++) {
+    let singleDateTimeRange = singleDateTimeRanges[i]
+    if(singleDateTimeRange.isToday() && singleDateTimeRange.closed_all_day){
+      return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+    } else if(singleDateTimeRange.isToday() && singleDateTimeRange.isNow()) {
+      return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
+    } 
+  }
+  return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+}
