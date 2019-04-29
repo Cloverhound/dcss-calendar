@@ -26,6 +26,18 @@ app.use(function(req, res, next) {
   next();
 })
 
+var checkApiHttps = function (req,res,next) {
+  if (req.protocol == 'http' && !req.path.includes('api')) {
+   logger.info('Redirecting to HTTPS ... ' + 'https://' + req.hostname + ':' + process.env.HTTPS_PORT + req.url);
+   res.redirect('https://' + req.hostname + ':' + process.env.HTTPS_PORT + req.url);
+   return
+  }
+  next()
+}
+if (process.env.NODE_ENV == 'production') {
+  app.use(checkApiHttps)
+}
+
 process.on('unhandledRejection', (reason, p) => {
   console.log(`Unhandled Rejection at: ${p} reason: ${reason}`);
   console.error(`Unhandled Rejection at: ${p} reason: ${reason}`);
