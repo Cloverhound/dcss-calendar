@@ -105,8 +105,9 @@ module.exports = function(HolidayList) {
             return
           }
 
-          let createHolidaysResult = createHolidays(holidayList, holidayListParameter.holidays)
-          cb(null, createHolidaysResult)
+        createHolidays(holidayList, holidayListParameter.holidays).then(result => {
+			  cb(null, result)
+		  })
           return
         })
       })
