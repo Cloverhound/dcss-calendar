@@ -58,6 +58,10 @@ var svc = new Service({
     name: "HTTPS_PORT",
     value: '443'
   },
+  {
+    name: "NODE_ENV",
+    value: 'lab'
+  },
   ]
  });
 
