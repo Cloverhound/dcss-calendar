@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 })
 
 var checkApiHttps = function (req,res,next) {
-  if (req.protocol == 'http' && !req.path.includes('api')) {
+  if (req.protocol == 'http' && !req.path.includes('api') && !req.path.includes('.wav')) {
    logger.info('Redirecting to HTTPS ... ' + 'https://' + req.hostname + ':' + process.env.HTTPS_PORT + req.url);
    res.redirect('https://' + req.hostname + ':' + process.env.HTTPS_PORT + req.url);
    return
