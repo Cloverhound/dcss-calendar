@@ -4,7 +4,8 @@ let initialState = {
   loading: false,
   toQueues: false,
   queueName: '',
-  county_code: ''
+  county_code: '',
+  ewt: ''
 }
 
 const queueReducer = (state = initialState, action) => {
@@ -12,7 +13,7 @@ const queueReducer = (state = initialState, action) => {
     case 'GET_QUEUE_FROM_SERVER_SUCCEEDED':
       return getQueueFromServerSucceeded(state, action.payload)
     case 'GET_QUEUE_FROM_SERVER_FAILED':
-    return getQueueFromServerFailed(state, action.payload)
+      return getQueueFromServerFailed(state, action.payload)
     case 'SUBMIT_NEW_QUEUE_TO_SERVER_SUCCEEDED':
       return handleSubmitNewQueueToServerSucceeded(state)
     case 'SUBMIT_NEW_QUEUE_TO_SERVER_FAILED':
@@ -90,9 +91,10 @@ const getQueueFromServerSucceeded = (state, payload) => {
   let scheduleId = payload.scheduleId
   let holidayListId = payload.holidayListId
   let county_code = payload.county_code
+  let ewt = payload.ewt
   let lcsaId = payload.lcsaId
   let loading = false
-  return {...state, id, queueName, county_code, scheduleId, holidayListId, lcsaId, loading}
+  return {...state, id, queueName, county_code, ewt, scheduleId, holidayListId, lcsaId, loading}
 }
 
 const getQueueFromServerFailed = (state, payload) => {

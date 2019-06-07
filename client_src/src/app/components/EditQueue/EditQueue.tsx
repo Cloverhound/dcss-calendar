@@ -13,7 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { getSchedulesFromServer, getHolidayListsFromServer, submitUpdateQueueToServer, getQueueFromServer, getLcsasFromServer, handleCloseMessage, changeQueue } from '../../actions/index'
+import { getSchedulesFromServer, getHolidayListsFromServer, submitUpdateQueueToServer, getQueueFromServer, getLcsasFromServer, handleCloseMessage, changeQueue, submitUpdateQueueToServerFailed } from '../../actions/index'
 
 import {
   Link
@@ -84,10 +84,21 @@ interface IProps {
   submitUpdateQueueToServer: any,
   changeQueue,
   match: any,
-  handleCloseMessage: any
+  handleCloseMessage: any,
+  submitUpdateQueueToServerFailed: any
 }
 
-class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
+interface IState {
+  ewtError: any
+}
+
+class EditQueue extends React.Component<WithStyles<typeof styles> & IProps, IState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ewtError: false
+    }
+  }
 
   componentWillMount = () => {
     const { id } = this.props.match.params
@@ -99,13 +110,25 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitUpdateQueue = () => {
-    const { submitUpdateQueueToServer, queueReducer } = this.props;
-    submitUpdateQueueToServer(queueReducer)
+    const { submitUpdateQueueToServer, queueReducer, submitUpdateQueueToServerFailed } = this.props;
+    if ((queueReducer.ewt >= 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
+      submitUpdateQueueToServer(queueReducer)
+    } else {
+      submitUpdateQueueToServerFailed({message: "EWT is required to be between 0 - 3600"})
+    }
   }
 
   handleChangeQueue = event => {
-    const { changeQueue } = this.props;
-    changeQueue({ name: event.target.name, value: event.target.value })
+    let {name, value} = event.target
+    const { changeQueue } = this.props
+
+    if (name === 'ewt' && value > 3600) {
+      this.setState({ ewtError: true })
+    } else if (name === 'ewt' && value < 3600){
+      this.setState({ ewtError: false })
+      value = Number(value)
+    }
+    changeQueue({ name, value })
   }
 
   handleCloseMessage = () => {
@@ -155,6 +178,16 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               margin="normal"
               disabled={true}
             />
+             <TextField
+              label="EWT"
+              name="ewt"
+              className={classes.textField}
+              value={queueReducer.ewt}
+              onChange={this.handleChangeQueue}
+              margin="normal"
+              helperText = "0 - 3600 required"
+              error={this.state.ewtError}
+            />
             <FormControl className={classes.formControl}>
               <Select
                 value={queueReducer.lcsaId}
@@ -192,12 +225,10 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
             <div className={classes.submitCancelContainer}>
-                {loading ? <CircularProgress className={classes.progress} /> : null}
-              {/* <Link to="/"> */}
-                <Button onClick={this.handleSubmitUpdateQueue} variant="contained" color="primary" className={classes.button}>
-                  Save
-                </Button>
-              {/* </Link> */}
+              {loading ? <CircularProgress className={classes.progress} /> : null}
+              <Button onClick={this.handleSubmitUpdateQueue} variant="contained" color="primary" className={classes.button}>
+                Save
+              </Button>
               <Link to="/">
                 <Button variant="outlined" color="primary" className={classes.button}>
                   Cancel
@@ -228,7 +259,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   changeQueue: (obj) => (dispatch(changeQueue(obj))),
   submitUpdateQueueToServer: (obj) => (dispatch(submitUpdateQueueToServer({...obj, history: ownProps.history}))),
   getQueueFromServer: (obj) => (dispatch(getQueueFromServer(obj))),
-  handleCloseMessage: () => (dispatch(handleCloseMessage()))
+  handleCloseMessage: () => (dispatch(handleCloseMessage())),
+  submitUpdateQueueToServerFailed: (obj) => (dispatch(submitUpdateQueueToServerFailed(obj)))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditQueue));

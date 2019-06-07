@@ -316,12 +316,18 @@ let createPrompts = (obj) => {
 
 var getStatus = async function(queue) {
   logger.info("Getting status of queue ", queue)
-  let forceClosed = queue.force_closed
+  
+  let force_closed = queue.force_closed
+  let ewt = queue.ewt
   let lcsa = await queue.lcsa.get()
 
   let lcsa_name = 'unassigned'
   let lcsa_id = 'unassigned'
   let lcsa_status = 'unassigned'
+
+  if (ewt === null) {
+    ewt = 'unassigned'
+  }
 
   if(lcsa) {
     lcsa_name = lcsa.lcsa_name
@@ -329,8 +335,8 @@ var getStatus = async function(queue) {
     lcsa.lcsa_enabled ? lcsa_status = 'closed': lcsa_status = 'open'
   } 
 
-  if(forceClosed) {
-    return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+  if(force_closed) {
+    return {status: 'closed', ewt, lcsa_name, lcsa_id, lcsa_status, force_closed}
   } else {
     let holidayList = await queue.holidayList.get()
   
@@ -339,7 +345,7 @@ var getStatus = async function(queue) {
     
       for(var i = 0; i < holidays.length; i++) {
         if(holidays[i].isToday()) {
-          return {status: 'holiday', lcsa_name, lcsa_id, lcsa_status}
+          return {status: 'holiday', ewt, lcsa_name, lcsa_id, lcsa_status, force_closed}
         }
       }
     }
@@ -358,11 +364,11 @@ var getStatus = async function(queue) {
      
       for(var i = 0; i < recurringTimeRanges.length; i++) {
         if(recurringTimeRanges[i].isNow()) {
-          return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
+          return {status: 'open', ewt, lcsa_name, lcsa_id, lcsa_status, force_closed}
         }
       }
     }
-    return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+    return {status: 'closed', ewt, lcsa_name, lcsa_id, lcsa_status, force_closed}
   }
 }
 
