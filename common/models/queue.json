@@ -15,6 +15,9 @@
       "type": "String",
       "required": true
     },
+    "ewt": {
+      "type": "Number"
+    },
     "force_closed": {
       "type": "Boolean",
       "default": false

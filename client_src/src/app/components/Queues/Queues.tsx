@@ -3,7 +3,7 @@ import CalendarTable from '../CalendarTable/CalendarTable';
 import CalendarSnackbar  from '../CalendarSnackbar/CalendarSnackbar';
 import DeleteAlert from '../Modal/DeleteAlert'
 import ToggleAlert from '../Modal/ToggleAlert'
-import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts, updateRoute, handleToggleForceClosedClicked, handleToggleQueueForceClosedCancel, submitQueueForceCloseToggle, handleToggleOptionalPromptsClicked, handleToggleOptionalPromptsCancel, submitOptionalPromptsToggle} from '../../actions'
+import { getQueuesFromServer, submitDeleteQueueToServer, handleDeleteQueueClicked, handleDeleteQueueCancel, handleCloseMessage, resetPrompts, resetQueueState, updateRoute, handleToggleForceClosedClicked, handleToggleQueueForceClosedCancel, submitQueueForceCloseToggle, handleToggleOptionalPromptsClicked, handleToggleOptionalPromptsCancel, submitOptionalPromptsToggle} from '../../actions'
 import { connect } from 'react-redux'
 
 interface IProps {
@@ -15,6 +15,7 @@ interface IProps {
   handleDeleteQueueCancel: any,
   handleCloseMessage: any,
   handleResetPrompts: any,
+  resetQueueState: any,
   history: any,
   handleUpdateRoute: any,
   handleToggleForceClosedClicked: any,
@@ -28,7 +29,8 @@ interface IProps {
 class Queues extends React.Component<IProps> {
 
   componentWillMount = () => {
-    const {handleResetPrompts, handleUpdateRoute} = this.props;
+    const {handleResetPrompts, handleUpdateRoute, resetQueueState} = this.props;
+    resetQueueState()
     handleResetPrompts()
     handleUpdateRoute({url: '/'})
   }
@@ -57,6 +59,7 @@ class Queues extends React.Component<IProps> {
         'Status': {status, message},
         'Name': queue.name,
         'County Code': queue.county_code,
+        'EWT': queue.ewt,
         'Lcsa Name': queue.lcsa ? queue.lcsa.lcsa_name: "",
         'Schedule Name': queue.schedule ? queue.schedule.name : "",
         'Holiday Name': queue.holidayList ? queue.holidayList.name : "",
@@ -124,7 +127,7 @@ class Queues extends React.Component<IProps> {
     const { queuesReducer, handleToggleQueueForceClosedCancel, handleToggleOptionalPromptsCancel} = this.props
     let data = this.createTableData();
     let message = this.showMessage()
-    let columnNames = ['Status', 'Name', 'County Code', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', 'Force Closed / Flush Q', ''];
+    let columnNames = ['Status', 'Name', 'County Code', 'EWT', 'Lcsa Name', 'Schedule Name', 'Holiday Name', 'Prompts', 'Optional Prompts Toggle', 'Force Closed / Flush Q', ''];
     return (
       <div>
         <CalendarSnackbar
@@ -184,6 +187,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleDeleteQueueCancel: () => dispatch(handleDeleteQueueCancel()),
     handleCloseMessage: () => (dispatch(handleCloseMessage())),
     handleResetPrompts: () => (dispatch(resetPrompts())),
+    resetQueueState: () => (dispatch(resetQueueState())),
     handleUpdateRoute: (obj) => (dispatch(updateRoute(obj))),
     handleToggleForceClosedClicked: (obj) => (dispatch(handleToggleForceClosedClicked(obj))),
     handleToggleQueueForceClosedCancel: () => (dispatch(handleToggleQueueForceClosedCancel())),

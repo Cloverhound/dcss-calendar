@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { connect } from 'react-redux';
 
-import { submitNewQueueToServer, getSchedulesFromServer, getHolidayListsFromServer, getLcsasFromServer, changeQueue, resetQueueState, handleCloseMessage } from '../../actions/index'
+import { submitNewQueueToServer, getSchedulesFromServer, getHolidayListsFromServer, getLcsasFromServer, changeQueue, resetQueueState, handleCloseMessage, submitNewQueueToServerFailed } from '../../actions/index'
 
 import {
   Link
@@ -84,10 +84,21 @@ interface IProps {
   holidayListsReducer: any,
   resetQueueState: any,
   handleCloseMessage: any,
-  lcsasReducer: any
+  lcsasReducer: any,
+  submitNewQueueToServerFailed: any
 }
 
-class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
+interface IState {
+  ewtError: any
+}
+
+class NewQueue extends React.Component<WithStyles<typeof styles> & IProps, IState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ewtError: false
+    }
+  }
 
   componentWillMount = () => {
     const { getSchedulesFromServer, getHolidayListsFromServer, getLcsasFromServer, resetQueueState } = this.props;
@@ -98,13 +109,24 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleSubmitNewQueue = () => {
-    const { submitNewQueueToServer, queueReducer } = this.props;
-    submitNewQueueToServer(queueReducer)
+    const { submitNewQueueToServer, queueReducer, submitNewQueueToServerFailed } = this.props;
+    if ((queueReducer.ewt > 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
+      submitNewQueueToServer(queueReducer)
+    } else {
+      submitNewQueueToServerFailed({message: "EWT is required to be between 0 - 3600"})
+    }
   }
-
+  
   handleChangeQueue = event => {
-    const { changeQueue } = this.props;
-    changeQueue({ name: event.target.name, value: event.target.value })
+    const {name, value} = event.target
+    const { changeQueue } = this.props
+
+    if (name === 'ewt' && value > 3600) {
+      this.setState({ ewtError: true })
+    } else if (name === 'ewt' && value < 3600){
+      this.setState({ ewtError: false })
+    }
+    changeQueue({ name, value })
   }
 
   handleCloseMessage = () => {
@@ -129,13 +151,11 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
       <div className={classes.root}>
         <div className={classes.paper}>
           <form className={classes.form}> 
-
             <CalendarSnackbar
                 handleClose = {this.handleCloseMessage}
                 hideDuration = {6000}
                 message = {message} 
             />
-
             <Typography className={classes.title} variant="title">New County</Typography>
              <TextField
               label="Name"
@@ -152,7 +172,17 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               value={queueReducer.county_code}
               onChange={this.handleChangeQueue}
               margin="normal"
-              disabled={true}
+              disabled={false}
+            />
+            <TextField
+              label="EWT"
+              name="ewt"
+              className={classes.textField}
+              value={queueReducer.ewt}
+              onChange={this.handleChangeQueue}
+              margin="normal"
+              helperText = "0 - 3600 required"
+              error={this.state.ewtError}
             />
             <FormControl className={classes.formControl}>
               <Select
@@ -191,10 +221,10 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps> {
               <FormHelperText>Holiday List Name</FormHelperText>
             </FormControl>
             <div className={classes.submitCancelContainer}>
-                {loading ? <CircularProgress className={classes.progress} /> : null}
-                <Button onClick={this.handleSubmitNewQueue} variant="contained" color="primary" className={classes.button}>
-                  Save
-                </Button>
+              {loading ? <CircularProgress className={classes.progress} /> : null}
+              <Button onClick={this.handleSubmitNewQueue} variant="contained" color="primary" className={classes.button}>
+                Save
+              </Button>
               <Link to="/">
                 <Button variant="outlined" color="primary" className={classes.button}>
                   Cancel
@@ -226,7 +256,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submitNewQueueToServer: (obj) => (dispatch(submitNewQueueToServer({...obj, history: ownProps.history}))),
     changeQueue: (obj) => (dispatch(changeQueue(obj))),
     resetQueueState: ()=> (dispatch(resetQueueState())),
-    handleCloseMessage: () => (dispatch(handleCloseMessage()))
+    handleCloseMessage: () => (dispatch(handleCloseMessage())),
+    submitNewQueueToServerFailed: (obj) => (dispatch(submitNewQueueToServerFailed(obj)))
   } 
 }
 
