@@ -325,6 +325,10 @@ var getStatus = async function(queue) {
   let lcsa_id = 'unassigned'
   let lcsa_status = 'unassigned'
 
+  if (ewt === null) {
+    ewt = 'unassigned'
+  }
+
   if(lcsa) {
     lcsa_name = lcsa.lcsa_name
     lcsa_id = lcsa.lcsa_id

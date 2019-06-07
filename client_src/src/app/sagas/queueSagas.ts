@@ -45,8 +45,12 @@ export function* callUpdateQueue(action) {
 export function* callCreateQueue(action) {
   const { scheduleId, queueName, county_code, ewt, holidayListId, history, lcsaId } = action.payload
   yield put(queueLoading())
-
-  const result = yield call(createQueue, { name: queueName, county_code, ewt, scheduleId, holidayListId, lcsaId })
+  let result
+  if (ewt === '') {
+    result = yield call(createQueue, { name: queueName, county_code, scheduleId, holidayListId, lcsaId })
+  } else {
+    result = yield call(createQueue, { name: queueName, county_code, ewt, scheduleId, holidayListId, lcsaId })
+  }
 
   if (result.error) {
     yield put(submitNewQueueToServerFailed(result.error))

@@ -110,7 +110,7 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps, IStat
 
   handleSubmitNewQueue = () => {
     const { submitNewQueueToServer, queueReducer, submitNewQueueToServerFailed } = this.props;
-    if ((queueReducer.ewt > 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
+    if ((queueReducer.ewt >= 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
       submitNewQueueToServer(queueReducer)
     } else {
       submitNewQueueToServerFailed({message: "EWT is required to be between 0 - 3600"})
@@ -118,13 +118,14 @@ class NewQueue extends React.Component<WithStyles<typeof styles> & IProps, IStat
   }
   
   handleChangeQueue = event => {
-    const {name, value} = event.target
+    let {name, value} = event.target
     const { changeQueue } = this.props
 
     if (name === 'ewt' && value > 3600) {
       this.setState({ ewtError: true })
     } else if (name === 'ewt' && value < 3600){
       this.setState({ ewtError: false })
+      value = Number(value)
     }
     changeQueue({ name, value })
   }

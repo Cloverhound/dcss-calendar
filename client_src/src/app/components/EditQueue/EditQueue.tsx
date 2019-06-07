@@ -111,7 +111,7 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps, ISta
 
   handleSubmitUpdateQueue = () => {
     const { submitUpdateQueueToServer, queueReducer, submitUpdateQueueToServerFailed } = this.props;
-    if ((queueReducer.ewt > 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
+    if ((queueReducer.ewt >= 0 && queueReducer.ewt <= 3600) || queueReducer.ewt === '') {
       submitUpdateQueueToServer(queueReducer)
     } else {
       submitUpdateQueueToServerFailed({message: "EWT is required to be between 0 - 3600"})
@@ -119,13 +119,14 @@ class EditQueue extends React.Component<WithStyles<typeof styles> & IProps, ISta
   }
 
   handleChangeQueue = event => {
-    const {name, value} = event.target
+    let {name, value} = event.target
     const { changeQueue } = this.props
 
     if (name === 'ewt' && value > 3600) {
       this.setState({ ewtError: true })
     } else if (name === 'ewt' && value < 3600){
       this.setState({ ewtError: false })
+      value = Number(value)
     }
     changeQueue({ name, value })
   }
