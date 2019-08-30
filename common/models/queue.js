@@ -359,7 +359,7 @@ var getStatus = async function(queue) {
       let singleDateTimeRangesTodayArray = singleDateTimeRangesAreToday(singleDateTimeRanges)
 
       if(singleDateTimeRangesTodayArray.length) {
-        return checkSingleDateTimeRanges(singleDateTimeRangesTodayArray, lcsa_name, lcsa_id, lcsa_status)
+        return checkSingleDateTimeRanges(singleDateTimeRangesTodayArray, ewt, lcsa_name, lcsa_id, lcsa_status)
       }
      
       for(var i = 0; i < recurringTimeRanges.length; i++) {
@@ -385,14 +385,14 @@ const singleDateTimeRangesAreToday = (singleDateTimeRanges) => {
   return isToday
 }
 
-const checkSingleDateTimeRanges = (singleDateTimeRanges, lcsa_name, lcsa_id, lcsa_status) => {
+const checkSingleDateTimeRanges = (singleDateTimeRanges, ewt, lcsa_name, lcsa_id, lcsa_status) => {
   for(var i = 0; i < singleDateTimeRanges.length; i++) {
     let singleDateTimeRange = singleDateTimeRanges[i]
     if(singleDateTimeRange.isToday() && singleDateTimeRange.closed_all_day){
-      return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+      return {status: 'closed', ewt, lcsa_name, lcsa_id, lcsa_status}
     } else if(singleDateTimeRange.isToday() && singleDateTimeRange.isNow()) {
-      return {status: 'open', lcsa_name, lcsa_id, lcsa_status}
+      return {status: 'open', ewt, lcsa_name, lcsa_id, lcsa_status}
     } 
   }
-  return {status: 'closed', lcsa_name, lcsa_id, lcsa_status}
+  return {status: 'closed', ewt, lcsa_name, lcsa_id, lcsa_status}
 }
