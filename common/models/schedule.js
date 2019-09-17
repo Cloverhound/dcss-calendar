@@ -233,7 +233,9 @@ function createSingleDateTimeRanges(createdSchedule, singleDateTimeRanges) {
   console.log('Creating single date time ranges', createdSchedule, singleDateTimeRanges)
   let createPromises = []
   for(var i = 0; i < singleDateTimeRanges.length; i++) {
-    createPromises.push(createSingleDateTimeRange(createdSchedule, singleDateTimeRanges[i]))
+    if((singleDateTimeRanges[i].start && singleDateTimeRanges[i].end) || singleDateTimeRanges[i].closed_all_day) {
+      createPromises.push(createSingleDateTimeRange(createdSchedule, singleDateTimeRanges[i]))
+    }
   }
   return Promise.all(createPromises)
 }
