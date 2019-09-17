@@ -4,7 +4,6 @@ var logger = require('../../server/logger')
 
 module.exports = function(Holiday) {
   Holiday.validatesUniquenessOf('name', {message: 'Name already exists'})
-  //TODO: Should this.date be converted to just a date or PST?
   Holiday.prototype.isToday = function() {
     console.log('Checking if holiday is today', this.date)
     logger.info('Checking if holiday is today', this.date)
