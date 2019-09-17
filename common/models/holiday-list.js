@@ -171,7 +171,9 @@ function createHolidays(holidayListDB, holidays) {
   logger.info('Creating holidays', holidayListDB, holidays)
   let createPromises = []
   for(var i = 0; i < holidays.length; i++) {
-    createPromises.push(createHoliday(holidayListDB, holidays[i]))
+    if(holidays[i].date){
+      createPromises.push(createHoliday(holidayListDB, holidays[i]))
+    }
   }
   return Promise.all(createPromises)
 }

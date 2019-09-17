@@ -69,7 +69,8 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
   }
 
   handleChangeHolidayDate = event => {
-    this.props.changeHolidayDate({index: this.props.index, date: event})
+    let isoString = event.toISOString().split("T")[0]
+    this.props.changeHolidayDate({index: this.props.index, date: isoString})
   }
 
   handleDelete = event => {
@@ -81,9 +82,12 @@ class HolidayRow extends React.Component<WithStyles<typeof styles> & IProps> {
 
   render() {
     const { classes, date } = this.props;
-  
+    let yearMonthDay = null
+    if(date){
+      yearMonthDay = date
+    }
     let holidayDate = <DatePicker
-      selected={date}
+      selected={yearMonthDay}
       placeholderText="mm / dd / yyyy"
       onChange={this.handleChangeHolidayDate}
       className={classes.dateInput}

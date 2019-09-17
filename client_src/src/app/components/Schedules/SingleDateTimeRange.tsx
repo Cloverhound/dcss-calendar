@@ -17,7 +17,7 @@ import { deleteSingleDateTimeRange, changeDateOfSingleDateTimeRange, changeStart
 
 var moment = require('moment-timezone');
 
-const format = 'h:mm a';
+const TimeFormat = 'h:mm a';
 
 const styles = theme => createStyles({
   root: {
@@ -89,18 +89,18 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
 
   handleStartTimeChange = (value) => {
     const { changeStartOfSingleDateTimeRange, index } = this.props
-    changeStartOfSingleDateTimeRange({index, value: value.format(format) })
+    changeStartOfSingleDateTimeRange({index, value: value.format(TimeFormat) })
   }
 
   handleEndTimeChange = (value) => {
     const { changeEndOfSingleDateTimeRange, index } = this.props
-    changeEndOfSingleDateTimeRange({index, value: value.format(format) })
+    changeEndOfSingleDateTimeRange({index, value: value.format(TimeFormat) })
   }
 
   handleDateChange = (value) =>  {
     const { changeDateOfSingleDateTimeRange, index } = this.props
-    console.log("date single date time range", value)
-    changeDateOfSingleDateTimeRange({ index, date: value})
+    let isoString = value.toISOString().split("T")[0]
+    changeDateOfSingleDateTimeRange({ index, date: isoString})
   };
 
   handleCheckboxChange = (event) => {
@@ -115,22 +115,25 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
   }
 
   render() {
-    const { classes, closed_all_day } = this.props
-
+    const { classes, closed_all_day, date } = this.props
+    let yearMonthDay = null
+    if(date){
+      yearMonthDay = date
+    }
     let dateComponent = <DatePicker
       className={classes.dateInput}
-      selected={this.props.date}
+      selected={yearMonthDay}
       placeholderText="mm / dd / yyyy"
       onChange={this.handleDateChange}
       calendarClassName={classes.calendar}
     />
 
-    let startValue = moment(this.props.start, format)
+    let startValue = moment(this.props.start, TimeFormat)
     if(!startValue.isValid()) {
       startValue = null
     }
 
-    let endValue = moment(this.props.end, format)
+    let endValue = moment(this.props.end, TimeFormat)
     if(!endValue.isValid()) {
       endValue = null
     }
@@ -149,7 +152,7 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
                 <TimePicker
                   showSecond={false}
                   onChange={this.handleStartTimeChange}
-                  format={format}
+                  format={TimeFormat}
                   use12Hours
                   placeholder={"00:00"}
                   value={startValue}
@@ -165,7 +168,7 @@ class SingleDateTimeRange extends React.Component<WithStyles<typeof styles> & IP
                 <TimePicker
                   showSecond={false}
                   onChange={this.handleEndTimeChange}
-                  format={format}
+                  format={TimeFormat}
                   use12Hours
                   placeholder={"00:00"}
                   value={endValue}
