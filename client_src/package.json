@@ -29,7 +29,7 @@
     "redux-saga": "^0.16.2",
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.0.3",
-    "yarn": "^1.9.4"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@types/react": "^16.4.14",
