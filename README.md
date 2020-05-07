@@ -2,9 +2,9 @@
 
 ## Install nodeModules for BE and FE
 ```
- ~/Cloverhound/dcss-calendar yarn
+ ./dcss-calendar yarn
 
-Cloverhound/dcss-calendar/client_src yarn
+./dcss-calendar/client_src yarn
 ```
 
 ## To Run
@@ -12,12 +12,12 @@ Open two terminal windows/tabs
 
 1)
 ```
-Cloverhound/dcss-calendar/client_src npm start
-Or Cloverhound/dcss-calendar/node_modules/.bin/webpack
+./dcss-calendar/client_src npm start
+Or ./dcss-calendar/node_modules/.bin/webpack
 ```
 2)
 ```
-~/Cloverhound/dcss-calendar npm start
+./dcss-calendar npm start
 ```
 
 ## Azure Server
