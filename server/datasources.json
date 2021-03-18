@@ -1,16 +1,16 @@
 {
   "db": {
-    "host": "${DB_HOST}",
-    "port": "${DB_PORT}",
+    "host": "localhost",
+    "port": 3000,
     "url": "",
-    "database": "${DB}",
-    "password": "${DB_PASS}",
+    "database": "asdf",
+    "password": "asdf",
     "name": "db",
-    "user": "${DB_USER}",
+    "user": "asdf",
     "connector": "mssql",
     "options": {
       "encrypt": true,
-      "multiSubnetFailover": "${DB_MULTI_SUB_FAILOVER}"
+      "multiSubnetFailover": false
     }
   }
 }

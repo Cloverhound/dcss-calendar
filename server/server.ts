@@ -25,7 +25,6 @@ app.use(function(req, res, next) {
   ctx.set('reqId', uuid.v1());
   next();
 })
-
 var checkApiHttps = function (req,res,next) {
   if (req.protocol == 'http' && !req.path.includes('api') && !req.path.includes('.wav')) {
    logger.info('Redirecting to HTTPS ... ' + 'https://' + req.hostname + ':' + process.env.HTTPS_PORT + req.url);
@@ -53,7 +52,7 @@ app.use(bodyParser.json())
 var httpLogger = function(req, res, next) {
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
   const [login, password] = new Buffer(b64auth, 'base64').toString().split(':')
-  
+
   logger.info('Http ' + req.method + ' Request by ' + login + ' to ' + req.url)
 
   let body = JSON.stringify(req.body, null, 0)
@@ -62,10 +61,11 @@ var httpLogger = function(req, res, next) {
       logger.info("body: " + body);
     }
   }
-  next(); 
+  next();
 }
+//console.log("Made it here4", process.env)
 app.use(httpLogger);
-app.use(loopback.static(path.resolve(process.env.FILE_STORAGE_PATH))); 
+app.use(loopback.static(path.resolve('localhost')));//process.env.FILE_STORAGE_PATH)));
 
 const basicAuthParser = require('basic-auth')
 
@@ -96,8 +96,8 @@ var basicAuth = function (req, res, next) {
   if (!validUser) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
     return res.sendStatus(401)
-  } 
-  
+  }
+
   next()
 }
 
@@ -105,26 +105,25 @@ app.use(basicAuth);
 
 app.start = function() {
   var host = app.get('host');
+  // var httpsOptions = {
+  //   key: '123',//sslConfig.credentials.key,
+  //   cert: '123', //sslConfig.credentials.cert,
+  // };
 
-  var httpsOptions = {
-    key: sslConfig.credentials.key,
-    cert: sslConfig.credentials.cert,
-  };
-    
   var httpServer = http.createServer(app);
-  var httpsServer = https.createServer(httpsOptions, app);
+  //var httpsServer = https.createServer(httpsOptions, app);
   let httpPort = process.env.HTTP_PORT || 80
-  let httpsPort = process.env.HTTPS_PORT || 443
+  //let httpsPort = process.env.HTTPS_PORT || 443
   httpServer.listen(httpPort);
-  httpsServer.listen(httpsPort);
+  //httpsServer.listen(httpsPort);
 
   app.emit('started', );
-  console.log('LoopBack server listening @', `https://${host}:${httpsPort}/`);
+  //console.log('LoopBack server listening @', `https://${host}:${httpsPort}/`);
   console.log('LoopBack server listening @', `http://${host}:${httpPort}/`);
 
   if (app.get('loopback-component-explorer')) {
     var explorerPath = app.get('loopback-component-explorer').mountPath;
-    console.log('Browse your REST API at %s%s', `https://${host}:${httpsPort}`, explorerPath);
+    //console.log('Browse your REST API at %s%s', `https://${host}:${httpsPort}`, explorerPath);
     console.log('Browse your REST API at %s%s', `http://${host}:${httpPort}`, explorerPath);
   }
 };

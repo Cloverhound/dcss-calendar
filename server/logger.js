@@ -24,7 +24,7 @@ const winstonLogger = createLogger({
   })
 
 var formatMessage = function(req) {
-  let currentTime = moment().tz(process.env.TIME_ZONE).format("YYYY-MM-DD h:mm:ss a")
+  let currentTime = moment().tz('America/New_York').format("YYYY-MM-DD h:mm:ss a")
   var ctx = LoopBackContext.getCurrentContext();
   let newMessage = ctx && ctx.get('reqId') ? ctx.get('reqId') + " -- " + currentTime + " -- " + req : req;
   return newMessage;
